@@ -3,6 +3,7 @@ import type { ReactNode } from 'react'
 import type { UserData, UserContextType } from '../types/user'
 
 const defaultUser: UserData = {
+  name: null,
   age: null,
   scores: {},
   badges: [],
@@ -14,6 +15,7 @@ export const UserContext = createContext<UserContextType>({
   user: defaultUser,
   setUser: () => {},
   setAge: () => {},
+  setName: () => {},
 })
 
 export function UserProvider({ children }: { children: ReactNode }) {
@@ -24,8 +26,12 @@ export function UserProvider({ children }: { children: ReactNode }) {
     setUser((prev) => ({ ...prev, age }))
   }
 
+  const setName = (name: string) => {
+    setUser((prev) => ({ ...prev, name }))
+  }
+
   return (
-    <UserContext.Provider value={{ user, setUser, setAge }}>
+    <UserContext.Provider value={{ user, setUser, setAge, setName }}>
       {children}
     </UserContext.Provider>
   )
