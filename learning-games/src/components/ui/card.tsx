@@ -17,4 +17,5 @@ export const CardContent: React.FC<{ children: React.ReactNode; className?: stri
   <div className={`card-content ${className}`}>{children}</div>
 );
 
+export { Card };
 export default Card;
