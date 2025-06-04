@@ -22,7 +22,11 @@ export default function Home() {
   return (
     <div className="home">
       {/* greeting */}
-      {user.age && <h2>Welcome! Age group: {user.age}</h2>}
+      {user.age && (
+        <h2>
+          Welcome{user.name ? `, ${user.name}` : ''}! Age group: {user.age}
+        </h2>
+      )}
 
       {/* game list */}
       <div className="game-grid">

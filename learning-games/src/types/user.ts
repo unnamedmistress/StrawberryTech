@@ -1,4 +1,6 @@
 export interface UserData {
+  /** User's name for personalized greetings */
+  name: string | null
   age: number | null
   scores: Record<string, number>
   badges: string[]
@@ -12,4 +14,8 @@ export interface UserContextType {
    * content difficulty and themes.
    */
   setAge: (age: number) => void
+  /**
+   * Update only the name field of the user.
+   */
+  setName: (name: string) => void
 }
