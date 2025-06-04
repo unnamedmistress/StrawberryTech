@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Card, CardContent } from '@/components/ui/card';
+import { useState } from 'react'
+import { Card, CardContent } from '../components/ui/card'
 import { toast } from 'react-hot-toast';
 
 const toneFlavors = [
@@ -9,13 +9,21 @@ const toneFlavors = [
   { type: 'zesty', label: 'lively', emoji: '🍋', points: 7 }
 ];
 
-const generateTile = (id) => {
+interface Tile {
+  type: string
+  label: string
+  emoji: string
+  points: number
+  id: number
+}
+
+const generateTile = (id: number): Tile => {
   const flavor = toneFlavors[Math.floor(Math.random() * toneFlavors.length)];
   return { ...flavor, id };
 };
 
-const generateGrid = () => {
-  const grid = [];
+const generateGrid = (): Tile[] => {
+  const grid: Tile[] = [];
   for (let i = 0; i < 36; i++) {
     grid.push(generateTile(i));
   }
@@ -23,11 +31,11 @@ const generateGrid = () => {
 };
 
 const Match3PromptTuner = () => {
-  const [grid, setGrid] = useState(generateGrid());
-  const [selected, setSelected] = useState(null);
+  const [grid, setGrid] = useState<Tile[]>(generateGrid());
+  const [selected, setSelected] = useState<number | null>(null);
   const [score, setScore] = useState(0);
 
-  const handleClick = (index) => {
+  const handleClick = (index: number) => {
     if (selected === null) {
       setSelected(index);
     } else {
@@ -45,8 +53,8 @@ const Match3PromptTuner = () => {
     }
   };
 
-  const checkMatches = (grid) => {
-    let matchedIndices = new Set();
+  const checkMatches = (grid: Tile[]) => {
+    const matchedIndices = new Set<number>();
 
     // Check rows
     for (let i = 0; i < 36; i += 6) {
