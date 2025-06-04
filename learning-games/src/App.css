@@ -40,3 +40,22 @@
 .read-the-docs {
   color: #888;
 }
+
+.game-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.game-card {
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  text-decoration: none;
+  display: block;
+}
+
+.progress-summary {
+  margin-top: 1rem;
+}
