@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Home from './pages/Home'
 import AgeInputForm from './pages/AgeInputForm'
 import SplashPage from './pages/SplashPage'
@@ -7,20 +7,14 @@ import QuizGame from './pages/QuizGame'
 import DragDropGame from './pages/DragDropGame'
 import LeaderboardPage from './pages/LeaderboardPage'
 import { Toaster } from 'react-hot-toast'
+import NavBar from './components/layout/NavBar'
+import Footer from './components/layout/Footer'
 import './App.css'
 
 function App() {
   return (
     <Router>
-      <nav>
-        <ul>
-          <li><Link to="/">Home</Link></li>
-          <li><Link to="/games/match3">Match-3</Link></li>
-          <li><Link to="/games/quiz">Quiz</Link></li>
-        <li><Link to="/games/dragdrop">Drag & Drop</Link></li>
-        <li><Link to="/leaderboard">Leaderboard</Link></li>
-      </ul>
-      </nav>
+      <NavBar />
       <Routes>
         <Route path="/age" element={<AgeInputForm />} />
         <Route path="/welcome" element={<SplashPage />} />
@@ -32,6 +26,7 @@ function App() {
       </Routes>
       {/* Verification comment: routes render correctly with context */}
       <Toaster />
+      <Footer />
     </Router>
   )
 }
