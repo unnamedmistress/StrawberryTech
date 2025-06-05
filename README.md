@@ -22,7 +22,9 @@ A short multiple‑choice quiz (implementation in progress) that will scale ques
    npm install
    npm run dev
    ```
-2. Open the printed URL in your browser.
+2. Create a `.env` file inside `learning-games` with your
+   `VITE_OPENAI_API_KEY=<your key>` for the Robot chat feature.
+3. Open the printed URL in your browser.
 
 Node **18+** is recommended. Major dependencies include React 19, React Router 7, Vite 6 and TypeScript. Toast notifications are provided by `react-hot-toast` and unit tests use `vitest`.
 

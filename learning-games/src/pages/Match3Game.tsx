@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 import { UserContext } from "../context/UserContext";
 import { BADGES } from "../data/badges";
+import RobotChat from "../components/RobotChat";
 
 /** Tile element used in the grid */
 export interface Tile {
@@ -389,6 +390,7 @@ export default function Match3Game() {
           </div>
         </div>
       )}
+      <RobotChat />
     </div>
   );
 }
