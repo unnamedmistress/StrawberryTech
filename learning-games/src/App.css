@@ -59,3 +59,29 @@
 .progress-summary {
   margin-top: 1rem;
 }
+
+/* Match-3 styles */
+.match3-container {
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.match3-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 4px;
+  margin-bottom: 1rem;
+}
+
+.match3-tile {
+  width: 48px;
+  height: 48px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.match3-tile.selected {
+  outline: 3px solid #0070f3;
+}
+

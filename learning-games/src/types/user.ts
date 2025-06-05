@@ -18,4 +18,13 @@ export interface UserContextType {
    * Update only the name field of the user.
    */
   setName: (name: string) => void
+  /**
+   * Add points to the user's score record for a given game.
+   * Used by games to track progress across sessions.
+   */
+  addPoints: (game: string, points: number) => void
+  /**
+   * Award a badge when the player reaches a milestone.
+   */
+  addBadge: (badge: string) => void
 }
