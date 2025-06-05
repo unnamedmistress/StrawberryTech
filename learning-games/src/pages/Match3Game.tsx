@@ -57,28 +57,30 @@ const quotes = [
 ];
 
 const toneWords = [
-  { word: "urgent", flavor: "urgent" },
-  { word: "critical", flavor: "urgent" },
-  { word: "friendly", flavor: "friendly" },
-  { word: "cheerful", flavor: "friendly" },
-  { word: "professional", flavor: "professional" },
-  { word: "polite", flavor: "professional" },
-  { word: "casual", flavor: "casual" },
-  { word: "relaxed", flavor: "casual" },
+
+  { word: "urgent", flavor: "spicy" },
+  { word: "critical", flavor: "spicy" },
+  { word: "friendly", flavor: "zesty" },
+  { word: "cheerful", flavor: "zesty" },
+  { word: "professional", flavor: "calm" },
+  { word: "polite", flavor: "calm" },
+  { word: "casual", flavor: "fresh" },
+  { word: "relaxed", flavor: "fresh" },
 ];
 
 const flavorAdjective: Record<string, string> = {
-  urgent: "intense",
-  friendly: "upbeat",
-  professional: "formal",
-  casual: "chill",
+  spicy: "intense",
+  zesty: "upbeat",
+  calm: "gentle",
+  fresh: "casual",
 };
 
-const toneOutputs: Record<string, string> = {
-  urgent: "Mom, I need to tell you right away\u2014I'll be home late today!",
-  friendly: "Hey Mom! I'll be home late today \u{1F60A}",
-  professional: "Mother, please note I'll be home later than usual today.",
-  casual: "Hey Mom, running late, I'll be home later.",
+const toneExamples: Record<string, string> = {
+  spicy: "Please handle this right away.",
+  zesty: "You've got this! Let's make it fun today \u{1F389}",
+  calm: "Thank you for your patience while we sort this out.",
+  fresh: "No rush\u2014whenever you're ready works for me.",
+
 };
 
 export interface MatchResult {
@@ -162,6 +164,9 @@ function ToneMatchGame({ onComplete }: { onComplete: () => void }) {
   const [completed, setCompleted] = useState<string[]>([]);
   const [feedback, setFeedback] = useState<string | null>(null);
   const [activeFlavor, setActiveFlavor] = useState<string | null>(null);
+
+  const [sentenceInput, setSentenceInput] = useState("");
+
   const [aiSentence, setAiSentence] = useState<string | null>(null);
 
   function handleDrop(flavor: string, word: string) {
@@ -188,8 +193,11 @@ function ToneMatchGame({ onComplete }: { onComplete: () => void }) {
 
   function buildSentence() {
     if (!activeFlavor) return;
-    const result = toneOutputs[activeFlavor];
-    setAiSentence(result);
+
+    const example = toneExamples[activeFlavor];
+    const base = sentenceInput.trim() || example;
+    setAiSentence(base);
+
   }
 
   useEffect(() => {
@@ -240,7 +248,14 @@ function ToneMatchGame({ onComplete }: { onComplete: () => void }) {
       {feedback && <p>{feedback}</p>}
       {activeFlavor && (
         <div className="sentence-builder">
-          <p>Base: "Mom, I'll be home late today"</p>
+
+          <input
+            type="text"
+            value={sentenceInput}
+            placeholder="Type a short sentence"
+            onChange={(e) => setSentenceInput(e.target.value)}
+          />
+
           <button onClick={buildSentence}>
             What would the AI say in a {activeFlavor} tone?
           </button>
