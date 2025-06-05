@@ -3,10 +3,8 @@ import { motion } from "framer-motion";
 
 import { useNavigate } from "react-router-dom";
 
-import { UserContext } from '../context/UserContext'
-import { toast } from 'react-hot-toast'
-import { BADGES } from '../data/badges'
-
+import { UserContext } from "../context/UserContext";
+import { BADGES } from "../data/badges";
 
 /** Tile element used in the grid */
 export interface Tile {
@@ -64,19 +62,6 @@ const toneWords = [
   { word: "soothing", flavor: "calm" },
   { word: "crisp", flavor: "fresh" },
 ];
-
-const quotes = [
-  'Prompting is like seasoning \u2013 a single word changes the flavor.',
-  'Swap words wisely and watch your message sparkle!',
-]
-
-const toneWords = [
-  { word: 'fiery', flavor: 'spicy' },
-  { word: 'zippy', flavor: 'zesty' },
-  { word: 'soothing', flavor: 'calm' },
-  { word: 'crisp', flavor: 'fresh' },
-]
-
 
 export interface MatchResult {
   grid: (Tile | null)[];
@@ -155,108 +140,9 @@ export function checkMatches(
   return { grid: working, gained, matchedTypes: Array.from(matchedTypes) };
 }
 
-
-function ToneDragOverlay({ onClose }: { onClose: () => void }) {
-  const [completed, setCompleted] = useState<string[]>([])
-  const [feedback, setFeedback] = useState<string | null>(null)
-
-  function handleDrop(flavor: string, word: string) {
-    const correct = toneWords.find((t) => t.word === word)?.flavor === flavor
-    setFeedback(correct ? `Nice! ${word} is ${flavor}.` : `Try again!`)
-    if (correct) {
-      setCompleted((c) => [...c, word])
-    }
-  }
-
-  return (
-    <div className="match3-modal-overlay">
-      <div className="match3-modal">
-        {completed.length === toneWords.length ? (
-          <>
-            <h3>Great job!</h3>
-            <button onClick={onClose}>Done</button>
-          </>
-        ) : (
-          <>
-            <h3>Drag the words to match the emoji</h3>
-            <div className="drag-container">
-              <div className="drag-words">
-                {toneWords
-                  .filter((w) => !completed.includes(w.word))
-                  .map((w) => (
-                    <div
-                      key={w.word}
-                      className="drag-word"
-                      draggable
-                      onDragStart={(e) =>
-                        e.dataTransfer.setData('text/plain', w.word)
-                      }
-                    >
-                      {w.word}
-                    </div>
-                  ))}
-              </div>
-              <div className="drop-zones">
-                {flavors.map((f) => (
-                  <div
-                    key={f.name}
-                    className="drop-zone"
-                    onDragOver={(e) => e.preventDefault()}
-                    onDrop={(e) => {
-                      e.preventDefault()
-                      const word = e.dataTransfer.getData('text/plain')
-                      handleDrop(f.name, word)
-                    }}
-                  >
-                    <span role="img" aria-label={f.name}>
-                      {f.emoji}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
-            {feedback && <p>{feedback}</p>}
-            <button onClick={onClose}>Close</button>
-          </>
-        )}
-      </div>
-    </div>
-  )
-}
-
-/**
- * Simple match-3 puzzle. Players swap adjacent tiles to make rows or columns
- * of three or more of the same color. Matches award points and occasionally
- * show an age-based leadership tip.
- */
-export default function Match3Game() {
-  const { user, setScore: saveScore, addBadge } = useContext(UserContext)
-  const [grid, setGrid] = useState<(Tile | null)[]>(createGrid())
-  const [selected, setSelected] = useState<number | null>(null)
-  const [score, setScore] = useState(0)
-  const [moves, setMoves] = useState(20)
-  const [challenge] = useState<Flavor>(
-    () => flavors[Math.floor(Math.random() * flavors.length)]
-  )
-
-  const [sidebarQuote] = useState(
-    () => quotes[Math.floor(Math.random() * quotes.length)]
-  )
-  const [newBadges, setNewBadges] = useState<string[]>([])
-
-  const [showDragGame, setShowDragGame] = useState(false)
-
-
-  const navigate = useNavigate()
-  const [showInstructions, setShowInstructions] = useState(true)
-  const [showEndModal, setShowEndModal] = useState(false)
-
-
-  // Return tips list for the current age
-  const ageTips = tips.find((t) =>
-    user.age ? user.age >= t.range[0] && user.age <= t.range[1] : false
-  )?.tips
-
+function ToneMatchGame({ onComplete }: { onComplete: () => void }) {
+  const [completed, setCompleted] = useState<string[]>([]);
+  const [feedback, setFeedback] = useState<string | null>(null);
 
   function handleDrop(flavor: string, word: string) {
     const correct = toneWords.find((t) => t.word === word)?.flavor === flavor;
@@ -264,56 +150,6 @@ export default function Match3Game() {
     if (correct && !completed.includes(word)) {
       setCompleted((c) => [...c, word]);
     }
-    const diff = Math.abs(selected - index)
-    const adjacent = [1, 6].includes(diff) && !(selected % 6 === 5 && index % 6 === 0)
-    if (!adjacent) {
-      setSelected(null)
-      return
-    }
-    const newGrid = [...grid]
-    ;[newGrid[selected], newGrid[index]] = [newGrid[index], newGrid[selected]]
-    setGrid(newGrid)
-    setSelected(null)
-    setMoves((m) => m - 1)
-    applyMatches(newGrid)
-  }
-
-  /**
-   * Find matches of 3+ identical tiles and handle scoring/dropping logic.
-   * Tiles that are cleared are replaced by the tile above them; new tiles fill
-   * the top row.
-   */
-  function applyMatches(current: (Tile | null)[]) {
-    const result = checkMatches(current)
-    if (result.gained === 0) return
-    let gained = result.gained
-    if (result.matchedTypes.includes(challenge.name)) {
-      gained += 20
-      toast(`Tone tip! Matched the ${challenge.name} flavor!`)
-    }
-    setScore((s) => s + gained)
-    setGrid(result.grid)
-    if (ageTips && Math.random() < 0.3) {
-      toast(ageTips[Math.floor(Math.random() * ageTips.length)])
-    }
-  }
-
-  // Award badges and store the best score when the game ends
-  function endGame() {
-    saveScore('match3', score)
-    const earned: string[] = []
-    if (score >= 100 && !user.badges.includes('match-master')) {
-      earned.push('match-master')
-      addBadge('match-master')
-    }
-    if (!user.badges.includes('first-match3')) {
-      earned.push('first-match3')
-      addBadge('first-match3')
-    }
-    setNewBadges(earned)
-    toast(`Game over! Final score: ${score}`)
-    setShowEndModal(true)
-
   }
 
   useEffect(() => {
@@ -396,56 +232,34 @@ export default function Match3Game() {
         <ToneMatchGame onComplete={handleComplete} />
       </div>
       <aside className="match3-sidebar">
-
-        <h3>How to Play</h3>
-        <ul>
-          <li>Swap tiles to create lines of three matching emojis.</li>
-          <li>Match the daily flavor for a 20 point bonus.</li>
-          <li>Earn as many points as you can in 20 moves.</li>
-        </ul>
+        <h3>Why Tone Matters</h3>
+        <p>Drag the adjectives to the emoji that best matches their vibe.</p>
         <blockquote className="sidebar-quote">{sidebarQuote}</blockquote>
-        <button onClick={() => setShowDragGame(true)}>Tone Drag Challenge</button>
-
       </aside>
-
-      {showInstructions && (
-        <div className="match3-modal-overlay">
-          <div className="match3-modal">
-            <h3>Welcome!</h3>
-            <p>
-              Swap adjacent tiles to match three or more. Focus on {challenge.emoji}{' '}
-              {challenge.name} for bonus points.
-            </p>
-            <button onClick={() => setShowInstructions(false)}>Start</button>
-          </div>
-        </div>
-      )}
-
-      {showDragGame && <ToneDragOverlay onClose={() => setShowDragGame(false)} />}
 
       {showEndModal && (
         <div className="match3-modal-overlay">
           <div className="match3-modal">
-            <h3>Game Over</h3>
-            <p>Your score: {score}</p>
+            <h3>Great job!</h3>
+            <p>You matched all the words.</p>
             {newBadges.length > 0 && (
               <div className="badge-rewards">
                 {newBadges.map((id) => {
-                  const badge = BADGES.find((b) => b.id === id)
-
+                  const badge = BADGES.find((b) => b.id === id);
                   return (
                     <motion.div
                       key={id}
                       className="badge-icon"
                       initial={{ scale: 0 }}
                       animate={{ scale: 1 }}
-
-                      transition={{ type: 'spring', stiffness: 260 }}
+                      transition={{ type: "spring", stiffness: 260 }}
                     >
-                      <span role="img" aria-label="badge">🏅</span>
+                      <span role="img" aria-label="badge">
+                        🏅
+                      </span>
                       <div>{badge?.name ?? id}</div>
                     </motion.div>
-                  )
+                  );
                 })}
               </div>
             )}
