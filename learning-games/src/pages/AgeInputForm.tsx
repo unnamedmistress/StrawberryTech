@@ -37,7 +37,10 @@ export default function AgeInputForm() {
         min={12}
         max={18}
         value={age}
-        onChange={(e) => setAgeState(Number(e.target.value))}
+        onChange={(e) => {
+          const { value } = e.target
+          setAgeState(value === '' ? '' : Number(value))
+        }}
         required
       />
       <button type="submit">Save Age</button>
