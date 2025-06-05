@@ -74,20 +74,6 @@
   border-radius: 8px;
 }
 
-.match3-wrapper {
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
-}
-
-.match3-sidebar {
-  max-width: 200px;
-  background: #fff;
-  padding: 1rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  text-align: left;
-}
 
 .daily-challenge-banner {
   margin-bottom: 0.5rem;
