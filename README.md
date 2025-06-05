@@ -11,7 +11,7 @@ Swap adjacent tiles to make rows or columns of three. Matches award points and m
 A short multiple‑choice quiz (implementation in progress) that will scale question difficulty according to the player's age.
 
 ### Drag & Drop
-A drag‑and‑drop sorting challenge (coming soon). Planned age adaptations include increasing the number of items for older players.
+Fill in a short sentence by dragging an adjective into the blank. After choosing a word you can type your own message and see it displayed on the page.
 
 ## Age‑Adaptive Features
 - Players enter an age between **12–18** on first visit.
