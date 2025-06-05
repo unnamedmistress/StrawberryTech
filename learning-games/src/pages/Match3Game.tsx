@@ -84,32 +84,6 @@ const examples: Record<Tone, string> = {
     "Would you mind if we postponed? I think meeting later will be much better for both of us.",
 };
 
-const toneWords = [
-
-  { word: "critical", flavor: "spicy" },
-  { word: "friendly", flavor: "zesty" },
-  { word: "cheerful", flavor: "zesty" },
-  { word: "professional", flavor: "calm" },
-  { word: "polite", flavor: "calm" },
-  { word: "casual", flavor: "fresh" },
-  { word: "relaxed", flavor: "fresh" },
-];
-
-const flavorAdjective: Record<string, string> = {
-  spicy: "intense",
-  zesty: "upbeat",
-  calm: "gentle",
-  fresh: "casual",
-};
-
-const toneExamples: Record<string, string> = {
-  spicy: "Please handle this right away.",
-  zesty: "You've got this! Let's make it fun today \u{1F389}",
-  calm: "Thank you for your patience while we sort this out.",
-  fresh: "No rush\u2014whenever you're ready works for me.",
-
-
-};
 
 export interface MatchResult {
   grid: (Tile | null)[];
@@ -192,8 +166,6 @@ function ToneMatchGame({ onComplete }: { onComplete: () => void }) {
   const [selected, setSelected] = useState<Tone | null>(null);
   const [used, setUsed] = useState<Set<Tone>>(new Set());
   const [quizAnswer, setQuizAnswer] = useState<Tone | null>(null);
-  const [userMessage, setUserMessage] = useState("");
-  const [submitted, setSubmitted] = useState(false);
 
   function handleDragStart(e: React.DragEvent<HTMLDivElement>, tone: Tone) {
     e.dataTransfer.setData("text/plain", tone);
@@ -205,8 +177,6 @@ function ToneMatchGame({ onComplete }: { onComplete: () => void }) {
     if (tones.includes(tone)) {
       setSelected(tone);
       setUsed(new Set(used).add(tone));
-      setUserMessage("");
-      setSubmitted(false);
     }
   }
 
@@ -214,11 +184,6 @@ function ToneMatchGame({ onComplete }: { onComplete: () => void }) {
     e.preventDefault();
   }
 
-  function handleSubmit() {
-    if (userMessage.trim()) {
-      setSubmitted(true);
-    }
-  }
 
   useEffect(() => {
     if (used.size === tones.length) {
@@ -256,21 +221,6 @@ function ToneMatchGame({ onComplete }: { onComplete: () => void }) {
         <div className="response">
           <h3>AI Response</h3>
           <p>{examples[selected]}</p>
-          {!submitted && (
-            <div className="message-input">
-              <textarea
-                value={userMessage}
-                onChange={(e) => setUserMessage(e.target.value)}
-                placeholder="Type your message..."
-              />
-              <button onClick={handleSubmit} disabled={!userMessage.trim()}>
-                Submit Message
-              </button>
-            </div>
-          )}
-          {submitted && (
-            <p className="user-message">You wrote: {userMessage}</p>
-          )}
         </div>
       )}
       {used.size === tones.length && (
