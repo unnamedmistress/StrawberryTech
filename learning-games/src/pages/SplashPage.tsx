@@ -29,9 +29,6 @@ export default function SplashPage() {
 
   return (
     <div className="splash-container">
-      <video autoPlay loop muted className="bg-video">
-        <source src="/welcome.mp4" type="video/mp4" />
-      </video>
       <div className="overlay">
         <h1>Welcome to StrawberryTech! 🍓</h1>
         <p>Play while you learn.</p>
