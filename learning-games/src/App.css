@@ -386,22 +386,6 @@
   font-weight: bold;
 }
 
-.message-input {
-  margin-top: 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.message-input textarea {
-  width: 100%;
-  min-height: 60px;
-}
-
-.user-message {
-  margin-top: 1rem;
-  font-style: italic;
-}
 
 
 .robot-icon {
