@@ -5,13 +5,10 @@ StrawberryTech is a collection of small web games built with **React**, **TypeSc
 ## Mini Games
 
 ### Match‑3 Puzzle
-Swap adjacent tiles to make rows or columns of three. Matches award points and may show leadership tips that vary by age group. Scores and badges are saved for later.
+Swap adjacent tiles to make rows or columns of three using a simple drag‑and‑drop mechanic. Matches award points and may show leadership tips that vary by age group. Scores and badges are saved for later.
 
 ### Quiz Game
 A short multiple‑choice quiz (implementation in progress) that will scale question difficulty according to the player's age.
-
-### Drag & Drop
-Fill in a short sentence by dragging an adjective into the blank. After choosing a word you can type your own message and see it displayed on the page.
 
 ## Age‑Adaptive Features
 - Players enter an age between **12–18** on first visit.
