@@ -400,6 +400,8 @@
 .chat-history {
   margin-bottom: 0.5rem;
   text-align: left;
+  max-height: 300px;
+  overflow-y: auto;
 }
 
 .chat-input {
