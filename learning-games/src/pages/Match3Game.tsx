@@ -1,5 +1,6 @@
 import { useContext, useState, useEffect } from 'react'
-import Card, { CardContent } from '../components/ui/card'
+import { motion } from 'framer-motion'
+import { useNavigate } from 'react-router-dom'
 import { UserContext } from '../context/UserContext'
 import { toast } from 'react-hot-toast'
 
@@ -7,16 +8,35 @@ import { toast } from 'react-hot-toast'
 export interface Tile {
   type: string
   color: string
+  emoji?: string
   id: number
 }
 
-export const colors = ['red', 'blue', 'green', 'yellow']
+export interface Flavor {
+  name: string
+  emoji: string
+  color: string
+}
+
+export const flavors: Flavor[] = [
+  { name: 'spicy', emoji: '🌶️', color: '#ff4500' },
+  { name: 'zesty', emoji: '🍋', color: '#ffd700' },
+  { name: 'calm', emoji: '🪴', color: '#3cb371' },
+  { name: 'fresh', emoji: '🍃', color: '#8fbc8f' },
+]
+
+export const colors = flavors.map((f) => f.name)
 let tileId = 0
 
 /** Create a random tile with a unique id */
 export function createTile(): Tile {
-  const type = colors[Math.floor(Math.random() * colors.length)]
-  return { type, color: type, id: tileId++ }
+  const flavor = flavors[Math.floor(Math.random() * flavors.length)]
+  return {
+    type: flavor.name,
+    color: flavor.color,
+    emoji: flavor.emoji,
+    id: tileId++,
+  }
 }
 
 /** Generate the initial 6x6 grid */
@@ -32,6 +52,7 @@ const tips = [
 export interface MatchResult {
   grid: (Tile | null)[]
   gained: number
+  matchedTypes: string[]
 }
 
 /**
@@ -44,6 +65,7 @@ export function checkMatches(
   create: () => Tile = createTile
 ): MatchResult {
   const matched = new Set<number>()
+  const matchedTypes = new Set<string>()
 
   // rows
   for (let r = 0; r < 6; r++) {
@@ -52,6 +74,7 @@ export function checkMatches(
       const t = current[idx]
       if (t && current[idx + 1]?.type === t.type && current[idx + 2]?.type === t.type) {
         matched.add(idx).add(idx + 1).add(idx + 2)
+        if (t) matchedTypes.add(t.type)
       }
     }
   }
@@ -63,11 +86,12 @@ export function checkMatches(
       const t = current[idx]
       if (t && current[idx + 6]?.type === t.type && current[idx + 12]?.type === t.type) {
         matched.add(idx).add(idx + 6).add(idx + 12)
+        if (t) matchedTypes.add(t.type)
       }
     }
   }
 
-  if (matched.size === 0) return { grid: current, gained: 0 }
+  if (matched.size === 0) return { grid: current, gained: 0, matchedTypes: [] }
 
   const working = [...current]
   matched.forEach((i) => (working[i] = null))
@@ -85,7 +109,7 @@ export function checkMatches(
   }
 
   const gained = matched.size * 10
-  return { grid: working, gained }
+  return { grid: working, gained, matchedTypes: Array.from(matchedTypes) }
 }
 
 /**
@@ -99,6 +123,12 @@ export default function Match3Game() {
   const [selected, setSelected] = useState<number | null>(null)
   const [score, setScore] = useState(0)
   const [moves, setMoves] = useState(20)
+  const [challenge] = useState<Flavor>(
+    () => flavors[Math.floor(Math.random() * flavors.length)]
+  )
+  const navigate = useNavigate()
+  const [showInstructions, setShowInstructions] = useState(true)
+  const [showEndModal, setShowEndModal] = useState(false)
 
   // Return tips list for the current age
   const ageTips = tips.find((t) =>
@@ -134,7 +164,12 @@ export default function Match3Game() {
   function applyMatches(current: (Tile | null)[]) {
     const result = checkMatches(current)
     if (result.gained === 0) return
-    setScore((s) => s + result.gained)
+    let gained = result.gained
+    if (result.matchedTypes.includes(challenge.name)) {
+      gained += 20
+      toast(`Tone tip! Matched the ${challenge.name} flavor!`)
+    }
+    setScore((s) => s + gained)
     setGrid(result.grid)
     if (ageTips && Math.random() < 0.3) {
       toast(ageTips[Math.floor(Math.random() * ageTips.length)])
@@ -151,6 +186,7 @@ export default function Match3Game() {
       addBadge('first-match3')
     }
     toast(`Game over! Final score: ${score}`)
+    setShowEndModal(true)
   }
 
   useEffect(() => {
@@ -160,22 +196,67 @@ export default function Match3Game() {
   }, [moves])
 
   return (
-    <div className="match3-container">
-      <h2>Match-3 Puzzle</h2>
-      <p>Moves Left: {moves}</p>
-      <div className="match3-grid">
-        {grid.map((tile, i) => (
-          <Card
-            key={tile?.id ?? i}
-            onClick={() => handleClick(i)}
-            className={`match3-tile ${selected === i ? 'selected' : ''}`}
-            style={{ background: tile?.color || 'transparent' }}
-          >
-            <CardContent>{tile ? '' : null}</CardContent>
-          </Card>
-        ))}
+    <div className="match3-wrapper">
+      <div className="match3-container">
+        <div className="daily-challenge-banner">
+          Daily Flavor Challenge: {challenge.emoji} {challenge.name}
+        </div>
+        <h2>Match-3 Puzzle</h2>
+        <p>Moves Left: {moves}</p>
+        <div className="match3-grid">
+          {grid.map((tile, i) => (
+            <motion.div
+              key={tile?.id ?? i}
+              onClick={() => handleClick(i)}
+              className={`match3-tile ${selected === i ? 'selected' : ''}`}
+              style={{ background: tile?.color || 'transparent' }}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              {tile?.emoji}
+            </motion.div>
+          ))}
+        </div>
+        <p>Score: {score}</p>
       </div>
-      <p>Score: {score}</p>
+      <aside className="match3-sidebar">
+        <h3>How to Play</h3>
+        <ul>
+          <li>Swap tiles to create lines of three matching emojis.</li>
+          <li>Match the daily flavor for a 20 point bonus.</li>
+          <li>Earn as many points as you can in 20 moves.</li>
+        </ul>
+      </aside>
+
+      {showInstructions && (
+        <div className="match3-modal-overlay">
+          <div className="match3-modal">
+            <h3>Welcome!</h3>
+            <p>
+              Swap adjacent tiles to match three or more. Focus on {challenge.emoji}{' '}
+              {challenge.name} for bonus points.
+            </p>
+            <button onClick={() => setShowInstructions(false)}>Start</button>
+          </div>
+        </div>
+      )}
+
+      {showEndModal && (
+        <div className="match3-modal-overlay">
+          <div className="match3-modal">
+            <h3>Game Over</h3>
+            <p>Your score: {score}</p>
+            <button
+              onClick={() => {
+                setShowEndModal(false)
+                navigate('/games/quiz')
+              }}
+            >
+              Next Game
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
