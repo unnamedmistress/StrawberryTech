@@ -21,10 +21,10 @@ export interface Flavor {
 }
 
 export const flavors: Flavor[] = [
-  { name: "urgent", emoji: "😠", color: "#ff4500" },
   { name: "friendly", emoji: "😀", color: "#ffd700" },
   { name: "professional", emoji: "😐", color: "#3cb371" },
   { name: "casual", emoji: "😎", color: "#8fbc8f" },
+  { name: "emotional", emoji: "😭", color: "#ff6347" },
 ];
 
 export const colors = flavors.map((f) => f.name);
@@ -46,10 +46,6 @@ export function createGrid(): (Tile | null)[] {
   return Array.from({ length: 36 }, () => createTile());
 }
 
-const tips = [
-  { range: [12, 14], tips: ["Great start! Keep learning leadership basics."] },
-  { range: [15, 18], tips: ["Remember: teamwork makes the dream work!"] },
-];
 
 const quotes = [
   "Prompting is like seasoning \u2013 a single word changes the flavor.",
@@ -57,11 +53,15 @@ const quotes = [
 ];
 
 const toneWords = [
-
-  { word: "urgent", flavor: "spicy" },
-  { word: "critical", flavor: "spicy" },
-  { word: "friendly", flavor: "zesty" },
-  { word: "cheerful", flavor: "zesty" },
+  { word: "emotional", flavor: "emotional" },
+  { word: "passionate", flavor: "emotional" },
+  emotional: "dramatic",
+const wordOutputs: Record<string, string> = {
+  cheerful: "Hey Mom! I'll be home late today \u{1F60A}",
+  polite: "Mother, please note I'll be home later than usual today.",
+  relaxed: "Hey Mom, I'm going to be a bit late. See you soon!",
+  emotional: "Mom! I'm so sorry, but I'll be home late today 😭",
+  passionate: "Mom! I'm really sorry—I promise I'll hurry home!",
   { word: "professional", flavor: "calm" },
   { word: "polite", flavor: "calm" },
   { word: "casual", flavor: "fresh" },
@@ -139,21 +139,17 @@ export function checkMatches(
     }
   }
 
-  if (matched.size === 0) return { grid: current, gained: 0, matchedTypes: [] };
+  const [activeWord, setActiveWord] = useState<string | null>(null);
 
-  const working = [...current];
-  matched.forEach((i) => (working[i] = null));
+      setActiveWord(word);
+      setAiSentence(wordOutputs[word]);
 
-  for (let c = 0; c < 6; c++) {
-    for (let r = 5; r >= 0; r--) {
-      const idx = r * 6 + c;
-      if (working[idx] === null) {
-        for (let k = r; k > 0; k--) {
-          working[k * 6 + c] = working[(k - 1) * 6 + c];
-        }
-        working[c] = create();
-      }
-    }
+      {activeWord && (
+          {aiSentence && (
+            <p>
+              Using "{activeWord}": {aiSentence}
+            </p>
+          )}
   }
 
   const gained = matched.size * 10;
