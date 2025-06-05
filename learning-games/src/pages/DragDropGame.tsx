@@ -6,7 +6,6 @@ const tones = [
   'Casual',
   'Emotional',
   'Angry',
-  'Urgent',
   'Compelling',
   'Persuasive',
 ] as const
@@ -22,8 +21,6 @@ const examples: Record<Tone, string> = {
     "I hate to do this but I really can't make it tonight. I'm disappointed and hope you understand.",
   Angry:
     "Look, I'm cancelling. Too much going on and I'm frustrated.",
-  Urgent:
-    "I'm so sorry but I have to cancel right away because of an emergency.",
   Compelling:
     "I have to cancel because I got an important commitment I can't miss. Thanks for understanding!",
   Persuasive:
@@ -34,6 +31,8 @@ export default function DragDropGame() {
   const [selected, setSelected] = useState<Tone | null>(null)
   const [used, setUsed] = useState<Set<Tone>>(new Set())
   const [quizAnswer, setQuizAnswer] = useState<Tone | null>(null)
+  const [userMessage, setUserMessage] = useState('')
+  const [submitted, setSubmitted] = useState(false)
 
   function handleDragStart(e: React.DragEvent<HTMLDivElement>, tone: Tone) {
     e.dataTransfer.setData('text/plain', tone)
@@ -45,11 +44,19 @@ export default function DragDropGame() {
     if (tones.includes(tone)) {
       setSelected(tone)
       setUsed(new Set(used).add(tone))
+      setUserMessage('')
+      setSubmitted(false)
     }
   }
 
   function handleDragOver(e: React.DragEvent<HTMLSpanElement>) {
     e.preventDefault()
+  }
+
+  function handleSubmit() {
+    if (userMessage.trim()) {
+      setSubmitted(true)
+    }
   }
 
   return (
@@ -82,6 +89,21 @@ export default function DragDropGame() {
         <div className="response">
           <h3>AI Response</h3>
           <p>{examples[selected]}</p>
+          {!submitted && (
+            <div className="message-input">
+              <textarea
+                value={userMessage}
+                onChange={(e) => setUserMessage(e.target.value)}
+                placeholder="Type your message..."
+              />
+              <button onClick={handleSubmit} disabled={!userMessage.trim()}>
+                Submit Message
+              </button>
+            </div>
+          )}
+          {submitted && (
+            <p className="user-message">You wrote: {userMessage}</p>
+          )}
         </div>
       )}
       {used.size === tones.length && (
