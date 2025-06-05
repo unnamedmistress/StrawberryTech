@@ -46,10 +46,6 @@ export default function Home() {
           <span className="game-icon">❓</span>
           <span>Quiz Game</span>
         </Link>
-        <Link className="game-card" to="/games/dragdrop">
-          <span className="game-icon">🎯</span>
-          <span>Drag & Drop Game</span>
-        </Link>
       </div>
 
       {/* navigation */}
