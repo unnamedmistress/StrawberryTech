@@ -1,6 +1,7 @@
 import { useContext, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { UserContext } from '../context/UserContext'
+import './Home.css'
 
 /**
  * Home page listing available games.
