@@ -16,6 +16,8 @@ export const UserContext = createContext<UserContextType>({
   setUser: () => {},
   setAge: () => {},
   setName: () => {},
+  addPoints: () => {},
+  addBadge: () => {},
 })
 
 export function UserProvider({ children }: { children: ReactNode }) {
@@ -30,8 +32,26 @@ export function UserProvider({ children }: { children: ReactNode }) {
     setUser((prev) => ({ ...prev, name }))
   }
 
+  // Increase the score for a specific game by the given amount
+  const addPoints = (game: string, points: number) => {
+    setUser((prev) => ({
+      ...prev,
+      scores: { ...prev.scores, [game]: (prev.scores[game] ?? 0) + points },
+    }))
+  }
+
+  // Award a badge for achievements or milestones
+  const addBadge = (badge: string) => {
+    setUser((prev) => ({
+      ...prev,
+      badges: [...prev.badges, badge],
+    }))
+  }
+
   return (
-    <UserContext.Provider value={{ user, setUser, setAge, setName }}>
+    <UserContext.Provider
+      value={{ user, setUser, setAge, setName, addPoints, addBadge }}
+    >
       {children}
     </UserContext.Provider>
   )
