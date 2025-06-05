@@ -18,12 +18,28 @@ export default function Home() {
     }
   }, [user.age, navigate])
 
+  // Apply reveal animation when elements scroll into view
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible')
+          }
+        })
+      },
+      { threshold: 0.1 }
+    )
+    document.querySelectorAll('.reveal').forEach((el) => observer.observe(el))
+    return () => observer.disconnect()
+  }, [])
+
   const totalPoints = Object.values(user.scores).reduce((a, b) => a + b, 0)
 
   return (
     <div className="home">
       {/* hero section */}
-      <section className="hero">
+      <section className="hero reveal">
         <h1>Fun Learning Awaits!</h1>
         <p className="tagline">Play engaging games and sharpen your skills.</p>
         <button onClick={() => navigate('/games/match3')}>Play Now</button>
@@ -31,13 +47,13 @@ export default function Home() {
 
       {/* greeting */}
       {user.age && (
-        <h2>
+        <h2 className="reveal">
           Welcome{user.name ? `, ${user.name}` : ''}! Age group: {user.age}
         </h2>
       )}
 
       {/* game list */}
-      <div className="game-grid">
+      <div className="game-grid reveal">
         <Link className="game-card" to="/games/match3">
           <span className="game-icon">🧩</span>
           <span>Match-3 Puzzle</span>
@@ -49,13 +65,13 @@ export default function Home() {
       </div>
 
       {/* navigation */}
-      <p>
+      <p className="reveal">
         <Link to="/leaderboard">View Leaderboard</Link>
       </p>
 
       {/* progress summary */}
       {totalPoints > 0 && (
-        <div className="progress-summary">
+        <div className="progress-summary reveal">
           <p>Total Points: {totalPoints}</p>
           <p>Badges Earned: {user.badges.length}</p>
         </div>
