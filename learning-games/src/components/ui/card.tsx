@@ -4,9 +4,15 @@ export interface CardProps {
   children: React.ReactNode;
   className?: string;
   onClick?: () => void;
+  style?: React.CSSProperties;
 }
 
-const Card: React.FC<CardProps> = ({ children, className = '', onClick }) => {
+const Card: React.FC<CardProps> = ({
+  children,
+  className = '',
+  onClick,
+  style,
+}) => {
   return (
     <div
       className={`card ${className}`}
@@ -17,6 +23,7 @@ const Card: React.FC<CardProps> = ({ children, className = '', onClick }) => {
         borderRadius: '8px',
         background: '#fff',
         boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
+        ...style,
       }}
     >
       {children}
