@@ -1,10 +1,9 @@
 import { useContext, useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { toast } from 'react-hot-toast'
 
 import { useNavigate } from "react-router-dom";
 
 import { UserContext } from "../context/UserContext";
-import { BADGES } from "../data/badges";
 import RobotChat from "../components/RobotChat";
 
 /** Tile element used in the grid */
@@ -269,8 +268,6 @@ export default function Match3Game() {
     () =>
       tips[Math.floor(Math.random() * tips.length)],
   )
-  const [newBadges, setNewBadges] = useState<string[]>([]);
-  const [showEndModal, setShowEndModal] = useState(false);
 
   function handleComplete() {
     const earned: string[] = [];
@@ -282,8 +279,11 @@ export default function Match3Game() {
       addBadge("tone-whiz");
       earned.push("tone-whiz");
     }
-    setNewBadges(earned);
-    setShowEndModal(true);
+    const msg = earned.length
+      ? `Great job! Earned ${earned.length} badge${earned.length > 1 ? 's' : ''}.`
+      : 'Great job!';
+    toast.success(`${msg} Moving on to the quiz.`);
+    navigate("/games/quiz");
   }
 
   return (
@@ -298,48 +298,6 @@ export default function Match3Game() {
         <p className="sidebar-tip">{sidebarTip}</p>
       </aside>
 
-      {showEndModal && (
-        <div className="match3-modal-overlay">
-          <div className="match3-modal">
-            <h3>Great job!</h3>
-            <p>You matched all the words.</p>
-            <p>You've earned the Tone Tactician badge!</p>
-            <div className="flashcard">
-              <strong>Why Tone Matters</strong>
-              <p>Changing one adjective = a whole new vibe. Tone tells the AI how to speak, not just what to say.</p>
-            </div>
-            {newBadges.length > 0 && (
-              <div className="badge-rewards">
-                {newBadges.map((id) => {
-                  const badge = BADGES.find((b) => b.id === id);
-                  return (
-                    <motion.div
-                      key={id}
-                      className="badge-icon"
-                      initial={{ scale: 0, rotate: 0 }}
-                      animate={{ scale: 1, rotate: 360 }}
-                      transition={{ type: "spring", stiffness: 260 }}
-                    >
-                      <span role="img" aria-label="badge">
-                        🏅
-                      </span>
-                      <div>{badge?.name ?? id}</div>
-                    </motion.div>
-                  );
-                })}
-              </div>
-            )}
-            <button
-              onClick={() => {
-                setShowEndModal(false);
-                navigate("/games/quiz");
-              }}
-            >
-              Next Game
-            </button>
-          </div>
-        </div>
-      )}
       <RobotChat />
     </div>
   );
