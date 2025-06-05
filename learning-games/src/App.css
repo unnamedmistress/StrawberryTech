@@ -299,3 +299,67 @@
   font-size: 1.5rem;
 }
 
+.drop-area {
+  display: inline-block;
+  min-width: 80px;
+  margin: 0 4px;
+  padding: 0.25rem 0.5rem;
+  border: 2px dashed var(--color-purple);
+  border-radius: 4px;
+  text-align: center;
+}
+
+.word-bank {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.word {
+  padding: 0.4rem 0.6rem;
+  background: var(--color-orange);
+  color: #fff;
+  border-radius: 6px;
+  cursor: grab;
+  user-select: none;
+}
+
+.response {
+  margin-top: 1rem;
+  background: #f3f3f3;
+  color: #000;
+  padding: 1rem;
+  border-radius: 6px;
+}
+
+.quiz {
+  margin-top: 2rem;
+}
+
+.options button {
+  margin: 0.25rem;
+}
+
+.feedback {
+  margin-top: 1rem;
+  font-weight: bold;
+}
+
+.message-input {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.message-input textarea {
+  width: 100%;
+  min-height: 60px;
+}
+
+.user-message {
+  margin-top: 1rem;
+  font-style: italic;
+}
+
