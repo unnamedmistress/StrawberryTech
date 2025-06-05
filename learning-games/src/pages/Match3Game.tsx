@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react'
+import { useContext, useState, useEffect } from 'react'
 import Card, { CardContent } from '../components/ui/card'
 import { UserContext } from '../context/UserContext'
 import { toast } from 'react-hot-toast'
@@ -144,9 +144,11 @@ export default function Match3Game() {
     toast(`Game over! Final score: ${score}`)
   }
 
-  if (moves === 0) {
-    endGame()
-  }
+  useEffect(() => {
+    if (moves === 0) {
+      endGame()
+    }
+  }, [moves])
 
   return (
     <div className="match3-container">
