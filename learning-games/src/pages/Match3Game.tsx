@@ -21,10 +21,12 @@ export interface Flavor {
 }
 
 export const flavors: Flavor[] = [
+
+  { name: "urgent", emoji: "😠", color: "#ff4500" },
   { name: "friendly", emoji: "😀", color: "#ffd700" },
   { name: "professional", emoji: "😐", color: "#3cb371" },
   { name: "casual", emoji: "😎", color: "#8fbc8f" },
-  { name: "emotional", emoji: "😭", color: "#ff6347" },
+
 ];
 
 export const colors = flavors.map((f) => f.name);
@@ -53,32 +55,32 @@ const quotes = [
 ];
 
 const toneWords = [
-  { word: "friendly", flavor: "friendly" },
-  { word: "cheerful", flavor: "friendly" },
-  { word: "professional", flavor: "professional" },
-  { word: "polite", flavor: "professional" },
-  { word: "casual", flavor: "casual" },
-  { word: "relaxed", flavor: "casual" },
-  { word: "emotional", flavor: "emotional" },
-  { word: "passionate", flavor: "emotional" },
+
+
+  { word: "urgent", flavor: "spicy" },
+  { word: "critical", flavor: "spicy" },
+  { word: "friendly", flavor: "zesty" },
+  { word: "cheerful", flavor: "zesty" },
+  { word: "professional", flavor: "calm" },
+  { word: "polite", flavor: "calm" },
+  { word: "casual", flavor: "fresh" },
+  { word: "relaxed", flavor: "fresh" },
 ];
 
 const flavorAdjective: Record<string, string> = {
-  friendly: "upbeat",
-  professional: "formal",
-  casual: "chill",
-  emotional: "dramatic",
+  spicy: "intense",
+  zesty: "upbeat",
+  calm: "gentle",
+  fresh: "casual",
 };
 
-const wordOutputs: Record<string, string> = {
-  friendly: "Hey Mom! I'll be home late today \u{1F60A}",
-  cheerful: "Hey Mom! I'll be home late today \u{1F60A}",
-  professional: "Mother, please note I'll be home later than usual today.",
-  polite: "Mother, please note I'll be home later than usual today.",
-  casual: "Hey Mom, running late, I'll be home later.",
-  relaxed: "Hey Mom, I'm going to be a bit late. See you soon!",
-  emotional: "Mom! I'm so sorry, but I'll be home late today 😭",
-  passionate: "Mom! I'm really sorry—I promise I'll hurry home!",
+const toneExamples: Record<string, string> = {
+  spicy: "Please handle this right away.",
+  zesty: "You've got this! Let's make it fun today \u{1F389}",
+  calm: "Thank you for your patience while we sort this out.",
+  fresh: "No rush\u2014whenever you're ready works for me.",
+
+
 };
 
 export interface MatchResult {
@@ -161,7 +163,12 @@ export function checkMatches(
 function ToneMatchGame({ onComplete }: { onComplete: () => void }) {
   const [completed, setCompleted] = useState<string[]>([]);
   const [feedback, setFeedback] = useState<string | null>(null);
-  const [activeWord, setActiveWord] = useState<string | null>(null);
+
+  const [activeFlavor, setActiveFlavor] = useState<string | null>(null);
+
+  const [sentenceInput, setSentenceInput] = useState("");
+
+
   const [aiSentence, setAiSentence] = useState<string | null>(null);
 
   function handleDrop(flavor: string, word: string) {
@@ -169,8 +176,10 @@ function ToneMatchGame({ onComplete }: { onComplete: () => void }) {
     const correct = expected === flavor;
     if (correct) {
       setFeedback(`Nice! "${word}" matches ${flavor}.`);
-      setActiveWord(word);
-      setAiSentence(wordOutputs[word]);
+
+      setActiveFlavor(flavor);
+      setAiSentence(null);
+
       if (!completed.includes(word)) {
         setCompleted((c) => [...c, word]);
       }
@@ -184,6 +193,16 @@ function ToneMatchGame({ onComplete }: { onComplete: () => void }) {
     } else {
       setFeedback("Try again!");
     }
+  }
+
+
+  function buildSentence() {
+    if (!activeFlavor) return;
+
+    const example = toneExamples[activeFlavor];
+    const base = sentenceInput.trim() || example;
+    setAiSentence(base);
+
   }
 
 
@@ -233,14 +252,22 @@ function ToneMatchGame({ onComplete }: { onComplete: () => void }) {
         </div>
       </div>
       {feedback && <p>{feedback}</p>}
-      {activeWord && (
+
+      {activeFlavor && (
         <div className="sentence-builder">
-          <p>Base: "Mom, I'll be home late today"</p>
-          {aiSentence && (
-            <p>
-              Using "{activeWord}": {aiSentence}
-            </p>
-          )}
+
+          <input
+            type="text"
+            value={sentenceInput}
+            placeholder="Type a short sentence"
+            onChange={(e) => setSentenceInput(e.target.value)}
+          />
+
+          <button onClick={buildSentence}>
+            What would the AI say in a {activeFlavor} tone?
+          </button>
+          {aiSentence && <p>AI says: {aiSentence}</p>}
+
         </div>
       )}
     </div>
