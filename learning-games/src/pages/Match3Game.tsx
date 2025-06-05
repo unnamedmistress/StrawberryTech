@@ -21,10 +21,12 @@ export interface Flavor {
 }
 
 export const flavors: Flavor[] = [
+
   { name: "urgent", emoji: "😠", color: "#ff4500" },
   { name: "friendly", emoji: "😀", color: "#ffd700" },
   { name: "professional", emoji: "😐", color: "#3cb371" },
   { name: "casual", emoji: "😎", color: "#8fbc8f" },
+
 ];
 
 export const colors = flavors.map((f) => f.name);
@@ -46,10 +48,6 @@ export function createGrid(): (Tile | null)[] {
   return Array.from({ length: 36 }, () => createTile());
 }
 
-const tips = [
-  { range: [12, 14], tips: ["Great start! Keep learning leadership basics."] },
-  { range: [15, 18], tips: ["Remember: teamwork makes the dream work!"] },
-];
 
 const quotes = [
   "Prompting is like seasoning \u2013 a single word changes the flavor.",
@@ -57,6 +55,7 @@ const quotes = [
 ];
 
 const toneWords = [
+
 
   { word: "urgent", flavor: "spicy" },
   { word: "critical", flavor: "spicy" },
@@ -80,6 +79,7 @@ const toneExamples: Record<string, string> = {
   zesty: "You've got this! Let's make it fun today \u{1F389}",
   calm: "Thank you for your patience while we sort this out.",
   fresh: "No rush\u2014whenever you're ready works for me.",
+
 
 };
 
@@ -163,9 +163,11 @@ export function checkMatches(
 function ToneMatchGame({ onComplete }: { onComplete: () => void }) {
   const [completed, setCompleted] = useState<string[]>([]);
   const [feedback, setFeedback] = useState<string | null>(null);
+
   const [activeFlavor, setActiveFlavor] = useState<string | null>(null);
 
   const [sentenceInput, setSentenceInput] = useState("");
+
 
   const [aiSentence, setAiSentence] = useState<string | null>(null);
 
@@ -174,8 +176,10 @@ function ToneMatchGame({ onComplete }: { onComplete: () => void }) {
     const correct = expected === flavor;
     if (correct) {
       setFeedback(`Nice! "${word}" matches ${flavor}.`);
+
       setActiveFlavor(flavor);
       setAiSentence(null);
+
       if (!completed.includes(word)) {
         setCompleted((c) => [...c, word]);
       }
@@ -191,6 +195,7 @@ function ToneMatchGame({ onComplete }: { onComplete: () => void }) {
     }
   }
 
+
   function buildSentence() {
     if (!activeFlavor) return;
 
@@ -199,6 +204,7 @@ function ToneMatchGame({ onComplete }: { onComplete: () => void }) {
     setAiSentence(base);
 
   }
+
 
   useEffect(() => {
     if (completed.length === toneWords.length) {
@@ -246,6 +252,7 @@ function ToneMatchGame({ onComplete }: { onComplete: () => void }) {
         </div>
       </div>
       {feedback && <p>{feedback}</p>}
+
       {activeFlavor && (
         <div className="sentence-builder">
 
@@ -260,6 +267,7 @@ function ToneMatchGame({ onComplete }: { onComplete: () => void }) {
             What would the AI say in a {activeFlavor} tone?
           </button>
           {aiSentence && <p>AI says: {aiSentence}</p>}
+
         </div>
       )}
     </div>
