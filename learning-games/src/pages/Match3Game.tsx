@@ -10,17 +10,17 @@ export interface Tile {
   id: number
 }
 
-const colors = ['red', 'blue', 'green', 'yellow']
+export const colors = ['red', 'blue', 'green', 'yellow']
 let tileId = 0
 
 /** Create a random tile with a unique id */
-function createTile(): Tile {
+export function createTile(): Tile {
   const type = colors[Math.floor(Math.random() * colors.length)]
   return { type, color: type, id: tileId++ }
 }
 
 /** Generate the initial 6x6 grid */
-function createGrid(): (Tile | null)[] {
+export function createGrid(): (Tile | null)[] {
   return Array.from({ length: 36 }, () => createTile())
 }
 
@@ -28,6 +28,65 @@ const tips = [
   { range: [12, 14], tips: ['Great start! Keep learning leadership basics.'] },
   { range: [15, 18], tips: ['Remember: teamwork makes the dream work!'] },
 ]
+
+export interface MatchResult {
+  grid: (Tile | null)[]
+  gained: number
+}
+
+/**
+ * Check for matches in a grid and return the updated grid along with the
+ * amount of score gained. The provided `create` function is used to generate
+ * new tiles when dropping occurs so tests can supply deterministic tiles.
+ */
+export function checkMatches(
+  current: (Tile | null)[],
+  create: () => Tile = createTile
+): MatchResult {
+  const matched = new Set<number>()
+
+  // rows
+  for (let r = 0; r < 6; r++) {
+    for (let c = 0; c < 4; c++) {
+      const idx = r * 6 + c
+      const t = current[idx]
+      if (t && current[idx + 1]?.type === t.type && current[idx + 2]?.type === t.type) {
+        matched.add(idx).add(idx + 1).add(idx + 2)
+      }
+    }
+  }
+
+  // columns
+  for (let c = 0; c < 6; c++) {
+    for (let r = 0; r < 4; r++) {
+      const idx = r * 6 + c
+      const t = current[idx]
+      if (t && current[idx + 6]?.type === t.type && current[idx + 12]?.type === t.type) {
+        matched.add(idx).add(idx + 6).add(idx + 12)
+      }
+    }
+  }
+
+  if (matched.size === 0) return { grid: current, gained: 0 }
+
+  const working = [...current]
+  matched.forEach((i) => (working[i] = null))
+
+  for (let c = 0; c < 6; c++) {
+    for (let r = 5; r >= 0; r--) {
+      const idx = r * 6 + c
+      if (working[idx] === null) {
+        for (let k = r; k > 0; k--) {
+          working[k * 6 + c] = working[(k - 1) * 6 + c]
+        }
+        working[c] = create()
+      }
+    }
+  }
+
+  const gained = matched.size * 10
+  return { grid: working, gained }
+}
 
 /**
  * Simple match-3 puzzle. Players swap adjacent tiles to make rows or columns
@@ -64,7 +123,7 @@ export default function Match3Game() {
     setGrid(newGrid)
     setSelected(null)
     setMoves((m) => m - 1)
-    checkMatches(newGrid)
+    applyMatches(newGrid)
   }
 
   /**
@@ -72,61 +131,11 @@ export default function Match3Game() {
    * Tiles that are cleared are replaced by the tile above them; new tiles fill
    * the top row.
    */
-  function checkMatches(current: (Tile | null)[]) {
-    const matched = new Set<number>()
-
-    // rows
-    for (let r = 0; r < 6; r++) {
-      for (let c = 0; c < 4; c++) {
-        const idx = r * 6 + c
-        const t = current[idx]
-        if (
-          t &&
-          current[idx + 1]?.type === t.type &&
-          current[idx + 2]?.type === t.type
-        ) {
-          matched.add(idx).add(idx + 1).add(idx + 2)
-        }
-      }
-    }
-
-    // columns
-    for (let c = 0; c < 6; c++) {
-      for (let r = 0; r < 4; r++) {
-        const idx = r * 6 + c
-        const t = current[idx]
-        if (
-          t &&
-          current[idx + 6]?.type === t.type &&
-          current[idx + 12]?.type === t.type
-        ) {
-          matched.add(idx).add(idx + 6).add(idx + 12)
-        }
-      }
-    }
-
-    if (matched.size === 0) return
-
-    // clear matched tiles
-    const working = [...current]
-    matched.forEach((i) => (working[i] = null))
-
-    // drop tiles
-    for (let c = 0; c < 6; c++) {
-      for (let r = 5; r >= 0; r--) {
-        const idx = r * 6 + c
-        if (working[idx] === null) {
-          for (let k = r; k > 0; k--) {
-            working[k * 6 + c] = working[(k - 1) * 6 + c]
-          }
-          working[c] = createTile()
-        }
-      }
-    }
-
-    const gained = matched.size * 10
-    setScore((s) => s + gained)
-    setGrid(working)
+  function applyMatches(current: (Tile | null)[]) {
+    const result = checkMatches(current)
+    if (result.gained === 0) return
+    setScore((s) => s + result.gained)
+    setGrid(result.grid)
     if (ageTips && Math.random() < 0.3) {
       toast(ageTips[Math.floor(Math.random() * ageTips.length)])
     }
