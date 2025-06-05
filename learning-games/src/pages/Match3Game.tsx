@@ -64,6 +64,7 @@ const toneWords = [
   { word: 'crisp', flavor: 'fresh' },
 ]
 
+
 export interface MatchResult {
   grid: (Tile | null)[]
   gained: number
@@ -214,7 +215,9 @@ export default function Match3Game() {
     () => quotes[Math.floor(Math.random() * quotes.length)]
   )
   const [newBadges, setNewBadges] = useState<string[]>([])
+
   const [showDragGame, setShowDragGame] = useState(false)
+
 
   const navigate = useNavigate()
   const [showInstructions, setShowInstructions] = useState(true)
@@ -325,6 +328,7 @@ export default function Match3Game() {
         </ul>
         <blockquote className="sidebar-quote">{sidebarQuote}</blockquote>
         <button onClick={() => setShowDragGame(true)}>Tone Drag Challenge</button>
+
       </aside>
 
       {showInstructions && (
