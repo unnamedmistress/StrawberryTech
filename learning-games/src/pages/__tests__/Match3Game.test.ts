@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { createTile, createGrid, checkMatches, colors, Tile } from '../Match3Game'
+import { createTile, createGrid, checkMatches, colors, type Tile } from '../Match3Game'
 
 function stubTileFactory() {
   let id = 1000
@@ -42,7 +42,7 @@ describe('checkMatches', () => {
 
   it('clears matched tiles and reports gained score', () => {
     const grid = patternGrid()
-    grid[6] = { type: 'red', color: 'red', id: 999 }
+    grid[6] = { type: colors[0], color: colors[0], id: 999 }
     const result = checkMatches(grid, stubTileFactory())
     expect(result.gained).toBe(30)
     expect(result.grid.length).toBe(36)
@@ -50,8 +50,8 @@ describe('checkMatches', () => {
 
   it('awards points for multiple matches', () => {
     const grid = patternGrid()
-    grid[6] = { type: 'red', color: 'red', id: 999 }
-    grid[7] = { type: 'blue', color: 'blue', id: 1000 }
+    grid[6] = { type: colors[0], color: colors[0], id: 999 }
+    grid[7] = { type: colors[1], color: colors[1], id: 1000 }
     const result = checkMatches(grid, stubTileFactory())
     expect(result.gained).toBe(60)
     expect(result.grid.length).toBe(36)
