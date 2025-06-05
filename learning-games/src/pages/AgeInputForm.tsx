@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from 'react'
 import type { FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { UserContext } from '../context/UserContext'
+import './AgeInputForm.css'
 
 /**
  * Form for collecting the user's age. Age is stored in context
@@ -29,21 +30,23 @@ export default function AgeInputForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label htmlFor="age">Enter your age:</label>
-      <input
-        id="age"
-        type="number"
-        min={12}
-        max={18}
-        value={age}
-        onChange={(e) => {
-          const { value } = e.target
-          setAgeState(value === '' ? '' : Number(value))
-        }}
-        required
-      />
-      <button type="submit">Save Age</button>
-    </form>
+    <div className="age-form">
+      <form onSubmit={handleSubmit}>
+        <label htmlFor="age">Enter your age:</label>
+        <input
+          id="age"
+          type="number"
+          min={12}
+          max={18}
+          value={age}
+          onChange={(e) => {
+            const { value } = e.target
+            setAgeState(value === '' ? '' : Number(value))
+          }}
+          required
+        />
+        <button type="submit">Save Age</button>
+      </form>
+    </div>
   )
 }
