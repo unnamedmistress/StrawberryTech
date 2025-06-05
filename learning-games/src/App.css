@@ -80,6 +80,7 @@
   width: 100%;
   display: grid;
   grid-template-columns: minmax(0, 1fr) 240px;
+
   gap: 1rem;
   justify-content: center;
   align-items: start;
@@ -152,9 +153,11 @@
   .match3-container {
     max-width: none;
   }
+
   .match3-sidebar {
     margin-top: 1rem;
   }
+
 }
 
 /* layout */
