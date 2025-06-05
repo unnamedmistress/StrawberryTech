@@ -21,4 +21,9 @@ export const BADGES: BadgeDefinition[] = [
     name: 'Quiz Whiz',
     description: 'Get a perfect score on any quiz',
   },
+  {
+    id: 'tone-whiz',
+    name: 'Tone Tactician',
+    description: 'Matched every tone correctly in the mini-game',
+  },
 ]

@@ -54,6 +54,11 @@ const quotes = [
   "Swap words wisely and watch your message sparkle!",
 ];
 
+const tips = [
+  "Tip: Swap one adjective to completely change the vibe.",
+  "Use synonyms to experiment with different tones!",
+];
+
 const toneWords = [
 
 
@@ -280,11 +285,15 @@ function ToneMatchGame({ onComplete }: { onComplete: () => void }) {
  * show an age-based leadership tip.
  */
 export default function Match3Game() {
-  const { user, addBadge } = useContext(UserContext);
-  const navigate = useNavigate();
+  const { user, addBadge } = useContext(UserContext)
+  const navigate = useNavigate()
   const [sidebarQuote] = useState(
     () => quotes[Math.floor(Math.random() * quotes.length)],
-  );
+  )
+  const [sidebarTip] = useState(
+    () =>
+      tips[Math.floor(Math.random() * tips.length)],
+  )
   const [newBadges, setNewBadges] = useState<string[]>([]);
   const [showEndModal, setShowEndModal] = useState(false);
 
@@ -293,6 +302,10 @@ export default function Match3Game() {
     if (!user.badges.includes("first-match3")) {
       addBadge("first-match3");
       earned.push("first-match3");
+    }
+    if (!user.badges.includes("tone-whiz")) {
+      addBadge("tone-whiz");
+      earned.push("tone-whiz");
     }
     setNewBadges(earned);
     setShowEndModal(true);
@@ -307,6 +320,7 @@ export default function Match3Game() {
         <h3>Why Tone Matters</h3>
         <p>Drag the adjectives to the face that best matches their vibe.</p>
         <blockquote className="sidebar-quote">{sidebarQuote}</blockquote>
+        <p className="sidebar-tip">{sidebarTip}</p>
       </aside>
 
       {showEndModal && (
@@ -314,6 +328,7 @@ export default function Match3Game() {
           <div className="match3-modal">
             <h3>Great job!</h3>
             <p>You matched all the words.</p>
+            <p>You've earned the Tone Tactician badge!</p>
             <div className="flashcard">
               <strong>Why Tone Matters</strong>
               <p>Changing one adjective = a whole new vibe. Tone tells the AI how to speak, not just what to say.</p>
@@ -326,8 +341,8 @@ export default function Match3Game() {
                     <motion.div
                       key={id}
                       className="badge-icon"
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
+                      initial={{ scale: 0, rotate: 0 }}
+                      animate={{ scale: 1, rotate: 360 }}
                       transition={{ type: "spring", stiffness: 260 }}
                     >
                       <span role="img" aria-label="badge">
