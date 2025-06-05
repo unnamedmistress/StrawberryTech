@@ -47,4 +47,13 @@ describe('checkMatches', () => {
     expect(result.gained).toBe(30)
     expect(result.grid.length).toBe(36)
   })
+
+  it('awards points for multiple matches', () => {
+    const grid = patternGrid()
+    grid[6] = { type: 'red', color: 'red', id: 999 }
+    grid[7] = { type: 'blue', color: 'blue', id: 1000 }
+    const result = checkMatches(grid, stubTileFactory())
+    expect(result.gained).toBe(60)
+    expect(result.grid.length).toBe(36)
+  })
 })
