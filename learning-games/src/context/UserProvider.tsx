@@ -1,28 +1,12 @@
-import { createContext, useState, useCallback, useEffect } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import type { ReactNode } from 'react'
-import type { UserData, UserContextType } from '../types/user'
+import type { UserData } from '../types/user'
+import { UserContext, defaultUser } from './UserContext'
 
 // All progress is stored under this key in localStorage so it persists across
 // sessions. Whenever the user object changes we throttle a save to this key.
 const STORAGE_KEY = 'strawberrytech_user'
 
-const defaultUser: UserData = {
-  name: null,
-  age: null,
-  scores: {},
-  badges: [],
-}
-
-// UserContext stores the entire profile including age. The age value lets
-// games adjust difficulty and content for the appropriate age group.
-export const UserContext = createContext<UserContextType>({
-  user: defaultUser,
-  setUser: () => {},
-  setAge: () => {},
-  setName: () => {},
-  setScore: () => {},
-  addBadge: () => {},
-})
 
 export function UserProvider({ children }: { children: ReactNode }) {
   // Load any saved user progress from localStorage on first render
