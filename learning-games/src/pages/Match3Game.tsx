@@ -57,11 +57,29 @@ const quotes = [
 ];
 
 const toneWords = [
-  { word: "fiery", flavor: "spicy" },
-  { word: "zippy", flavor: "zesty" },
-  { word: "soothing", flavor: "calm" },
-  { word: "crisp", flavor: "fresh" },
+  { word: "urgent", flavor: "spicy" },
+  { word: "critical", flavor: "spicy" },
+  { word: "friendly", flavor: "zesty" },
+  { word: "cheerful", flavor: "zesty" },
+  { word: "professional", flavor: "calm" },
+  { word: "polite", flavor: "calm" },
+  { word: "casual", flavor: "fresh" },
+  { word: "relaxed", flavor: "fresh" },
 ];
+
+const flavorAdjective: Record<string, string> = {
+  spicy: "intense",
+  zesty: "upbeat",
+  calm: "gentle",
+  fresh: "casual",
+};
+
+const toneExamples: Record<string, string> = {
+  spicy: "Please handle this right away.",
+  zesty: "You've got this! Let's make it fun today \u{1F389}",
+  calm: "Thank you for your patience while we sort this out.",
+  fresh: "No rush\u2014whenever you're ready works for me.",
+};
 
 export interface MatchResult {
   grid: (Tile | null)[];
@@ -143,13 +161,37 @@ export function checkMatches(
 function ToneMatchGame({ onComplete }: { onComplete: () => void }) {
   const [completed, setCompleted] = useState<string[]>([]);
   const [feedback, setFeedback] = useState<string | null>(null);
+  const [activeFlavor, setActiveFlavor] = useState<string | null>(null);
+  const [sentenceInput, setSentenceInput] = useState("");
+  const [aiSentence, setAiSentence] = useState<string | null>(null);
 
   function handleDrop(flavor: string, word: string) {
-    const correct = toneWords.find((t) => t.word === word)?.flavor === flavor;
-    setFeedback(correct ? `Nice! ${word} is ${flavor}.` : `Try again!`);
-    if (correct && !completed.includes(word)) {
-      setCompleted((c) => [...c, word]);
+    const expected = toneWords.find((t) => t.word === word)?.flavor;
+    const correct = expected === flavor;
+    if (correct) {
+      setFeedback(`Nice! "${word}" matches ${flavor}.`);
+      setActiveFlavor(flavor);
+      setAiSentence(null);
+      if (!completed.includes(word)) {
+        setCompleted((c) => [...c, word]);
+      }
+    } else if (expected) {
+      const emoji = flavors.find((f) => f.name === flavor)?.emoji || "";
+      setFeedback(
+        `"${word}" doesn’t match ${emoji} — it’s too ${
+          flavorAdjective[expected]
+        } for ${flavor} tones.`,
+      );
+    } else {
+      setFeedback("Try again!");
     }
+  }
+
+  function buildSentence() {
+    if (!activeFlavor) return;
+    const example = toneExamples[activeFlavor];
+    const base = sentenceInput.trim() || example;
+    setAiSentence(base);
   }
 
   useEffect(() => {
@@ -198,6 +240,20 @@ function ToneMatchGame({ onComplete }: { onComplete: () => void }) {
         </div>
       </div>
       {feedback && <p>{feedback}</p>}
+      {activeFlavor && (
+        <div className="sentence-builder">
+          <input
+            type="text"
+            value={sentenceInput}
+            placeholder="Type a short sentence"
+            onChange={(e) => setSentenceInput(e.target.value)}
+          />
+          <button onClick={buildSentence}>
+            What would the AI say in a {activeFlavor} tone?
+          </button>
+          {aiSentence && <p>AI says: {aiSentence}</p>}
+        </div>
+      )}
     </div>
   );
 }
@@ -242,6 +298,10 @@ export default function Match3Game() {
           <div className="match3-modal">
             <h3>Great job!</h3>
             <p>You matched all the words.</p>
+            <div className="flashcard">
+              <strong>Why Tone Matters</strong>
+              <p>Changing one adjective = a whole new vibe. Tone tells the AI how to speak, not just what to say.</p>
+            </div>
             {newBadges.length > 0 && (
               <div className="badge-rewards">
                 {newBadges.map((id) => {
