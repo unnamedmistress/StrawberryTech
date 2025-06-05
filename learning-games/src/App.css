@@ -67,7 +67,8 @@
 
 /* Match-3 styles */
 .match3-container {
-  max-width: 400px;
+  width: 100%;
+  max-width: 420px;
   margin: 0 auto;
   background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
   padding: 1rem;
@@ -76,13 +77,15 @@
 
 
 .match3-wrapper {
-  display: flex;
+  display: grid;
+  grid-template-columns: 3fr 1fr;
   gap: 1rem;
   justify-content: center;
+  align-items: start;
 }
 
 .match3-sidebar {
-  max-width: 200px;
+  max-width: 240px;
   background: #fff;
   padding: 1rem;
   border-radius: 8px;
@@ -119,6 +122,35 @@
 .match3-tile.selected {
   outline: 3px solid #0070f3;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.sidebar-quote {
+  margin-top: 1rem;
+  font-style: italic;
+}
+
+.badge-rewards {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.badge-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 1.4rem;
+}
+
+@media (max-width: 600px) {
+  .match3-wrapper {
+    grid-template-columns: 1fr;
+  }
+  .match3-sidebar,
+  .match3-container {
+    max-width: none;
+  }
 }
 
 /* layout */
@@ -200,5 +232,38 @@
 
 .match3-modal button {
   margin-top: 1rem;
+}
+
+.drag-container {
+  display: flex;
+  gap: 1rem;
+  margin: 1rem 0;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.drag-word {
+  padding: 0.5rem 1rem;
+  background: var(--color-lime);
+  color: #000;
+  border-radius: 4px;
+  cursor: grab;
+  user-select: none;
+}
+
+.drop-zones {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.drop-zone {
+  width: 60px;
+  height: 60px;
+  border: 2px dashed #ccc;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
 }
 
