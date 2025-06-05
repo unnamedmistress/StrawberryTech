@@ -5,14 +5,7 @@
   overflow: hidden;
   color: #fff;
   text-align: center;
-}
-
-.bg-video {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  filter: brightness(0.6);
+  background: linear-gradient(to bottom right, #ff4d80, #ff9966);
 }
 
 .overlay {
