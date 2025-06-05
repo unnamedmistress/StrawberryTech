@@ -50,10 +50,15 @@
 
 .game-card {
   padding: 1rem;
-  border: 1px solid #ccc;
+  border: 1px solid var(--color-purple);
   border-radius: 8px;
   text-decoration: none;
-  display: block;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
 .progress-summary {
@@ -83,5 +88,61 @@
 
 .match3-tile.selected {
   outline: 3px solid #0070f3;
+}
+
+/* layout */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--color-purple);
+  padding: 0.5rem 1rem;
+  color: #fff;
+}
+
+.navbar ul {
+  list-style: none;
+  display: flex;
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar a {
+  color: #fff;
+}
+
+.navbar a:hover {
+  color: var(--color-lime);
+}
+
+.hero {
+  background: var(--color-orange);
+  color: #fff;
+  padding: 2rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+}
+
+.hero button {
+  background: var(--color-purple);
+  color: #fff;
+  border: none;
+}
+
+.hero button:hover {
+  background: var(--color-lime);
+}
+
+.game-icon {
+  font-size: 2rem;
+}
+
+.footer {
+  background: var(--color-purple);
+  color: #fff;
+  padding: 1rem;
+  text-align: center;
+  margin-top: 2rem;
 }
 
