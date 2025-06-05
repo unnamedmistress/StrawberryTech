@@ -10,3 +10,7 @@ npm run dev
 ```
 
 The application lives in the `learning-games` directory.
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
