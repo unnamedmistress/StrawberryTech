@@ -1,6 +1,8 @@
 import { useContext, useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 
+import { useNavigate } from 'react-router-dom'
+
 import { UserContext } from '../context/UserContext'
 import { toast } from 'react-hot-toast'
 
@@ -127,6 +129,10 @@ export default function Match3Game() {
     () => flavors[Math.floor(Math.random() * flavors.length)]
   )
 
+  const navigate = useNavigate()
+  const [showInstructions, setShowInstructions] = useState(true)
+  const [showEndModal, setShowEndModal] = useState(false)
+
 
   // Return tips list for the current age
   const ageTips = tips.find((t) =>
@@ -194,6 +200,29 @@ export default function Match3Game() {
   }, [moves])
 
   return (
+
+    <div className="match3-wrapper">
+      <div className="match3-container">
+        <div className="daily-challenge-banner">
+          Daily Flavor Challenge: {challenge.emoji} {challenge.name}
+        </div>
+        <h2>Match-3 Puzzle</h2>
+        <p>Moves Left: {moves}</p>
+        <div className="match3-grid">
+          {grid.map((tile, i) => (
+            <motion.div
+              key={tile?.id ?? i}
+              onClick={() => handleClick(i)}
+              className={`match3-tile ${selected === i ? 'selected' : ''}`}
+              style={{ background: tile?.color || 'transparent' }}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              {tile?.emoji}
+            </motion.div>
+          ))}
+        </div>
+        <p>Score: {score}</p>
 
       </div>
       <aside className="match3-sidebar">
