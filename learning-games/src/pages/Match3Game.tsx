@@ -1,5 +1,6 @@
 import { useContext, useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
+
 import { UserContext } from '../context/UserContext'
 import { toast } from 'react-hot-toast'
 
@@ -126,6 +127,7 @@ export default function Match3Game() {
     () => flavors[Math.floor(Math.random() * flavors.length)]
   )
 
+
   // Return tips list for the current age
   const ageTips = tips.find((t) =>
     user.age ? user.age >= t.range[0] && user.age <= t.range[1] : false
@@ -182,6 +184,7 @@ export default function Match3Game() {
       addBadge('first-match3')
     }
     toast(`Game over! Final score: ${score}`)
+    setShowEndModal(true)
   }
 
   useEffect(() => {
@@ -191,27 +194,46 @@ export default function Match3Game() {
   }, [moves])
 
   return (
-    <div className="match3-container">
-      <div className="daily-challenge-banner">
-        Daily Flavor Challenge: {challenge.emoji} {challenge.name}
+
       </div>
-      <h2>Match-3 Puzzle</h2>
-      <p>Moves Left: {moves}</p>
-      <div className="match3-grid">
-        {grid.map((tile, i) => (
-          <motion.div
-            key={tile?.id ?? i}
-            onClick={() => handleClick(i)}
-            className={`match3-tile ${selected === i ? 'selected' : ''}`}
-            style={{ background: tile?.color || 'transparent' }}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            {tile?.emoji}
-          </motion.div>
-        ))}
-      </div>
-      <p>Score: {score}</p>
+      <aside className="match3-sidebar">
+        <h3>How to Play</h3>
+        <ul>
+          <li>Swap tiles to create lines of three matching emojis.</li>
+          <li>Match the daily flavor for a 20 point bonus.</li>
+          <li>Earn as many points as you can in 20 moves.</li>
+        </ul>
+      </aside>
+
+      {showInstructions && (
+        <div className="match3-modal-overlay">
+          <div className="match3-modal">
+            <h3>Welcome!</h3>
+            <p>
+              Swap adjacent tiles to match three or more. Focus on {challenge.emoji}{' '}
+              {challenge.name} for bonus points.
+            </p>
+            <button onClick={() => setShowInstructions(false)}>Start</button>
+          </div>
+        </div>
+      )}
+
+      {showEndModal && (
+        <div className="match3-modal-overlay">
+          <div className="match3-modal">
+            <h3>Game Over</h3>
+            <p>Your score: {score}</p>
+            <button
+              onClick={() => {
+                setShowEndModal(false)
+                navigate('/games/quiz')
+              }}
+            >
+              Next Game
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
