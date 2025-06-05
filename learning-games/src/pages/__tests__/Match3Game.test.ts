@@ -26,8 +26,12 @@ describe('createGrid', () => {
 
 function patternGrid(): Tile[] {
   const grid: Tile[] = []
-  for (let i = 0; i < 36; i++) {
-    grid.push({ type: colors[i % colors.length], color: colors[i % colors.length], id: i })
+  for (let r = 0; r < 6; r++) {
+    for (let c = 0; c < 6; c++) {
+      const idx = r * 6 + c
+      const type = colors[(c + r) % colors.length]
+      grid.push({ type, color: type, id: idx })
+    }
   }
   return grid
 }
@@ -42,7 +46,10 @@ describe('checkMatches', () => {
 
   it('clears matched tiles and reports gained score', () => {
     const grid = patternGrid()
-    grid[6] = { type: colors[0], color: colors[0], id: 999 }
+    grid[0] = { type: colors[0], color: colors[0], id: 999 }
+    grid[1] = { type: colors[0], color: colors[0], id: 1000 }
+    grid[2] = { type: colors[0], color: colors[0], id: 1001 }
+    grid[3] = { type: colors[1], color: colors[1], id: 1002 }
     const result = checkMatches(grid, stubTileFactory())
     expect(result.gained).toBe(30)
     expect(result.grid.length).toBe(36)
@@ -50,8 +57,14 @@ describe('checkMatches', () => {
 
   it('awards points for multiple matches', () => {
     const grid = patternGrid()
-    grid[6] = { type: colors[0], color: colors[0], id: 999 }
-    grid[7] = { type: colors[1], color: colors[1], id: 1000 }
+    grid[0] = { type: colors[0], color: colors[0], id: 999 }
+    grid[1] = { type: colors[0], color: colors[0], id: 1000 }
+    grid[2] = { type: colors[0], color: colors[0], id: 1001 }
+    grid[3] = { type: colors[1], color: colors[1], id: 1002 }
+    grid[6] = { type: colors[1], color: colors[1], id: 1003 }
+    grid[7] = { type: colors[1], color: colors[1], id: 1004 }
+    grid[8] = { type: colors[1], color: colors[1], id: 1005 }
+    grid[9] = { type: colors[2], color: colors[2], id: 1006 }
     const result = checkMatches(grid, stubTileFactory())
     expect(result.gained).toBe(60)
     expect(result.grid.length).toBe(36)
