@@ -37,6 +37,7 @@ export default function RobotChat() {
         setMessages(prev => [...prev, { role: 'assistant', content: text }])
       }
     } catch (err) {
+      console.error(err)
       setMessages(prev => [...prev, { role: 'assistant', content: 'Failed to get response.' }])
     }
   }
