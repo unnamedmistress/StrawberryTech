@@ -27,7 +27,7 @@ describe('createGrid', () => {
 function patternGrid(): Tile[] {
   const grid: Tile[] = []
   for (let i = 0; i < 36; i++) {
-    grid.push({ type: colors[i % 4], color: colors[i % 4], id: i })
+    grid.push({ type: colors[i % colors.length], color: colors[i % colors.length], id: i })
   }
   return grid
 }
