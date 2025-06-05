@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 
 import { UserContext } from '../context/UserContext'
 import { toast } from 'react-hot-toast'
+import { BADGES } from '../data/badges'
 
 /** Tile element used in the grid */
 export interface Tile {
@@ -49,6 +50,11 @@ export function createGrid(): (Tile | null)[] {
 const tips = [
   { range: [12, 14], tips: ['Great start! Keep learning leadership basics.'] },
   { range: [15, 18], tips: ['Remember: teamwork makes the dream work!'] },
+]
+
+const quotes = [
+  'Prompting is like seasoning \u2013 a single word changes the flavor.',
+  'Swap words wisely and watch your message sparkle!',
 ]
 
 export interface MatchResult {
@@ -129,6 +135,11 @@ export default function Match3Game() {
     () => flavors[Math.floor(Math.random() * flavors.length)]
   )
 
+  const [sidebarQuote] = useState(
+    () => quotes[Math.floor(Math.random() * quotes.length)]
+  )
+  const [newBadges, setNewBadges] = useState<string[]>([])
+
   const navigate = useNavigate()
   const [showInstructions, setShowInstructions] = useState(true)
   const [showEndModal, setShowEndModal] = useState(false)
@@ -183,12 +194,16 @@ export default function Match3Game() {
   // Award badges and store the best score when the game ends
   function endGame() {
     saveScore('match3', score)
+    const earned: string[] = []
     if (score >= 100 && !user.badges.includes('match-master')) {
+      earned.push('match-master')
       addBadge('match-master')
     }
     if (!user.badges.includes('first-match3')) {
+      earned.push('first-match3')
       addBadge('first-match3')
     }
+    setNewBadges(earned)
     toast(`Game over! Final score: ${score}`)
     setShowEndModal(true)
   }
@@ -232,6 +247,7 @@ export default function Match3Game() {
           <li>Match the daily flavor for a 20 point bonus.</li>
           <li>Earn as many points as you can in 20 moves.</li>
         </ul>
+        <blockquote className="sidebar-quote">{sidebarQuote}</blockquote>
       </aside>
 
       {showInstructions && (
@@ -252,6 +268,25 @@ export default function Match3Game() {
           <div className="match3-modal">
             <h3>Game Over</h3>
             <p>Your score: {score}</p>
+            {newBadges.length > 0 && (
+              <div className="badge-rewards">
+                {newBadges.map((id) => {
+                  const badge = BADGES.find((b) => b.id === id)
+                  return (
+                    <motion.div
+                      key={id}
+                      className="badge-icon"
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ type: 'spring', stiffness: 260 }}
+                    >
+                      <span role="img" aria-label="badge">🏅</span>
+                      <div>{badge?.name ?? id}</div>
+                    </motion.div>
+                  )
+                })}
+              </div>
+            )}
             <button
               onClick={() => {
                 setShowEndModal(false)
