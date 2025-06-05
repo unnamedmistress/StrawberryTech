@@ -21,6 +21,13 @@ export default function Home() {
 
   return (
     <div className="home">
+      {/* hero section */}
+      <section className="hero">
+        <h1>Fun Learning Awaits!</h1>
+        <p className="tagline">Play engaging games and sharpen your skills.</p>
+        <button onClick={() => navigate('/games/match3')}>Play Now</button>
+      </section>
+
       {/* greeting */}
       {user.age && (
         <h2>
@@ -30,9 +37,18 @@ export default function Home() {
 
       {/* game list */}
       <div className="game-grid">
-        <Link className="game-card" to="/games/match3">Match-3 Puzzle</Link>
-        <Link className="game-card" to="/games/quiz">Quiz Game</Link>
-        <Link className="game-card" to="/games/dragdrop">Drag & Drop Game</Link>
+        <Link className="game-card" to="/games/match3">
+          <span className="game-icon">🧩</span>
+          <span>Match-3 Puzzle</span>
+        </Link>
+        <Link className="game-card" to="/games/quiz">
+          <span className="game-icon">❓</span>
+          <span>Quiz Game</span>
+        </Link>
+        <Link className="game-card" to="/games/dragdrop">
+          <span className="game-icon">🎯</span>
+          <span>Drag & Drop Game</span>
+        </Link>
       </div>
 
       {/* navigation */}
