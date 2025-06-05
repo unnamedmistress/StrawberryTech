@@ -34,3 +34,6 @@ Node **18+** is recommended. Major dependencies include React 19, React Router 7
 - `npm run test` runs the Vitest unit tests.
 - `npm run build` creates a production build in `dist/`.
 
+
+## License
+This project is released under the [MIT License](LICENSE). Contributions are welcome under the same terms.
