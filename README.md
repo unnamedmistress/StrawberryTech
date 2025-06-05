@@ -33,6 +33,14 @@ Node **18+** is recommended. Major dependencies include React 19, React Router 7
 - `npm run test` runs the Vitest unit tests.
 - `npm run build` creates a production build in `dist/`.
 
+## Environment Variables
+RobotChat uses the OpenAI API. Create a `.env` file inside `learning-games` containing:
+
+```bash
+VITE_OPENAI_API_KEY=your-key
+```
+
+Without this key, the RobotChat feature will not work.
 
 ## License
 This project is released under the [MIT License](LICENSE). Contributions are welcome under the same terms.
