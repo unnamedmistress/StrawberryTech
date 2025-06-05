@@ -11,6 +11,13 @@ export default function RobotChat() {
   const [input, setInput] = useState('')
   const [messages, setMessages] = useState<ChatMessage[]>([])
 
+  // Instruction sent with every request so the bot behaves like a teacher
+  const systemMsg = {
+    role: 'system',
+    content:
+      'You are a friendly instructor for this lesson. Reply in one short sentence at a 4th grade reading level.',
+  }
+
   async function sendMessage(e: React.FormEvent) {
     e.preventDefault()
     if (!input.trim()) return
@@ -28,7 +35,7 @@ export default function RobotChat() {
         },
         body: JSON.stringify({
           model: 'gpt-3.5-turbo',
-          messages: [...messages, userMsg],
+          messages: [systemMsg, ...messages, userMsg],
         }),
       })
       const data = await resp.json()
@@ -55,10 +62,15 @@ export default function RobotChat() {
       {open && (
         <div className="chat-modal-overlay" onClick={() => setOpen(false)}>
           <div className="chat-modal" onClick={e => e.stopPropagation()}>
-            <h3>practice</h3>
+            <button className="chat-close" onClick={() => setOpen(false)}>
+              \u2715
+            </button>
+            <h3>Practice</h3>
             <div className="chat-history">
               {messages.map((m, i) => (
-                <p key={i} className={m.role}>{m.content}</p>
+                <p key={i} className={`chat-message ${m.role}`}>{
+                  m.role === 'user' ? '🧑 ' : '🤖 '
+                }{m.content}</p>
               ))}
             </div>
             <form className="chat-input" onSubmit={sendMessage}>
