@@ -1,0 +1,42 @@
+.age-form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+}
+
+.age-form form {
+  background: linear-gradient(135deg, var(--color-purple), var(--color-orange), var(--color-lime));
+  background-size: 150% 150%;
+  animation: ageGradient 8s ease infinite;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  color: #fff;
+}
+
+@keyframes ageGradient {
+  0% {
+    background-position: 0 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0 50%;
+  }
+}
+
+.age-form label {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.age-form input {
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  width: 100%;
+  max-width: 200px;
+}
