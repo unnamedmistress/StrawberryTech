@@ -21,10 +21,10 @@ export interface Flavor {
 }
 
 export const flavors: Flavor[] = [
-  { name: "spicy", emoji: "🌶️", color: "#ff4500" },
-  { name: "zesty", emoji: "🍋", color: "#ffd700" },
-  { name: "calm", emoji: "🪴", color: "#3cb371" },
-  { name: "fresh", emoji: "🍃", color: "#8fbc8f" },
+  { name: "friendly", emoji: "😀", color: "#ffd700" },
+  { name: "professional", emoji: "😐", color: "#3cb371" },
+  { name: "casual", emoji: "😎", color: "#8fbc8f" },
+  { name: "emotional", emoji: "😭", color: "#ff6347" },
 ];
 
 export const colors = flavors.map((f) => f.name);
@@ -46,10 +46,6 @@ export function createGrid(): (Tile | null)[] {
   return Array.from({ length: 36 }, () => createTile());
 }
 
-const tips = [
-  { range: [12, 14], tips: ["Great start! Keep learning leadership basics."] },
-  { range: [15, 18], tips: ["Remember: teamwork makes the dream work!"] },
-];
 
 const quotes = [
   "Prompting is like seasoning \u2013 a single word changes the flavor.",
@@ -57,11 +53,33 @@ const quotes = [
 ];
 
 const toneWords = [
-  { word: "fiery", flavor: "spicy" },
-  { word: "zippy", flavor: "zesty" },
-  { word: "soothing", flavor: "calm" },
-  { word: "crisp", flavor: "fresh" },
+  { word: "friendly", flavor: "friendly" },
+  { word: "cheerful", flavor: "friendly" },
+  { word: "professional", flavor: "professional" },
+  { word: "polite", flavor: "professional" },
+  { word: "casual", flavor: "casual" },
+  { word: "relaxed", flavor: "casual" },
+  { word: "emotional", flavor: "emotional" },
+  { word: "passionate", flavor: "emotional" },
 ];
+
+const flavorAdjective: Record<string, string> = {
+  friendly: "upbeat",
+  professional: "formal",
+  casual: "chill",
+  emotional: "dramatic",
+};
+
+const wordOutputs: Record<string, string> = {
+  friendly: "Hey Mom! I'll be home late today \u{1F60A}",
+  cheerful: "Hey Mom! I'll be home late today \u{1F60A}",
+  professional: "Mother, please note I'll be home later than usual today.",
+  polite: "Mother, please note I'll be home later than usual today.",
+  casual: "Hey Mom, running late, I'll be home later.",
+  relaxed: "Hey Mom, I'm going to be a bit late. See you soon!",
+  emotional: "Mom! I'm so sorry, but I'll be home late today 😭",
+  passionate: "Mom! I'm really sorry—I promise I'll hurry home!",
+};
 
 export interface MatchResult {
   grid: (Tile | null)[];
@@ -143,14 +161,31 @@ export function checkMatches(
 function ToneMatchGame({ onComplete }: { onComplete: () => void }) {
   const [completed, setCompleted] = useState<string[]>([]);
   const [feedback, setFeedback] = useState<string | null>(null);
+  const [activeWord, setActiveWord] = useState<string | null>(null);
+  const [aiSentence, setAiSentence] = useState<string | null>(null);
 
   function handleDrop(flavor: string, word: string) {
-    const correct = toneWords.find((t) => t.word === word)?.flavor === flavor;
-    setFeedback(correct ? `Nice! ${word} is ${flavor}.` : `Try again!`);
-    if (correct && !completed.includes(word)) {
-      setCompleted((c) => [...c, word]);
+    const expected = toneWords.find((t) => t.word === word)?.flavor;
+    const correct = expected === flavor;
+    if (correct) {
+      setFeedback(`Nice! "${word}" matches ${flavor}.`);
+      setActiveWord(word);
+      setAiSentence(wordOutputs[word]);
+      if (!completed.includes(word)) {
+        setCompleted((c) => [...c, word]);
+      }
+    } else if (expected) {
+      const emoji = flavors.find((f) => f.name === flavor)?.emoji || "";
+      setFeedback(
+        `"${word}" doesn’t match ${emoji} — it’s too ${
+          flavorAdjective[expected]
+        } for ${flavor} tones.`,
+      );
+    } else {
+      setFeedback("Try again!");
     }
   }
+
 
   useEffect(() => {
     if (completed.length === toneWords.length) {
@@ -160,7 +195,7 @@ function ToneMatchGame({ onComplete }: { onComplete: () => void }) {
 
   return (
     <div>
-      <h3>Drag the words to match the emoji</h3>
+      <h3>Drag the words to match the face</h3>
       <div className="drag-container">
         <div className="drag-words">
           {toneWords
@@ -198,6 +233,16 @@ function ToneMatchGame({ onComplete }: { onComplete: () => void }) {
         </div>
       </div>
       {feedback && <p>{feedback}</p>}
+      {activeWord && (
+        <div className="sentence-builder">
+          <p>Base: "Mom, I'll be home late today"</p>
+          {aiSentence && (
+            <p>
+              Using "{activeWord}": {aiSentence}
+            </p>
+          )}
+        </div>
+      )}
     </div>
   );
 }
@@ -233,7 +278,7 @@ export default function Match3Game() {
       </div>
       <aside className="match3-sidebar">
         <h3>Why Tone Matters</h3>
-        <p>Drag the adjectives to the emoji that best matches their vibe.</p>
+        <p>Drag the adjectives to the face that best matches their vibe.</p>
         <blockquote className="sidebar-quote">{sidebarQuote}</blockquote>
       </aside>
 
@@ -242,6 +287,10 @@ export default function Match3Game() {
           <div className="match3-modal">
             <h3>Great job!</h3>
             <p>You matched all the words.</p>
+            <div className="flashcard">
+              <strong>Why Tone Matters</strong>
+              <p>Changing one adjective = a whole new vibe. Tone tells the AI how to speak, not just what to say.</p>
+            </div>
             {newBadges.length > 0 && (
               <div className="badge-rewards">
                 {newBadges.map((id) => {
