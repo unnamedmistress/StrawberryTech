@@ -19,10 +19,10 @@ export interface UserContextType {
    */
   setName: (name: string) => void
   /**
-   * Add points to the user's score record for a given game.
-   * Used by games to track progress across sessions.
+   * Set the score for a specific game. Implementations typically
+   * store the best/highest score seen so far.
    */
-  addPoints: (game: string, points: number) => void
+  setScore: (game: string, score: number) => void
   /**
    * Award a badge when the player reaches a milestone.
    */

@@ -35,7 +35,7 @@ const tips = [
  * show an age-based leadership tip.
  */
 export default function Match3Game() {
-  const { user, addPoints, addBadge } = useContext(UserContext)
+  const { user, setScore: saveScore, addBadge } = useContext(UserContext)
   const [grid, setGrid] = useState<(Tile | null)[]>(createGrid())
   const [selected, setSelected] = useState<number | null>(null)
   const [score, setScore] = useState(0)
@@ -126,17 +126,20 @@ export default function Match3Game() {
 
     const gained = matched.size * 10
     setScore((s) => s + gained)
-    addPoints('match3', gained)
     setGrid(working)
     if (ageTips && Math.random() < 0.3) {
       toast(ageTips[Math.floor(Math.random() * ageTips.length)])
     }
   }
 
-  // Award badge when game ends
+  // Award badges and store the best score when the game ends
   function endGame() {
-    if (score >= 100 && !user.badges.includes('Match Master')) {
-      addBadge('Match Master')
+    saveScore('match3', score)
+    if (score >= 100 && !user.badges.includes('match-master')) {
+      addBadge('match-master')
+    }
+    if (!user.badges.includes('first-match3')) {
+      addBadge('first-match3')
     }
     toast(`Game over! Final score: ${score}`)
   }
