@@ -22,7 +22,6 @@ export interface Flavor {
 
 export const flavors: Flavor[] = [
 
-  { name: "urgent", emoji: "😠", color: "#ff4500" },
   { name: "friendly", emoji: "😀", color: "#ffd700" },
   { name: "professional", emoji: "😐", color: "#3cb371" },
   { name: "casual", emoji: "😎", color: "#8fbc8f" },
@@ -61,8 +60,6 @@ const tips = [
 
 const toneWords = [
 
-
-  { word: "urgent", flavor: "spicy" },
   { word: "critical", flavor: "spicy" },
   { word: "friendly", flavor: "zesty" },
   { word: "cheerful", flavor: "zesty" },
