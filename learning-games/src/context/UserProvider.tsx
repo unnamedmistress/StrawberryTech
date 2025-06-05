@@ -12,7 +12,15 @@ export function UserProvider({ children }: { children: ReactNode }) {
   // Load any saved user progress from localStorage on first render
   const [user, setUser] = useState<UserData>(() => {
     const saved = localStorage.getItem(STORAGE_KEY)
-    return saved ? { ...defaultUser, ...JSON.parse(saved) } : defaultUser
+    if (saved) {
+      try {
+        return { ...defaultUser, ...JSON.parse(saved) }
+      } catch (err) {
+        console.error('Failed to parse saved user data', err)
+        return defaultUser
+      }
+    }
+    return defaultUser
   })
 
 
