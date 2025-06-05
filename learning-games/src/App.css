@@ -77,9 +77,10 @@
 
 
 .match3-wrapper {
-  width: 100%;
+
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 240px;
+  grid-template-columns: 3fr 1fr;
+
   gap: 1rem;
   justify-content: center;
   align-items: start;
@@ -151,9 +152,6 @@
   .match3-sidebar,
   .match3-container {
     max-width: none;
-  }
-  .match3-sidebar {
-    margin-top: 1rem;
   }
 }
 
