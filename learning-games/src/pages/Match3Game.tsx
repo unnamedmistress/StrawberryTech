@@ -21,10 +21,10 @@ export interface Flavor {
 }
 
 export const flavors: Flavor[] = [
-  { name: "spicy", emoji: "🌶️", color: "#ff4500" },
-  { name: "zesty", emoji: "🍋", color: "#ffd700" },
-  { name: "calm", emoji: "🪴", color: "#3cb371" },
-  { name: "fresh", emoji: "🍃", color: "#8fbc8f" },
+  { name: "urgent", emoji: "😠", color: "#ff4500" },
+  { name: "friendly", emoji: "😀", color: "#ffd700" },
+  { name: "professional", emoji: "😐", color: "#3cb371" },
+  { name: "casual", emoji: "😎", color: "#8fbc8f" },
 ];
 
 export const colors = flavors.map((f) => f.name);
@@ -57,6 +57,7 @@ const quotes = [
 ];
 
 const toneWords = [
+
   { word: "urgent", flavor: "spicy" },
   { word: "critical", flavor: "spicy" },
   { word: "friendly", flavor: "zesty" },
@@ -79,6 +80,7 @@ const toneExamples: Record<string, string> = {
   zesty: "You've got this! Let's make it fun today \u{1F389}",
   calm: "Thank you for your patience while we sort this out.",
   fresh: "No rush\u2014whenever you're ready works for me.",
+
 };
 
 export interface MatchResult {
@@ -162,7 +164,9 @@ function ToneMatchGame({ onComplete }: { onComplete: () => void }) {
   const [completed, setCompleted] = useState<string[]>([]);
   const [feedback, setFeedback] = useState<string | null>(null);
   const [activeFlavor, setActiveFlavor] = useState<string | null>(null);
+
   const [sentenceInput, setSentenceInput] = useState("");
+
   const [aiSentence, setAiSentence] = useState<string | null>(null);
 
   function handleDrop(flavor: string, word: string) {
@@ -189,9 +193,11 @@ function ToneMatchGame({ onComplete }: { onComplete: () => void }) {
 
   function buildSentence() {
     if (!activeFlavor) return;
+
     const example = toneExamples[activeFlavor];
     const base = sentenceInput.trim() || example;
     setAiSentence(base);
+
   }
 
   useEffect(() => {
@@ -202,7 +208,7 @@ function ToneMatchGame({ onComplete }: { onComplete: () => void }) {
 
   return (
     <div>
-      <h3>Drag the words to match the emoji</h3>
+      <h3>Drag the words to match the face</h3>
       <div className="drag-container">
         <div className="drag-words">
           {toneWords
@@ -242,12 +248,14 @@ function ToneMatchGame({ onComplete }: { onComplete: () => void }) {
       {feedback && <p>{feedback}</p>}
       {activeFlavor && (
         <div className="sentence-builder">
+
           <input
             type="text"
             value={sentenceInput}
             placeholder="Type a short sentence"
             onChange={(e) => setSentenceInput(e.target.value)}
           />
+
           <button onClick={buildSentence}>
             What would the AI say in a {activeFlavor} tone?
           </button>
@@ -289,7 +297,7 @@ export default function Match3Game() {
       </div>
       <aside className="match3-sidebar">
         <h3>Why Tone Matters</h3>
-        <p>Drag the adjectives to the emoji that best matches their vibe.</p>
+        <p>Drag the adjectives to the face that best matches their vibe.</p>
         <blockquote className="sidebar-quote">{sidebarQuote}</blockquote>
       </aside>
 
