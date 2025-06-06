@@ -68,3 +68,21 @@
 .chatbox-input input {
   flex: 1;
 }
+
+.statement-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.refresh-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+}
+
+.refresh-btn:hover {
+  color: var(--color-purple);
+}
