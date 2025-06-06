@@ -25,6 +25,7 @@ export const flavors: Flavor[] = [
   { name: "friendly", emoji: "😀", color: "#ffd700" },
   { name: "professional", emoji: "😐", color: "#3cb371" },
   { name: "casual", emoji: "😎", color: "#8fbc8f" },
+  { name: "emotional", emoji: "😭", color: "#ff6347" },
 
 ];
 
@@ -53,9 +54,11 @@ const quotes = [
   "Swap words wisely and watch your message sparkle!",
 ];
 
+
 const tips = [
   "Tip: Swap one adjective to completely change the vibe.",
   "Use synonyms to experiment with different tones!",
+
 ];
 
 const tones = [
@@ -140,21 +143,17 @@ export function checkMatches(
     }
   }
 
-  if (matched.size === 0) return { grid: current, gained: 0, matchedTypes: [] };
+  const [activeWord, setActiveWord] = useState<string | null>(null);
 
-  const working = [...current];
-  matched.forEach((i) => (working[i] = null));
+      setActiveWord(word);
+      setAiSentence(wordOutputs[word]);
 
-  for (let c = 0; c < 6; c++) {
-    for (let r = 5; r >= 0; r--) {
-      const idx = r * 6 + c;
-      if (working[idx] === null) {
-        for (let k = r; k > 0; k--) {
-          working[k * 6 + c] = working[(k - 1) * 6 + c];
-        }
-        working[c] = create();
-      }
-    }
+      {activeWord && (
+          {aiSentence && (
+            <p>
+              Using "{activeWord}": {aiSentence}
+            </p>
+          )}
   }
 
   const gained = matched.size * 10;
