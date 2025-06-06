@@ -226,6 +226,13 @@
   margin-right: 1rem;
   background: #fff;
   color: var(--color-brand);
+  width: 1.75rem;
+  height: 1.75rem;
+  padding: 0;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .navbar ul {
