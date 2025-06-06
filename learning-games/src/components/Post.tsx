@@ -2,8 +2,13 @@ import Card from './ui/card'
 
 export interface PostData {
   id: number
-  title: string
-  image: string
+  /** Name of the author posting the message */
+  author: string
+  /** Text content of the post */
+  content: string
+  /** ISO timestamp of when the post was created */
+  date: string
+  /** Whether a post has been flagged by a user */
   flagged?: boolean
 }
 
@@ -15,8 +20,10 @@ export interface PostProps {
 export default function Post({ post, onFlag }: PostProps) {
   return (
     <Card className="post" style={{ marginBottom: '1rem' }}>
-      <h4>{post.title}</h4>
-      <img src={post.image} alt={post.title} style={{ width: '100%', borderRadius: '4px' }} />
+      <p style={{ fontWeight: 'bold', marginBottom: '0.25rem' }}>
+        {post.author} on {new Date(post.date).toLocaleString()}
+      </p>
+      <p style={{ whiteSpace: 'pre-wrap' }}>{post.content}</p>
       <div style={{ marginTop: '0.5rem' }}>
         <button onClick={() => onFlag(post.id)} disabled={post.flagged}>
           {post.flagged ? 'Flagged' : 'Report'}
