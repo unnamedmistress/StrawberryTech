@@ -137,11 +137,16 @@
   grid-column: 1;
 }
 
+.progress-sidebar {
+  grid-column: 1;
+}
+
 @media (max-width: 600px) {
   .truth-game {
     grid-template-columns: 1fr;
   }
-  .quiz-sidebar {
+  .quiz-sidebar,
+  .progress-sidebar {
     max-width: none;
     grid-column: auto;
   }
