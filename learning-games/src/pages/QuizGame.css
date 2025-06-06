@@ -7,7 +7,7 @@
 
 .statements {
   background: #fff;
-  color: #000;
+  color: var(--color-text-dark);
   padding: 1rem;
   border-radius: 8px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
@@ -27,7 +27,7 @@
   border: 1px solid #ccc;
   border-radius: 6px;
   background: #f8f8f8;
-  color: #000;
+  color: var(--color-text-dark);
   cursor: pointer;
 }
 
@@ -48,7 +48,7 @@
 
 .chatbox {
   background: #fff;
-  color: #000;
+  color: var(--color-text-dark);
   padding: 1rem;
   border-radius: 8px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);

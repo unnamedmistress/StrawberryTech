@@ -8,6 +8,7 @@
   --color-lime: #a3e635;
   --color-blue: #1e3a8a;
   --color-purple-dark: #6d28d9;
+  --color-text-dark: #000;
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
