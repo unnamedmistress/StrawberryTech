@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import './QuizGame.css'
+import InstructionBanner from '../components/ui/InstructionBanner'
 
 interface StatementSet {
   statements: string[]
@@ -164,6 +165,10 @@ export default function QuizGame() {
   return (
     <div className="quiz-page">
       <ChallengeBanner />
+      <InstructionBanner>
+        Choose the statement you believe is false. Use the refresh button for
+        new statements and click on an option to answer.
+      </InstructionBanner>
       <div className="truth-game">
         <div className="statements">
           <div className="statement-header">
