@@ -71,16 +71,16 @@ type Tone = (typeof tones)[number];
 
 const examples: Record<Tone, string> = {
   Polite:
-    "Hey, I'm sorry but something came up and I need to cancel. Hope we can reschedule soon!",
-  Casual:
-    "Yo, gotta bail on our plans—something popped up. Let's hang later!",
+    "Hi, I'm not feeling well and need to take a sick day. Thank you for understanding.",
+  Casual: "Hey, I'm sick today so I'm gonna stay home.",
   Emotional:
-    "I hate to do this but I really can't make it tonight. I'm disappointed and hope you understand.",
-  Angry: "Look, I'm cancelling. Too much going on and I'm frustrated.",
+    "I'm really sorry but I'm quite sick and can't make it in today. I feel awful about letting the team down.",
+  Angry:
+    "I'm sick and won't be in. I'm frustrated that I'm always pushing myself.",
   Compelling:
-    "I have to cancel because I got an important commitment I can't miss. Thanks for understanding!",
+    "I'm sick today and staying home so I don't spread it. I'll make sure everything's covered.",
   Persuasive:
-    "Would you mind if we postponed? I think meeting later will be much better for both of us.",
+    "Would it be alright if I took a sick day today? Resting now will let me get back to 100% quicker.",
 };
 
 
@@ -202,7 +202,7 @@ function ToneMatchGame({ onComplete }: { onComplete: () => void }) {
         >
           {selected ? ` ${selected} ` : " ____ "}
         </span>
-        short text to cancel my plans with a friend.
+        short text to call out of work sick today.
       </p>
       <div className="word-bank">
         {tones.map((tone) => (
