@@ -1,6 +1,6 @@
 # StrawberryTech Learning Games
 
-StrawberryTech is a collection of small web games built with **React**, **TypeScript** and **Vite**. Each game adapts content based on the player's age (12‑18) which is stored locally so progress persists between sessions.
+StrawberryTech is a collection of small web games built with **React**, **TypeScript** and **Vite**. Each game adapts content based on the player's age, which is stored locally so progress persists between sessions.
 
 ## Mini Games
 
@@ -11,7 +11,7 @@ Swap adjacent tiles to make rows or columns of three using a simple drag‑and�
 A short quiz where you spot the single AI hallucination hidden among two truthful statements.
 
 ## Age‑Adaptive Features
-- Players enter an age between **12–18** on first visit.
+- Players enter their age and name on first visit.
 - Games read the stored age to tweak difficulty and show tailored tips.
 - High scores and earned badges persist using `localStorage`.
 
