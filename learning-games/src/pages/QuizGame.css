@@ -95,6 +95,12 @@
   margin: 0 auto;
 }
 
+@media (max-width: 480px) {
+  .quiz-page {
+    margin: 0 1rem;
+  }
+}
+
 .challenge-banner {
   background: linear-gradient(135deg, var(--color-orange), var(--color-purple));
   color: #fff;
