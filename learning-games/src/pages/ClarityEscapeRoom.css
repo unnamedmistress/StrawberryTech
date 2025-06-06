@@ -1,0 +1,41 @@
+.escape-wrapper {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 1rem;
+  justify-content: center;
+  align-items: start;
+}
+
+.room {
+  background: #222;
+  color: #fff;
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.hint {
+  font-style: italic;
+  margin-bottom: 0.5rem;
+}
+
+.prompt-form {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.prompt-form input {
+  flex: 1;
+}
+
+.feedback {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+@media (max-width: 600px) {
+  .escape-wrapper {
+    grid-template-columns: 1fr;
+  }
+}
