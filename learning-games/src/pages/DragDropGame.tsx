@@ -14,17 +14,17 @@ type Tone = (typeof tones)[number]
 
 const examples: Record<Tone, string> = {
   Polite:
-    "Hey, I'm sorry but something came up and I need to cancel. Hope we can reschedule soon!",
+    "Good morning, I'm not feeling well today and won't be able to come in. I wanted to let you know as soon as possible.",
   Casual:
-    "Yo, gotta bail on our plans—something popped up. Let's hang later!",
+    "Hey, I'm sick and can't make it to work today. Sorry for the short notice.",
   Emotional:
-    "I hate to do this but I really can't make it tonight. I'm disappointed and hope you understand.",
+    "I feel terrible about missing work, but I'm really sick and need to stay home. I hope you'll understand.",
   Angry:
-    "Look, I'm cancelling. Too much going on and I'm frustrated.",
+    "I won't be in today because I'm sick. I'm frustrated that I'm feeling this way.",
   Compelling:
-    "I have to cancel because I got an important commitment I can't miss. Thanks for understanding!",
+    "Unfortunately I'm quite sick and need to rest today. I'll keep you updated and make sure everything is covered.",
   Persuasive:
-    "Would you mind if we postponed? I think meeting later will be much better for both of us.",
+    "Would it be alright if I took today off to recover from this illness? I believe I'll be more productive if I can fully rest.",
 }
 
 export default function DragDropGame() {
@@ -71,7 +71,7 @@ export default function DragDropGame() {
         >
           {selected ? ` ${selected} ` : ' ____ '}
         </span>
-        short text to cancel my plans with a friend.
+        short text to my manager calling out of work sick today.
       </p>
       <div className="word-bank">
         {tones.map((tone) => (
