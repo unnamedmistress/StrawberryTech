@@ -48,10 +48,22 @@
 }
 
 .game-icon {
+  display: block;
   width: 100%;
-  max-height: 360px;
+  height: 100%;
   object-fit: cover;
-  border-radius: 4px;
+}
+
+.game-title {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  padding: 0.25rem 0.5rem;
+  text-align: center;
+  font-weight: bold;
 }
 
 .hero-img {
@@ -62,7 +74,7 @@
 
 @media (max-width: 480px) {
   .game-icon {
-    max-height: 180px;
+    height: 100%;
   }
 }
 
