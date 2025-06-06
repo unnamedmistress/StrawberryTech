@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { toast } from 'react-hot-toast'
+import { Link } from 'react-router-dom'
 import './QuizGame.css'
 import InstructionBanner from '../components/ui/InstructionBanner'
 
@@ -215,6 +216,9 @@ export default function QuizGame() {
         )}
         </div>
         <ChatBox />
+        <p style={{ marginTop: '1rem', textAlign: 'center' }}>
+          <Link to="/">Return Home</Link>
+        </p>
       </div>
     </div>
   )

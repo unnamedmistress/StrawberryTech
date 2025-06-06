@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react'
 import type { FormEvent } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { UserContext } from '../context/UserContext'
 import './AgeInputForm.css'
 
@@ -65,6 +65,9 @@ export default function AgeInputForm({
         />
         <button type="submit">Save</button>
       </form>
+      <p style={{ marginTop: '1rem' }}>
+        <Link to="/">Return Home</Link>
+      </p>
     </div>
   )
 }
