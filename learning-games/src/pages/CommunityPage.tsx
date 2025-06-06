@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import Post, { PostData } from '../components/Post'
+import Post from '../components/Post'
+import type { PostData } from '../components/Post'
 
 const initialPosts: PostData[] = [
   {
