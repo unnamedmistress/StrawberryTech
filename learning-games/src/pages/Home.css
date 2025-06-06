@@ -123,10 +123,14 @@
     grid-template-columns: 1fr;
   }
   .intro-gif {
-    max-width: 80%;
+    max-width: 90%;
   }
   .intro-hero {
-    padding: 1.5rem 0;
+    padding: 2rem 0;
+  }
+  .start-btn {
+    font-size: 1.2rem;
+    padding: 0.75rem 1.25rem;
   }
 }
 
