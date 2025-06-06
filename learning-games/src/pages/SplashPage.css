@@ -23,6 +23,33 @@
   margin-top: 1rem;
 }
 
+.start-btn {
+  font-family: 'Roboto', sans-serif;
+  font-weight: bold;
+  font-size: 16px;
+  background: #32cd32;
+  min-width: 44px;
+  min-height: 44px;
+  transition: background-color 0.3s ease;
+}
+
+.start-btn:hover {
+  background: #228b22;
+}
+
+.start-btn:active {
+  animation: bounce 0.3s;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
 @media (max-width: 480px) {
   .overlay {
     padding: 0 1rem;
