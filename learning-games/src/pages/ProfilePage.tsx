@@ -1,5 +1,5 @@
 import { useContext, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import AgeInputForm from './AgeInputForm'
 import { UserContext } from '../context/UserContext'
 
@@ -29,6 +29,9 @@ export default function ProfilePage() {
         <button type="submit" style={{ marginLeft: '0.5rem' }}>Save Name</button>
       </form>
       <AgeInputForm allowEdit onSaved={() => navigate('/')} />
+      <p style={{ marginTop: '1rem' }}>
+        <Link to="/">Return Home</Link>
+      </p>
     </div>
   )
 }
