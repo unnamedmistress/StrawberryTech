@@ -1,5 +1,6 @@
 import { useContext, useState, useEffect } from "react";
 import { toast } from 'react-hot-toast'
+import confetti from 'canvas-confetti'
 
 import { useNavigate } from "react-router-dom";
 
@@ -285,6 +286,9 @@ export default function Match3Game() {
     const msg = earned.length
       ? `Great job! Earned ${earned.length} badge${earned.length > 1 ? 's' : ''}.`
       : 'Great job!';
+    if (earned.length > 0) {
+      confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+    }
     toast.success(`${msg} Moving on to the quiz.`);
     navigate("/games/quiz");
   }

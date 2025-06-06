@@ -46,6 +46,25 @@
   gap: 1.5rem;
 }
 
+.hero-img {
+  width: 80px;
+  margin: 0.5rem auto;
+  display: block;
+}
+
+.progress-summary progress {
+  width: 100%;
+  height: 1rem;
+  accent-color: var(--color-lime);
+}
+
+.badge-icons {
+  display: flex;
+  justify-content: center;
+  gap: 0.25rem;
+  margin-top: 0.25rem;
+}
+
 @media (max-width: 480px) {
   .game-grid {
     grid-template-columns: 1fr;
