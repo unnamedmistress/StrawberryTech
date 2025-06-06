@@ -8,11 +8,12 @@
 }
 
 .statements {
-  background: #fff;
-  color: var(--color-text-dark);
+  background: linear-gradient(135deg, var(--color-purple-dark), var(--color-blue));
+  color: #fff;
   padding: 1rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  margin-bottom: 1rem;
 }
 
 .statement-list {
@@ -25,22 +26,24 @@
   width: 100%;
   text-align: left;
   margin-bottom: 0.5rem;
-  padding: 0.5rem 0.75rem;
+  padding: 0.6rem 0.75rem;
   border: 1px solid #ccc;
   border-radius: 6px;
-  background: #f8f8f8;
+  background: #fdfdfd;
   color: var(--color-text-dark);
   cursor: pointer;
+  transition: transform 0.15s, background-color 0.15s;
 }
 
 .statement-btn:hover {
   background: #ececec;
+  transform: scale(1.03);
 }
 
 .statement-btn.selected {
-  background: var(--color-purple);
+  background: var(--color-orange);
   color: #fff;
-  border-color: var(--color-purple);
+  border-color: var(--color-orange);
 }
 
 .feedback {
@@ -104,6 +107,9 @@
   .quiz-page {
     margin: 0 1rem;
   }
+  .statement-btn {
+    font-size: 0.9rem;
+  }
 }
 
 .challenge-banner {
@@ -132,6 +138,5 @@
   }
   .quiz-sidebar {
     max-width: none;
-    margin-top: 1rem;
   }
 }

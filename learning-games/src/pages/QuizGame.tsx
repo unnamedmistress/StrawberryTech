@@ -51,7 +51,7 @@ function ChallengeBanner() {
       animate={{ scale: [1, 1.1, 1] }}
       transition={{ repeat: Infinity, duration: 2 }}
     >
-      Super Hard Challenge! Spot the liar 🕵️
+      Ultimate Challenge: find the AI's lie! 🕵️
     </motion.div>
   )
 }
@@ -60,7 +60,7 @@ function WhyItMatters() {
   return (
     <aside className="quiz-sidebar reveal">
       <h3>Why It Matters</h3>
-      <p>Hallucinations happen when an AI confidently states something untrue.</p>
+      <p>AI hallucinations occur when the system confidently states something untrue.</p>
       <blockquote className="sidebar-quote">{QUOTE}</blockquote>
       <p className="sidebar-tip">{TIP}</p>
     </aside>
@@ -168,9 +168,10 @@ export default function QuizGame() {
     <div className="quiz-page">
       <ChallengeBanner />
       <InstructionBanner>
-        Choose the statement you believe is false. Use the refresh button for
-        new statements and click on an option to answer.
+        Find the one false statement—the AI hallucination. Tap the refresh icon
+        for new prompts and then select your answer.
       </InstructionBanner>
+      <WhyItMatters />
       <div className="truth-game">
         <div className="statements">
           <div className="statement-header">
@@ -208,7 +209,6 @@ export default function QuizGame() {
           </>
         )}
         </div>
-        <WhyItMatters />
         <ChatBox />
       </div>
     </div>
