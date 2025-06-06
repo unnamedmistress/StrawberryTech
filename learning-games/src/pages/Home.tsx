@@ -42,8 +42,8 @@ export default function Home() {
       <section className="hero reveal">
         <h1>Fun Learning Awaits!</h1>
         <img
-          src="https://cdnjs.cloudflare.com/ajax/libs/openmoji/15.1.0/color/svg/1F353.svg"
-          alt="Strawberry mascot"
+          src="https://images.unsplash.com/photo-1675731118661-15dc54c11130?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400"
+          alt="Strawberry"
           className="hero-img"
         />
         <p className="tagline">Play engaging games and sharpen your skills.</p>
@@ -61,15 +61,15 @@ export default function Home() {
       <div className="game-grid reveal">
         <Link className="game-card" to="/games/match3">
           <img
-            src="https://cdnjs.cloudflare.com/ajax/libs/openmoji/15.1.0/color/svg/1F9E9.svg"
-            alt="Puzzle"
+            src="https://plus.unsplash.com/premium_photo-1723662084148-2cd2357705ba?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400"
+            alt="Puzzle pieces"
             className="game-icon"
           />
           <span>Match-3 Puzzle</span>
         </Link>
         <Link className="game-card" to="/games/quiz">
           <img
-            src="https://cdnjs.cloudflare.com/ajax/libs/openmoji/15.1.0/color/svg/2753.svg"
+            src="https://plus.unsplash.com/premium_photo-1678048604398-f42dda6997bd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400"
             alt="Question mark"
             className="game-icon"
           />
