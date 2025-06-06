@@ -15,7 +15,7 @@ export default function InstructionBanner({ children }: InstructionBannerProps) 
         aria-label="Close instructions"
         onClick={() => setVisible(false)}
       >
-        \u2715
+        X
       </button>
       <div className="instruction-content">{children}</div>
     </div>
