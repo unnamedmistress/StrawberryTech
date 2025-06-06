@@ -42,8 +42,8 @@ export default function Home() {
       <section className="hero reveal">
         <h1>Fun Learning Awaits!</h1>
         <img
-          src="https://images.unsplash.com/photo-1675731118661-15dc54c11130?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400"
-          alt="Strawberry"
+          src="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%206%2C%202025%2C%2011_24_31%20AM.png"
+          alt="Strawberry logo"
           className="hero-img"
         />
         <p className="tagline">Play engaging games and sharpen your skills.</p>
