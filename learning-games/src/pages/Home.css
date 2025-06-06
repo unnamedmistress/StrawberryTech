@@ -52,10 +52,20 @@
   display: block;
 }
 
+.hero-title {
+  font-family: 'Fredoka One', cursive;
+  font-size: 28px;
+  color: #ff6347;
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
 .progress-summary progress {
-  width: 100%;
+  width: 80%;
   height: 1rem;
-  accent-color: var(--color-lime);
+  accent-color: #ffd700;
+  display: block;
+  margin: 0 auto;
 }
 
 .badge-icons {
