@@ -79,6 +79,11 @@
   margin-bottom: 0.5rem;
 }
 
+.round-info {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
 .refresh-btn {
   background: transparent;
   border: none;
