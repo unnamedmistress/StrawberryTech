@@ -33,30 +33,61 @@ const ROUNDS: StatementSet[] = [
   },
 ]
 
+interface ChatMessage {
+  role: 'user' | 'assistant'
+  content: string
+}
+
 function ChatBox() {
   const [input, setInput] = useState('')
-  const [history, setHistory] = useState<string[]>([])
+  const [messages, setMessages] = useState<ChatMessage[]>([])
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    const q = input.trim()
-    if (!q) return
-    setHistory((prev) => [...prev, q])
+    if (!input.trim()) return
+
+    const userMsg: ChatMessage = { role: 'user', content: input }
+    setMessages(prev => [...prev, userMsg])
     setInput('')
+
+    try {
+      const resp = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${import.meta.env.VITE_OPENAI_API_KEY}`,
+        },
+        body: JSON.stringify({
+          model: 'gpt-3.5-turbo',
+          messages: [...messages, userMsg],
+        }),
+      })
+      const data = await resp.json()
+      const text = data?.choices?.[0]?.message?.content?.trim() ?? ''
+      if (text) {
+        setMessages(prev => [...prev, { role: 'assistant', content: text }])
+      }
+    } catch (err) {
+      console.error(err)
+      setMessages(prev => [
+        ...prev,
+        { role: 'assistant', content: 'Failed to get response.' },
+      ])
+    }
   }
 
   return (
     <div className="chatbox">
       <h3>Ask the Assistant</h3>
       <div className="chatbox-history">
-        {history.map((msg, i) => (
-          <p key={i}>You: {msg}</p>
+        {messages.map((m, i) => (
+          <p key={i}>{m.role === 'user' ? 'You: ' : 'Assistant: '}{m.content}</p>
         ))}
       </div>
       <form onSubmit={handleSubmit} className="chatbox-input">
         <input
           value={input}
-          onChange={(e) => setInput(e.target.value)}
+          onChange={e => setInput(e.target.value)}
           placeholder="Type a question..."
         />
         <button type="submit">Send</button>
