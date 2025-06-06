@@ -10,6 +10,7 @@ type Task = {
 }
 
 const TASKS: Task[] = [
+  { hint: 'Draft an email', keywords: ['draft', 'email'] },
   { hint: 'Improve this greeting', keywords: ['rewrite', 'formal'] },
   { hint: 'Fix this text', keywords: ['correct', 'grammar'] },
   { hint: 'Summarize the announcement', keywords: ['summarize', 'sentences'] },
@@ -75,9 +76,15 @@ export default function ClarityEscapeRoom() {
       </InstructionBanner>
       <div className="escape-wrapper">
         <ProgressSidebar />
+        <aside className="escape-sidebar">
+          <h3>Why Clarity Matters</h3>
+          <p>Vague inputs lock AI in confusion loops; precise prompts open doors.</p>
+          <blockquote className="sidebar-quote">Why Card: Why Clarity Matters</blockquote>
+          <p className="sidebar-tip">Shows how specificity opens doors—literally. Teaching players to apply intent, tone, and task format.</p>
+        </aside>
         <div className="room">
-          <h3>Door {door + 1}</h3>
-          <p className="hint">Hint: {current.hint}</p>
+          <h3>{current.hint}</h3>
+          <p className="hint">Door {door + 1}</p>
           <form onSubmit={handleSubmit} className="prompt-form">
             <input
               value={input}
@@ -87,7 +94,7 @@ export default function ClarityEscapeRoom() {
             <button type="submit">Submit</button>
           </form>
           {message && <p className="feedback">{message}</p>}
-          <p>Score: {score}</p>
+          <p className="score">Score: {score}</p>
         </div>
       </div>
     </div>
