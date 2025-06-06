@@ -6,7 +6,14 @@ export default function NavBar() {
 
   return (
     <nav className="navbar">
-      <div className="brand">StrawberryTech</div>
+      <div className="brand">
+        <img
+          src="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%206%2C%202025%2C%2011_24_31%20AM.png"
+          alt="Strawberry logo"
+          className="brand-logo"
+        />
+        StrawberryTech
+      </div>
       <button
         className="menu-toggle"
         aria-label="Toggle navigation"
