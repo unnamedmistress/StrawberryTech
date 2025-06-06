@@ -180,11 +180,12 @@ export default function QuizGame() {
           >
             🔄
           </button>
-        </div>
-        <ul className="statement-list">
-          {current.statements.map((s, i) => (
-            <li key={i}>
-              <button
+          </div>
+          <p className="round-info">Round {round + 1} / {ROUNDS.length}</p>
+          <ul className="statement-list">
+            {current.statements.map((s, i) => (
+              <li key={i}>
+                <button
                 className={`statement-btn ${choice === i ? 'selected' : ''}`}
                 onClick={() => handleSelect(i)}
                 disabled={choice !== null}
