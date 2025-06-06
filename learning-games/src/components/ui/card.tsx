@@ -22,6 +22,7 @@ const Card: React.FC<CardProps> = ({
         border: '1px solid #eee',
         borderRadius: '8px',
         background: '#fff',
+        color: '#000',
         boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
         ...style,
       }}
