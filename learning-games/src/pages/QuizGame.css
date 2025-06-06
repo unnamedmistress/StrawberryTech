@@ -1,0 +1,68 @@
+.truth-game {
+  display: grid;
+  grid-template-columns: 1fr 260px;
+  gap: 1rem;
+  align-items: start;
+}
+
+.statements {
+  background: #fff;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.statement-list {
+  list-style: none;
+  padding: 0;
+}
+
+.statement-btn {
+  display: block;
+  width: 100%;
+  text-align: left;
+  margin-bottom: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background: #f8f8f8;
+  cursor: pointer;
+}
+
+.statement-btn:hover {
+  background: #ececec;
+}
+
+.statement-btn.selected {
+  background: var(--color-purple);
+  color: #fff;
+  border-color: var(--color-purple);
+}
+
+.feedback {
+  font-weight: bold;
+  margin-top: 1rem;
+}
+
+.chatbox {
+  background: #fff;
+  color: #000;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.chatbox-history {
+  max-height: 240px;
+  overflow-y: auto;
+  margin-bottom: 0.5rem;
+}
+
+.chatbox-input {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.chatbox-input input {
+  flex: 1;
+}
