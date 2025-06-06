@@ -27,6 +27,9 @@ export default function NavBar() {
         <li>
           <Link to="/leaderboard">Leaderboard</Link>
         </li>
+        <li>
+          <Link to="/profile">Profile</Link>
+        </li>
       </ul>
     </nav>
   )
