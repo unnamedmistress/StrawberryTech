@@ -211,7 +211,7 @@ export default function QuizGame() {
           </button>
           </div>
           <p className="header-instruction">
-            Pick the hulluscination from the three statements.
+            Pick the hallucination from the three statements.
           </p>
           <p className="round-info">Round {round + 1} / {ROUNDS.length}</p>
           <ul className="statement-list">
