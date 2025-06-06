@@ -175,7 +175,7 @@ export default function QuizGame() {
       <div className="truth-game">
         <div className="statements">
           <div className="statement-header">
-            <h2>3 Truths and a Lie</h2>
+            <h2>Two Truths and a Lie</h2>
             <button
               className="refresh-btn"
               onClick={refreshRound}
