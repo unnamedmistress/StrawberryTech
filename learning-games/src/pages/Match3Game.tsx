@@ -166,10 +166,11 @@ export function checkMatches(
   return { grid: working, gained, matchedTypes: Array.from(matchedTypes) };
 }
 
-function ToneMatchGame({ onComplete }: { onComplete: () => void }) {
+function ToneMatchGame({ onComplete }: { onComplete: (score: number) => void }) {
   const [selected, setSelected] = useState<Tone | null>(null);
   const [used, setUsed] = useState<Set<Tone>>(new Set());
   const [quizAnswer, setQuizAnswer] = useState<Tone | null>(null);
+  const [score, setScore] = useState(0);
 
   function handleDragStart(e: React.DragEvent<HTMLDivElement>, tone: Tone) {
     e.dataTransfer.setData("text/plain", tone);
@@ -178,9 +179,10 @@ function ToneMatchGame({ onComplete }: { onComplete: () => void }) {
   function handleDrop(e: React.DragEvent<HTMLSpanElement>) {
     e.preventDefault();
     const tone = e.dataTransfer.getData("text/plain") as Tone;
-    if (tones.includes(tone)) {
+    if (tones.includes(tone) && !used.has(tone)) {
       setSelected(tone);
       setUsed(new Set(used).add(tone));
+      setScore((s) => s + 20);
     }
   }
 
@@ -191,9 +193,9 @@ function ToneMatchGame({ onComplete }: { onComplete: () => void }) {
 
   useEffect(() => {
     if (used.size === tones.length) {
-      onComplete();
+      onComplete(score);
     }
-  }, [used, onComplete]);
+  }, [used, onComplete, score]);
 
   return (
     <div className="dragdrop-game">
@@ -274,7 +276,7 @@ function ToneMatchGame({ onComplete }: { onComplete: () => void }) {
  * show an age-based leadership tip.
  */
 export default function Match3Game() {
-  const { user, addBadge } = useContext(UserContext)
+  const { user, addBadge, setScore } = useContext(UserContext)
   const navigate = useNavigate()
   const [sidebarQuote] = useState(
     () => quotes[Math.floor(Math.random() * quotes.length)],
@@ -284,8 +286,13 @@ export default function Match3Game() {
       tips[Math.floor(Math.random() * tips.length)],
   )
 
-  function handleComplete() {
+  function handleComplete(score: number) {
     const earned: string[] = [];
+    setScore('tone', score)
+    if (score >= 100 && !user.badges.includes('match-master')) {
+      addBadge('match-master')
+      earned.push('match-master')
+    }
     if (!user.badges.includes("first-match3")) {
       addBadge("first-match3");
       earned.push("first-match3");
