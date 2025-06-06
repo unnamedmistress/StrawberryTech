@@ -252,6 +252,7 @@ function ToneMatchGame({ onComplete }: { onComplete: (score: number) => void }) 
             {tones.map((tone) => (
               <button
                 key={tone}
+                className="btn-primary"
                 onClick={() => setQuizAnswer(tone)}
                 disabled={!!quizAnswer}
               >
@@ -330,7 +331,7 @@ export default function Match3Game() {
       </div>
       <RobotChat />
       <p style={{ marginTop: '1rem', textAlign: 'center' }}>
-        <button onClick={() => navigate('/games/quiz')}>Next Lesson</button>
+        <button className="btn-primary" onClick={() => navigate('/games/quiz')}>Next Lesson</button>
       </p>
       <p style={{ marginTop: '1rem', textAlign: 'center' }}>
         <Link to="/leaderboard">Return to Progress</Link>

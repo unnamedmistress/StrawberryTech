@@ -48,7 +48,7 @@ export default function SplashPage() {
             onChange={(e) => setAge(Number(e.target.value))}
             required
           />
-          <button type="submit" className="start-btn">Begin Your Journey</button>
+          <button type="submit" className="start-btn btn-primary">Begin Your Journey</button>
         </form>
       </div>
     </div>
