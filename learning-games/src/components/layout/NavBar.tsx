@@ -22,7 +22,11 @@ export default function NavBar() {
           <Link to="/games/match3">Match-3</Link>
         </li>
         <li>
+<<<<<<< HEAD
           <Link to="/games/quiz">Quiz</Link>
+=======
+          <Link to="/games/quiz">Two Truths and a Lie</Link>
+>>>>>>> 222aa0bd194a0c534062972b6c9e522f149ef60b
         </li>
         <li>
           <Link to="/leaderboard">Leaderboard</Link>
