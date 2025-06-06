@@ -81,6 +81,16 @@ button:focus-visible {
   outline: 4px auto var(--color-lime);
 }
 
+.btn-primary {
+  background-color: var(--color-brand);
+  border-radius: 8px;
+  padding: 0.8rem 1.6rem;
+}
+
+.btn-primary:hover {
+  background-color: var(--color-deep-red);
+}
+
 .reveal {
   opacity: 0;
   transform: translateY(20px);

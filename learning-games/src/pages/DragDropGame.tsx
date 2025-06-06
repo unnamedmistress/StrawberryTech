@@ -100,7 +100,11 @@ export default function DragDropGame() {
                 onChange={(e) => setUserMessage(e.target.value)}
                 placeholder="Type your message..."
               />
-              <button onClick={handleSubmit} disabled={!userMessage.trim()}>
+              <button
+                onClick={handleSubmit}
+                disabled={!userMessage.trim()}
+                className="btn-primary"
+              >
                 Submit Message
               </button>
             </div>
