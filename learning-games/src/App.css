@@ -73,10 +73,15 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s ease, border-color 0.2s ease;
   height: 200px;
+  cursor: pointer;
 }
 .game-card:hover {
   transform: scale(1.05);
   border-color: var(--color-brand);
+}
+
+.game-card:hover .game-icon {
+  transform: scale(1.05);
 }
 
 .progress-summary {
@@ -252,7 +257,7 @@
   justify-content: space-between;
   align-items: center;
   background: var(--color-brand);
-  padding: 0.5rem 1rem;
+  padding: 1rem 2rem;
   color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -272,7 +277,7 @@
 .navbar ul {
   list-style: none;
   display: flex;
-  gap: 1rem;
+  gap: 1.25rem;
   margin: 0;
   padding: 0;
   font-size: 1.1rem;
@@ -280,11 +285,12 @@
 
 .navbar a {
   color: #fff;
-  transition: color 0.3s ease;
+  transition: color 0.3s ease, text-decoration 0.3s ease;
 }
 
 .navbar a:hover {
   color: var(--color-lime);
+  text-decoration: underline;
 }
 .brand {
   display: flex;
@@ -294,8 +300,8 @@
 }
 
 .brand-logo {
-  width: 40px;
-  height: 40px;
+  width: 48px;
+  height: 48px;
 }
 
 .menu-toggle {
@@ -317,6 +323,15 @@
   margin-bottom: 2rem;
   position: relative;
   overflow: hidden;
+}
+
+.hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="160" height="160" fill="%23ffffff" fill-opacity="0.05"><rect width="20" height="20"/><rect x="80" width="20" height="20"/><rect y="80" width="20" height="20"/><rect x="80" y="80" width="20" height="20"/></svg>');
+  background-repeat: repeat;
+  pointer-events: none;
 }
 
 @media (max-width: 480px) {
@@ -342,6 +357,13 @@
   color: #fff;
   border: none;
   transition: transform 0.2s ease, background-color 0.3s ease;
+  font-size: 1.1rem;
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.hero button:not(:last-child) {
+  margin-right: 0.75rem;
 }
 
 .hero button:hover {
@@ -360,7 +382,7 @@
 .footer {
   background: var(--color-brand);
   color: #fff;
-  padding: 1rem;
+  padding: 1.5rem;
   text-align: center;
   margin-top: 2rem;
   box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.2);
@@ -368,12 +390,17 @@
 .footer-links {
   margin-top: 0.5rem;
   font-size: 0.9rem;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
 }
 .footer-links a {
   color: #fff;
+  text-decoration: none;
 }
 .footer-links a:hover {
   color: var(--color-lime);
+  text-decoration: underline;
 }
 
 

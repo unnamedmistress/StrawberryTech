@@ -39,7 +39,7 @@ export default function Home() {
   return (
     <div className="home">
       {/* hero section */}
-      <section className="hero reveal">
+      <section className="hero reveal" aria-label="Homepage hero">
         <h1 className="hero-title">Embark on a Fruity Learning Adventure!</h1>
         <img
           src="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%206%2C%202025%2C%2011_24_31%20AM.png"
@@ -47,19 +47,27 @@ export default function Home() {
           className="hero-img"
         />
         <p className="tagline">Play engaging games and sharpen your skills.</p>
-        <button onClick={() => navigate('/games/tone')}>Play Now</button>
-        <button onClick={() => navigate('/community')} style={{ marginLeft: '1rem' }}>
+        <button onClick={() => navigate('/games/tone')} aria-label="Play Tone Puzzle">
+          Play Now
+        </button>
+        <button
+          onClick={() => navigate('/community')}
+          style={{ marginLeft: '1rem' }}
+          aria-label="Visit community forum"
+        >
           Community
         </button>
       </section>
 
 
-      {/* greeting */}
+      {/* greeting - temporarily disabled per UX review */}
+      {/**
       {user.age && (
         <h2 className="reveal">
           Welcome{user.name ? `, ${user.name}` : ''}! Age group: {user.age}
         </h2>
       )}
+      */}
 
       {/* game list */}
       <div className="game-grid reveal">
