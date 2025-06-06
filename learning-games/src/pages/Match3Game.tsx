@@ -310,15 +310,15 @@ export default function Match3Game() {
         Match adjectives to explore how tone changes the meaning of a message.
       </InstructionBanner>
       <div className="match3-wrapper">
-        <div className="match3-container">
-          <ToneMatchGame onComplete={handleComplete} />
-        </div>
         <aside className="match3-sidebar">
           <h3>Why Tone Matters</h3>
           <p>Drag the adjectives into the blank to try different tones.</p>
           <blockquote className="sidebar-quote">{sidebarQuote}</blockquote>
           <p className="sidebar-tip">{sidebarTip}</p>
         </aside>
+        <div className="match3-container">
+          <ToneMatchGame onComplete={handleComplete} />
+        </div>
       </div>
       <RobotChat />
       <p style={{ marginTop: '1rem', textAlign: 'center' }}>
