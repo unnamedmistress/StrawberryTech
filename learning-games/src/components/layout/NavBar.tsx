@@ -42,11 +42,13 @@ export default function NavBar() {
         </li>
         <li>
           <Tooltip message="Hover here for a surprise!">
+
             <Link to="/games/escape">Escape Room</Link>
           </Tooltip>
         </li>
         <li>
           <Tooltip message="Hover here for a surprise!">
+
             <Link to="/games/recipe">Prompt Builder</Link>
           </Tooltip>
         </li>

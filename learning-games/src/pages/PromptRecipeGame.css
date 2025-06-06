@@ -1,3 +1,10 @@
+
+.recipe-page {
+  background: url('https://images.unsplash.com/photo-1500835556837-99ac94a94552?auto=format&fit=crop&w=1200&q=60') center/cover fixed;
+  padding: 1rem;
+  min-height: 100vh;
+}
+
 .recipe-wrapper {
   width: 100%;
   display: grid;
@@ -7,11 +14,40 @@
   align-items: start;
 }
 
+
 .kitchen {
   background: url('https://images.unsplash.com/photo-1606851092836-944c99e60463?auto=format&fit=crop&w=800&q=60');
   background-size: cover;
+.recipe-game {
+  background: rgba(255, 255, 255, 0.85);
+
   padding: 1rem;
   border-radius: 8px;
+}
+
+
+.bowls {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.bowl {
+  min-height: 70px;
+  border: 2px dashed var(--color-purple-dark);
+  border-radius: 8px;
+  padding: 0.5rem;
+  background: #fafafa;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.bowl-content {
+  margin-top: 0.25rem;
+  min-height: 1.2rem;
 }
 
 .cards {
@@ -50,10 +86,21 @@
   padding: 1rem;
   border-radius: 8px;
   font-weight: bold;
+
+.plate {
+  margin-top: 1rem;
+  background: #fff;
+  color: var(--color-text-dark);
+  padding: 1rem;
+  border-radius: 8px;
 }
 
 @media (max-width: 600px) {
   .recipe-wrapper {
     grid-template-columns: 1fr;
+  }
+
+  .progress-sidebar {
+    max-width: none;
   }
 }

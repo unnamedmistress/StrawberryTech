@@ -99,6 +99,12 @@ export default function Home() {
           <img
             src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExdGlkeG45MmJ6bzI0NGR4YXV0bnU4em5idGdqd29yMjF0cGxpcnltZyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/Pj1sRt1KB9vK0K4Cph/giphy.gif"
             alt="Prompt builder preview"
+
+        <Link className="game-card" to="/games/recipe">
+          <img
+            src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExa3h3cTR0cmEybWt0ZGM2Ymx0ZHB4ZjltbmR2dG55M3Y0MWh6dnRjZCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/Ll22OhMLAlVDbDS3Mo/giphy.gif"
+            alt="Prompt recipe preview"
+
             className="game-icon"
           />
           <span className="game-title">Prompt Builder</span>
