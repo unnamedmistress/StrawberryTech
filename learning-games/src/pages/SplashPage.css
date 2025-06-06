@@ -22,3 +22,13 @@
 .start-form button {
   margin-top: 1rem;
 }
+
+@media (max-width: 480px) {
+  .overlay {
+    padding: 0 1rem;
+  }
+  .start-form input {
+    width: 100%;
+    max-width: none;
+  }
+}
