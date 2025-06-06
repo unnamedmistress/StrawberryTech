@@ -11,7 +11,7 @@ export interface ScoreEntry {
 // Dummy leaderboards for each game. In a real multi-user app this data would
 // be fetched from a server.
 const DUMMY_SCORES: Record<string, ScoreEntry[]> = {
-  match3: [
+  tone: [
     { name: 'Alice', score: 240 },
     { name: 'Bob', score: 180 },
     { name: 'Charlie', score: 150 },
@@ -24,9 +24,9 @@ export default function LeaderboardPage() {
   return (
     <div>
       <h2>Leaderboard</h2>
-      {/* Show top scores for Match-3 */}
+      {/* Show top scores for Tone */}
       <section>
-        <h3>Match-3 High Scores</h3>
+        <h3>Tone High Scores</h3>
         <table style={{ margin: '0 auto' }}>
           <thead>
             <tr>
@@ -35,8 +35,8 @@ export default function LeaderboardPage() {
             </tr>
           </thead>
           <tbody>
-            {DUMMY_SCORES.match3
-              .concat({ name: user.name ?? 'You', score: user.scores['match3'] ?? 0 })
+            {DUMMY_SCORES.tone
+              .concat({ name: user.name ?? 'You', score: user.scores['tone'] ?? 0 })
               .sort((a, b) => b.score - a.score)
               .slice(0, 5)
               .map((entry) => (
