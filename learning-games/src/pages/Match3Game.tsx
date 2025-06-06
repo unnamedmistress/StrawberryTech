@@ -330,6 +330,9 @@ export default function Match3Game() {
       </div>
       <RobotChat />
       <p style={{ marginTop: '1rem', textAlign: 'center' }}>
+        <button onClick={() => navigate('/games/quiz')}>Next Lesson</button>
+      </p>
+      <p style={{ marginTop: '1rem', textAlign: 'center' }}>
         <Link to="/leaderboard">Return to Progress</Link>
       </p>
     </div>

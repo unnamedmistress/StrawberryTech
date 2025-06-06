@@ -240,6 +240,9 @@ export default function QuizGame() {
         </div>
         <ChatBox />
         <p style={{ marginTop: '1rem', textAlign: 'center' }}>
+          <button onClick={() => navigate('/leaderboard')}>Next</button>
+        </p>
+        <p style={{ marginTop: '1rem', textAlign: 'center' }}>
           <Link to="/leaderboard">Return to Progress</Link>
         </p>
       </div>
