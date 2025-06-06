@@ -79,7 +79,7 @@ export default function Home() {
 
       {/* navigation */}
       <p className="reveal">
-        <Link to="/leaderboard">View Leaderboard</Link>
+        <Link to="/leaderboard">View Progress</Link>
       </p>
 
       {/* progress summary */}

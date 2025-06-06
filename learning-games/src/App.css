@@ -128,6 +128,15 @@
   align-items: start;
 }
 
+.leaderboard-wrapper {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 1rem;
+  justify-content: center;
+  align-items: start;
+}
+
 .match3-sidebar {
   max-width: 240px;
   background: #fff;
@@ -211,6 +220,10 @@
 
 @media (max-width: 600px) {
   .match3-wrapper {
+    grid-template-columns: 1fr;
+  }
+
+  .leaderboard-wrapper {
     grid-template-columns: 1fr;
   }
 
