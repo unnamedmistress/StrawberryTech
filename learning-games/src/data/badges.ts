@@ -26,4 +26,9 @@ export const BADGES: BadgeDefinition[] = [
     name: 'Tone Tactician',
     description: 'Matched every tone correctly in the mini-game',
   },
+  {
+    id: 'prompt-chef',
+    name: 'Master Chef of Prompts',
+    description: 'Create 10 flawless prompt recipes',
+  },
 ]
