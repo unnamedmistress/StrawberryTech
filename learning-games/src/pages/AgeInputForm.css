@@ -6,7 +6,7 @@
 }
 
 .age-form form {
-  background: linear-gradient(135deg, var(--color-purple), var(--color-orange), var(--color-lime));
+  background: linear-gradient(135deg, var(--color-brand), var(--color-orange), var(--color-lime));
   background-size: 150% 150%;
   animation: ageGradient 8s ease infinite;
   padding: 2rem;
@@ -16,6 +16,9 @@
 }
 
 @media (max-width: 480px) {
+  .age-form {
+    padding: 1rem;
+  }
   .age-form form {
     width: 100%;
     margin: 0 1rem;
