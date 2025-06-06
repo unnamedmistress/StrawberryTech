@@ -63,7 +63,7 @@ export default function AgeInputForm({
           }}
           required
         />
-        <button type="submit">Save</button>
+        <button type="submit" className="btn-primary">Save</button>
       </form>
       <p style={{ marginTop: '1rem' }}>
         <Link to="/leaderboard">Return to Progress</Link>

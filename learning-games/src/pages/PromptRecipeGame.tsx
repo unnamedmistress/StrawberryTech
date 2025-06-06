@@ -190,7 +190,7 @@ export default function PromptRecipeGame() {
             <div className="plate">
               <h3>Your Prompt</h3>
               <p>{promptText}</p>
-              <button onClick={nextRound}>Next Recipe</button>
+              <button onClick={nextRound} className="btn-primary">Next Recipe</button>
             </div>
           )}
         </div>
