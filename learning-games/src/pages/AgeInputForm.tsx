@@ -8,22 +8,32 @@ import './AgeInputForm.css'
  * Form for collecting the user's age. Age is stored in context
  * and later used to customize game content by age group.
  */
-export default function AgeInputForm() {
+export default function AgeInputForm({
+  onSaved,
+  allowEdit = false,
+}: {
+  onSaved?: () => void
+  allowEdit?: boolean
+}) {
   const { user, setAge } = useContext(UserContext)
   const [age, setAgeState] = useState<number | ''>(user.age ?? '')
   const navigate = useNavigate()
 
-  // If age already exists, go straight to the game selection page
+  // If age already exists and editing isn't allowed, redirect away
   useEffect(() => {
-    if (user.age) navigate('/')
-  }, [user.age, navigate])
+    if (user.age && !allowEdit) navigate('/')
+  }, [user.age, navigate, allowEdit])
 
   function handleSubmit(e: FormEvent) {
     e.preventDefault()
     const ageNumber = Number(age)
     if (ageNumber >= 12 && ageNumber <= 18) {
       setAge(ageNumber)
-      navigate('/')
+      if (onSaved) {
+        onSaved()
+      } else {
+        navigate('/')
+      }
     } else {
       alert('Age must be between 12 and 18')
     }
