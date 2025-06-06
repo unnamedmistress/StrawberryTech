@@ -1,7 +1,9 @@
 .truth-game {
+  width: 100%;
   display: grid;
   grid-template-columns: 1fr 260px;
   gap: 1rem;
+  justify-content: center;
   align-items: start;
 }
 
@@ -85,4 +87,38 @@
 
 .refresh-btn:hover {
   color: var(--color-purple);
+}
+
+.quiz-page {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.challenge-banner {
+  background: linear-gradient(135deg, var(--color-orange), var(--color-purple));
+  color: #fff;
+  font-weight: bold;
+  padding: 0.5rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.quiz-sidebar {
+  max-width: 240px;
+  background: #fff;
+  color: var(--color-text-dark);
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  text-align: left;
+  margin: 0 auto 1rem;
+}
+
+@media (max-width: 600px) {
+  .truth-game {
+    grid-template-columns: 1fr;
+  }
+  .quiz-sidebar {
+    max-width: none;
+  }
 }

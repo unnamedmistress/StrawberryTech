@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { motion } from 'framer-motion'
 import './QuizGame.css'
 
 interface StatementSet {
@@ -33,9 +34,35 @@ const ROUNDS: StatementSet[] = [
   },
 ]
 
+const QUOTE = 'Always verify surprising claims.'
+const TIP = 'Tip: ask for sources when something sounds off.'
+
 interface ChatMessage {
   role: 'user' | 'assistant'
   content: string
+}
+
+function ChallengeBanner() {
+  return (
+    <motion.div
+      className="challenge-banner reveal"
+      animate={{ scale: [1, 1.1, 1] }}
+      transition={{ repeat: Infinity, duration: 2 }}
+    >
+      Super Hard Challenge! Spot the liar 🕵️
+    </motion.div>
+  )
+}
+
+function WhyItMatters() {
+  return (
+    <aside className="quiz-sidebar reveal">
+      <h3>Why It Matters</h3>
+      <p>Hallucinations happen when an AI confidently states something untrue.</p>
+      <blockquote className="sidebar-quote">{QUOTE}</blockquote>
+      <p className="sidebar-tip">{TIP}</p>
+    </aside>
+  )
 }
 
 function ChatBox() {
@@ -120,13 +147,16 @@ export default function QuizGame() {
   }
 
   return (
-    <div className="truth-game">
-      <div className="statements">
-        <div className="statement-header">
-          <h2>3 Truths and a Lie</h2>
-          <button
-            className="refresh-btn"
-            onClick={refreshRound}
+    <div className="quiz-page">
+      <ChallengeBanner />
+      <WhyItMatters />
+      <div className="truth-game">
+        <div className="statements">
+          <div className="statement-header">
+            <h2>3 Truths and a Lie</h2>
+            <button
+              className="refresh-btn"
+              onClick={refreshRound}
             aria-label="New statements"
           >
             🔄
@@ -155,8 +185,9 @@ export default function QuizGame() {
             <button onClick={nextRound}>Next Round</button>
           </>
         )}
+        </div>
+        <ChatBox />
       </div>
-      <ChatBox />
     </div>
   )
 }
