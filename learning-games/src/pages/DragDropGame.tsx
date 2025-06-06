@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import ProgressSidebar from '../components/layout/ProgressSidebar'
 import './DragDropGame.css'
 
 const tones = [
@@ -60,31 +61,34 @@ export default function DragDropGame() {
   }
 
   return (
-    <div className="dragdrop-game">
-      <h2>Drag a tone into the blank</h2>
-      <p className="sentence">
-        Write a
-        <span
-          className="drop-area"
-          onDrop={handleDrop}
-          onDragOver={handleDragOver}
-        >
-          {selected ? ` ${selected} ` : ' ____ '}
-        </span>
-        short text to my manager calling out of work sick today.
-      </p>
-      <div className="word-bank">
-        {tones.map((tone) => (
-          <div
-            key={tone}
-            draggable
-            onDragStart={(e) => handleDragStart(e, tone)}
-            className="word"
+    <div className="dragdrop-page">
+      <div className="dragdrop-wrapper">
+        <ProgressSidebar />
+        <div className="dragdrop-game">
+          <h2>Drag a tone into the blank</h2>
+          <p className="sentence">
+          Write a
+          <span
+            className="drop-area"
+            onDrop={handleDrop}
+            onDragOver={handleDragOver}
           >
-            {tone}
+            {selected ? ` ${selected} ` : ' ____ '}
+          </span>
+          short text to my manager calling out of work sick today.
+          </p>
+          <div className="word-bank">
+            {tones.map((tone) => (
+              <div
+                key={tone}
+                draggable
+                onDragStart={(e) => handleDragStart(e, tone)}
+                className="word"
+              >
+                {tone}
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
       {selected && (
         <div className="response">
           <h3>AI Response</h3>
@@ -133,6 +137,8 @@ export default function DragDropGame() {
           )}
         </div>
       )}
+        </div>
+      </div>
     </div>
   )
 }

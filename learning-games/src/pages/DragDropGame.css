@@ -2,6 +2,20 @@
   padding: 1rem;
 }
 
+.dragdrop-page {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.dragdrop-wrapper {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 1rem;
+  justify-content: center;
+  align-items: start;
+}
+
 .sentence {
   font-size: 1.2rem;
   margin-bottom: 1rem;
@@ -77,5 +91,15 @@
   }
   .sentence {
     font-size: 1rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .dragdrop-wrapper {
+    grid-template-columns: 1fr;
+  }
+  .progress-sidebar {
+    max-width: none;
+    grid-column: auto;
   }
 }
