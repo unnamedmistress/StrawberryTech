@@ -87,6 +87,10 @@
   margin-bottom: 0.5rem;
 }
 
+.header-instruction {
+  margin-bottom: 0.25rem;
+}
+
 .refresh-btn {
   background: transparent;
   border: none;
