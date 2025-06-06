@@ -66,7 +66,7 @@ export default function RobotChat() {
           }
         }}
       >
-        {'\u{1F916}'}
+        <span role="img" aria-label="robot">🤖</span>
       </motion.div>
       {open && (
         <div className="chat-modal-overlay" onClick={() => setOpen(false)}>
@@ -77,9 +77,14 @@ export default function RobotChat() {
             <h3>Practice</h3>
             <div className="chat-history">
               {messages.map((m, i) => (
-                <p key={i} className={`chat-message ${m.role}`}>{
-                  m.role === 'user' ? '🧑 ' : '🤖 '
-                }{m.content}</p>
+                <p key={i} className={`chat-message ${m.role}`}>
+                  {m.role === 'user' ? (
+                    <span role="img" aria-label="person">🧑</span>
+                  ) : (
+                    <span role="img" aria-label="robot">🤖</span>
+                  )}{' '}
+                  {m.content}
+                </p>
               ))}
             </div>
             <form className="chat-input" onSubmit={sendMessage}>
