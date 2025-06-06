@@ -167,10 +167,11 @@ export function checkMatches(
 }
 
 function ToneMatchGame({ onComplete }: { onComplete: (score: number) => void }) {
-  const [selected, setSelected] = useState<Tone | null>(null);
-  const [used, setUsed] = useState<Set<Tone>>(new Set());
-  const [quizAnswer, setQuizAnswer] = useState<Tone | null>(null);
-  const [score, setScore] = useState(0);
+  const { setScore: recordScore } = useContext(UserContext)
+  const [selected, setSelected] = useState<Tone | null>(null)
+  const [used, setUsed] = useState<Set<Tone>>(new Set())
+  const [quizAnswer, setQuizAnswer] = useState<Tone | null>(null)
+  const [score, setScore] = useState(0)
 
   function handleDragStart(e: React.DragEvent<HTMLDivElement>, tone: Tone) {
     e.dataTransfer.setData("text/plain", tone);
@@ -193,9 +194,10 @@ function ToneMatchGame({ onComplete }: { onComplete: (score: number) => void }) 
 
   useEffect(() => {
     if (used.size === tones.length) {
-      onComplete(score);
+      recordScore('tone', score)
+      onComplete(score)
     }
-  }, [used, onComplete, score]);
+  }, [used, onComplete, score, recordScore])
 
   return (
     <div className="dragdrop-game">
@@ -276,7 +278,7 @@ function ToneMatchGame({ onComplete }: { onComplete: (score: number) => void }) 
  * show an age-based leadership tip.
  */
 export default function Match3Game() {
-  const { user, addBadge, setScore } = useContext(UserContext)
+  const { user, addBadge } = useContext(UserContext)
   const navigate = useNavigate()
   const [sidebarQuote] = useState(
     () => quotes[Math.floor(Math.random() * quotes.length)],
@@ -288,7 +290,6 @@ export default function Match3Game() {
 
   function handleComplete(score: number) {
     const earned: string[] = [];
-    setScore('tone', score)
     if (score >= 100 && !user.badges.includes('match-master')) {
       addBadge('match-master')
       earned.push('match-master')

@@ -154,9 +154,9 @@ export default function QuizGame() {
     const newScore = wasCorrect ? score + 1 : score
     setScoreState(newScore)
     setPlayed(p => p + 1)
-    setScore('quiz', newScore)
 
     if (played + 1 === ROUNDS.length) {
+      setScore('quiz', newScore)
       if (newScore === ROUNDS.length && !user.badges.includes('quiz-whiz')) {
         addBadge('quiz-whiz')
       }
