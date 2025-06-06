@@ -76,7 +76,7 @@
 }
 .game-card:hover {
   transform: scale(1.05);
-  border-color: var(--color-purple);
+  border-color: var(--color-brand);
 }
 
 .progress-summary {
@@ -205,7 +205,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: var(--color-purple);
+  background: var(--color-brand);
   padding: 0.5rem 1rem;
   color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -239,7 +239,7 @@
 }
 
 .hero {
-  background: linear-gradient(135deg, var(--color-blue), var(--color-purple-dark));
+  background: linear-gradient(135deg, var(--color-blue), var(--color-brand));
   background-size: 200% 200%;
   animation: gradientShift 15s ease infinite;
   color: #fff;
@@ -269,7 +269,7 @@
 }
 
 .hero button {
-  background: var(--color-purple);
+  background: var(--color-brand);
   color: #fff;
   border: none;
   transition: transform 0.2s ease, background-color 0.3s ease;
@@ -281,11 +281,13 @@
 }
 
 .game-icon {
-  font-size: 3rem;
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
 }
 
 .footer {
-  background: var(--color-purple);
+  background: var(--color-brand);
   color: #fff;
   padding: 1rem;
   text-align: center;
