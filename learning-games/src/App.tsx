@@ -33,7 +33,11 @@ function App() {
         <Route path="/profile" element={<ProfilePage />} />
       </Routes>
       {/* Verification comment: routes render correctly with context */}
-      <Toaster />
+      <Toaster
+        toastOptions={{
+          ariaProps: { role: 'status', 'aria-live': 'polite' },
+        }}
+      />
       <Footer />
     </Router>
   )
