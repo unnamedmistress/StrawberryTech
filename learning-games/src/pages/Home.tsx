@@ -55,11 +55,15 @@ export default function Home() {
       {/* game list */}
       <div className="game-grid reveal">
         <Link className="game-card" to="/games/match3">
-          <span className="game-icon">🧩</span>
+          <span className="game-icon">
+            <span role="img" aria-label="puzzle piece">🧩</span>
+          </span>
           <span>Match-3 Puzzle</span>
         </Link>
         <Link className="game-card" to="/games/quiz">
-          <span className="game-icon">❓</span>
+          <span className="game-icon">
+            <span role="img" aria-label="question mark">❓</span>
+          </span>
           <span>Quiz Game</span>
         </Link>
       </div>

@@ -30,7 +30,10 @@ export default function SplashPage() {
   return (
     <div className="splash-container">
       <div className="overlay">
-        <h1>Welcome to StrawberryTech! 🍓</h1>
+        <h1>
+          Welcome to StrawberryTech!
+          <span role="img" aria-label="strawberry">🍓</span>
+        </h1>
         <p>Play while you learn.</p>
         <form onSubmit={handleSubmit} className="start-form">
           <input
