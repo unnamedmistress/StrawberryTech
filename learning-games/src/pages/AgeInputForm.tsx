@@ -22,7 +22,7 @@ export default function AgeInputForm({
 
   // If age already exists and editing isn't allowed, redirect away
   useEffect(() => {
-    if (user.age && !allowEdit) navigate('/')
+    if (user.age && !allowEdit) navigate('/leaderboard')
   }, [user.age, navigate, allowEdit])
 
   function handleSubmit(e: FormEvent) {
@@ -34,7 +34,7 @@ export default function AgeInputForm({
       if (onSaved) {
         onSaved()
       } else {
-        navigate('/')
+        navigate('/leaderboard')
       }
     } else {
       alert('Please enter a valid age')
@@ -66,7 +66,7 @@ export default function AgeInputForm({
         <button type="submit">Save</button>
       </form>
       <p style={{ marginTop: '1rem' }}>
-        <Link to="/">Return Home</Link>
+        <Link to="/leaderboard">Return to Progress</Link>
       </p>
     </div>
   )
