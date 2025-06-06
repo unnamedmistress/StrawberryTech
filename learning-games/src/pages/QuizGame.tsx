@@ -173,8 +173,8 @@ export default function QuizGame() {
         Find the one false statement—the AI hallucination. Tap the refresh icon
         for new prompts and then select your answer.
       </InstructionBanner>
-      <WhyItMatters />
       <div className="truth-game">
+        <WhyItMatters />
         <div className="statements">
           <div className="statement-header">
             <h2>Two Truths and a Lie</h2>
