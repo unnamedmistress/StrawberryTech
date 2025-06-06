@@ -4,8 +4,8 @@ import AgeInputForm from './pages/AgeInputForm'
 import SplashPage from './pages/SplashPage'
 import Match3Game from './pages/Match3Game'
 import QuizGame from './pages/QuizGame'
-import DragDropGame from './pages/DragDropGame'
 import LeaderboardPage from './pages/LeaderboardPage'
+import ProfilePage from './pages/ProfilePage'
 import { Toaster } from 'react-hot-toast'
 import NavBar from './components/layout/NavBar'
 import Footer from './components/layout/Footer'
@@ -21,8 +21,8 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/games/match3" element={<Match3Game />} />
         <Route path="/games/quiz" element={<QuizGame />} />
-        <Route path="/games/dragdrop" element={<DragDropGame />} />
         <Route path="/leaderboard" element={<LeaderboardPage />} />
+        <Route path="/profile" element={<ProfilePage />} />
       </Routes>
       {/* Verification comment: routes render correctly with context */}
       <Toaster />

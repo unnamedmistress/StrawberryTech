@@ -1,10 +1,10 @@
 import { useContext, useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { toast } from 'react-hot-toast'
 
 import { useNavigate } from "react-router-dom";
 
 import { UserContext } from "../context/UserContext";
-import { BADGES } from "../data/badges";
+import RobotChat from "../components/RobotChat";
 
 /** Tile element used in the grid */
 export interface Tile {
@@ -21,10 +21,12 @@ export interface Flavor {
 }
 
 export const flavors: Flavor[] = [
+
   { name: "friendly", emoji: "😀", color: "#ffd700" },
   { name: "professional", emoji: "😐", color: "#3cb371" },
   { name: "casual", emoji: "😎", color: "#8fbc8f" },
   { name: "emotional", emoji: "😭", color: "#ff6347" },
+
 ];
 
 export const colors = flavors.map((f) => f.name);
@@ -52,36 +54,38 @@ const quotes = [
   "Swap words wisely and watch your message sparkle!",
 ];
 
-const toneWords = [
-  { word: "emotional", flavor: "emotional" },
-  { word: "passionate", flavor: "emotional" },
-  emotional: "dramatic",
-const wordOutputs: Record<string, string> = {
-  cheerful: "Hey Mom! I'll be home late today \u{1F60A}",
-  polite: "Mother, please note I'll be home later than usual today.",
-  relaxed: "Hey Mom, I'm going to be a bit late. See you soon!",
-  emotional: "Mom! I'm so sorry, but I'll be home late today 😭",
-  passionate: "Mom! I'm really sorry—I promise I'll hurry home!",
-  { word: "professional", flavor: "calm" },
-  { word: "polite", flavor: "calm" },
-  { word: "casual", flavor: "fresh" },
-  { word: "relaxed", flavor: "fresh" },
+
+const tips = [
+  "Tip: Swap one adjective to completely change the vibe.",
+  "Use synonyms to experiment with different tones!",
+
 ];
 
-const flavorAdjective: Record<string, string> = {
-  spicy: "intense",
-  zesty: "upbeat",
-  calm: "gentle",
-  fresh: "casual",
+const tones = [
+  "Polite",
+  "Casual",
+  "Emotional",
+  "Angry",
+  "Compelling",
+  "Persuasive",
+] as const;
+
+type Tone = (typeof tones)[number];
+
+const examples: Record<Tone, string> = {
+  Polite:
+    "Hi, I'm not feeling well and need to take a sick day. Thank you for understanding.",
+  Casual: "Hey, I'm sick today so I'm gonna stay home.",
+  Emotional:
+    "I'm really sorry but I'm quite sick and can't make it in today. I feel awful about letting the team down.",
+  Angry:
+    "I'm sick and won't be in. I'm frustrated that I'm always pushing myself.",
+  Compelling:
+    "I'm sick today and staying home so I don't spread it. I'll make sure everything's covered.",
+  Persuasive:
+    "Would it be alright if I took a sick day today? Resting now will let me get back to 100% quicker.",
 };
 
-const toneExamples: Record<string, string> = {
-  spicy: "Please handle this right away.",
-  zesty: "You've got this! Let's make it fun today \u{1F389}",
-  calm: "Thank you for your patience while we sort this out.",
-  fresh: "No rush\u2014whenever you're ready works for me.",
-
-};
 
 export interface MatchResult {
   grid: (Tile | null)[];
@@ -157,105 +161,91 @@ export function checkMatches(
 }
 
 function ToneMatchGame({ onComplete }: { onComplete: () => void }) {
-  const [completed, setCompleted] = useState<string[]>([]);
-  const [feedback, setFeedback] = useState<string | null>(null);
-  const [activeFlavor, setActiveFlavor] = useState<string | null>(null);
+  const [selected, setSelected] = useState<Tone | null>(null);
+  const [used, setUsed] = useState<Set<Tone>>(new Set());
+  const [quizAnswer, setQuizAnswer] = useState<Tone | null>(null);
 
-  const [sentenceInput, setSentenceInput] = useState("");
+  function handleDragStart(e: React.DragEvent<HTMLDivElement>, tone: Tone) {
+    e.dataTransfer.setData("text/plain", tone);
+  }
 
-  const [aiSentence, setAiSentence] = useState<string | null>(null);
-
-  function handleDrop(flavor: string, word: string) {
-    const expected = toneWords.find((t) => t.word === word)?.flavor;
-    const correct = expected === flavor;
-    if (correct) {
-      setFeedback(`Nice! "${word}" matches ${flavor}.`);
-      setActiveFlavor(flavor);
-      setAiSentence(null);
-      if (!completed.includes(word)) {
-        setCompleted((c) => [...c, word]);
-      }
-    } else if (expected) {
-      const emoji = flavors.find((f) => f.name === flavor)?.emoji || "";
-      setFeedback(
-        `"${word}" doesn’t match ${emoji} — it’s too ${
-          flavorAdjective[expected]
-        } for ${flavor} tones.`,
-      );
-    } else {
-      setFeedback("Try again!");
+  function handleDrop(e: React.DragEvent<HTMLSpanElement>) {
+    e.preventDefault();
+    const tone = e.dataTransfer.getData("text/plain") as Tone;
+    if (tones.includes(tone)) {
+      setSelected(tone);
+      setUsed(new Set(used).add(tone));
     }
   }
 
-  function buildSentence() {
-    if (!activeFlavor) return;
-
-    const example = toneExamples[activeFlavor];
-    const base = sentenceInput.trim() || example;
-    setAiSentence(base);
-
+  function handleDragOver(e: React.DragEvent<HTMLSpanElement>) {
+    e.preventDefault();
   }
+
 
   useEffect(() => {
-    if (completed.length === toneWords.length) {
+    if (used.size === tones.length) {
       onComplete();
     }
-  }, [completed, onComplete]);
+  }, [used, onComplete]);
 
   return (
-    <div>
-      <h3>Drag the words to match the face</h3>
-      <div className="drag-container">
-        <div className="drag-words">
-          {toneWords
-            .filter((w) => !completed.includes(w.word))
-            .map((w) => (
-              <div
-                key={w.word}
-                className="drag-word"
-                draggable
-                onDragStart={(e) =>
-                  e.dataTransfer.setData("text/plain", w.word)
-                }
-              >
-                {w.word}
-              </div>
-            ))}
-        </div>
-        <div className="drop-zones">
-          {flavors.map((f) => (
-            <div
-              key={f.name}
-              className="drop-zone"
-              onDragOver={(e) => e.preventDefault()}
-              onDrop={(e) => {
-                e.preventDefault();
-                const word = e.dataTransfer.getData("text/plain");
-                handleDrop(f.name, word);
-              }}
-            >
-              <span role="img" aria-label={f.name}>
-                {f.emoji}
-              </span>
-            </div>
-          ))}
-        </div>
+    <div className="dragdrop-game">
+      <h2>Drag a tone into the blank</h2>
+      <p className="sentence">
+        Write a
+        <span
+          className="drop-area"
+          onDrop={handleDrop}
+          onDragOver={handleDragOver}
+        >
+          {selected ? ` ${selected} ` : " ____ "}
+        </span>
+        short text to call out of work sick today.
+      </p>
+      <div className="word-bank">
+        {tones.map((tone) => (
+          <div
+            key={tone}
+            draggable
+            onDragStart={(e) => handleDragStart(e, tone)}
+            className="word"
+          >
+            {tone}
+          </div>
+        ))}
       </div>
-      {feedback && <p>{feedback}</p>}
-      {activeFlavor && (
-        <div className="sentence-builder">
-
-          <input
-            type="text"
-            value={sentenceInput}
-            placeholder="Type a short sentence"
-            onChange={(e) => setSentenceInput(e.target.value)}
-          />
-
-          <button onClick={buildSentence}>
-            What would the AI say in a {activeFlavor} tone?
-          </button>
-          {aiSentence && <p>AI says: {aiSentence}</p>}
+      {selected && (
+        <div className="response">
+          <h3>AI Response</h3>
+          <p>{examples[selected]}</p>
+        </div>
+      )}
+      {used.size === tones.length && (
+        <div className="quiz">
+          <h3>Quick test</h3>
+          <p>
+            What tone should you use when writing a message to your boss that you
+            will be out of work sick today?
+          </p>
+          <div className="options">
+            {tones.map((tone) => (
+              <button
+                key={tone}
+                onClick={() => setQuizAnswer(tone)}
+                disabled={!!quizAnswer}
+              >
+                {tone}
+              </button>
+            ))}
+          </div>
+          {quizAnswer && (
+            <p className="feedback">
+              {quizAnswer === "Polite"
+                ? "Correct! A polite tone is best for informing your boss."
+                : "Not quite. A polite tone is usually most appropriate."}
+            </p>
+          )}
         </div>
       )}
     </div>
@@ -268,13 +258,15 @@ function ToneMatchGame({ onComplete }: { onComplete: () => void }) {
  * show an age-based leadership tip.
  */
 export default function Match3Game() {
-  const { user, addBadge } = useContext(UserContext);
-  const navigate = useNavigate();
+  const { user, addBadge } = useContext(UserContext)
+  const navigate = useNavigate()
   const [sidebarQuote] = useState(
     () => quotes[Math.floor(Math.random() * quotes.length)],
-  );
-  const [newBadges, setNewBadges] = useState<string[]>([]);
-  const [showEndModal, setShowEndModal] = useState(false);
+  )
+  const [sidebarTip] = useState(
+    () =>
+      tips[Math.floor(Math.random() * tips.length)],
+  )
 
   function handleComplete() {
     const earned: string[] = [];
@@ -282,8 +274,15 @@ export default function Match3Game() {
       addBadge("first-match3");
       earned.push("first-match3");
     }
-    setNewBadges(earned);
-    setShowEndModal(true);
+    if (!user.badges.includes("tone-whiz")) {
+      addBadge("tone-whiz");
+      earned.push("tone-whiz");
+    }
+    const msg = earned.length
+      ? `Great job! Earned ${earned.length} badge${earned.length > 1 ? 's' : ''}.`
+      : 'Great job!';
+    toast.success(`${msg} Moving on to the quiz.`);
+    navigate("/games/quiz");
   }
 
   return (
@@ -293,51 +292,12 @@ export default function Match3Game() {
       </div>
       <aside className="match3-sidebar">
         <h3>Why Tone Matters</h3>
-        <p>Drag the adjectives to the face that best matches their vibe.</p>
+        <p>Drag the adjectives into the blank to try different tones.</p>
         <blockquote className="sidebar-quote">{sidebarQuote}</blockquote>
+        <p className="sidebar-tip">{sidebarTip}</p>
       </aside>
 
-      {showEndModal && (
-        <div className="match3-modal-overlay">
-          <div className="match3-modal">
-            <h3>Great job!</h3>
-            <p>You matched all the words.</p>
-            <div className="flashcard">
-              <strong>Why Tone Matters</strong>
-              <p>Changing one adjective = a whole new vibe. Tone tells the AI how to speak, not just what to say.</p>
-            </div>
-            {newBadges.length > 0 && (
-              <div className="badge-rewards">
-                {newBadges.map((id) => {
-                  const badge = BADGES.find((b) => b.id === id);
-                  return (
-                    <motion.div
-                      key={id}
-                      className="badge-icon"
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
-                      transition={{ type: "spring", stiffness: 260 }}
-                    >
-                      <span role="img" aria-label="badge">
-                        🏅
-                      </span>
-                      <div>{badge?.name ?? id}</div>
-                    </motion.div>
-                  );
-                })}
-              </div>
-            )}
-            <button
-              onClick={() => {
-                setShowEndModal(false);
-                navigate("/games/quiz");
-              }}
-            >
-              Next Game
-            </button>
-          </div>
-        </div>
-      )}
+      <RobotChat />
     </div>
   );
 }
