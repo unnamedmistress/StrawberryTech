@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import './QuizGame.css'
 
@@ -146,10 +146,24 @@ export default function QuizGame() {
     setRound((r) => (r + 1) % ROUNDS.length)
   }
 
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries, obs) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible')
+          obs.unobserve(entry.target)
+        }
+      })
+    }, { threshold: 0.1 })
+
+    document.querySelectorAll('.reveal').forEach((el) => observer.observe(el))
+
+    return () => observer.disconnect()
+  }, [])
+
   return (
     <div className="quiz-page">
       <ChallengeBanner />
-      <WhyItMatters />
       <div className="truth-game">
         <div className="statements">
           <div className="statement-header">
@@ -186,6 +200,7 @@ export default function QuizGame() {
           </>
         )}
         </div>
+        <WhyItMatters />
         <ChatBox />
       </div>
     </div>
