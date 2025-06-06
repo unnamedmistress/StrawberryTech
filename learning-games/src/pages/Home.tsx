@@ -69,7 +69,7 @@ export default function Home() {
             alt="Tone puzzle preview"
             className="game-icon"
           />
-          <span>Tone Puzzle</span>
+          <span className="game-title">Tone Puzzle</span>
         </Link>
         <Link className="game-card" to="/games/quiz">
           <img
@@ -77,7 +77,7 @@ export default function Home() {
             alt="Hallucinations preview"
             className="game-icon"
           />
-          <span>Hallucinations</span>
+          <span className="game-title">Hallucinations</span>
         </Link>
       </div>
 
