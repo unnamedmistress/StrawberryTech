@@ -1,6 +1,7 @@
 import { useContext, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { UserContext } from '../context/UserContext'
+import CourseOverview from '../components/CourseOverview'
 import './Home.css'
 
 /**
@@ -38,6 +39,18 @@ export default function Home() {
 
   return (
     <div className="home">
+      {/* intro hero */}
+      <section className="intro-hero">
+        <img
+          src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOTJhMWE2Yjc2Y2I5NmUxNDA2N2Y0Nzg3NDFiODRlOTk0ODE1MTdlNSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/yrVn0u3qzO9nK/giphy.gif"
+          alt="Confetti celebration"
+          aria-label="celebratory animation"
+          className="intro-gif"
+        />
+        <button className="start-btn" onClick={() => navigate('/welcome')}>
+          Begin Your Journey
+        </button>
+      </section>
       {/* hero section */}
       <section className="hero reveal">
         <h1 className="hero-title">Embark on a Fruity Learning Adventure!</h1>
@@ -49,6 +62,8 @@ export default function Home() {
         <p className="tagline">Play engaging games and sharpen your skills.</p>
         <button onClick={() => navigate('/games/tone')}>Play Now</button>
       </section>
+
+      <CourseOverview />
 
       {/* greeting */}
       {user.age && (
