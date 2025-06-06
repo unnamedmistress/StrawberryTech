@@ -177,7 +177,7 @@ export default function QuizGame() {
         <WhyItMatters />
         <div className="statements">
           <div className="statement-header">
-            <h2>Two Truths and a Lie</h2>
+            <h2>Hulluscinations</h2>
             <button
               className="refresh-btn"
               onClick={refreshRound}

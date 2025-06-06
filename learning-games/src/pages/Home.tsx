@@ -47,7 +47,7 @@ export default function Home() {
           className="hero-img"
         />
         <p className="tagline">Play engaging games and sharpen your skills.</p>
-        <button onClick={() => navigate('/games/match3')}>Play Now</button>
+        <button onClick={() => navigate('/games/tone')}>Play Now</button>
       </section>
 
       {/* greeting */}
@@ -59,13 +59,13 @@ export default function Home() {
 
       {/* game list */}
       <div className="game-grid reveal">
-        <Link className="game-card" to="/games/match3">
+        <Link className="game-card" to="/games/tone">
           <img
             src="https://plus.unsplash.com/premium_photo-1723662084148-2cd2357705ba?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400"
             alt="Puzzle pieces"
             className="game-icon"
           />
-          <span>Match-3 Puzzle</span>
+          <span>Tone Puzzle</span>
         </Link>
         <Link className="game-card" to="/games/quiz">
           <img
@@ -73,7 +73,7 @@ export default function Home() {
             alt="Question mark"
             className="game-icon"
           />
-          <span>Two Truths and a Lie</span>
+          <span>Hulluscinations</span>
         </Link>
       </div>
 
