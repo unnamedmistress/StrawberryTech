@@ -49,8 +49,8 @@
 
 .response {
   margin-top: 1rem;
-  background: #f3f3f3;
-  color: #000;
+  background: var(--color-background);
+  color: var(--color-text-dark);
   padding: 1rem;
   border-radius: 6px;
 }

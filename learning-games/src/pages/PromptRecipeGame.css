@@ -1,6 +1,6 @@
 
 .recipe-page {
-  background: #f7f7f7;
+  background: var(--color-background);
   padding: 1rem;
   min-height: 100vh;
   position: relative;
@@ -32,7 +32,7 @@
 
 .recipe-sidebar {
   max-width: 240px;
-  background: #fafafa;
+  background: var(--color-background);
   color: var(--color-text-dark);
   padding: 1rem;
   border-radius: 8px;
@@ -47,7 +47,7 @@
 }
 
 .recipe-game {
-  background: #fff;
+  background: var(--color-background);
   padding: 1.5rem;
   border-radius: 10px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -73,7 +73,7 @@
   border: 2px dashed var(--color-purple-dark);
   border-radius: 8px;
   padding: 0.5rem;
-  background: #fafafa;
+  background: var(--color-background);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -82,7 +82,7 @@
 }
 
 .bowl.hover {
-  background: #f0f0f0;
+  background: var(--color-secondary);
   border-color: var(--color-brand);
 }
 
@@ -134,7 +134,7 @@
 
 .plate {
   margin-top: 1rem;
-  background: #fff;
+  background: var(--color-background);
   color: var(--color-text-dark);
   padding: 1.5rem;
   border-radius: 10px;
