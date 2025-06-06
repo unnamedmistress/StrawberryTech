@@ -31,7 +31,7 @@ export default function NavBar() {
           <Link to="/games/tone">Tone</Link>
         </li>
         <li>
-          <Link to="/games/quiz">Hulluscinations</Link>
+          <Link to="/games/quiz">Hallucinations</Link>
         </li>
         <li>
           <Link to="/leaderboard">Leaderboard</Link>

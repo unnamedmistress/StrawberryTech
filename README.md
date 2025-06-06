@@ -7,7 +7,7 @@ StrawberryTech is a collection of small web games built with **React**, **TypeSc
 ### Tone Puzzle
 Swap adjectives to explore how word choice affects tone. Matches award points and may show leadership tips that vary by age group. Scores and badges are saved for later.
 
-### Hulluscinations
+### Hallucinations
 A short quiz where you spot the single AI hallucination hidden among two truthful statements.
 
 ## Age‑Adaptive Features

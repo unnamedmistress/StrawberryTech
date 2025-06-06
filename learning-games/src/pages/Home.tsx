@@ -73,7 +73,7 @@ export default function Home() {
             alt="Question mark"
             className="game-icon"
           />
-          <span>Hulluscinations</span>
+          <span>Hallucinations</span>
         </Link>
       </div>
 
