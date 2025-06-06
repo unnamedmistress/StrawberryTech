@@ -414,6 +414,7 @@
   align-items: center;
   z-index: 1000;
 }
+/* Chat modal container - relative to position close button */
 
 .chat-modal {
   background: #fff;
