@@ -36,7 +36,7 @@ const PROMPTS: PromptParts[] = [
 
 export default function PromptRecipeGame() {
   const { setScore, addBadge, user } = useContext(UserContext)
-  const [round, setRound] = useState(0)
+  const [current, setCurrent] = useState(0)
   const [score, setScoreState] = useState(0)
   const [perfect, setPerfect] = useState(0)
   const [cards, setCards] = useState<{ text: string; part: Part }[]>([])
@@ -48,7 +48,9 @@ export default function PromptRecipeGame() {
   }, [])
 
   function startRound() {
-    const next = PROMPTS[Math.floor(Math.random() * PROMPTS.length)]
+    const idx = Math.floor(Math.random() * PROMPTS.length)
+    setCurrent(idx)
+    const next = PROMPTS[idx]
     const newCards: { text: string; part: Part }[] = [
       { text: next.action, part: 'Action' },
       { text: next.context, part: 'Context' },
@@ -65,7 +67,10 @@ export default function PromptRecipeGame() {
 
   function handleDrop(part: Part) {
     if (dragged.current) {
-      setPlaced(prev => ({ ...prev, [part.toLowerCase()]: dragged.current!.text }))
+      setPlaced(prev => ({
+        ...prev,
+        [part.toLowerCase() as keyof PromptParts]: dragged.current!.text,
+      }))
       if (dragged.current.part === part) {
         setScoreState(s => s + 10)
       }
@@ -81,19 +86,17 @@ export default function PromptRecipeGame() {
       placed.constraints
     ) {
       const correct =
-        placed.action === PROMPTS[round].action &&
-        placed.context === PROMPTS[round].context &&
-        placed.format === PROMPTS[round].format &&
-        placed.constraints === PROMPTS[round].constraints
+        placed.action === PROMPTS[current].action &&
+        placed.context === PROMPTS[current].context &&
+        placed.format === PROMPTS[current].format &&
+        placed.constraints === PROMPTS[current].constraints
       if (correct) {
         setScoreState(s => s + 30)
         setPerfect(p => p + 1)
       }
-      const nextRound = (round + 1) % PROMPTS.length
-      setRound(nextRound)
       startRound()
     }
-  }, [placed, round])
+  }, [placed, current])
 
   useEffect(() => {
     if (perfect >= 10 && !user.badges.includes('prompt-chef')) {

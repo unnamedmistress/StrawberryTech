@@ -33,14 +33,16 @@ export default function ClarityEscapeRoom() {
     const lower = input.toLowerCase()
     const success = current.keywords.every(k => lower.includes(k))
     if (success) {
-      setScoreState(s => s + 50)
+      const nextScore = score + 50
+      setScoreState(nextScore)
       setMessage('The door unlocks with a click!')
       if (door + 1 === TASKS.length) {
         const time = Date.now() - start
-        setScore('escape', score + 50)
+        setScore('escape', nextScore)
         if (time < 180000 && !user.badges.includes('escape-artist')) {
           addBadge('escape-artist')
         }
+        setDoor(TASKS.length)
       } else {
         setDoor(d => d + 1)
         setInput('')
