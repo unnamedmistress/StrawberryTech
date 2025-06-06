@@ -96,7 +96,7 @@
 .hero-title {
   font-family: 'Fredoka One', cursive;
   font-size: 36px;
-  color: #ff6347;
+  color: var(--color-deep-red);
   text-align: center;
   margin-bottom: 0.5rem;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
@@ -112,7 +112,7 @@
 .progress-summary progress {
   width: 80%;
   height: 1rem;
-  accent-color: #ffd700;
+  accent-color: var(--color-accent);
   display: block;
   margin: 0 auto;
 }

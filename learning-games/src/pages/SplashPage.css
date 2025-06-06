@@ -5,7 +5,7 @@
   overflow: hidden;
   color: #fff;
   text-align: center;
-  background: linear-gradient(to bottom right, #ff4d80, #ff9966);
+  background: linear-gradient(to bottom right, var(--color-brand), var(--color-secondary));
 }
 
 .overlay {
@@ -27,14 +27,14 @@
   font-family: 'Roboto', sans-serif;
   font-weight: bold;
   font-size: 16px;
-  background: #32cd32;
+  background: var(--color-accent);
   min-width: 44px;
   min-height: 44px;
   transition: background-color 0.3s ease;
 }
 
 .start-btn:hover {
-  background: #228b22;
+  background: var(--color-mint);
 }
 
 .start-btn:active {

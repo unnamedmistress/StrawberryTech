@@ -68,7 +68,7 @@
   text-decoration: none;
   display: block;
   overflow: hidden;
-  background: #fff;
+  background: var(--color-background);
   color: var(--color-text-dark);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s ease, border-color 0.2s ease;
@@ -91,7 +91,7 @@
 
 .progress-sidebar {
   max-width: 240px;
-  background: #fafafa;
+  background: var(--color-background);
   color: var(--color-text-dark);
   padding: 1rem;
   border-radius: 8px;
@@ -165,7 +165,7 @@
 }
 
 .leaderboard-card {
-  background: #fff;
+  background: var(--color-background);
   color: var(--color-text-dark);
   padding: 1rem;
   border-radius: 8px;
@@ -173,12 +173,12 @@
 }
 
 .leaderboard-card .top-row {
-  background: #fffbe6;
+  background: var(--color-secondary);
 }
 
 .match3-sidebar {
   max-width: 240px;
-  background: #fff;
+  background: var(--color-background);
   color: var(--color-text-dark);
   padding: 1rem;
   border-radius: 8px;
@@ -308,7 +308,7 @@
 }
 .theme-toggle {
   margin-right: 1rem;
-  background: #fff;
+  background: var(--color-background);
   color: var(--color-brand);
   width: 1.75rem;
   height: 1.75rem;
@@ -521,8 +521,8 @@
 
 .response {
   margin-top: 1rem;
-  background: #f3f3f3;
-  color: #000;
+  background: var(--color-background);
+  color: var(--color-text-dark);
   padding: 1rem;
   border-radius: 6px;
 }
@@ -566,7 +566,7 @@
 /* Chat modal container - relative to position close button */
 
 .chat-modal {
-  background: #fff;
+  background: var(--color-background);
   color: var(--color-text-dark);
   padding: 1rem;
   border-radius: 8px;
@@ -617,9 +617,9 @@
 }
 
 .chat-message.assistant {
-  background: #f1f5f9;
-  color: #000;
-  border-color: #cbd5e1;
+  background: var(--color-background);
+  color: var(--color-text-dark);
+  border-color: var(--color-mint);
 }
 
 @media (max-width: 600px) {
@@ -647,7 +647,7 @@
   margin-top: 1rem;
 }
 .top-scores-card {
-  background: #fff;
+  background: var(--color-background);
   padding: 0.5rem;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
