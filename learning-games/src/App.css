@@ -91,26 +91,42 @@
 
 .progress-sidebar {
   max-width: 240px;
-  background: #f9f9f9;
+  background: #fafafa;
   color: var(--color-text-dark);
   padding: 1rem;
   border-radius: 8px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   text-align: left;
   margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: stretch;
 }
 
 .progress-sidebar progress {
   width: 100%;
   height: 2rem;
   accent-color: var(--color-brand);
+
+  background-color: #eee;
+  border-radius: 4px;
+  overflow: hidden;
+  transition: width 0.4s ease;
+}
+.progress-sidebar progress::-webkit-progress-bar {
+  background-color: #eee;
+  border-radius: 4px;
   transition: width 0.5s ease;
+
 }
 .progress-sidebar progress::-webkit-progress-value {
-  background: linear-gradient(90deg, var(--color-brand), var(--color-orange));
+  background: var(--color-brand);
+  transition: width 0.4s ease;
 }
 .progress-sidebar progress::-moz-progress-bar {
-  background: linear-gradient(90deg, var(--color-brand), var(--color-orange));
+  background: var(--color-brand);
+  transition: width 0.4s ease;
 }
 /* Match-3 styles */
 .match3-container {
@@ -630,6 +646,12 @@
 .top-scores-title {
   margin-top: 1rem;
 }
+.top-scores-card {
+  background: #fff;
+  padding: 0.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
 .top-scores-list {
   list-style: none;
   padding-left: 0;
@@ -642,7 +664,7 @@
   font-size: 0.9rem;
 }
 .top-scores-list li.top {
-  color: #d4af37;
+  color: var(--color-brand);
   font-weight: bold;
 }
 .view-leaderboard a {
