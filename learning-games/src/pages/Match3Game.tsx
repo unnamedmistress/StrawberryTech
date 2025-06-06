@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 import { UserContext } from "../context/UserContext";
 import RobotChat from "../components/RobotChat";
+import InstructionBanner from "../components/ui/InstructionBanner";
 
 /** Tile element used in the grid */
 export interface Tile {
@@ -288,6 +289,10 @@ export default function Match3Game() {
 
   return (
     <div className="match3-wrapper">
+      <InstructionBanner>
+        Drag each tone word into the blank. After trying them all, answer the
+        quick quiz!
+      </InstructionBanner>
       <div className="match3-container">
         <ToneMatchGame onComplete={handleComplete} />
       </div>
