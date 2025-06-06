@@ -104,6 +104,14 @@ export default function Home() {
           />
           <span className="game-title">Prompt Builder</span>
         </Link>
+        <Link className="game-card" to="/games/darts">
+          <img
+            src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMWp1bDgwZ2RwYXFmejI0MGpqdGJvMWg3ODZlN2tlNHFndTRxOW0wNSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/Y4pAX5oO1jQS0/giphy.gif"
+            alt="Prompt darts preview"
+            className="game-icon"
+          />
+          <span className="game-title">Prompt Darts</span>
+        </Link>
       </div>
 
       {/* navigation */}
