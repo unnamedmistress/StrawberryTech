@@ -93,7 +93,7 @@ export default function RobotChat() {
                 onChange={e => setInput(e.target.value)}
                 placeholder="Say something..."
               />
-              <button type="submit">Send</button>
+              <button type="submit" className="btn-primary">Send</button>
             </form>
           </div>
         </div>

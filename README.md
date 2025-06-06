@@ -14,6 +14,7 @@ A short quiz where you spot the single AI hallucination hidden among two truthfu
 - Players enter their age and name on first visit.
 - Games read the stored age to tweak difficulty and show tailored tips.
 - High scores and earned badges persist using `localStorage`.
+- High contrast theme preference persists via `ThemeToggle`.
 
 ## Getting Started
 1. Install dependencies and start the dev server:

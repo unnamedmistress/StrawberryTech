@@ -123,7 +123,7 @@ function ChatBox() {
           onChange={e => setInput(e.target.value)}
           placeholder="Type a question..."
         />
-        <button type="submit">Send</button>
+        <button type="submit" className="btn-primary">Send</button>
       </form>
     </div>
   )
@@ -216,29 +216,29 @@ export default function QuizGame() {
             {current.statements.map((s, i) => (
               <li key={i}>
                 <button
-                  className={`statement-btn ${choice === i ? 'selected' : ''}`}
-                  onClick={() => handleSelect(i)}
-                  disabled={choice !== null}
-                >
-                  {s}
-                </button>
-              </li>
-            ))}
-          </ul>
-          {choice !== null && (
-            <>
-              <p className="feedback">
-                {correct
-                  ? '✅ Correct! You spotted the hallucination.'
-                  : '❌ Incorrect. That one is true.'}
-              </p>
-              <button onClick={nextRound}>Next Round</button>
-            </>
-          )}
+                className={`statement-btn ${choice === i ? 'selected' : ''}`}
+                onClick={() => handleSelect(i)}
+                disabled={choice !== null}
+              >
+                {s}
+              </button>
+            </li>
+          ))}
+        </ul>
+        {choice !== null && (
+          <>
+            <p className="feedback">
+              {correct
+                ? '✅ Correct! You spotted the hallucination.'
+                : '❌ Incorrect. That one is true.'}
+            </p>
+            <button onClick={nextRound} className="btn-primary">Next Round</button>
+          </>
+        )}
         </div>
         <ChatBox />
         <p style={{ marginTop: '1rem', textAlign: 'center' }}>
-          <button onClick={() => navigate('/leaderboard')}>Next</button>
+          <button onClick={() => navigate('/leaderboard')} className="btn-primary">Next</button>
         </p>
         <p style={{ marginTop: '1rem', textAlign: 'center' }}>
           <Link to="/leaderboard">Return to Progress</Link>
