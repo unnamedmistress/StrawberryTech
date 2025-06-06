@@ -27,7 +27,7 @@ export default function LeaderboardPage() {
       <div>
         <h2>Leaderboard</h2>
       {/* Show top scores for Tone */}
-      <section>
+      <section className="leaderboard-card">
         <h3>Tone High Scores</h3>
         <table style={{ margin: '0 auto' }}>
           <thead>
@@ -41,9 +41,10 @@ export default function LeaderboardPage() {
               .concat({ name: user.name ?? 'You', score: user.scores['tone'] ?? 0 })
               .sort((a, b) => b.score - a.score)
               .slice(0, 5)
-              .map((entry) => (
+              .map((entry, idx) => (
                 <tr
                   key={entry.name}
+                  className={idx === 0 ? 'top-row' : undefined}
                   style={{
                     fontWeight:
                       user.name && entry.name === user.name ? 'bold' : undefined,
