@@ -1,12 +1,13 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import ThemeToggle from './ThemeToggle'
+import Tooltip from '../ui/Tooltip'
 
 export default function NavBar() {
   const [open, setOpen] = useState(false)
 
   return (
-    <nav className="navbar">
+    <nav className="navbar" style={{ position: 'sticky', top: 0 }}>
       <div className="brand">
         <img
           src="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%206%2C%202025%2C%2011_24_31%20AM.png"
@@ -25,22 +26,34 @@ export default function NavBar() {
       </button>
       <ul className={open ? 'open' : undefined} onClick={() => setOpen(false)}>
         <li>
-          <Link to="/">Home</Link>
+          <Tooltip message="Hover here for a surprise!">
+            <Link to="/">Home</Link>
+          </Tooltip>
         </li>
         <li>
-          <Link to="/games/tone">Tone</Link>
+          <Tooltip message="Hover here for a surprise!">
+            <Link to="/games/tone">Tone</Link>
+          </Tooltip>
         </li>
         <li>
-          <Link to="/games/quiz">Hallucinations</Link>
+          <Tooltip message="Hover here for a surprise!">
+            <Link to="/games/quiz">Hallucinations</Link>
+          </Tooltip>
         </li>
         <li>
-          <Link to="/leaderboard">Progress</Link>
+          <Tooltip message="Hover here for a surprise!">
+            <Link to="/leaderboard">Progress</Link>
+          </Tooltip>
         </li>
         <li>
-          <Link to="/help">Help</Link>
+          <Tooltip message="Hover here for a surprise!">
+            <Link to="/help">Help</Link>
+          </Tooltip>
         </li>
         <li>
-          <Link to="/profile">Profile</Link>
+          <Tooltip message="Hover here for a surprise!">
+            <Link to="/profile">Profile</Link>
+          </Tooltip>
         </li>
       </ul>
     </nav>
