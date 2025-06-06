@@ -1,7 +1,6 @@
 import { useContext, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { UserContext } from '../context/UserContext'
-import CourseOverview from '../components/CourseOverview'
 import './Home.css'
 
 /**
@@ -54,7 +53,6 @@ export default function Home() {
         </button>
       </section>
 
-      <CourseOverview />
 
       {/* greeting */}
       {user.age && (
@@ -67,16 +65,16 @@ export default function Home() {
       <div className="game-grid reveal">
         <Link className="game-card" to="/games/tone">
           <img
-            src="https://plus.unsplash.com/premium_photo-1723662084148-2cd2357705ba?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400"
-            alt="Puzzle pieces"
+            src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExN3V3YmcybDA1YTExbGhzcDJ4OXFpNGlnMmlkbWt3dGI2dWRraTh2eSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/Z9EX1jzpulWOyM43uG/giphy.gif"
+            alt="Tone puzzle preview"
             className="game-icon"
           />
           <span>Tone Puzzle</span>
         </Link>
         <Link className="game-card" to="/games/quiz">
           <img
-            src="https://plus.unsplash.com/premium_photo-1678048604398-f42dda6997bd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400"
-            alt="Question mark"
+            src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExcTZoaHpxY3AwbmN1OTMwN3dkY3c5eXI1eXB3cDJ5ajNudDdkcnJ6cSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9dg/SR6WK6jz0rRWf2QK0t/giphy.gif"
+            alt="Hallucinations preview"
             className="game-icon"
           />
           <span>Hallucinations</span>
