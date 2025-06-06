@@ -25,12 +25,29 @@ export const COURSES: CourseMeta[] = [
       'https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExcTZoaHpxY3AwbmN1OTMwN3dkY3c5eXI1eXB3cDJ5ajNudDdkcnJ6cSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9dg/SR6WK6jz0rRWf2QK0t/giphy.gif',
   },
   {
+
+    id: 'escape',
+    title: 'Clarity Escape Room',
+    description: 'Solve vague tasks with precise prompts to escape.',
+    path: '/games/escape',
+    meme:
+      'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZWxxNTN2aWptZHVsaHhtbTg3Y3E0Zm1jbnJ6ODltZzQ5YmQ5ZjZmMiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/GnQx3FIX9qH7O/giphy.gif',
+  },
+  {
+    id: 'recipe',
+    title: 'Prompt Recipe Builder',
+    description: 'Drag ingredients to craft a four-part prompt.',
+    path: '/games/recipe',
+    meme:
+      'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExdGlkeG45MmJ6bzI0NGR4YXV0bnU4em5idGdqd29yMjF0cGxpcnltZyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/Pj1sRt1KB9vK0K4Cph/giphy.gif',
+
     id: 'recipe',
     title: 'Prompt Recipe Builder',
     description: 'Assemble prompt ingredients by dragging cards into bowls.',
     path: '/games/recipe',
     meme:
       'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExa3h3cTR0cmEybWt0ZGM2Ymx0ZHB4ZjltbmR2dG55M3Y0MWh6dnRjZCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/Ll22OhMLAlVDbDS3Mo/giphy.gif',
+
   },
 ]
 
