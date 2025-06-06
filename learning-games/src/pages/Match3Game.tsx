@@ -143,17 +143,21 @@ export function checkMatches(
     }
   }
 
-  const [activeWord, setActiveWord] = useState<string | null>(null);
+  if (matched.size === 0) return { grid: current, gained: 0, matchedTypes: [] };
 
-      setActiveWord(word);
-      setAiSentence(wordOutputs[word]);
+  const working = [...current];
+  matched.forEach((i) => (working[i] = null));
 
-      {activeWord && (
-          {aiSentence && (
-            <p>
-              Using "{activeWord}": {aiSentence}
-            </p>
-          )}
+  for (let c = 0; c < 6; c++) {
+    for (let r = 5; r >= 0; r--) {
+      const idx = r * 6 + c;
+      if (working[idx] === null) {
+        for (let k = r; k > 0; k--) {
+          working[k * 6 + c] = working[(k - 1) * 6 + c];
+        }
+        working[c] = create();
+      }
+    }
   }
 
   const gained = matched.size * 10;
