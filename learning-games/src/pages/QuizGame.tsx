@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
+import { toast } from 'react-hot-toast'
 import './QuizGame.css'
 import InstructionBanner from '../components/ui/InstructionBanner'
 
@@ -97,6 +98,7 @@ function ChatBox() {
       }
     } catch (err) {
       console.error(err)
+      toast.error('Unable to reach the API. Check your network or .env key.')
       setMessages(prev => [
         ...prev,
         { role: 'assistant', content: 'Failed to get response.' },
