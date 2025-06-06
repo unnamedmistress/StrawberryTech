@@ -74,6 +74,7 @@ export default function PromptRecipeGame() {
   const [score, setScoreState] = useState(0)
   const [perfectRounds, setPerfectRounds] = useState(0)
   const [showPrompt, setShowPrompt] = useState(false)
+  const [hoverSlot, setHoverSlot] = useState<Slot | null>(null)
 
   function startRound() {
     const newCards: Card[] = [
@@ -118,10 +119,16 @@ export default function PromptRecipeGame() {
     const card = JSON.parse(data) as Card
     setDropped(prev => ({ ...prev, [slot]: card.text }))
     setCards(cs => cs.filter(c => c.text !== card.text))
+    setHoverSlot(null)
   }
 
-  function handleDragOver(e: React.DragEvent<HTMLDivElement>) {
+  function handleDragOver(slot: Slot, e: React.DragEvent<HTMLDivElement>) {
     e.preventDefault()
+    setHoverSlot(slot)
+  }
+
+  function handleDragLeave() {
+    setHoverSlot(null)
   }
 
   function shuffle<T>(arr: T[]): T[] {
@@ -146,14 +153,21 @@ export default function PromptRecipeGame() {
       </InstructionBanner>
       <div className="recipe-wrapper">
         <ProgressSidebar />
+        <aside className="recipe-sidebar">
+          <h3>Why Build Prompts?</h3>
+          <p>Combining action, context, format and constraints clarifies intent.</p>
+          <blockquote className="sidebar-quote">Why Card: This page has potential but needs some polish to make it intuitive, clean, and engaging.</blockquote>
+          <p className="sidebar-tip">Arrange each ingredient to craft a clear request.</p>
+        </aside>
         <div className="recipe-game">
           <div className="bowls">
             {(['Action', 'Context', 'Format', 'Constraints'] as Slot[]).map(slot => (
               <div
                 key={slot}
-                className="bowl"
+                className={`bowl${hoverSlot === slot ? ' hover' : ''}`}
                 onDrop={e => handleDrop(slot, e)}
-                onDragOver={handleDragOver}
+                onDragOver={e => handleDragOver(slot, e)}
+                onDragLeave={handleDragLeave}
               >
                 <strong>{slot}</strong>
                 <div className="bowl-content">{dropped[slot] || 'Drop here'}</div>
