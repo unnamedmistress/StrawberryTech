@@ -1,11 +1,12 @@
 import { useContext, useState, useEffect } from "react";
-import { toast } from 'react-hot-toast'
-import confetti from 'canvas-confetti'
+import { toast } from "react-hot-toast";
+import confetti from "canvas-confetti";
 
 import { useNavigate } from "react-router-dom";
 
 import { UserContext } from "../context/UserContext";
 import RobotChat from "../components/RobotChat";
+import InstructionBanner from "../components/ui/InstructionBanner";
 
 /** Tile element used in the grid */
 export interface Tile {
@@ -294,17 +295,21 @@ export default function Match3Game() {
   }
 
   return (
-    <div className="match3-wrapper">
-      <div className="match3-container">
-        <ToneMatchGame onComplete={handleComplete} />
+    <div className="match3-page">
+      <InstructionBanner>
+        Match adjectives to explore how tone changes the meaning of a message.
+      </InstructionBanner>
+      <div className="match3-wrapper">
+        <div className="match3-container">
+          <ToneMatchGame onComplete={handleComplete} />
+        </div>
+        <aside className="match3-sidebar">
+          <h3>Why Tone Matters</h3>
+          <p>Drag the adjectives into the blank to try different tones.</p>
+          <blockquote className="sidebar-quote">{sidebarQuote}</blockquote>
+          <p className="sidebar-tip">{sidebarTip}</p>
+        </aside>
       </div>
-      <aside className="match3-sidebar">
-        <h3>Why Tone Matters</h3>
-        <p>Drag the adjectives into the blank to try different tones.</p>
-        <blockquote className="sidebar-quote">{sidebarQuote}</blockquote>
-        <p className="sidebar-tip">{sidebarTip}</p>
-      </aside>
-
       <RobotChat />
     </div>
   );
