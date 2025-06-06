@@ -29,14 +29,14 @@
   padding: 0.6rem 0.75rem;
   border: 1px solid #ccc;
   border-radius: 6px;
-  background: #fdfdfd;
+  background: var(--color-background);
   color: var(--color-text-dark);
   cursor: pointer;
   transition: transform 0.15s, background-color 0.15s;
 }
 
 .statement-btn:hover {
-  background: #ececec;
+  background: var(--color-secondary);
   transform: scale(1.03);
 }
 
@@ -52,7 +52,7 @@
 }
 
 .chatbox {
-  background: #fff;
+  background: var(--color-background);
   color: var(--color-text-dark);
   padding: 1rem;
   border-radius: 8px;
@@ -127,7 +127,7 @@
 
 .quiz-sidebar {
   max-width: 240px;
-  background: #fff;
+  background: var(--color-background);
   color: var(--color-text-dark);
   padding: 1rem;
   border-radius: 8px;
