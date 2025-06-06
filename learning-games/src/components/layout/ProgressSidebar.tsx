@@ -27,21 +27,21 @@ export default function ProgressSidebar() {
       <p aria-live="polite" aria-atomic="true">Total Points: {totalPoints}</p>
       <progress value={totalPoints} max={GOAL_POINTS} />
       <p aria-live="polite" aria-atomic="true">Badges Earned: {user.badges.length}</p>
-      <div className="badge-icons" style={{ marginTop: '0.5rem' }}>
+      <div className="badge-icons">
         {user.badges.map((b) => (
-          <span key={b}>🏅</span>
+          <span key={b} title={b}>🏅</span>
         ))}
         {user.badges.length === 0 && <span>No badges yet.</span>}
       </div>
-      <h4 style={{ marginTop: '1rem' }}>Top Scores</h4>
-      <ol style={{ paddingLeft: '1.2rem' }}>
-        {leaderboard.map((entry) => (
-          <li key={entry.name} style={{ fontWeight: entry.name === (user.name ?? 'You') ? 'bold' : undefined }}>
+      <h4 className="top-scores-title">Top Scores</h4>
+      <ol className="top-scores-list">
+        {leaderboard.map((entry, idx) => (
+          <li key={entry.name} className={idx === 0 ? 'top' : undefined}>
             {entry.name}: {entry.score}
           </li>
         ))}
       </ol>
-      <p style={{ marginTop: '0.5rem' }}>
+      <p className="view-leaderboard">
         <Link to="/leaderboard">View full leaderboard</Link>
       </p>
     </aside>
