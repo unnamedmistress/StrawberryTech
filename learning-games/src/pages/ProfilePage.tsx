@@ -11,7 +11,7 @@ export default function ProfilePage() {
   function handleSaveName(e: React.FormEvent) {
     e.preventDefault()
     setName(name)
-    navigate('/')
+    navigate('/leaderboard')
   }
 
   return (
@@ -28,9 +28,9 @@ export default function ProfilePage() {
         />
         <button type="submit" style={{ marginLeft: '0.5rem' }}>Save Name</button>
       </form>
-      <AgeInputForm allowEdit onSaved={() => navigate('/')} />
+      <AgeInputForm allowEdit onSaved={() => navigate('/leaderboard')} />
       <p style={{ marginTop: '1rem' }}>
-        <Link to="/">Return Home</Link>
+        <Link to="/leaderboard">Return to Progress</Link>
       </p>
     </div>
   )
