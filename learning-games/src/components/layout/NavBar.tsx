@@ -42,6 +42,11 @@ export default function NavBar() {
         </li>
         <li>
           <Tooltip message="Hover here for a surprise!">
+            <Link to="/games/recipe">Prompt Builder</Link>
+          </Tooltip>
+        </li>
+        <li>
+          <Tooltip message="Hover here for a surprise!">
             <Link to="/leaderboard">Progress</Link>
           </Tooltip>
         </li>
