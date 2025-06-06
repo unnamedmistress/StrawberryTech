@@ -1,6 +1,6 @@
 
 .recipe-page {
-  background: url('https://images.unsplash.com/photo-1500835556837-99ac94a94552?auto=format&fit=crop&w=1200&q=60') center/cover fixed;
+  background: #f7f7f7;
   padding: 1rem;
   min-height: 100vh;
 }
@@ -12,6 +12,7 @@
   gap: 1rem;
   justify-content: center;
   align-items: start;
+  margin-top: 1rem;
 }
 
 
@@ -21,10 +22,17 @@
 }
 
 .recipe-game {
-  background: rgba(255, 255, 255, 0.85);
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
 
-  padding: 1rem;
-  border-radius: 8px;
+.recipe-game button {
+  margin-top: 0.5rem;
+  font-size: 1rem;
+  padding: 0.6rem 1.2rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 
@@ -84,18 +92,12 @@
 
 .plate {
   margin-top: 1rem;
-  background: #fffbe6;
-  padding: 1rem;
-  border-radius: 8px;
-  font-weight: bold;
-}
-
-.plate {
-  margin-top: 1rem;
   background: #fff;
   color: var(--color-text-dark);
-  padding: 1rem;
-  border-radius: 8px;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  font-weight: bold;
 }
 
 @media (max-width: 600px) {
@@ -105,5 +107,6 @@
 
   .progress-sidebar {
     max-width: none;
+    margin-bottom: 1rem;
   }
 }
