@@ -77,6 +77,12 @@ export default function QuizGame() {
     setChoice(idx)
   }
 
+  function refreshRound() {
+    setChoice(null)
+    const next = Math.floor(Math.random() * ROUNDS.length)
+    setRound(next)
+  }
+
   function nextRound() {
     setChoice(null)
     setRound((r) => (r + 1) % ROUNDS.length)
@@ -85,7 +91,16 @@ export default function QuizGame() {
   return (
     <div className="truth-game">
       <div className="statements">
-        <h2>3 Truths and a Lie</h2>
+        <div className="statement-header">
+          <h2>3 Truths and a Lie</h2>
+          <button
+            className="refresh-btn"
+            onClick={refreshRound}
+            aria-label="New statements"
+          >
+            🔄
+          </button>
+        </div>
         <ul className="statement-list">
           {current.statements.map((s, i) => (
             <li key={i}>
