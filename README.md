@@ -33,6 +33,19 @@ Node **18+** is recommended. Major dependencies include React 19, React Router 7
 - `npm run test` runs the Vitest unit tests.
 - `npm run build` creates a production build in `dist/`.
 
+### Running Tests
+
+Before executing the test suite make sure dependencies are installed:
+
+```bash
+cd learning-games
+npm install
+npm test
+```
+
+Without installing the packages first the `vitest` command used by
+`npm test` will not be available and the tests will fail.
+
 ## Environment Variables
 RobotChat uses the OpenAI API. Create a `.env` file inside `learning-games` containing:
 

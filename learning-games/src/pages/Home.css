@@ -46,4 +46,10 @@
   gap: 1.5rem;
 }
 
+@media (max-width: 480px) {
+  .game-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 
