@@ -150,10 +150,6 @@ export default function QuizGame() {
   }
 
   useEffect(() => {
-<<<<<<< HEAD
-=======
-
->>>>>>> 222aa0bd194a0c534062972b6c9e522f149ef60b
     const observer = new IntersectionObserver((entries, obs) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
@@ -165,10 +161,6 @@ export default function QuizGame() {
 
     document.querySelectorAll('.reveal').forEach((el) => observer.observe(el))
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 222aa0bd194a0c534062972b6c9e522f149ef60b
     return () => observer.disconnect()
   }, [])
 
@@ -183,43 +175,39 @@ export default function QuizGame() {
       <div className="truth-game">
         <div className="statements">
           <div className="statement-header">
-<<<<<<< HEAD
-            <h2>3 Truths and a Lie</h2>
-=======
             <h2>Two Truths and a Lie</h2>
->>>>>>> 222aa0bd194a0c534062972b6c9e522f149ef60b
             <button
               className="refresh-btn"
               onClick={refreshRound}
-            aria-label="New statements"
-          >
-            🔄
-          </button>
+              aria-label="New statements"
+            >
+              🔄
+            </button>
           </div>
           <p className="round-info">Round {round + 1} / {ROUNDS.length}</p>
           <ul className="statement-list">
             {current.statements.map((s, i) => (
               <li key={i}>
                 <button
-                className={`statement-btn ${choice === i ? 'selected' : ''}`}
-                onClick={() => handleSelect(i)}
-                disabled={choice !== null}
-              >
-                {s}
-              </button>
-            </li>
-          ))}
-        </ul>
-        {choice !== null && (
-          <>
-            <p className="feedback">
-              {correct
-                ? '✅ Correct! You spotted the hallucination.'
-                : '❌ Incorrect. That one is true.'}
-            </p>
-            <button onClick={nextRound}>Next Round</button>
-          </>
-        )}
+                  className={`statement-btn ${choice === i ? 'selected' : ''}`}
+                  onClick={() => handleSelect(i)}
+                  disabled={choice !== null}
+                >
+                  {s}
+                </button>
+              </li>
+            ))}
+          </ul>
+          {choice !== null && (
+            <>
+              <p className="feedback">
+                {correct
+                  ? '✅ Correct! You spotted the hallucination.'
+                  : '❌ Incorrect. That one is true.'}
+              </p>
+              <button onClick={nextRound}>Next Round</button>
+            </>
+          )}
         </div>
         <ChatBox />
       </div>

@@ -1,8 +1,6 @@
 import { useContext, useState, useEffect } from "react";
 import { toast } from 'react-hot-toast'
-
 import { useNavigate } from "react-router-dom";
-
 import { UserContext } from "../context/UserContext";
 import RobotChat from "../components/RobotChat";
 
@@ -25,10 +23,6 @@ export const flavors: Flavor[] = [
   { name: "friendly", emoji: "😀", color: "#ffd700" },
   { name: "professional", emoji: "😐", color: "#3cb371" },
   { name: "casual", emoji: "😎", color: "#8fbc8f" },
-<<<<<<< HEAD
-=======
-  { name: "emotional", emoji: "😭", color: "#ff6347" },
->>>>>>> 222aa0bd194a0c534062972b6c9e522f149ef60b
 
 ];
 
@@ -57,17 +51,9 @@ const quotes = [
   "Swap words wisely and watch your message sparkle!",
 ];
 
-<<<<<<< HEAD
 const tips = [
   "Tip: Swap one adjective to completely change the vibe.",
   "Use synonyms to experiment with different tones!",
-=======
-
-const tips = [
-  "Tip: Swap one adjective to completely change the vibe.",
-  "Use synonyms to experiment with different tones!",
-
->>>>>>> 222aa0bd194a0c534062972b6c9e522f149ef60b
 ];
 
 const tones = [
@@ -152,7 +138,6 @@ export function checkMatches(
     }
   }
 
-<<<<<<< HEAD
   if (matched.size === 0) return { grid: current, gained: 0, matchedTypes: [] };
 
   const working = [...current];
@@ -168,25 +153,18 @@ export function checkMatches(
         working[c] = create();
       }
     }
-=======
-  const [activeWord, setActiveWord] = useState<string | null>(null);
-
-      setActiveWord(word);
-      setAiSentence(wordOutputs[word]);
-
-      {activeWord && (
-          {aiSentence && (
-            <p>
-              Using "{activeWord}": {aiSentence}
-            </p>
-          )}
->>>>>>> 222aa0bd194a0c534062972b6c9e522f149ef60b
   }
 
-  const gained = matched.size * 10;
-  return { grid: working, gained, matchedTypes: Array.from(matchedTypes) };
+  return {
+    grid: working,
+    gained: matched.size * 10,
+    matchedTypes: Array.from(matchedTypes),
+  };
 }
 
+/**
+ * ToneMatchGame: the drag-and-drop tone mini-game
+ */
 function ToneMatchGame({ onComplete }: { onComplete: () => void }) {
   const [selected, setSelected] = useState<Tone | null>(null);
   const [used, setUsed] = useState<Set<Tone>>(new Set());
@@ -208,7 +186,6 @@ function ToneMatchGame({ onComplete }: { onComplete: () => void }) {
   function handleDragOver(e: React.DragEvent<HTMLSpanElement>) {
     e.preventDefault();
   }
-
 
   useEffect(() => {
     if (used.size === tones.length) {
