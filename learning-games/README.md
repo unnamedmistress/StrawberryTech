@@ -55,7 +55,7 @@ export default tseslint.config({
 
 ## Running Tests
 
-Before running the test suite ensure all dependencies are installed. The `vitest` CLI used by the `npm test` script is provided by the project's development dependencies:
+The test suite is powered by [Vitest](https://vitest.dev). Because Vitest is installed as a development dependency, run `npm install` first so the `vitest` CLI is available:
 
 ```bash
 cd learning-games
