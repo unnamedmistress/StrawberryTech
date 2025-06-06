@@ -329,7 +329,7 @@ export default function Match3Game() {
       </div>
       <RobotChat />
       <p style={{ marginTop: '1rem', textAlign: 'center' }}>
-        <Link to="/">Return Home</Link>
+        <Link to="/leaderboard">Return to Progress</Link>
       </p>
     </div>
   );
