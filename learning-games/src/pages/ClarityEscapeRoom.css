@@ -8,10 +8,10 @@
 }
 
 .room {
-  background: #222;
+  background: #333;
   color: #fff;
-  padding: 1rem;
-  border-radius: 8px;
+  padding: 1.25rem;
+  border-radius: 10px;
 }
 
 .hint {
@@ -27,6 +27,11 @@
 
 .prompt-form input {
   flex: 1;
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background: #f9f9f9;
+  color: #333;
 }
 
 .feedback {
@@ -34,8 +39,27 @@
   margin-bottom: 0.5rem;
 }
 
+.escape-sidebar {
+  max-width: 240px;
+  background: #f9f9f9;
+  color: var(--color-text-dark);
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.prompt-form button {
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  transition: background-color 0.3s;
+}
+.prompt-form button:hover {
+  background-color: var(--color-orange);
+}
+
 @media (max-width: 600px) {
   .escape-wrapper {
     grid-template-columns: 1fr;
   }
 }
+.prompt-form input::placeholder { color: #999; }
+.score { font-weight: bold; color: var(--color-brand); margin-top: 0.5rem; }
