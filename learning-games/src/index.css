@@ -8,7 +8,13 @@
   --color-lime: #a3e635;
   --color-blue: #1e3a8a;
   --color-purple-dark: #6d28d9;
+  /* Strawberry palette */
   --color-brand: #ee3a57;
+  --color-background: #f8d7e1;
+  --color-accent: #6dbf4d;
+  --color-secondary: #f8b7b6;
+  --color-deep-red: #b41c2d;
+  --color-mint: #a8e6cf;
   --color-text-dark: #333;
 
   color-scheme: light dark;
@@ -39,11 +45,20 @@ body {
   min-width: 320px;
   min-height: 100vh;
   padding: 0 1rem;
+  font-family: 'Roboto', sans-serif;
 }
 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Poppins', sans-serif;
+  line-height: 1.1;
+}
 h1 {
   font-size: 3.2em;
-  line-height: 1.1;
 }
 
 button {
@@ -79,7 +94,7 @@ button:focus-visible {
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
-    background-color: #f7f7f7;
+    background-color: var(--color-background);
   }
   a:hover {
     color: var(--color-lime);
