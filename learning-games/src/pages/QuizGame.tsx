@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { motion } from 'framer-motion'
 import { toast } from 'react-hot-toast'
 import { Link } from 'react-router-dom'
+import { UserContext } from '../context/UserContext'
 import './QuizGame.css'
 import InstructionBanner from '../components/ui/InstructionBanner'
 
@@ -128,8 +129,11 @@ function ChatBox() {
 }
 
 export default function QuizGame() {
+  const { user, setScore, addBadge } = useContext(UserContext)
   const [round, setRound] = useState(0)
   const [choice, setChoice] = useState<number | null>(null)
+  const [score, setScoreState] = useState(0)
+  const [played, setPlayed] = useState(0)
 
   const current = ROUNDS[round]
   const correct = choice === current.lieIndex
@@ -146,6 +150,23 @@ export default function QuizGame() {
   }
 
   function nextRound() {
+    const wasCorrect = correct
+    const newScore = wasCorrect ? score + 1 : score
+    setScoreState(newScore)
+    setPlayed(p => p + 1)
+    setScore('quiz', newScore)
+
+    if (played + 1 === ROUNDS.length) {
+      if (newScore === ROUNDS.length && !user.badges.includes('quiz-whiz')) {
+        addBadge('quiz-whiz')
+      }
+      toast.success(`You scored ${newScore} out of ${ROUNDS.length}`)
+      setScoreState(0)
+      setPlayed(0)
+      setChoice(null)
+      setRound(0)
+      return
+    }
     setChoice(null)
     setRound((r) => (r + 1) % ROUNDS.length)
   }
