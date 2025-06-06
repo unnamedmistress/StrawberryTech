@@ -102,9 +102,9 @@
 
 .progress-sidebar progress {
   width: 100%;
-  height: 1.75rem;
+  height: 2rem;
   accent-color: var(--color-brand);
-  transition: all 0.3s ease;
+  transition: width 0.5s ease;
 }
 .progress-sidebar progress::-webkit-progress-value {
   background: linear-gradient(90deg, var(--color-brand), var(--color-orange));
@@ -146,6 +146,18 @@
   gap: 1rem;
   justify-content: center;
   align-items: start;
+}
+
+.leaderboard-card {
+  background: #fff;
+  color: var(--color-text-dark);
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.leaderboard-card .top-row {
+  background: #fffbe6;
 }
 
 .match3-sidebar {
@@ -219,9 +231,13 @@
 
 .badge-icons {
   display: flex;
-  gap: 0.5rem;
+  gap: 0.75rem;
   justify-content: center;
   margin-top: 0.5rem;
+}
+
+.badge-icons span {
+  font-size: 1.5rem;
 }
 
 @keyframes pop {
@@ -296,7 +312,7 @@
   font-size: 1.1rem;
 }
 .navbar li {
-  padding: 0 0.5rem;
+  padding: 0.5rem 0.5rem;
 }
 
 .navbar a {
