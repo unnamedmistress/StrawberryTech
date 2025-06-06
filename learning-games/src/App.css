@@ -108,6 +108,7 @@
   width: 100%;
   height: 2rem;
   accent-color: var(--color-brand);
+
   background-color: #eee;
   border-radius: 4px;
   overflow: hidden;
@@ -116,6 +117,8 @@
 .progress-sidebar progress::-webkit-progress-bar {
   background-color: #eee;
   border-radius: 4px;
+  transition: width 0.5s ease;
+
 }
 .progress-sidebar progress::-webkit-progress-value {
   background: var(--color-brand);
@@ -159,6 +162,18 @@
   gap: 1rem;
   justify-content: center;
   align-items: start;
+}
+
+.leaderboard-card {
+  background: #fff;
+  color: var(--color-text-dark);
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.leaderboard-card .top-row {
+  background: #fffbe6;
 }
 
 .match3-sidebar {
@@ -313,7 +328,7 @@
   font-size: 1.1rem;
 }
 .navbar li {
-  padding: 0 0.5rem;
+  padding: 0.5rem 0.5rem;
 }
 
 .navbar a {
