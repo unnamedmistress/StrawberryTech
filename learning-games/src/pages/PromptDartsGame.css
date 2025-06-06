@@ -1,0 +1,54 @@
+.darts-page {
+  padding: 1rem;
+}
+
+.darts-wrapper {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 1rem;
+  justify-content: center;
+  align-items: start;
+}
+
+.darts-game {
+  background: #fff;
+  color: var(--color-text-dark);
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.darts-sidebar {
+  max-width: 240px;
+  background: #fff;
+  color: var(--color-text-dark);
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.feedback {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.final-score {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+@media (max-width: 600px) {
+  .darts-wrapper {
+    grid-template-columns: 1fr;
+  }
+  .progress-sidebar {
+    max-width: none;
+  }
+}

@@ -5,6 +5,7 @@ import SplashPage from './pages/SplashPage'
 import Match3Game from './pages/Match3Game'
 import QuizGame from './pages/QuizGame'
 import PromptRecipeGame from './pages/PromptRecipeGame'
+import PromptDartsGame from './pages/PromptDartsGame'
 
 import ClarityEscapeRoom from './pages/ClarityEscapeRoom'
 
@@ -31,6 +32,7 @@ function App() {
         <Route path="/games/tone" element={<Match3Game />} />
         <Route path="/games/quiz" element={<QuizGame />} />
         <Route path="/games/recipe" element={<PromptRecipeGame />} />
+        <Route path="/games/darts" element={<PromptDartsGame />} />
 
         <Route path="/games/escape" element={<ClarityEscapeRoom />} />
 
