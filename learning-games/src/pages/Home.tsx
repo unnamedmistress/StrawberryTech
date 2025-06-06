@@ -40,7 +40,7 @@ export default function Home() {
     <div className="home">
       {/* hero section */}
       <section className="hero reveal">
-        <h1>Fun Learning Awaits!</h1>
+        <h1 className="hero-title">Embark on a Fruity Learning Adventure!</h1>
         <img
           src="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%206%2C%202025%2C%2011_24_31%20AM.png"
           alt="Strawberry logo"
