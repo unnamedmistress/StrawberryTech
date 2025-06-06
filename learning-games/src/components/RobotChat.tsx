@@ -77,7 +77,7 @@ export default function RobotChat() {
         <div className="chat-modal-overlay" onClick={() => setOpen(false)}>
           <div className="chat-modal" onClick={e => e.stopPropagation()}>
             <button className="chat-close" onClick={() => setOpen(false)}>
-              \u2715
+              X
             </button>
             <h3>Practice</h3>
             <div className="chat-history">

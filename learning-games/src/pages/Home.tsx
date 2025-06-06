@@ -60,7 +60,7 @@ export default function Home() {
         </Link>
         <Link className="game-card" to="/games/quiz">
           <span className="game-icon">❓</span>
-          <span>Quiz Game</span>
+          <span>Two Truths and a Lie</span>
         </Link>
       </div>
 
