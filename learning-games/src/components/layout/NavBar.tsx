@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import ThemeToggle from './ThemeToggle'
 
 export default function NavBar() {
   const [open, setOpen] = useState(false)
@@ -14,6 +15,7 @@ export default function NavBar() {
         />
         StrawberryTech
       </div>
+      <ThemeToggle />
       <button
         className="menu-toggle"
         aria-label="Toggle navigation"
