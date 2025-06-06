@@ -3,6 +3,7 @@ import confetti from 'canvas-confetti'
 import { Link } from 'react-router-dom'
 import { UserContext } from '../../context/UserContext'
 import { DUMMY_SCORES } from '../../pages/LeaderboardPage'
+import Tooltip from '../ui/Tooltip'
 
 export default function ProgressSidebar() {
   const { user } = useContext(UserContext)
@@ -29,18 +30,23 @@ export default function ProgressSidebar() {
       <p aria-live="polite" aria-atomic="true">Badges Earned: {user.badges.length}</p>
       <div className="badge-icons">
         {user.badges.map((b) => (
-          <span key={b} title={b}>🏅</span>
+          <Tooltip key={b} message={b}>
+            <span role="img" aria-label={b}>🏅</span>
+          </Tooltip>
         ))}
         {user.badges.length === 0 && <span>No badges yet.</span>}
       </div>
       <h4 className="top-scores-title">Top Scores</h4>
-      <ol className="top-scores-list">
-        {leaderboard.map((entry, idx) => (
-          <li key={entry.name} className={idx === 0 ? 'top' : undefined}>
-            {entry.name}: {entry.score}
-          </li>
-        ))}
-      </ol>
+      <div className="top-scores-card">
+        <ol className="top-scores-list">
+          {leaderboard.map((entry, idx) => (
+            <li key={entry.name} className={idx === 0 ? 'top' : undefined}>
+              {idx === 0 && <span aria-hidden="true">🏆 </span>}
+              {entry.name}: {entry.score}
+            </li>
+          ))}
+        </ol>
+      </div>
       <p className="view-leaderboard">
         <Link to="/leaderboard">View full leaderboard</Link>
       </p>
