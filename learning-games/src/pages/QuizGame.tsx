@@ -1,4 +1,5 @@
 import { useState, useEffect, useContext } from 'react'
+import ProgressSidebar from '../components/layout/ProgressSidebar'
 import { motion } from 'framer-motion'
 import { toast } from 'react-hot-toast'
 import { Link } from 'react-router-dom'
@@ -196,6 +197,7 @@ export default function QuizGame() {
         for new prompts and then select your answer.
       </InstructionBanner>
       <div className="truth-game">
+        <ProgressSidebar />
         <WhyItMatters />
         <div className="statements">
           <div className="statement-header">
