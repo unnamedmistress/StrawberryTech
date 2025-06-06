@@ -49,15 +49,21 @@
 
 .game-icon {
   width: 100%;
-  max-height: 120px;
+  max-height: 360px;
   object-fit: cover;
   border-radius: 4px;
 }
 
 .hero-img {
-  width: 80px;
+  width: min(240px, 80%);
   margin: 0.5rem auto;
   display: block;
+}
+
+@media (max-width: 480px) {
+  .game-icon {
+    max-height: 180px;
+  }
 }
 
 .hero-title {
