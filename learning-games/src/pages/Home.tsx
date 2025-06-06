@@ -87,6 +87,14 @@ export default function Home() {
           />
           <span className="game-title">Hallucinations</span>
         </Link>
+        <Link className="game-card" to="/games/recipe">
+          <img
+            src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExa3h3cTR0cmEybWt0ZGM2Ymx0ZHB4ZjltbmR2dG55M3Y0MWh6dnRjZCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/Ll22OhMLAlVDbDS3Mo/giphy.gif"
+            alt="Prompt recipe preview"
+            className="game-icon"
+          />
+          <span className="game-title">Prompt Builder</span>
+        </Link>
       </div>
 
       {/* navigation */}
