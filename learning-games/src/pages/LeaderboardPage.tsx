@@ -10,7 +10,7 @@ export interface ScoreEntry {
 
 // Dummy leaderboards for each game. In a real multi-user app this data would
 // be fetched from a server.
-const DUMMY_SCORES: Record<string, ScoreEntry[]> = {
+export const DUMMY_SCORES: Record<string, ScoreEntry[]> = {
   tone: [
     { name: 'Alice', score: 240 },
     { name: 'Bob', score: 180 },
