@@ -1,9 +1,10 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
+import { toast } from 'react-hot-toast'
 
+import { useNavigate } from "react-router-dom";
 
 import { UserContext } from "../context/UserContext";
 import RobotChat from "../components/RobotChat";
-import InstructionBanner from "../components/ui/InstructionBanner";
 
 /** Tile element used in the grid */
 export interface Tile {
@@ -160,17 +161,106 @@ export function checkMatches(
   return { grid: working, gained, matchedTypes: Array.from(matchedTypes) };
 }
 
+function ToneMatchGame({ onComplete }: { onComplete: () => void }) {
+  const [selected, setSelected] = useState<Tone | null>(null);
+  const [used, setUsed] = useState<Set<Tone>>(new Set());
+  const [quizAnswer, setQuizAnswer] = useState<Tone | null>(null);
+
+  function handleDragStart(e: React.DragEvent<HTMLDivElement>, tone: Tone) {
+    e.dataTransfer.setData("text/plain", tone);
+  }
+
+  function handleDrop(e: React.DragEvent<HTMLSpanElement>) {
+    e.preventDefault();
+    const tone = e.dataTransfer.getData("text/plain") as Tone;
+    if (tones.includes(tone)) {
+      setSelected(tone);
+      setUsed(new Set(used).add(tone));
+    }
+  }
+
+  function handleDragOver(e: React.DragEvent<HTMLSpanElement>) {
+    e.preventDefault();
+  }
+
+
+  useEffect(() => {
+    if (used.size === tones.length) {
+      onComplete();
+    }
+  }, [used, onComplete]);
+
+  return (
+    <div className="dragdrop-game">
+      <h2>Drag a tone into the blank</h2>
+      <p className="sentence">
+        Write a
+        <span
+          className="drop-area"
+          onDrop={handleDrop}
+          onDragOver={handleDragOver}
+        >
+          {selected ? ` ${selected} ` : " ____ "}
+        </span>
+        short text to call out of work sick today.
+      </p>
+      <div className="word-bank">
+        {tones.map((tone) => (
+          <div
+            key={tone}
+            draggable
+            onDragStart={(e) => handleDragStart(e, tone)}
+            className="word"
+          >
+            {tone}
+          </div>
+        ))}
+      </div>
+      {selected && (
+        <div className="response">
+          <h3>AI Response</h3>
+          <p>{examples[selected]}</p>
+        </div>
+      )}
+      {used.size === tones.length && (
+        <div className="quiz">
+          <h3>Quick test</h3>
+          <p>
+            What tone should you use when writing a message to your boss that you
+            will be out of work sick today?
+          </p>
+          <div className="options">
+            {tones.map((tone) => (
+              <button
+                key={tone}
+                onClick={() => setQuizAnswer(tone)}
+                disabled={!!quizAnswer}
+              >
+                {tone}
+              </button>
+            ))}
+          </div>
+          {quizAnswer && (
+            <p className="feedback">
+              {quizAnswer === "Polite"
+                ? "Correct! A polite tone is best for informing your boss."
+                : "Not quite. A polite tone is usually most appropriate."}
+            </p>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
 /**
  * Simple match-3 puzzle. Players swap adjacent tiles to make rows or columns
  * of three or more of the same color. Matches award points and occasionally
  * show an age-based leadership tip.
  */
 export default function Match3Game() {
-  const { setScore: saveScore } = useContext(UserContext)
-  const [grid, setGrid] = useState<(Tile | null)[]>(createGrid())
-  const [selected, setSelected] = useState<number | null>(null)
-  const [score, setScore] = useState(0)
-
+  const { user, addBadge } = useContext(UserContext)
+  const navigate = useNavigate()
   const [sidebarQuote] = useState(
     () => quotes[Math.floor(Math.random() * quotes.length)],
   )
@@ -178,55 +268,28 @@ export default function Match3Game() {
     () =>
       tips[Math.floor(Math.random() * tips.length)],
   )
-  function handleClick(index: number) {
-    if (selected === null) {
-      setSelected(index)
-      return
-    }
-    const diff = Math.abs(selected - index)
-    const adjacent = [1, 6].includes(diff) && !(selected % 6 === 5 && index % 6 === 0)
-    if (!adjacent) {
-      setSelected(null)
-      return
-    }
-    const newGrid = [...grid]
-    ;[newGrid[selected], newGrid[index]] = [newGrid[index], newGrid[selected]]
-    setGrid(newGrid)
-    setSelected(null)
-    applyMatches(newGrid)
-  }
 
-  function applyMatches(current: (Tile | null)[]) {
-    const result = checkMatches(current)
-    if (result.gained === 0) return
-    setScore((s) => {
-      const newScore = s + result.gained
-      saveScore('match3', newScore)
-      return newScore
-    })
-    setGrid(result.grid)
+  function handleComplete() {
+    const earned: string[] = [];
+    if (!user.badges.includes("first-match3")) {
+      addBadge("first-match3");
+      earned.push("first-match3");
+    }
+    if (!user.badges.includes("tone-whiz")) {
+      addBadge("tone-whiz");
+      earned.push("tone-whiz");
+    }
+    const msg = earned.length
+      ? `Great job! Earned ${earned.length} badge${earned.length > 1 ? 's' : ''}.`
+      : 'Great job!';
+    toast.success(`${msg} Moving on to the quiz.`);
+    navigate("/games/quiz");
   }
 
   return (
     <div className="match3-wrapper">
-      <InstructionBanner>
-        Drag each tone word into the blank. After trying them all, answer the
-        quick quiz!
-      </InstructionBanner>
       <div className="match3-container">
-        <div className="match3-grid">
-          {grid.map((tile, i) => (
-            <div
-              key={tile?.id ?? i}
-              onClick={() => handleClick(i)}
-              className={`match3-tile ${selected === i ? 'selected' : ''}`}
-              style={{ background: tile?.color || 'transparent' }}
-            >
-              {tile?.emoji}
-            </div>
-          ))}
-        </div>
-        <p>Score: {score}</p>
+        <ToneMatchGame onComplete={handleComplete} />
       </div>
       <aside className="match3-sidebar">
         <h3>Why Tone Matters</h3>
