@@ -41,6 +41,11 @@ export default function Home() {
       {/* hero section */}
       <section className="hero reveal">
         <h1>Fun Learning Awaits!</h1>
+        <img
+          src="https://cdnjs.cloudflare.com/ajax/libs/openmoji/15.1.0/color/svg/1F353.svg"
+          alt="Strawberry mascot"
+          className="hero-img"
+        />
         <p className="tagline">Play engaging games and sharpen your skills.</p>
         <button onClick={() => navigate('/games/match3')}>Play Now</button>
       </section>
@@ -55,11 +60,19 @@ export default function Home() {
       {/* game list */}
       <div className="game-grid reveal">
         <Link className="game-card" to="/games/match3">
-          <span className="game-icon">🧩</span>
+          <img
+            src="https://cdnjs.cloudflare.com/ajax/libs/openmoji/15.1.0/color/svg/1F9E9.svg"
+            alt="Puzzle"
+            className="game-icon"
+          />
           <span>Match-3 Puzzle</span>
         </Link>
         <Link className="game-card" to="/games/quiz">
-          <span className="game-icon">❓</span>
+          <img
+            src="https://cdnjs.cloudflare.com/ajax/libs/openmoji/15.1.0/color/svg/2753.svg"
+            alt="Question mark"
+            className="game-icon"
+          />
           <span>Two Truths and a Lie</span>
         </Link>
       </div>
@@ -73,7 +86,13 @@ export default function Home() {
       {totalPoints > 0 && (
         <div className="progress-summary reveal">
           <p>Total Points: {totalPoints}</p>
+          <progress value={totalPoints} max={100} />
           <p>Badges Earned: {user.badges.length}</p>
+          <div className="badge-icons">
+            {user.badges.map((b) => (
+              <span key={b}>🏅</span>
+            ))}
+          </div>
         </div>
       )}
     </div>
