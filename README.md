@@ -4,10 +4,10 @@ StrawberryTech is a collection of small web games built with **React**, **TypeSc
 
 ## Mini Games
 
-### Match‑3 Puzzle
-Swap adjacent tiles to make rows or columns of three using a simple drag‑and‑drop mechanic. Matches award points and may show leadership tips that vary by age group. Scores and badges are saved for later.
+### Tone Puzzle
+Swap adjectives to explore how word choice affects tone. Matches award points and may show leadership tips that vary by age group. Scores and badges are saved for later.
 
-### Two Truths and a Lie
+### Hulluscinations
 A short quiz where you spot the single AI hallucination hidden among two truthful statements.
 
 ## Age‑Adaptive Features

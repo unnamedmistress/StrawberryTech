@@ -26,10 +26,10 @@ export default function NavBar() {
           <Link to="/">Home</Link>
         </li>
         <li>
-          <Link to="/games/match3">Match-3</Link>
+          <Link to="/games/tone">Tone</Link>
         </li>
         <li>
-          <Link to="/games/quiz">Two Truths and a Lie</Link>
+          <Link to="/games/quiz">Hulluscinations</Link>
         </li>
         <li>
           <Link to="/leaderboard">Leaderboard</Link>

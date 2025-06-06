@@ -8,13 +8,13 @@ export interface BadgeDefinition {
 export const BADGES: BadgeDefinition[] = [
   {
     id: 'first-match3',
-    name: 'First Match-3 Complete',
-    description: 'Finish a Match-3 game once',
+    name: 'First Tone Game Complete',
+    description: 'Finish a Tone game once',
   },
   {
     id: 'match-master',
-    name: 'Match-3 Master',
-    description: 'Score at least 100 points in Match-3',
+    name: 'Tone Master',
+    description: 'Score at least 100 points in Tone',
   },
   {
     id: 'quiz-whiz',
