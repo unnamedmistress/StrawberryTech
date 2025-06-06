@@ -1,6 +1,7 @@
 import { useContext, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { UserContext } from '../context/UserContext'
+import CourseOverview from '../components/CourseOverview'
 import './Home.css'
 
 /**
@@ -61,6 +62,8 @@ export default function Home() {
         <p className="tagline">Play engaging games and sharpen your skills.</p>
         <button onClick={() => navigate('/games/tone')}>Play Now</button>
       </section>
+
+      <CourseOverview />
 
       {/* greeting */}
       {user.age && (
