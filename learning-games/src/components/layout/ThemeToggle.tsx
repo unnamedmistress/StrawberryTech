@@ -11,9 +11,9 @@ export default function ThemeToggle() {
     <button
       className="theme-toggle"
       aria-label="Toggle high contrast mode"
-      onClick={() => setEnabled((v) => !v)}
+      onClick={() => setEnabled(v => !v)}
     >
-      {enabled ? 'Default' : 'High Contrast'}
+      <span aria-hidden="true">{enabled ? '🔲' : '🔳'}</span>
     </button>
   )
 }
