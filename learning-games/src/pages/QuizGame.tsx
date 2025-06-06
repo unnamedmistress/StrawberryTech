@@ -150,6 +150,7 @@ export default function QuizGame() {
   }
 
   useEffect(() => {
+
     const observer = new IntersectionObserver((entries, obs) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
@@ -160,6 +161,7 @@ export default function QuizGame() {
     }, { threshold: 0.1 })
 
     document.querySelectorAll('.reveal').forEach((el) => observer.observe(el))
+
 
     return () => observer.disconnect()
   }, [])
