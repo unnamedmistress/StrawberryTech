@@ -5,6 +5,12 @@
   text-align: center;
 }
 
+@media (max-width: 600px) {
+  #root {
+    padding: 1rem;
+  }
+}
+
 .logo {
   height: 6em;
   padding: 1.5em;
@@ -215,6 +221,15 @@
 
 .navbar a:hover {
   color: var(--color-lime);
+}
+
+.menu-toggle {
+  display: none;
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 1.5rem;
+  cursor: pointer;
 }
 
 .hero {
@@ -443,5 +458,24 @@
   background: #f1f5f9;
   color: #000;
   border-color: #cbd5e1;
+}
+
+@media (max-width: 600px) {
+  .menu-toggle {
+    display: block;
+  }
+  .navbar ul {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    left: 0;
+    flex-direction: column;
+    background: var(--color-purple);
+    padding: 1rem;
+    display: none;
+  }
+  .navbar ul.open {
+    display: flex;
+  }
 }
 
