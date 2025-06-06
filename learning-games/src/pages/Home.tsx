@@ -61,6 +61,9 @@ export default function Home() {
         />
         <p className="tagline">Play engaging games and sharpen your skills.</p>
         <button onClick={() => navigate('/games/tone')}>Play Now</button>
+        <button onClick={() => navigate('/community')} style={{ marginLeft: '1rem' }}>
+          Community
+        </button>
       </section>
 
       <CourseOverview />
