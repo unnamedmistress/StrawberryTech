@@ -87,6 +87,22 @@ export default function Home() {
           />
           <span className="game-title">Hallucinations</span>
         </Link>
+        <Link className="game-card" to="/games/escape">
+          <img
+            src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZWxxNTN2aWptZHVsaHhtbTg3Y3E0Zm1jbnJ6ODltZzQ5YmQ5ZjZmMiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/GnQx3FIX9qH7O/giphy.gif"
+            alt="Escape room preview"
+            className="game-icon"
+          />
+          <span className="game-title">Escape Room</span>
+        </Link>
+        <Link className="game-card" to="/games/recipe">
+          <img
+            src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExdGlkeG45MmJ6bzI0NGR4YXV0bnU4em5idGdqd29yMjF0cGxpcnltZyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/Pj1sRt1KB9vK0K4Cph/giphy.gif"
+            alt="Prompt builder preview"
+            className="game-icon"
+          />
+          <span className="game-title">Prompt Builder</span>
+        </Link>
       </div>
 
       {/* navigation */}
