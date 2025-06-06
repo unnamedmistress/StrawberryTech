@@ -52,6 +52,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform 0.3s ease;
 }
 
 .game-title {
@@ -59,17 +60,31 @@
   bottom: 0;
   left: 0;
   right: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.6);
   color: #fff;
-  padding: 0.25rem 0.5rem;
+  padding: 0.5rem;
   text-align: center;
   font-weight: bold;
+  font-size: 1.1rem;
+  transition: background-color 0.3s ease;
+}
+
+.game-card:hover .game-title {
+  background: rgba(0, 0, 0, 0.8);
 }
 
 .hero-img {
   width: min(240px, 80%);
+  max-width: 100%;
+  height: auto;
   margin: 0.5rem auto;
   display: block;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.2));
+  transition: transform 0.3s ease;
+}
+
+.hero-img:hover {
+  transform: translateY(-4px);
 }
 
 @media (max-width: 480px) {
@@ -80,10 +95,18 @@
 
 .hero-title {
   font-family: 'Fredoka One', cursive;
-  font-size: 28px;
+  font-size: 36px;
   color: #ff6347;
   text-align: center;
   margin-bottom: 0.5rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.tagline {
+  font-size: 1.25rem;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 1rem;
 }
 
 .progress-summary progress {

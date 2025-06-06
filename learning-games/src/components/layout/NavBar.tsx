@@ -7,7 +7,7 @@ export default function NavBar() {
   const [open, setOpen] = useState(false)
 
   return (
-    <nav className="navbar" style={{ position: 'sticky', top: 0 }}>
+    <nav className="navbar" style={{ position: 'sticky', top: 0 }} aria-label="Main navigation">
       <div className="brand">
         <img
           src="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%206%2C%202025%2C%2011_24_31%20AM.png"
