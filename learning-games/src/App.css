@@ -94,6 +94,11 @@
   grid-column: 2;
 }
 
+.match3-page {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
 
 .match3-wrapper {
   width: 100%;
