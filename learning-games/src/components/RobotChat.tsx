@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
+import { toast } from 'react-hot-toast'
 
 interface ChatMessage {
   role: 'user' | 'assistant'
@@ -45,7 +46,11 @@ export default function RobotChat() {
       }
     } catch (err) {
       console.error(err)
-      setMessages(prev => [...prev, { role: 'assistant', content: 'Failed to get response.' }])
+      toast.error('Unable to reach the API. Check your network or .env key.')
+      setMessages(prev => [
+        ...prev,
+        { role: 'assistant', content: 'Failed to get response.' },
+      ])
     }
   }
 
@@ -56,6 +61,15 @@ export default function RobotChat() {
         onClick={() => setOpen(true)}
         animate={{ y: [0, -10, 0] }}
         transition={{ repeat: Infinity, duration: 2 }}
+        role="button"
+        aria-label="Open practice chat"
+        tabIndex={0}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault()
+            setOpen(true)
+          }
+        }}
       >
         {'\u{1F916}'}
       </motion.div>
@@ -63,7 +77,7 @@ export default function RobotChat() {
         <div className="chat-modal-overlay" onClick={() => setOpen(false)}>
           <div className="chat-modal" onClick={e => e.stopPropagation()}>
             <button className="chat-close" onClick={() => setOpen(false)}>
-              \u2715
+              X
             </button>
             <h3>Practice</h3>
             <div className="chat-history">

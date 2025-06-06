@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
+import { toast } from 'react-hot-toast'
 import './QuizGame.css'
+import InstructionBanner from '../components/ui/InstructionBanner'
 
 interface StatementSet {
   statements: string[]
@@ -49,7 +51,7 @@ function ChallengeBanner() {
       animate={{ scale: [1, 1.1, 1] }}
       transition={{ repeat: Infinity, duration: 2 }}
     >
-      Super Hard Challenge! Spot the liar 🕵️
+      Ultimate Challenge: find the AI's lie! 🕵️
     </motion.div>
   )
 }
@@ -58,7 +60,7 @@ function WhyItMatters() {
   return (
     <aside className="quiz-sidebar reveal">
       <h3>Why It Matters</h3>
-      <p>Hallucinations happen when an AI confidently states something untrue.</p>
+      <p>AI hallucinations occur when the system confidently states something untrue.</p>
       <blockquote className="sidebar-quote">{QUOTE}</blockquote>
       <p className="sidebar-tip">{TIP}</p>
     </aside>
@@ -96,6 +98,7 @@ function ChatBox() {
       }
     } catch (err) {
       console.error(err)
+      toast.error('Unable to reach the API. Check your network or .env key.')
       setMessages(prev => [
         ...prev,
         { role: 'assistant', content: 'Failed to get response.' },
@@ -147,28 +150,34 @@ export default function QuizGame() {
   }
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('visible')
-          }
-        })
-      },
-      { threshold: 0.1 }
-    )
+
+    const observer = new IntersectionObserver((entries, obs) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible')
+          obs.unobserve(entry.target)
+        }
+      })
+    }, { threshold: 0.1 })
+
     document.querySelectorAll('.reveal').forEach((el) => observer.observe(el))
+
+
     return () => observer.disconnect()
   }, [])
 
   return (
     <div className="quiz-page">
       <ChallengeBanner />
+      <InstructionBanner>
+        Find the one false statement—the AI hallucination. Tap the refresh icon
+        for new prompts and then select your answer.
+      </InstructionBanner>
       <WhyItMatters />
       <div className="truth-game">
         <div className="statements">
           <div className="statement-header">
-            <h2>3 Truths and a Lie</h2>
+            <h2>Two Truths and a Lie</h2>
             <button
               className="refresh-btn"
               onClick={refreshRound}
@@ -176,11 +185,12 @@ export default function QuizGame() {
           >
             🔄
           </button>
-        </div>
-        <ul className="statement-list">
-          {current.statements.map((s, i) => (
-            <li key={i}>
-              <button
+          </div>
+          <p className="round-info">Round {round + 1} / {ROUNDS.length}</p>
+          <ul className="statement-list">
+            {current.statements.map((s, i) => (
+              <li key={i}>
+                <button
                 className={`statement-btn ${choice === i ? 'selected' : ''}`}
                 onClick={() => handleSelect(i)}
                 disabled={choice !== null}
