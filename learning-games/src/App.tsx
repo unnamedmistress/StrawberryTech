@@ -23,7 +23,7 @@ function App() {
         <Route path="/age" element={<AgeInputForm />} />
         <Route path="/welcome" element={<SplashPage />} />
         <Route path="/" element={<Home />} />
-        <Route path="/games/match3" element={<Match3Game />} />
+        <Route path="/games/tone" element={<Match3Game />} />
         <Route path="/games/quiz" element={<QuizGame />} />
         <Route path="/leaderboard" element={<LeaderboardPage />} />
         <Route path="/help" element={<HelpPage />} />
@@ -33,7 +33,11 @@ function App() {
         <Route path="/profile" element={<ProfilePage />} />
       </Routes>
       {/* Verification comment: routes render correctly with context */}
-      <Toaster />
+      <Toaster
+        toastOptions={{
+          ariaProps: { role: 'status', 'aria-live': 'polite' },
+        }}
+      />
       <Footer />
     </Router>
   )

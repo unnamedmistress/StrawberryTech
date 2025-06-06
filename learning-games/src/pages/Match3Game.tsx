@@ -2,7 +2,8 @@ import { useContext, useState, useEffect } from "react";
 import { toast } from "react-hot-toast";
 import confetti from "canvas-confetti";
 
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+
 import { UserContext } from "../context/UserContext";
 import RobotChat from "../components/RobotChat";
 import InstructionBanner from "../components/ui/InstructionBanner";
@@ -205,6 +206,7 @@ function ToneMatchGame({ onComplete }: { onComplete: () => void }) {
           className="drop-area"
           onDrop={handleDrop}
           onDragOver={handleDragOver}
+          aria-label="Drop tone here"
         >
           {selected ? ` ${selected} ` : " ____ "}
         </span>
@@ -217,6 +219,15 @@ function ToneMatchGame({ onComplete }: { onComplete: () => void }) {
             draggable
             onDragStart={(e) => handleDragStart(e, tone)}
             className="word"
+            aria-label={`Word ${tone}`}
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault()
+                setSelected(tone)
+                setUsed(new Set(used).add(tone))
+              }
+            }}
           >
             {tone}
           </div>
@@ -312,6 +323,9 @@ export default function Match3Game() {
         </aside>
       </div>
       <RobotChat />
+      <p style={{ marginTop: '1rem', textAlign: 'center' }}>
+        <Link to="/">Return Home</Link>
+      </p>
     </div>
   );
 }

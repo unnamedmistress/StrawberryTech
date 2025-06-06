@@ -12,7 +12,7 @@ export default function SplashPage() {
 
   useEffect(() => {
     if (user.age) {
-      navigate('/games/match3')
+      navigate('/games/tone')
     }
   }, [user.age, navigate])
 
@@ -24,7 +24,7 @@ export default function SplashPage() {
       return
     }
     setUser({ ...user, name, age: ageNum })
-    navigate('/games/match3')
+    navigate('/games/tone')
   }
 
   return (

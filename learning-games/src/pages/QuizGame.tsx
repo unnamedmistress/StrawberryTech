@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { toast } from 'react-hot-toast'
+import { Link } from 'react-router-dom'
 import './QuizGame.css'
 import InstructionBanner from '../components/ui/InstructionBanner'
 
@@ -175,7 +176,7 @@ export default function QuizGame() {
         <WhyItMatters />
         <div className="statements">
           <div className="statement-header">
-            <h2>Two Truths and a Lie</h2>
+            <h2>Hulluscinations</h2>
             <button
               className="refresh-btn"
               onClick={refreshRound}
@@ -213,6 +214,9 @@ export default function QuizGame() {
           )}
         </div>
         <ChatBox />
+        <p style={{ marginTop: '1rem', textAlign: 'center' }}>
+          <Link to="/">Return Home</Link>
+        </p>
       </div>
     </div>
   )
