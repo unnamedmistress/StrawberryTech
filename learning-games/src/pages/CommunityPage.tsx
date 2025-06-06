@@ -64,7 +64,7 @@ export default function CommunityPage() {
           required
           style={{ display: 'block', width: '100%', marginTop: '0.5rem' }}
         />
-        <button type="submit" style={{ marginTop: '0.5rem' }}>
+        <button type="submit" className="btn-primary" style={{ marginTop: '0.5rem' }}>
           Post
         </button>
       </form>
