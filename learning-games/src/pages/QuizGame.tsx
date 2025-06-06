@@ -180,7 +180,7 @@ export default function QuizGame() {
               onClick={refreshRound}
             aria-label="New statements"
           >
-            <span role="img" aria-label="refresh">🔄</span>
+            🔄
           </button>
           </div>
           <p className="round-info">Round {round + 1} / {ROUNDS.length}</p>
@@ -200,17 +200,9 @@ export default function QuizGame() {
         {choice !== null && (
           <>
             <p className="feedback">
-              {correct ? (
-                <>
-                  <span role="img" aria-label="check mark">✅</span>{' '}
-                  Correct! You spotted the hallucination.
-                </>
-              ) : (
-                <>
-                  <span role="img" aria-label="cross mark">❌</span>{' '}
-                  Incorrect. That one is true.
-                </>
-              )}
+              {correct
+                ? '✅ Correct! You spotted the hallucination.'
+                : '❌ Incorrect. That one is true.'}
             </p>
             <button onClick={nextRound}>Next Round</button>
           </>
