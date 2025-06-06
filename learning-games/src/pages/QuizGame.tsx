@@ -123,7 +123,7 @@ function ChatBox() {
           onChange={e => setInput(e.target.value)}
           placeholder="Type a question..."
         />
-        <button type="submit">Send</button>
+        <button type="submit" className="btn-primary">Send</button>
       </form>
     </div>
   )
@@ -203,7 +203,7 @@ export default function QuizGame() {
           <div className="statement-header">
             <h2>Hallucinations</h2>
             <button
-              className="refresh-btn"
+              className="refresh-btn btn-primary"
               onClick={refreshRound}
             aria-label="New statements"
           >
@@ -211,14 +211,14 @@ export default function QuizGame() {
           </button>
           </div>
           <p className="header-instruction">
-            Pick the hulluscination from the three statements.
+            Pick the hallucination from the three statements.
           </p>
           <p className="round-info">Round {round + 1} / {ROUNDS.length}</p>
           <ul className="statement-list">
             {current.statements.map((s, i) => (
               <li key={i}>
                 <button
-                className={`statement-btn ${choice === i ? 'selected' : ''}`}
+                className={`statement-btn btn-primary ${choice === i ? 'selected' : ''}`}
                 onClick={() => handleSelect(i)}
                 disabled={choice !== null}
               >
@@ -234,13 +234,13 @@ export default function QuizGame() {
                 ? '✅ Correct! You spotted the hallucination.'
                 : '❌ Incorrect. That one is true.'}
             </p>
-            <button onClick={nextRound}>Next Round</button>
+            <button className="btn-primary" onClick={nextRound}>Next Round</button>
           </>
         )}
         </div>
         <ChatBox />
         <p style={{ marginTop: '1rem', textAlign: 'center' }}>
-          <button onClick={() => navigate('/leaderboard')}>Next</button>
+          <button className="btn-primary" onClick={() => navigate('/leaderboard')}>Next</button>
         </p>
         <p style={{ marginTop: '1rem', textAlign: 'center' }}>
           <Link to="/leaderboard">Return to Progress</Link>

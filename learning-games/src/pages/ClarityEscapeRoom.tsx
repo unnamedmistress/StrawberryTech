@@ -91,7 +91,7 @@ export default function ClarityEscapeRoom() {
               onChange={e => setInput(e.target.value)}
               placeholder="Type your prompt"
             />
-            <button type="submit">Submit</button>
+            <button type="submit" className="btn-primary">Submit</button>
           </form>
           {message && <p className="feedback">{message}</p>}
           <p className="score">Score: {score}</p>

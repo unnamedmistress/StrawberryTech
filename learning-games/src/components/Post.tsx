@@ -25,7 +25,7 @@ export default function Post({ post, onFlag }: PostProps) {
       </p>
       <p style={{ whiteSpace: 'pre-wrap' }}>{post.content}</p>
       <div style={{ marginTop: '0.5rem' }}>
-        <button onClick={() => onFlag(post.id)} disabled={post.flagged}>
+        <button onClick={() => onFlag(post.id)} disabled={post.flagged} className="btn-primary">
           {post.flagged ? 'Flagged' : 'Report'}
         </button>
       </div>
