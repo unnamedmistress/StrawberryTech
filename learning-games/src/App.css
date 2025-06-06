@@ -1,8 +1,14 @@
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
+  width: 100%;
+  margin: 0;
   padding: 2rem;
   text-align: center;
+}
+
+@media (max-width: 600px) {
+  #root {
+    padding: 1rem;
+  }
 }
 
 .logo {
@@ -46,6 +52,12 @@
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 1rem;
   margin-top: 1rem;
+}
+
+@media (max-width: 480px) {
+  .game-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .game-card {
@@ -217,6 +229,15 @@
   color: var(--color-lime);
 }
 
+.menu-toggle {
+  display: none;
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
 .hero {
   background: linear-gradient(135deg, var(--color-blue), var(--color-purple-dark));
   background-size: 200% 200%;
@@ -227,6 +248,12 @@
   margin-bottom: 2rem;
   position: relative;
   overflow: hidden;
+}
+
+@media (max-width: 480px) {
+  .hero {
+    padding: 1.5rem 1rem;
+  }
 }
 
 @keyframes gradientShift {
@@ -387,6 +414,7 @@
   align-items: center;
   z-index: 1000;
 }
+/* Chat modal container - relative to position close button */
 
 .chat-modal {
   background: #fff;
@@ -443,5 +471,24 @@
   background: #f1f5f9;
   color: #000;
   border-color: #cbd5e1;
+}
+
+@media (max-width: 600px) {
+  .menu-toggle {
+    display: block;
+  }
+  .navbar ul {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    left: 0;
+    flex-direction: column;
+    background: var(--color-purple);
+    padding: 1rem;
+    display: none;
+  }
+  .navbar ul.open {
+    display: flex;
+  }
 }
 
