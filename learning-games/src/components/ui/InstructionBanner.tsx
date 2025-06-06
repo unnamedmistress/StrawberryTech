@@ -6,17 +6,10 @@ export interface InstructionBannerProps {
 }
 
 export default function InstructionBanner({ children }: InstructionBannerProps) {
-  const [visible, setVisible] = useState(true)
+  const [visible] = useState(true)
   if (!visible) return null
   return (
     <div className="instruction-banner">
-      <button
-        className="banner-close"
-        aria-label="Close instructions"
-        onClick={() => setVisible(false)}
-      >
-        \u2715
-      </button>
       <div className="instruction-content">{children}</div>
     </div>
   )
