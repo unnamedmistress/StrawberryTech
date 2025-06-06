@@ -56,6 +56,15 @@ export default function RobotChat() {
         onClick={() => setOpen(true)}
         animate={{ y: [0, -10, 0] }}
         transition={{ repeat: Infinity, duration: 2 }}
+        role="button"
+        aria-label="Open practice chat"
+        tabIndex={0}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault()
+            setOpen(true)
+          }
+        }}
       >
         {'\u{1F916}'}
       </motion.div>
