@@ -11,13 +11,9 @@ export default function CourseOverview() {
       {COURSES.map((course) => {
         const progress = Math.min(user.scores[course.id] ?? 0, 100)
         const content = (
-          <Card className="course-card">
+          <Card className="course-card" style={{ padding: '0.75rem' }}>
             {course.meme && (
-              <img
-                src={course.meme}
-                alt={`${course.title} meme`}
-                style={{ width: '100%', borderRadius: '4px' }}
-              />
+              <img src={course.meme} alt={`${course.title} meme`} />
             )}
             <h3>{course.title}</h3>
             <p>{course.description}</p>
