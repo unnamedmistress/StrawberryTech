@@ -114,3 +114,14 @@
 }
 .prompt-form input::placeholder { color: #999; }
 .score { font-weight: bold; color: var(--color-brand); margin-top: 0.5rem; }
+.escape-img {
+  width: 100%;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+}
+
+.escape-video {
+  width: 100%;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+}

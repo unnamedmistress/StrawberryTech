@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { render, fireEvent } from '@testing-library/react'
+import { render, fireEvent, waitFor } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import ClarityEscapeRoom from '../ClarityEscapeRoom'
 import { UserProvider } from '../../context/UserProvider'
@@ -16,6 +16,9 @@ function setup() {
 
 beforeEach(() => {
   vi.spyOn(Math, 'random').mockReturnValue(0)
+  vi.spyOn(global, 'fetch').mockResolvedValue({
+    json: async () => ({ choices: [{ message: { content: 'yes' } }] }),
+  } as any)
 })
 
 afterEach(() => {
@@ -23,13 +26,13 @@ afterEach(() => {
 })
 
 describe('ClarityEscapeRoom', () => {
-  it('increments openPercent and reveals next segment on valid prompt', () => {
-    const { getByLabelText, getByText } = setup()
+  it('increments openPercent and reveals next segment on valid prompt', async () => {
+    const { getByLabelText, getByText, findByText } = setup()
     const input = getByLabelText(/your prompt/i)
-    fireEvent.change(input, { target: { value: 'rewrite formal' } })
+    fireEvent.change(input, { target: { value: 'any text' } })
     fireEvent.submit(input.closest('form')!)
-    expect(getByText(/door 2/i)).toBeTruthy()
-    expect(getByText(/The door unlocks with a click/i)).toBeTruthy()
+    await waitFor(() => expect(getByText(/door 2/i)).toBeTruthy())
+    expect(await findByText(/The door unlocks with a click/i)).toBeTruthy()
   })
 
   it('limits input to 100 characters', () => {
