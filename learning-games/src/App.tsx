@@ -16,15 +16,18 @@ import HelpPage from './pages/HelpPage'
 import PrivacyPage from './pages/PrivacyPage'
 import TermsPage from './pages/TermsPage'
 import ContactPage from './pages/ContactPage'
+import StatsPage from './pages/StatsPage'
 import { Toaster } from 'react-hot-toast'
 import NavBar from './components/layout/NavBar'
 import Footer from './components/layout/Footer'
+import AnalyticsTracker from './components/AnalyticsTracker'
 import './App.css'
 
 function App() {
   return (
     <Router>
       <NavBar />
+      <AnalyticsTracker />
       <Routes>
         <Route path="/age" element={<AgeInputForm />} />
         <Route path="/welcome" element={<SplashPage />} />
@@ -43,6 +46,7 @@ function App() {
         <Route path="/terms" element={<TermsPage />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/stats" element={<StatsPage />} />
       </Routes>
       {/* Verification comment: routes render correctly with context */}
       <Toaster
