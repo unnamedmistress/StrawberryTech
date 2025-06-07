@@ -178,7 +178,9 @@ export default function ClarityEscapeRoom() {
           <DoorAnimation openPercent={openPercent} />
 
           <form onSubmit={handleSubmit} className="prompt-form">
+            <label htmlFor="prompt-input">Your prompt</label>
             <input
+              id="prompt-input"
               value={input}
               onChange={e => setInput(e.target.value.slice(0, 100))}
               placeholder="Type your prompt"
