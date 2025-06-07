@@ -1,13 +1,17 @@
 .escape-wrapper {
   width: 100%;
   display: grid;
-  grid-template-columns: 260px 1fr;
+  grid-template-columns: 260px 1fr 260px;
+  grid-template-areas:
+    'sidebar room progress'
+    'sidebar next progress';
   gap: 1rem;
   justify-content: center;
   align-items: start;
 }
 
 .room {
+  grid-area: room;
   background: var(--color-deep-red);
   color: #fff;
   padding: 1.25rem;
@@ -48,6 +52,7 @@
 }
 
 .escape-sidebar {
+  grid-area: sidebar;
   max-width: 240px;
   background: var(--color-background);
   color: var(--color-text-dark);
@@ -67,9 +72,26 @@
   background-color: var(--color-orange);
 }
 
+.progress-sidebar {
+  grid-area: progress;
+}
+
+.next-area {
+  grid-area: next;
+  text-align: center;
+}
+
 @media (max-width: 600px) {
   .escape-wrapper {
     grid-template-columns: 1fr;
+    grid-template-areas:
+      'sidebar'
+      'room'
+      'progress'
+      'next';
+  }
+  .progress-sidebar {
+    max-width: none;
   }
 }
 .prompt-form input::placeholder { color: #999; }
