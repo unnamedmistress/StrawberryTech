@@ -230,6 +230,8 @@ export default function ClarityEscapeRoom() {
           <p className="sidebar-tip">Shows how specificity opens doors—literally. Teaching players to apply intent, tone, and task format.</p>
         </aside>
         <div className="room">
+          <div className="room-grid">
+            <div className="room-main">
           <InstructionBanner>
             <p>Enter a precise prompt to unlock each door.</p>
             <ol>
@@ -256,14 +258,6 @@ export default function ClarityEscapeRoom() {
             ))}
           </p>
 
-          <DoorAnimation openPercent={openPercent} />
-          <video
-            className="escape-video"
-            autoPlay
-            loop
-            muted
-            src="https://www.w3schools.com/html/mov_bbb.mp4"
-          />
 
           <form onSubmit={handleSubmit} className="prompt-form">
             <label htmlFor="prompt-input">Your prompt</label>
@@ -282,6 +276,18 @@ export default function ClarityEscapeRoom() {
           )}
           {message && <p className="feedback">{message}</p>}
           <p className="score">Score: {score}</p>
+            </div>
+            <div className="door-area">
+              <DoorAnimation openPercent={openPercent} />
+              <video
+                className="escape-video"
+                autoPlay
+                loop
+                muted
+                src="https://www.w3schools.com/html/mov_bbb.mp4"
+              />
+            </div>
+          </div>
         </div>
         <ProgressSidebar />
         <div className="next-area" />

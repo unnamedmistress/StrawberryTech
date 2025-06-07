@@ -1,6 +1,7 @@
 .door-container {
   position: relative;
-  width: 150px;
+  width: 100%;
+  max-width: 150px;
   height: 200px;
   margin: 0 auto 1rem;
   background: #111;
