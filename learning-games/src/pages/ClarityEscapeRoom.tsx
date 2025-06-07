@@ -1,4 +1,5 @@
 import { useState, useEffect, useContext } from 'react'
+import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import ProgressSidebar from '../components/layout/ProgressSidebar'
 import InstructionBanner from '../components/ui/InstructionBanner'
@@ -138,6 +139,9 @@ export default function ClarityEscapeRoom() {
       <div className="escape-page">
         <InstructionBanner>You escaped the room!</InstructionBanner>
         <p>Your score: {score}</p>
+        <p style={{ marginTop: '1rem' }}>
+          <Link to="/leaderboard">Return to Progress</Link>
+        </p>
       </div>
     )
   }
