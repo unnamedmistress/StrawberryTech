@@ -92,9 +92,17 @@ export default function RobotChat() {
                 value={input}
                 onChange={e => setInput(e.target.value)}
                 placeholder="Say something..."
+                maxLength={100}
               />
-              <button type="submit" className="btn-primary">Send</button>
+              <button
+                type="submit"
+                className="btn-primary"
+                disabled={input.length >= 100}
+              >
+                Send
+              </button>
             </form>
+            <p className="char-counter">{input.length} / 100</p>
           </div>
         </div>
       )}

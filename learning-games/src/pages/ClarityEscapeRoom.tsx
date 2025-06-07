@@ -1,7 +1,12 @@
 import { useState, useEffect, useContext } from 'react'
+import { motion } from 'framer-motion'
 import ProgressSidebar from '../components/layout/ProgressSidebar'
 import InstructionBanner from '../components/ui/InstructionBanner'
+
 import ProgressBar from '../components/ui/ProgressBar'
+
+import DoorAnimation from '../components/DoorAnimation'
+
 import { UserContext } from '../context/UserContext'
 import './ClarityEscapeRoom.css'
 
@@ -37,8 +42,17 @@ export default function ClarityEscapeRoom() {
   const [message, setMessage] = useState('')
   const [start] = useState(() => Date.now())
   const [timeLeft, setTimeLeft] = useState(30)
+  const [openPercent, setOpenPercent] = useState(0)
   const [hintVisible, setHintVisible] = useState(false)
   const [openPercent, setOpenPercent] = useState(0)
+
+  const segments = [
+    'The door creaks open a little.',
+    'A sliver of light spills through.',
+    'Almost there, keep going...',
+    'The door swings wide open!'
+  ]
+  const [revealIndex, setRevealIndex] = useState(0)
 
   const current = tasks[door]
 
@@ -51,7 +65,9 @@ export default function ClarityEscapeRoom() {
       const nextScore = score + 50
       setScoreState(nextScore)
       setMessage('The door unlocks with a click!')
-      if (door + 1 === tasks.length) {
+      const newDoor = door + 1
+      setOpenPercent((newDoor / tasks.length) * 100)
+      if (newDoor === tasks.length) {
         const time = Date.now() - start
         setScore('escape', nextScore)
         if (time < 180000 && !user.badges.includes('escape-artist')) {
@@ -59,7 +75,7 @@ export default function ClarityEscapeRoom() {
         }
         setDoor(tasks.length)
       } else {
-        setDoor(d => d + 1)
+        setDoor(newDoor)
         setInput('')
       }
     } else {
@@ -97,10 +113,22 @@ export default function ClarityEscapeRoom() {
   }, [door])
 
   useEffect(() => {
-    setOpenPercent(Math.round((door / tasks.length) * 100))
+
+    const percent = Math.round((door / tasks.length) * 100)
+    setOpenPercent(percent)
   }, [door, tasks.length])
 
   useEffect(() => {
+    const thresholds = [25, 50, 75, 100]
+    for (let i = 0; i < thresholds.length; i++) {
+      if (openPercent >= thresholds[i] && revealIndex < i + 1) {
+        setRevealIndex(i + 1)
+      }
+    }
+  }, [openPercent, revealIndex])
+
+  useEffect(() => {
+
     if (door === tasks.length) {
       setScore('escape', score)
     }
@@ -131,6 +159,22 @@ export default function ClarityEscapeRoom() {
           <h3>{current.hint}</h3>
           <p className="hint">Door {door + 1}</p>
           <p className="timer">Time left: {timeLeft}s</p>
+          <p className="door-progress">
+            {segments.slice(0, revealIndex).map((text, idx) => (
+              <motion.span
+                key={idx}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5 }}
+                style={{ display: 'block' }}
+              >
+                {text}
+              </motion.span>
+            ))}
+          </p>
+
+          <DoorAnimation openPercent={openPercent} />
+
           <form onSubmit={handleSubmit} className="prompt-form">
             <input
               value={input}
