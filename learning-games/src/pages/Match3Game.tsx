@@ -327,15 +327,20 @@ export default function Match3Game() {
         <div className="match3-container">
           <ToneMatchGame onComplete={handleComplete} />
         </div>
+        <ProgressSidebar />
+        <div className="next-area">
+          <button
+            className="btn-primary"
+            onClick={() => navigate('/games/quiz')}
+          >
+            Next Lesson
+          </button>
+          <p style={{ marginTop: '1rem' }}>
+            <Link to="/leaderboard">Return to Progress</Link>
+          </p>
+        </div>
       </div>
       <RobotChat />
-      <p style={{ marginTop: '1rem', textAlign: 'center' }}>
-        <button className="btn-primary" onClick={() => navigate('/games/quiz')}>Next Lesson</button>
-
-      </p>
-      <p style={{ marginTop: '1rem', textAlign: 'center' }}>
-        <Link to="/leaderboard">Return to Progress</Link>
-      </p>
     </div>
   );
 }
