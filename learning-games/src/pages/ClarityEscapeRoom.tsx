@@ -180,7 +180,7 @@ export default function ClarityEscapeRoom() {
           <form onSubmit={handleSubmit} className="prompt-form">
             <input
               value={input}
-              onChange={e => setInput(e.target.value)}
+              onChange={e => setInput(e.target.value.slice(0, 100))}
               placeholder="Type your prompt"
             />
             <button type="submit" className="btn-primary">Submit</button>
