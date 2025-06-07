@@ -84,6 +84,11 @@
   margin-bottom: 0.5rem;
 }
 
+.door-progress {
+  min-height: 4rem;
+  margin-bottom: 0.5rem;
+}
+
 .progress-sidebar {
   grid-area: progress;
 }
