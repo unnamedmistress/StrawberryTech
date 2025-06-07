@@ -30,7 +30,7 @@ export const COURSES: CourseMeta[] = [
     description: 'Solve vague tasks with precise prompts to escape.',
     path: '/games/escape',
     meme:
-      'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZWxxNTN2aWptZHVsaHhtbTg3Y3E0Zm1jbnJ6ODltZzQ5YmQ5ZjZmMiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/GnQx3FIX9qH7O/giphy.gif',
+      'https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExdGxwaGF2eGNmcW1mZzFqNWJhOGs2bmcxZm9scHN4a21ka2ttanhrdyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/vZFZFVYQvtdidWZltF/giphy.gif',
   },
   {
     id: 'recipe',
@@ -46,7 +46,7 @@ export const COURSES: CourseMeta[] = [
     description: 'Aim for clarity by picking the better prompt.',
     path: '/games/darts',
     meme:
-      'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMWp1bDgwZ2RwYXFmejI0MGpqdGJvMWg3ODZlN2tlNHFndTRxOW0wNSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/Y4pAX5oO1jQS0/giphy.gif',
+      'https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExMW0xZHBmOTl3bWo3bmx6NDNmcjBkamo2a3prd242NjVmZzJvOTlkZCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/SvhOn6vnGXp0BiqlEc/giphy.gif',
   },
 ]
 
