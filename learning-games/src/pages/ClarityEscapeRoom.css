@@ -72,6 +72,18 @@
   background-color: var(--color-orange);
 }
 
+.timer {
+  font-weight: bold;
+  color: var(--color-orange);
+  margin-bottom: 0.5rem;
+}
+
+.hint-keywords {
+  font-style: italic;
+  color: var(--color-lime);
+  margin-bottom: 0.5rem;
+}
+
 .progress-sidebar {
   grid-area: progress;
 }
