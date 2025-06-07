@@ -208,11 +208,6 @@ export default function PromptRecipeGame() {
       <InstructionBanner>
         Drag each ingredient card into the correct bowl to build the prompt recipe.
       </InstructionBanner>
-      <img
-        src="https://media.giphy.com/media/xT1R9Z42OjcCA0vZJS/giphy.gif"
-        alt="Cooking animation"
-        style={{ width: '120px', margin: '1rem auto' }}
-      />
       <div className="recipe-wrapper">
         <aside className="recipe-sidebar">
           <h3>Why Build Prompts?</h3>

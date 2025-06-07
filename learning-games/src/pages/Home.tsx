@@ -47,11 +47,6 @@ export default function Home() {
           className="hero-img"
         />
         <p className="tagline">Play engaging games and sharpen your skills.</p>
-        <img
-          src="https://media.giphy.com/media/l3q2RauzE5Vzf7iYo/giphy.gif"
-          alt="Down arrow animation"
-          style={{ width: '60px', margin: '1rem auto' }}
-        />
 
         <button onClick={() => navigate('/games/tone')} className="btn-primary" aria-label="Play Tone Puzzle">
 
