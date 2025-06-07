@@ -18,11 +18,6 @@ export default function ProfilePage() {
   return (
     <div style={{ textAlign: 'center' }}>
       <h2>Edit Profile</h2>
-      <img
-        src="https://media.giphy.com/media/3o7aD2saalBwwftBIY/giphy.gif"
-        alt="Profile animation"
-        style={{ width: '120px', marginBottom: '1rem' }}
-      />
       <form onSubmit={handleSaveName} style={{ marginBottom: '1rem' }}>
         <label htmlFor="name">Name:</label>
         <input

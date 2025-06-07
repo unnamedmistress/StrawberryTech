@@ -26,11 +26,6 @@ export default function LeaderboardPage() {
       <ProgressSidebar />
       <div>
         <h2>Leaderboard</h2>
-        <img
-          src="https://media.giphy.com/media/l0HlBO7eyXzSZkJri/giphy.gif"
-          alt="Trophy animation"
-          style={{ width: '120px', marginBottom: '1rem' }}
-        />
       {/* Show top scores for Tone */}
       <section className="leaderboard-card">
         <h3>Tone High Scores</h3>

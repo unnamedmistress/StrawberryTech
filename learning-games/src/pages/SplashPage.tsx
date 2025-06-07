@@ -31,11 +31,6 @@ export default function SplashPage() {
     <div className="splash-container">
       <div className="overlay">
         <h1>Welcome to StrawberryTech! 🍓</h1>
-        <img
-          src="https://media.giphy.com/media/5hszrWfTG7y3nR0ZtF/giphy.gif"
-          alt="Welcome animation"
-          style={{ width: '120px', marginBottom: '1rem' }}
-        />
         <p>Play while you learn.</p>
         <form onSubmit={handleSubmit} className="start-form">
           <input
