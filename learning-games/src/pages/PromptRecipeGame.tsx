@@ -1,4 +1,5 @@
 import { useState, useEffect, useContext } from 'react'
+import { toast } from 'react-hot-toast'
 
 import ProgressSidebar from '../components/layout/ProgressSidebar'
 import InstructionBanner from '../components/ui/InstructionBanner'
@@ -61,6 +62,56 @@ function randomItem<T>(arr: T[]): T {
   return arr[Math.floor(Math.random() * arr.length)]
 }
 
+async function generateCards(): Promise<Card[]> {
+  try {
+    const resp = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${import.meta.env.VITE_OPENAI_API_KEY}`,
+      },
+      body: JSON.stringify({
+        model: 'gpt-3.5-turbo',
+        messages: [
+          {
+            role: 'system',
+            content:
+              'Return four short phrases for Action, Context, Format and Constraint in that order, each on its own line.',
+          },
+          { role: 'user', content: 'Provide the phrases.' },
+        ],
+        max_tokens: 50,
+        temperature: 0.8,
+      }),
+    })
+    const data = await resp.json()
+    const text: string | undefined = data?.choices?.[0]?.message?.content
+    if (text) {
+      const lines = text
+        .split('\n')
+        .map((l: string) => l.replace(/^[-*\d.\s]+/, '').trim())
+        .filter(Boolean)
+      if (lines.length >= 4) {
+        return [
+          { type: 'Action', text: lines[0] },
+          { type: 'Context', text: lines[1] },
+          { type: 'Format', text: lines[2] },
+          { type: 'Constraints', text: lines[3] },
+        ]
+      }
+    }
+  } catch (err) {
+    console.error(err)
+    toast.error('Unable to fetch new cards. Using defaults.')
+  }
+  return [
+    { type: 'Action', text: randomItem(ACTIONS) },
+    { type: 'Context', text: randomItem(CONTEXTS) },
+    { type: 'Format', text: randomItem(FORMATS) },
+    { type: 'Constraints', text: randomItem(CONSTRAINTS) },
+  ]
+}
+
 export default function PromptRecipeGame() {
   const { setScore, addBadge, user } = useContext(UserContext)
   const [cards, setCards] = useState<Card[]>([])
@@ -83,18 +134,15 @@ export default function PromptRecipeGame() {
     Format: null,
     Constraints: null,
   })
+  const [example, setExample] = useState<string | null>(null)
 
-  function startRound() {
-    const newCards: Card[] = [
-      { type: 'Action', text: randomItem(ACTIONS) },
-      { type: 'Context', text: randomItem(CONTEXTS) },
-      { type: 'Format', text: randomItem(FORMATS) },
-      { type: 'Constraints', text: randomItem(CONSTRAINTS) },
-    ]
+  async function startRound() {
+    const newCards = await generateCards()
     setRoundCards(newCards)
     setCards(shuffle([...newCards]))
     setDropped({ Action: null, Context: null, Format: null, Constraints: null })
     setShowPrompt(false)
+    setExample(null)
     setTimeLeft(30)
     setHintSlot(null)
     setFeedback({
@@ -122,6 +170,13 @@ export default function PromptRecipeGame() {
       })
     }, 1000)
     return () => clearInterval(id)
+  }, [showPrompt])
+
+  useEffect(() => {
+    if (showPrompt) {
+      const text = `${dropped.Action ?? ''} ${dropped.Context ?? ''} ${dropped.Format ?? ''} ${dropped.Constraints ?? ''}`.trim()
+      if (text) generateExampleOutput(text)
+    }
   }, [showPrompt])
 
   useEffect(() => {
@@ -201,6 +256,29 @@ export default function PromptRecipeGame() {
     setScoreState(s => Math.max(0, s - 1))
   }
 
+  async function generateExampleOutput(prompt: string) {
+    try {
+      const resp = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${import.meta.env.VITE_OPENAI_API_KEY}`,
+        },
+        body: JSON.stringify({
+          model: 'gpt-3.5-turbo',
+          messages: [{ role: 'user', content: prompt }],
+          max_tokens: 60,
+        }),
+      })
+      const data = await resp.json()
+      const text: string | undefined = data?.choices?.[0]?.message?.content
+      if (text) setExample(text.trim())
+    } catch (err) {
+      console.error(err)
+      toast.error('Unable to fetch example output.')
+    }
+  }
+
   const promptText = `${dropped.Action ?? ''} ${dropped.Context ?? ''} ${dropped.Format ?? ''} ${dropped.Constraints ?? ''}`
 
   return (
@@ -254,6 +332,7 @@ export default function PromptRecipeGame() {
             <div className="plate">
               <h3>Your Prompt</h3>
               <p>{promptText}</p>
+              {example && <p className="sample-output">{example}</p>}
             </div>
           )}
         </div>
