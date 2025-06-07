@@ -14,100 +14,29 @@ export interface DartRound {
 }
 
 export const ROUNDS: DartRound[] = [
-  {
-    bad: 'Tell me about AI.',
-    good: 'List 3 use cases of AI in customer service.',
-    why: 'Specific requests guide AI toward focused answers.',
+  { bad: 'Tell me about AI.', good: 'List 3 use cases of AI in customer service.' },
+  { bad: 'Write an email.', good: 'Draft a 3-sentence email to a hiring manager explaining your interest.' },
+  { bad: 'Explain climate change.', good: 'Summarize 2 key causes of climate change in one paragraph.' },
+  { bad: 'Summarize this article.', good: 'Provide a two-sentence summary highlighting the main argument.' },
+  { bad: 'Translate this text.', good: 'Translate the following text from English to Spanish.' },
+  { bad: 'Analyze our sales.', good: 'List 3 key insights from last quarter\'s sales data in bullet form.' },
+  { bad: 'Write marketing copy.', good: 'Compose a short tweet promoting our new product and mention its top benefit.' },
+  { bad: 'Weather?', good: 'Give today\'s weather forecast for Tokyo in Celsius.' },
+  { bad: 'Code a function.', good: 'Write a Python function that reverses a string.' },
+  { bad: 'Story please.', good: 'Write a short bedtime story about a dragon who learns to code.' },
+  { bad: 'Advice on focus.', good: 'Provide three tips for staying productive while working remotely.' },
+  { bad: 'Help with calculus.', good: 'Explain in two sentences how to find the derivative of x^2.' },
+  { bad: 'Improve sentence.', good: 'Rewrite the following sentence to sound more professional.' },
+  { bad: 'List activities.', good: 'Provide five kid-friendly indoor activities for a rainy day.' },
+  { bad: 'History facts.', good: 'Give a brief overview of the causes of the French Revolution.' },
+  { bad: 'Get user data.', good: 'Create an SQL query to find the ten most recent orders.' },
+  { bad: 'Recipe ideas.', good: 'Share a simple recipe for vegan chocolate chip cookies.' },
+  { bad: 'Explain quantum.', good: 'Explain quantum entanglement in simple terms for beginners.' },
+  { bad: 'Fix my laptop.', good: 'List three common solutions for a laptop that won\'t turn on.' },
+  { bad: 'Make an outline.', good: 'Create a 5-point outline for a blog post about time management tips.' },
+ ]
 
-  category: string
-}
 
-export const ROUNDS: DartRound[] = [
-
-  {
-    category: 'AI',
-    bad: 'Tell me about AI.',
-    good: 'List 3 use cases of AI in customer service.',
-
-  },
-  {
-    category: 'Email',
-    bad: 'Write an email.',
-    good: 'Draft a 3-sentence email to a hiring manager explaining your interest.',
-
-    why: 'Mentioning the audience and length sets clear expectations.',
-
-    response:
-      'Dear Hiring Manager, I am excited about the role and believe my skills fit well. I look forward to contributing to the team. Thank you for your consideration.',
-
-  },
-  {
-    category: 'Environment',
-    bad: 'Explain climate change.',
-    good: 'Summarize 2 key causes of climate change in one paragraph.',
-
-    why: 'Constrained length and key points make the answer concise.',
-
-    response:
-      'Burning fossil fuels releases greenhouse gases, while deforestation reduces carbon absorption—both drive rising temperatures.',
-  },
-  {
-    category: 'Translation',
-    bad: 'Translate this paragraph.',
-    good: 'Translate the following paragraph from English to Spanish, keeping technical terms.',
-  },
-  {
-    category: 'Coding',
-    bad: 'Write code.',
-    good: 'Generate a Python function that returns the factorial of a number.',
-  },
-  {
-    category: 'Marketing',
-    bad: 'How do I sell my product?',
-    good: 'Give 5 social media marketing ideas for a new eco-friendly water bottle.',
-  },
-  {
-    category: 'Work',
-    bad: 'Summarize this article about remote work.',
-    good: 'Provide a 2-sentence summary of an article on remote work trends.',
-  },
-  {
-    category: 'Birthday',
-    bad: 'Give ideas for a birthday party.',
-    good: 'List 4 affordable birthday party themes for a 10-year-old.',
-  },
-  {
-    category: 'Cooking',
-    bad: 'How do I bake a cake?',
-    good: 'Outline 5 steps to bake a basic vanilla cake.',
-  },
-  {
-    category: 'Product',
-    bad: 'Describe our new phone.',
-    good: 'Write a short product description highlighting 3 features of our new smartphone.',
-  },
-  {
-    category: 'Market',
-    bad: 'How is the market doing?',
-    good: 'Summarize key trends in the 2023 smartphone market in 3 bullet points.',
-  },
-  {
-    category: 'Support',
-    bad: 'Talk to me about support.',
-    good: 'Simulate a brief chat between a customer and support about resetting a password.',
-  },
-  {
-    category: 'Story',
-    bad: 'Tell a story.',
-    good: 'Write a 3-sentence short story about a robot discovering music.',
-  },
-  {
-    category: 'Design',
-    bad: 'Make a logo.',
-    good: 'Provide a text description of a logo idea for a coffee shop named Bean Buzz.',
-
-  },
-];
 
 export function checkChoice(_round: DartRound, choice: 'bad' | 'good') {
   return choice === 'good'
