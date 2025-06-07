@@ -9,17 +9,68 @@ import './PromptDartsGame.css'
 export interface DartRound {
   bad: string
   good: string
+  category: string
 }
 
 export const ROUNDS: DartRound[] = [
-  { bad: 'Tell me about AI.', good: 'List 3 use cases of AI in customer service.' },
   {
+    category: 'AI',
+    bad: 'Tell me about AI.',
+    good: 'List 3 use cases of AI in customer service.',
+  },
+  {
+    category: 'Email',
     bad: 'Write an email.',
     good: 'Draft a 3-sentence email to a hiring manager explaining your interest.',
   },
   {
+    category: 'Environment',
     bad: 'Explain climate change.',
     good: 'Summarize 2 key causes of climate change in one paragraph.',
+  },
+  {
+    bad: 'Translate this paragraph.',
+    good: 'Translate the following paragraph from English to Spanish, keeping technical terms.',
+  },
+  {
+    bad: 'Write code.',
+    good: 'Generate a Python function that returns the factorial of a number.',
+  },
+  {
+    bad: 'How do I sell my product?',
+    good: 'Give 5 social media marketing ideas for a new eco-friendly water bottle.',
+  },
+  {
+    bad: 'Summarize this article about remote work.',
+    good: 'Provide a 2-sentence summary of an article on remote work trends.',
+  },
+  {
+    bad: 'Give ideas for a birthday party.',
+    good: 'List 4 affordable birthday party themes for a 10-year-old.',
+  },
+  {
+    bad: 'How do I bake a cake?',
+    good: 'Outline 5 steps to bake a basic vanilla cake.',
+  },
+  {
+    bad: 'Describe our new phone.',
+    good: 'Write a short product description highlighting 3 features of our new smartphone.',
+  },
+  {
+    bad: 'How is the market doing?',
+    good: 'Summarize key trends in the 2023 smartphone market in 3 bullet points.',
+  },
+  {
+    bad: 'Talk to me about support.',
+    good: 'Simulate a brief chat between a customer and support about resetting a password.',
+  },
+  {
+    bad: 'Tell a story.',
+    good: 'Write a 3-sentence short story about a robot discovering music.',
+  },
+  {
+    bad: 'Make a logo.',
+    good: 'Provide a text description of a logo idea for a coffee shop named Bean Buzz.',
   },
 ]
 
@@ -77,7 +128,10 @@ export default function PromptDartsGame() {
           <p className="sidebar-tip">Align prompt language with output types (teaching specificity and clarity).</p>
         </aside>
         <div className="darts-game">
-          <h3>Round {round + 1} of {rounds.length}</h3>
+
+          <h3>Round {round + 1} of {ROUNDS.length}</h3>
+          <p className="round-category">{current.category}</p>
+
           <p>Which prompt is clearer?</p>
           <div className="options">
             <button className="btn-primary" onClick={() => handleSelect('bad')} disabled={choice !== null}>{current.bad}</button>
