@@ -88,7 +88,9 @@ export default function PromptDartsGame() {
             </p>
           )}
           {choice !== null && (
+
             <button className="btn-primary" onClick={next}>{round + 1 < ROUNDS.length ? 'Next Round' : 'Finish'}</button>
+
           )}
         </div>
       </div>

@@ -234,13 +234,17 @@ export default function QuizGame() {
                 ? '✅ Correct! You spotted the hallucination.'
                 : '❌ Incorrect. That one is true.'}
             </p>
+
             <button className="btn-primary" onClick={nextRound}>Next Round</button>
+
           </>
         )}
         </div>
         <ChatBox />
         <p style={{ marginTop: '1rem', textAlign: 'center' }}>
+
           <button className="btn-primary" onClick={() => navigate('/leaderboard')}>Next</button>
+
         </p>
         <p style={{ marginTop: '1rem', textAlign: 'center' }}>
           <Link to="/leaderboard">Return to Progress</Link>
