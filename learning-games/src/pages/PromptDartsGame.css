@@ -58,6 +58,11 @@
   margin-bottom: 0.5rem;
 }
 
+.round-category {
+  font-style: italic;
+  margin-bottom: 0.5rem;
+}
+
 .final-score {
   font-size: 1.2rem;
   font-weight: bold;
