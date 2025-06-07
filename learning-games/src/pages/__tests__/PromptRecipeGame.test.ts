@@ -1,5 +1,10 @@
 import { describe, it, expect } from 'vitest'
-import { evaluateRecipe, type Dropped, type Card } from '../PromptRecipeGame'
+import {
+  evaluateRecipe,
+  parseCardLines,
+  type Dropped,
+  type Card,
+} from '../PromptRecipeGame'
 
 describe('evaluateRecipe', () => {
   it('scores 4 and is perfect when all placements correct', () => {
@@ -14,6 +19,8 @@ describe('evaluateRecipe', () => {
       Context: 'About',
       Format: 'In style',
       Constraints: 'Short',
+      Audience: null,
+      Setting: null,
     }
     const result = evaluateRecipe(dropped, cards)
     expect(result.score).toBe(4)
@@ -32,9 +39,28 @@ describe('evaluateRecipe', () => {
       Context: 'Wrong',
       Format: 'In style',
       Constraints: 'Short',
+      Audience: null,
+      Setting: null,
     }
     const result = evaluateRecipe(dropped, cards)
     expect(result.score).toBe(3)
     expect(result.perfect).toBe(false)
+  })
+})
+
+describe('parseCardLines', () => {
+  it('handles prefixes on same line', () => {
+    const text = 'Action: Write\nContext: About\nFormat: List\nConstraints: Short'
+    expect(parseCardLines(text)).toEqual(['Write', 'About', 'List', 'Short'])
+  })
+
+  it('handles label lines separately', () => {
+    const text = 'Action\nWrite an email\nContext\nFor work\nFormat\nBullet\nConstraints\nBrief'
+    expect(parseCardLines(text)).toEqual([
+      'Write an email',
+      'For work',
+      'Bullet',
+      'Brief',
+    ])
   })
 })

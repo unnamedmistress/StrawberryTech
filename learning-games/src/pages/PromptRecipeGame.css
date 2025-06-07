@@ -225,6 +225,15 @@
   margin-top: 0.5rem;
 }
 
+.combo {
+  margin-left: 0.5rem;
+  color: var(--color-accent);
+}
+
+.difficulty-select {
+  margin-bottom: 0.5rem;
+}
+
 @media (max-width: 600px) {
   .recipe-wrapper {
     grid-template-columns: 1fr;
