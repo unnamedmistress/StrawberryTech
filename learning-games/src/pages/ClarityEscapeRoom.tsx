@@ -75,7 +75,6 @@ export default function ClarityEscapeRoom() {
         Enter a precise prompt to unlock each door.
       </InstructionBanner>
       <div className="escape-wrapper">
-        <ProgressSidebar />
         <aside className="escape-sidebar">
           <h3>Why Clarity Matters</h3>
           <p>Vague inputs lock AI in confusion loops; precise prompts open doors.</p>
@@ -96,6 +95,8 @@ export default function ClarityEscapeRoom() {
           {message && <p className="feedback">{message}</p>}
           <p className="score">Score: {score}</p>
         </div>
+        <ProgressSidebar />
+        <div className="next-area" />
       </div>
     </div>
   )
