@@ -2,7 +2,7 @@
 
 StrawberryTech is a collection of small web games built with **React**, **TypeScript** and **Vite**. Each game adapts content based on the player's age, which is stored locally so progress persists between sessions.
 
-## Mini Games
+## Mini Games :)
 
 ### Tone Puzzle
 Swap adjectives to explore how word choice affects tone. Matches award points and may show leadership tips that vary by age group. Scores and badges are saved for later.
