@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
 const fs = require('fs');
 const path = require('path');
 
@@ -8,6 +9,7 @@ const PORT = process.env.PORT || 3001;
 
 app.use(cors());
 app.use(express.json());
+app.use(cookieParser());
 
 const DB_FILE = path.join(__dirname, 'db.json');
 
@@ -20,6 +22,7 @@ function loadData() {
       posts: [],
       views: [],
       scores: {},
+      sessions: [],
     };
   }
 }
@@ -34,6 +37,7 @@ if (!data.scores) data.scores = {};
 if (!data.user) data.user = { name: null, age: null, badges: [], scores: {} };
 if (!data.user.badges) data.user.badges = [];
 if (!data.user.scores) data.user.scores = {};
+if (!data.sessions) data.sessions = [];
 
 app.get('/api/user', (req, res) => {
   res.json(data.user);
@@ -85,15 +89,30 @@ app.get('/api/views', (req, res) => {
 app.post('/api/views', (req, res) => {
   const view = {
     id: Date.now(),
+    visitorId: req.body.visitorId || null,
     user: req.body.user || null,
     path: req.body.path || '',
-    timestamp: new Date().toISOString(),
+    referrer: req.body.referrer || req.headers.referer || '',
+    agent: req.body.agent || req.headers['user-agent'] || '',
     ip: req.ip,
-    agent: req.headers['user-agent'] || '',
+    start: new Date().toISOString(),
   };
   data.views.push(view);
   saveData(data);
   res.status(201).json(view);
+});
+
+app.post('/api/views/:id/end', (req, res) => {
+  const id = Number(req.params.id);
+  const view = data.views.find((v) => v.id === id);
+  if (!view) {
+    res.status(404).end();
+    return;
+  }
+  view.end = new Date().toISOString();
+  view.duration = Number(view.duration || Date.now() - new Date(view.start).getTime());
+  saveData(data);
+  res.json(view);
 });
 
 app.get('/api/scores', (req, res) => {
