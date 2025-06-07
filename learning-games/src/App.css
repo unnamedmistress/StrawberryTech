@@ -192,6 +192,21 @@
   background: #fbe4e9;
 }
 
+.buy-coffee {
+  margin-top: 1.5rem;
+  text-align: center;
+}
+
+.buy-coffee a {
+  color: var(--color-brand);
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+.buy-coffee a:hover {
+  color: var(--color-deep-red);
+}
+
 .match3-sidebar {
   max-width: 240px;
   background: var(--color-background);
@@ -284,6 +299,36 @@
   }
 }
 
+.top-scores-title {
+  margin-top: 1rem;
+}
+.top-scores-card {
+  background: var(--color-background);
+  padding: 0.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.top-scores-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+.top-scores-list li {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.25rem 0;
+  font-size: 0.9rem;
+}
+.top-scores-list li.top {
+  color: var(--color-brand);
+  font-weight: bold;
+}
+.view-leaderboard a {
+  text-decoration: underline;
+}
+.view-leaderboard a:hover {
+  color: var(--color-orange);
+}
 @media (max-width: 600px) {
   .match3-wrapper {
     grid-template-columns: 1fr;
@@ -305,6 +350,10 @@
 
   .progress-sidebar {
     max-width: none;
+  }
+
+  .buy-coffee {
+    margin-top: 1rem;
   }
 
 }
@@ -670,54 +719,3 @@
   border-color: var(--color-mint);
 }
 
-@media (max-width: 600px) {
-  .menu-toggle {
-    display: block;
-  }
-  .navbar ul {
-    position: absolute;
-    top: 100%;
-    right: 0;
-    left: 0;
-    flex-direction: column;
-    background: var(--color-purple);
-    padding: 1rem;
-    display: none;
-  }
-  .navbar ul.open {
-    display: flex;
-  }
-}
-
-.top-scores-list{list-style:none;padding-left:0;margin:0;} .top-scores-list li{display:flex;justify-content:space-between;padding:0.25rem 0;font-size:0.9rem;} .top-scores-list li.top{color:#d4af37;font-weight:bold;} .view-leaderboard a{text-decoration:underline;} .view-leaderboard a:hover{color:var(--color-orange);} .top-scores-title{margin-top:1rem;}
-
-.top-scores-title {
-  margin-top: 1rem;
-}
-.top-scores-card {
-  background: var(--color-background);
-  padding: 0.5rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-.top-scores-list {
-  list-style: none;
-  padding-left: 0;
-  margin: 0;
-}
-.top-scores-list li {
-  display: flex;
-  justify-content: space-between;
-  padding: 0.25rem 0;
-  font-size: 0.9rem;
-}
-.top-scores-list li.top {
-  color: var(--color-brand);
-  font-weight: bold;
-}
-.view-leaderboard a {
-  text-decoration: underline;
-}
-.view-leaderboard a:hover {
-  color: var(--color-orange);
-}
