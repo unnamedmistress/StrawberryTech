@@ -8,7 +8,7 @@ import Tooltip from '../ui/Tooltip'
 export default function ProgressSidebar() {
   const { user } = useContext(UserContext)
   const totalPoints = Object.values(user.scores).reduce((a, b) => a + b, 0)
-  const GOAL_POINTS = 100
+  const GOAL_POINTS = 300
   const celebrated = useRef(false)
 
   useEffect(() => {
@@ -27,6 +27,9 @@ export default function ProgressSidebar() {
       <h3>Your Progress</h3>
       <p aria-live="polite" aria-atomic="true">Total Points: {totalPoints}</p>
       <progress value={totalPoints} max={GOAL_POINTS} />
+      <p className="goal-message" aria-live="polite" aria-atomic="true">
+        Goal: Reach {GOAL_POINTS} points to unlock a new badge!
+      </p>
       <p aria-live="polite" aria-atomic="true">Badges Earned: {user.badges.length}</p>
       <div className="badge-icons">
         {user.badges.map((b) => (

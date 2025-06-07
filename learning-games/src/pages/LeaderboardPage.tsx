@@ -1,7 +1,8 @@
-import { useContext } from 'react'
+import { useContext, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { UserContext } from '../context/UserContext'
 import ProgressSidebar from '../components/layout/ProgressSidebar'
+import './LeaderboardPage.css'
 
 export interface ScoreEntry {
   name: string
@@ -21,27 +22,64 @@ export const DUMMY_SCORES: Record<string, ScoreEntry[]> = {
 export default function LeaderboardPage() {
   const { user } = useContext(UserContext)
 
+  const [filter, setFilter] = useState('')
+  const [sortField, setSortField] = useState<'name' | 'score'>('score')
+  const [ascending, setAscending] = useState(false)
+
+  const entries = useMemo(() => {
+    return DUMMY_SCORES.tone
+      .concat({ name: user.name ?? 'You', score: user.scores['tone'] ?? 0 })
+      .filter((e) => e.name.toLowerCase().includes(filter.toLowerCase()))
+      .sort((a, b) => {
+        if (sortField === 'name') {
+          const cmp = a.name.localeCompare(b.name)
+          return ascending ? cmp : -cmp
+        }
+        const cmp = a.score - b.score
+        return ascending ? cmp : -cmp
+      })
+  }, [filter, sortField, ascending, user.name, user.scores])
+
+  function handleSort(field: 'name' | 'score') {
+    if (sortField === field) {
+      setAscending(!ascending)
+    } else {
+      setSortField(field)
+      setAscending(field === 'name')
+    }
+  }
+
   return (
     <div className="leaderboard-wrapper">
-      <ProgressSidebar />
       <div>
         <h2>Leaderboard</h2>
-      {/* Show top scores for Tone */}
-      <section className="leaderboard-card">
-        <h3>Tone High Scores</h3>
-        <table style={{ margin: '0 auto' }}>
-          <thead>
-            <tr>
-              <th>Player</th>
-              <th>Score</th>
-            </tr>
-          </thead>
-          <tbody>
-            {DUMMY_SCORES.tone
-              .concat({ name: user.name ?? 'You', score: user.scores['tone'] ?? 0 })
-              .sort((a, b) => b.score - a.score)
-              .slice(0, 5)
-              .map((entry, idx) => (
+        <section className="leaderboard-card">
+          <div className="search-box">
+            <input
+              type="text"
+              placeholder="Search players"
+              value={filter}
+              onChange={(e) => setFilter(e.target.value)}
+            />
+          </div>
+          <h3>Tone High Scores</h3>
+          <table className="leaderboard-table">
+            <thead>
+              <tr>
+                <th>
+                  <button type="button" onClick={() => handleSort('name')}>
+                    Player {sortField === 'name' ? (ascending ? '▲' : '▼') : ''}
+                  </button>
+                </th>
+                <th>
+                  <button type="button" onClick={() => handleSort('score')}>
+                    Score {sortField === 'score' ? (ascending ? '▲' : '▼') : ''}
+                  </button>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {entries.map((entry, idx) => (
                 <tr
                   key={entry.name}
                   className={idx === 0 ? 'top-row' : undefined}
@@ -54,14 +92,15 @@ export default function LeaderboardPage() {
                   <td>{entry.score}</td>
                 </tr>
               ))}
-          </tbody>
-        </table>
-      </section>
+            </tbody>
+          </table>
+        </section>
 
-      <p style={{ marginTop: '2rem' }}>
-        <Link to="/">Return Home</Link>
-      </p>
+        <p style={{ marginTop: '2rem' }}>
+          <Link to="/">Return Home</Link>
+        </p>
       </div>
+      <ProgressSidebar />
     </div>
   )
 }
