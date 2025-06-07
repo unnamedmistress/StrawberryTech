@@ -75,6 +75,11 @@ export default function NavBar() {
             <Link to="/profile">Profile</Link>
           </Tooltip>
         </li>
+        <li>
+          <Tooltip message="Hover here for a surprise!">
+            <Link to="/stats">Stats</Link>
+          </Tooltip>
+        </li>
       </ul>
     </nav>
   )
