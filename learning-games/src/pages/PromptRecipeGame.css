@@ -196,6 +196,11 @@
   font-weight: bold;
 }
 
+.sample-output {
+  margin-top: 0.5rem;
+  font-weight: normal;
+}
+
 @media (max-width: 600px) {
   .recipe-wrapper {
     grid-template-columns: 1fr;

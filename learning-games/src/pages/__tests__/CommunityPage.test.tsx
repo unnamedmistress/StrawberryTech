@@ -6,7 +6,7 @@ import {
   cleanup,
 } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
-import Post, { PostData } from '../../components/Post'
+import Post, { type PostData } from '../../components/Post'
 import CommunityPage from '../CommunityPage'
 
 afterEach(() => {
