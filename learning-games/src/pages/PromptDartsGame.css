@@ -5,7 +5,12 @@
 .darts-wrapper {
   width: 100%;
   display: grid;
-  grid-template-columns: 260px 1fr;
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    "why"
+    "game"
+    "progress"
+    "next";
   gap: 1rem;
   justify-content: center;
   align-items: start;
@@ -16,6 +21,7 @@
   color: var(--color-text-dark);
   padding: 1rem;
   border-radius: 8px;
+  grid-area: game;
 }
 
 .darts-sidebar {
@@ -28,6 +34,16 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  grid-area: why;
+}
+
+.progress-sidebar {
+  grid-area: progress;
+}
+
+.next-area {
+  grid-area: next;
+  text-align: center;
 }
 
 .options {
@@ -47,9 +63,12 @@
   font-weight: bold;
 }
 
-@media (max-width: 600px) {
+@media (min-width: 600px) {
   .darts-wrapper {
-    grid-template-columns: 1fr;
+    grid-template-columns: 260px 1fr;
+    grid-template-areas:
+      "why game"
+      "progress next";
   }
   .progress-sidebar {
     max-width: none;
