@@ -365,7 +365,7 @@ export default function PromptRecipeGame() {
                   draggable
                   tabIndex={0}
                   role="button"
-                  onDragStart={e => handleDragStart(e, card)}
+                  onDragStartCapture={e => handleDragStart(e, card)}
                   onKeyDown={e => handleCardKeyDown(e, card)}
                 >
                   {card.text}
