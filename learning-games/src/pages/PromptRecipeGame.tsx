@@ -152,7 +152,6 @@ export default function PromptRecipeGame() {
         Drag each ingredient card into the correct bowl to build the prompt recipe.
       </InstructionBanner>
       <div className="recipe-wrapper">
-        <ProgressSidebar />
         <aside className="recipe-sidebar">
           <h3>Why Build Prompts?</h3>
           <p>Combining action, context, format and constraints clarifies intent.</p>
@@ -190,12 +189,15 @@ export default function PromptRecipeGame() {
             <div className="plate">
               <h3>Your Prompt</h3>
               <p>{promptText}</p>
-
-              <button className="btn-primary" onClick={nextRound}>Next Recipe</button>
-
             </div>
           )}
         </div>
+        <ProgressSidebar />
+        {showPrompt && (
+          <div className="next-area">
+            <button className="btn-primary" onClick={nextRound}>Next Recipe</button>
+          </div>
+        )}
       </div>
     </div>
   )

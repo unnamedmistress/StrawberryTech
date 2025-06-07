@@ -23,14 +23,32 @@
 .recipe-wrapper {
   width: 100%;
   display: grid;
-  grid-template-columns: 260px 1fr;
+  grid-template-columns: 260px 1fr 260px;
+  grid-template-areas:
+    'sidebar game progress'
+    'next    next next';
   gap: 1rem;
   justify-content: center;
   align-items: start;
   margin-top: 1rem;
 }
 
+
+.recipe-game {
+  grid-area: game;
+}
+
+.progress-sidebar {
+  grid-area: progress;
+}
+
+.next-area {
+  grid-area: next;
+  text-align: center;
+}
+
 .recipe-sidebar {
+  grid-area: sidebar;
   max-width: 240px;
   background: var(--color-background);
   color: var(--color-text-dark);
@@ -53,7 +71,7 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.recipe-game button {
+.next-area button {
   margin-top: 0.5rem;
   font-size: 1rem;
   padding: 0.6rem 1.2rem;
@@ -145,6 +163,11 @@
 @media (max-width: 600px) {
   .recipe-wrapper {
     grid-template-columns: 1fr;
+    grid-template-areas:
+      'sidebar'
+      'game'
+      'progress'
+      'next';
   }
 
   .progress-sidebar {
