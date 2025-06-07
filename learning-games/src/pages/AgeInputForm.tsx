@@ -43,11 +43,6 @@ export default function AgeInputForm({
 
   return (
     <div className="age-form">
-      <img
-        src="https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif"
-        alt="Animated hello"
-        style={{ width: '120px', marginBottom: '1rem' }}
-      />
       <form onSubmit={handleSubmit}>
         <label htmlFor="name">Enter your name:</label>
         <input

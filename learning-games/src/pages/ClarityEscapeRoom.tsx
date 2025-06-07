@@ -146,11 +146,6 @@ export default function ClarityEscapeRoom() {
     <div className="escape-page">
       <div className="escape-wrapper">
         <aside className="escape-sidebar">
-          <img
-            src="https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif"
-            alt="Unlocking door animation"
-            style={{ width: '120px', marginBottom: '1rem' }}
-          />
           <h3>Why Clarity Matters</h3>
           <p>Vague inputs lock AI in confusion loops; precise prompts open doors.</p>
           <blockquote className="sidebar-quote">Why Card: Why Clarity Matters</blockquote>
@@ -187,7 +182,6 @@ export default function ClarityEscapeRoom() {
               value={input}
               onChange={e => setInput(e.target.value.slice(0, 100))}
               placeholder="Type your prompt"
-              maxLength={100}
             />
             <button type="submit" className="btn-primary">Submit</button>
             <button type="button" onClick={showHint} className="btn-primary">Hint</button>

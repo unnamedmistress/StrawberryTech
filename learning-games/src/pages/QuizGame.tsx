@@ -194,11 +194,6 @@ export default function QuizGame() {
         Find the one false statement—the AI hallucination. Tap the refresh icon
         for new prompts and then select your answer.
       </InstructionBanner>
-      <img
-        src="https://media.giphy.com/media/3oriO0OEd9QIDdllqo/giphy.gif"
-        alt="Detective animation"
-        style={{ width: '120px', margin: '1rem auto' }}
-      />
       <div className="truth-game">
         <WhyItMatters />
         <div className="game-area">
