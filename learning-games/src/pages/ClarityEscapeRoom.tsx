@@ -279,13 +279,6 @@ export default function ClarityEscapeRoom() {
             </div>
             <div className="door-area">
               <DoorAnimation openPercent={openPercent} />
-              <video
-                className="escape-video"
-                autoPlay
-                loop
-                muted
-                src="https://www.w3schools.com/html/mov_bbb.mp4"
-              />
             </div>
           </div>
         </div>
