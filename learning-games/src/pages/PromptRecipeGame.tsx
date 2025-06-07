@@ -37,6 +37,44 @@ export function evaluateRecipe(dropped: Dropped, cards: Card[]) {
   return { score, perfect }
 }
 
+export function parseCardLines(text: string): string[] {
+  const raw = text.split(/\r?\n/).map(l => l.trim())
+  const lines: string[] = []
+  const labels = ['Action', 'Context', 'Format', 'Constraints']
+
+  for (let i = 0; i < raw.length; i++) {
+    let line = raw[i]
+    if (!line) continue
+
+    line = line.replace(/^[-*\d.\s]+/, '')
+
+    const labelIndex = labels.findIndex(
+      l => line.toLowerCase() === l.toLowerCase(),
+    )
+    if (labelIndex !== -1) {
+      while (++i < raw.length && !raw[i].trim()) {
+        /* skip empty */
+      }
+      if (i < raw.length) {
+        let next = raw[i].replace(/^[-*\d.\s]+/, '')
+        next = next.replace(
+          /^(Action|Context|Format|Constraints)\s*[:\-]?\s*/i,
+          '',
+        ).trim()
+        if (next) lines.push(next)
+      }
+      continue
+    }
+
+    line = line
+      .replace(/^(Action|Context|Format|Constraints)\s*[:\-]?\s*/i, '')
+      .trim()
+    if (line) lines.push(line)
+  }
+
+  return lines
+}
+
 const ACTIONS = [
   'Write a short poem',
   'Draft an email',
@@ -91,10 +129,7 @@ async function generateCards(): Promise<Card[]> {
     const data = await resp.json()
     const text: string | undefined = data?.choices?.[0]?.message?.content
     if (text) {
-      const lines = text
-        .split('\n')
-        .map((l: string) => l.replace(/^[-*\d.\s]+/, '').trim())
-        .filter(Boolean)
+      const lines = parseCardLines(text)
       if (lines.length >= 4) {
         return [
           { type: 'Action', text: lines[0] },
