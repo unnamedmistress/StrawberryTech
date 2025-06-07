@@ -192,6 +192,21 @@
   background: #fbe4e9;
 }
 
+.buy-coffee {
+  margin-top: 1.5rem;
+  text-align: center;
+}
+
+.buy-coffee a {
+  color: var(--color-brand);
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+.buy-coffee a:hover {
+  color: var(--color-deep-red);
+}
+
 .match3-sidebar {
   max-width: 240px;
   background: var(--color-background);
@@ -305,6 +320,10 @@
 
   .progress-sidebar {
     max-width: none;
+  }
+
+  .buy-coffee {
+    margin-top: 1rem;
   }
 
 }
@@ -687,10 +706,6 @@
   .navbar ul.open {
     display: flex;
   }
-}
-
-.top-scores-list{list-style:none;padding-left:0;margin:0;} .top-scores-list li{display:flex;justify-content:space-between;padding:0.25rem 0;font-size:0.9rem;} .top-scores-list li.top{color:#d4af37;font-weight:bold;} .view-leaderboard a{text-decoration:underline;} .view-leaderboard a:hover{color:var(--color-orange);} .top-scores-title{margin-top:1rem;}
-
 .top-scores-title {
   margin-top: 1rem;
 }
