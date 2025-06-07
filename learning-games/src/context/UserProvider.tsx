@@ -1,4 +1,5 @@
 import { useState, useCallback, useEffect } from 'react'
+import { toast } from 'react-hot-toast'
 import type { ReactNode } from 'react'
 import type { UserData } from '../types/user'
 import { UserContext, defaultUser } from './UserContext'
@@ -47,22 +48,43 @@ export function UserProvider({ children }: { children: ReactNode }) {
   }, [])
 
   // Record the best score for a specific game
-  const setScore = useCallback((game: string, score: number) => {
-    setUser((prev) => ({
-      ...prev,
-      scores: {
-        ...prev.scores,
-        [game]: Math.max(score, prev.scores[game] ?? 0),
-      },
-    }))
-  }, [])
+  const setScore = useCallback(
+    (game: string, score: number) => {
+      setUser(prev => {
+        const prevBest = prev.scores[game] ?? 0
+        const nextBest = Math.max(score, prevBest)
+        if (nextBest > prevBest) {
+          toast.success(`New high score in ${game}: ${nextBest}`)
+        }
+        return {
+          ...prev,
+          scores: {
+            ...prev.scores,
+            [game]: nextBest,
+          },
+        }
+      })
+      if (typeof window !== 'undefined') {
+        const base = window.location.origin
+        fetch(`${base}/api/scores/${game}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name: user.name ?? 'Anonymous', score }),
+        }).catch(err => console.error('Failed to save score', err))
+      }
+    },
+    [user.name],
+  )
 
   // Award a badge for achievements or milestones
   const addBadge = useCallback((badge: string) => {
-    setUser((prev) => ({
-      ...prev,
-      badges: prev.badges.includes(badge) ? prev.badges : [...prev.badges, badge],
-    }))
+    setUser(prev => {
+      if (!prev.badges.includes(badge)) {
+        toast.success(`Badge unlocked: ${badge}`)
+        return { ...prev, badges: [...prev.badges, badge] }
+      }
+      return prev
+    })
   }, [])
 
   // Persist user progress to localStorage whenever it changes. The timeout acts
@@ -75,7 +97,12 @@ export function UserProvider({ children }: { children: ReactNode }) {
         fetch(`${base}/api/user`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name: user.name, age: user.age }),
+          body: JSON.stringify({
+            name: user.name,
+            age: user.age,
+            badges: user.badges,
+            scores: user.scores,
+          }),
         }).catch((err) => console.error('Failed to save user', err))
       }
     }, 300)

@@ -16,8 +16,10 @@ Drag cards to assemble a prompt. Each round now fetches fresh card text from the
 ## Age‑Adaptive Features
 - Players enter their age and name on first visit.
 - Games read the stored age to tweak difficulty and show tailored tips.
-- High scores and earned badges persist using `localStorage`.
+- Scores and badges now sync to a small server so progress follows you across devices.
 - High contrast theme preference persists via `ThemeToggle`.
+- A unified leaderboard with tabs displays top scores for every game.
+- A dedicated Badges page lets you track all achievements.
 
 ## Getting Started
 1. Install dependencies and start the dev server:
@@ -26,8 +28,8 @@ Drag cards to assemble a prompt. Each round now fetches fresh card text from the
    npm install
    npm run dev
    ```
-2. In a separate terminal start the API server to persist user info and
-   community posts:
+2. In a separate terminal start the API server to persist user info,
+   community posts and shared high scores:
    ```bash
    cd server
    npm install

@@ -15,7 +15,12 @@ function loadData() {
   try {
     return JSON.parse(fs.readFileSync(DB_FILE, 'utf8'));
   } catch {
-    return { user: { name: null, age: null }, posts: [], views: [] };
+    return {
+      user: { name: null, age: null, badges: [], scores: {} },
+      posts: [],
+      views: [],
+      scores: {},
+    };
   }
 }
 
@@ -25,6 +30,10 @@ function saveData(data) {
 
 let data = loadData();
 if (!data.views) data.views = [];
+if (!data.scores) data.scores = {};
+if (!data.user) data.user = { name: null, age: null, badges: [], scores: {} };
+if (!data.user.badges) data.user.badges = [];
+if (!data.user.scores) data.user.scores = {};
 
 app.get('/api/user', (req, res) => {
   res.json(data.user);
@@ -85,6 +94,21 @@ app.post('/api/views', (req, res) => {
   data.views.push(view);
   saveData(data);
   res.status(201).json(view);
+});
+
+app.get('/api/scores', (req, res) => {
+  res.json(data.scores);
+});
+
+app.post('/api/scores/:game', (req, res) => {
+  const game = req.params.game;
+  const entry = { name: req.body.name || 'Anonymous', score: Number(req.body.score) || 0 };
+  if (!data.scores[game]) data.scores[game] = [];
+  data.scores[game].push(entry);
+  data.scores[game].sort((a, b) => b.score - a.score);
+  data.scores[game] = data.scores[game].slice(0, 10);
+  saveData(data);
+  res.json(data.scores[game]);
 });
 
 app.listen(PORT, () => {
