@@ -141,9 +141,21 @@
   margin-bottom: 0.5rem;
 }
 
-.escape-video {
-  width: 100%;
-  height: auto;
-  border-radius: 8px;
-  margin-bottom: 0.5rem;
+@media (max-width: 360px) {
+  .prompt-form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .prompt-form input {
+    width: 100%;
+  }
+
+  .prompt-form button {
+    width: 100%;
+  }
+
+  .escape-sidebar {
+    max-width: none;
+  }
 }
