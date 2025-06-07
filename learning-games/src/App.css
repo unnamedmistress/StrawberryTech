@@ -372,6 +372,8 @@
   padding: 1rem 2rem;
   color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  overflow-x: hidden;
 }
 .theme-toggle {
   margin-right: 1rem;
@@ -429,7 +431,7 @@
   cursor: pointer;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 1000px) {
   .navbar {
     flex-wrap: wrap;
   }
