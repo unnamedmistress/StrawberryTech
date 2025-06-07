@@ -2,7 +2,7 @@ import { useState, useEffect, useContext } from 'react'
 import ProgressSidebar from '../components/layout/ProgressSidebar'
 import { motion } from 'framer-motion'
 import { toast } from 'react-hot-toast'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { UserContext } from '../context/UserContext'
 import './QuizGame.css'
 import InstructionBanner from '../components/ui/InstructionBanner'
@@ -131,6 +131,7 @@ function ChatBox() {
 
 export default function QuizGame() {
   const { user, setScore, addBadge } = useContext(UserContext)
+  const navigate = useNavigate()
   const [round, setRound] = useState(0)
   const [choice, setChoice] = useState<number | null>(null)
   const [score, setScoreState] = useState(0)

@@ -22,7 +22,7 @@ export const ROUNDS: DartRound[] = [
   },
 ]
 
-export function checkChoice(round: DartRound, choice: 'bad' | 'good') {
+export function checkChoice(_round: DartRound, choice: 'bad' | 'good') {
   return choice === 'good'
 }
 
