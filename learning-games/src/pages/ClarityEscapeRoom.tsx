@@ -44,7 +44,6 @@ export default function ClarityEscapeRoom() {
   const [timeLeft, setTimeLeft] = useState(30)
   const [openPercent, setOpenPercent] = useState(0)
   const [hintVisible, setHintVisible] = useState(false)
-  const [openPercent, setOpenPercent] = useState(0)
 
   const segments = [
     'The door creaks open a little.',
