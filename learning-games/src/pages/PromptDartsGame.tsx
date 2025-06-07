@@ -8,15 +8,22 @@ import './PromptDartsGame.css'
 export interface DartRound {
   bad: string
   good: string
+  category: string
 }
 
 export const ROUNDS: DartRound[] = [
-  { bad: 'Tell me about AI.', good: 'List 3 use cases of AI in customer service.' },
   {
+    category: 'AI',
+    bad: 'Tell me about AI.',
+    good: 'List 3 use cases of AI in customer service.',
+  },
+  {
+    category: 'Email',
     bad: 'Write an email.',
     good: 'Draft a 3-sentence email to a hiring manager explaining your interest.',
   },
   {
+    category: 'Environment',
     bad: 'Explain climate change.',
     good: 'Summarize 2 key causes of climate change in one paragraph.',
   },
@@ -120,6 +127,7 @@ export default function PromptDartsGame() {
         </aside>
         <div className="darts-game">
           <h3>Round {round + 1} of {ROUNDS.length}</h3>
+          <p className="round-category">{current.category}</p>
           <p>Which prompt is clearer?</p>
           <div className="options">
             <button className="btn-primary" onClick={() => handleSelect('bad')} disabled={choice !== null}>{current.bad}</button>
