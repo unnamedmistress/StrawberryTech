@@ -553,6 +553,26 @@
   text-decoration: underline;
 }
 
+.coffee-link {
+  color: #fff;
+  font-weight: 700;
+  text-decoration: none;
+  animation: coffee-pulse 2s ease-in-out infinite;
+}
+
+.coffee-link:hover {
+  color: var(--color-lime);
+}
+
+@keyframes coffee-pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
 @media (max-width: 480px) {
   .footer-links {
     flex-direction: column;

@@ -1,4 +1,5 @@
 import { useState, useEffect, useContext } from 'react'
+import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import confetti from 'canvas-confetti'
 import { toast } from 'react-hot-toast'
@@ -57,17 +58,22 @@ export function parseCardLines(text: string): string[] {
       }
       if (i < raw.length) {
         let next = raw[i].replace(/^[-*\d.\s]+/, '')
-        next = next.replace(
-          /^(Action|Context|Format|Constraints)\s*[:\-]?\s*/i,
-          '',
-        ).trim()
+        next = next
+          .replace(
+            /^(Action|Context|Format|Constraints)[\s:.\-=]+/i,
+            '',
+          )
+          .trim()
         if (next) lines.push(next)
       }
       continue
     }
 
     line = line
-      .replace(/^(Action|Context|Format|Constraints)\s*[:\-]?\s*/i, '')
+      .replace(
+        /^(Action|Context|Format|Constraints)[\s:.\-=]+/i,
+        '',
+      )
       .trim()
     if (line) lines.push(line)
   }
@@ -118,7 +124,7 @@ async function generateCards(): Promise<Card[]> {
           {
             role: 'system',
             content:
-              'Return four short phrases for Action, Context, Format and Constraint in that order, each on its own line.',
+              'Return four short phrases representing the action, context, format and constraints in that order, each on its own line. Do not include the words Action, Context, Format or Constraints.',
           },
           { role: 'user', content: 'Provide the phrases.' },
         ],
@@ -153,6 +159,7 @@ async function generateCards(): Promise<Card[]> {
 
 export default function PromptRecipeGame() {
   const { setScore, addBadge, user } = useContext(UserContext)
+  const TOTAL_ROUNDS = 5
   const TOTAL_TIME =
     user.difficulty === 'easy' ? 45 : user.difficulty === 'hard' ? 20 : 30
   const SCORE_MULT =
@@ -172,6 +179,8 @@ export default function PromptRecipeGame() {
   const [timeLeft, setTimeLeft] = useState(TOTAL_TIME)
   const [hintSlot, setHintSlot] = useState<Slot | null>(null)
   const [selectedCard, setSelectedCard] = useState<Card | null>(null)
+  const [round, setRound] = useState(0)
+  const [finished, setFinished] = useState(false)
   const [feedback, setFeedback] = useState<Record<Slot, 'correct' | 'wrong' | null>>({
     Action: null,
     Context: null,
@@ -237,7 +246,6 @@ export default function PromptRecipeGame() {
           addBadge('prompt-chef')
         }
       }
-      setScore('recipe', score + finalScore)
       setShowPrompt(true)
     }
   }, [dropped])
@@ -305,7 +313,13 @@ export default function PromptRecipeGame() {
   }
 
   function nextRound() {
-    startRound()
+    if (round + 1 < TOTAL_ROUNDS) {
+      setRound(r => r + 1)
+      startRound()
+    } else {
+      setFinished(true)
+      setScore('recipe', score)
+    }
   }
 
   function clearRound() {
@@ -357,6 +371,18 @@ export default function PromptRecipeGame() {
     })
   }
 
+  if (finished) {
+    return (
+      <div className="recipe-page">
+        <InstructionBanner>You finished Prompt Builder!</InstructionBanner>
+        <p className="final-score">Your score: {score}</p>
+        <p style={{ marginTop: '1rem' }}>
+          <Link to="/leaderboard">Return to Progress</Link>
+        </p>
+      </div>
+    )
+  }
+
   const promptText = `${dropped.Action ?? ''} ${dropped.Context ?? ''} ${dropped.Format ?? ''} ${dropped.Constraints ?? ''}`
 
   return (
@@ -374,6 +400,7 @@ export default function PromptRecipeGame() {
         </aside>
         <div className="recipe-game">
           <div className="status-bar">
+            <span className="round-info">Round {round + 1} / {TOTAL_ROUNDS}</span>
             <span className="score">Score: {score}</span>
             <span className="timer">Time: {timeLeft}s</span>
           </div>
