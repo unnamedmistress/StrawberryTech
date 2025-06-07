@@ -1,21 +1,21 @@
 .truth-game {
   width: 100%;
   display: grid;
-  grid-template-columns: 260px 1fr 260px;
+  grid-template-columns: 260px 1fr;
   grid-template-areas:
-    "sidebar game progress"
-    "next    next progress";
+    "sidebar game"
+    "progress next";
   gap: 1rem;
   justify-content: center;
   align-items: start;
 }
 
 .statements {
-  background: var(--color-background);
-  color: var(--color-text-dark);
+  background: linear-gradient(135deg, var(--color-purple-dark), var(--color-blue));
+  color: #fff;
   padding: 1rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
   margin-bottom: 1rem;
 }
 
@@ -148,11 +148,6 @@
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  background: var(--color-background);
-  color: var(--color-text-dark);
-  padding: 1rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
 
 .next-area {

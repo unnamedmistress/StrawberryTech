@@ -131,13 +131,14 @@
 }
 /* Match-3 styles */
 .match3-container {
-  grid-area: game;
   width: 100%;
   max-width: 420px;
   margin: 0 auto;
   background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
   padding: 1rem;
   border-radius: 8px;
+  grid-column: 2;
+  grid-row: 1;
 }
 
 .match3-page {
@@ -149,10 +150,7 @@
 .match3-wrapper {
   width: 100%;
   display: grid;
-  grid-template-columns: 260px 1fr 260px;
-  grid-template-areas:
-    'sidebar game progress'
-    'next    next progress';
+  grid-template-columns: 260px 1fr;
   gap: 1rem;
   justify-content: center;
   align-items: start;
@@ -180,7 +178,6 @@
 }
 
 .match3-sidebar {
-  grid-area: sidebar;
   max-width: 240px;
   background: var(--color-background);
   color: var(--color-text-dark);
@@ -188,11 +185,8 @@
   border-radius: 8px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   text-align: left;
-}
-
-.next-area {
-  grid-area: next;
-  text-align: center;
+  grid-column: 1;
+  grid-row: 1;
 }
 
 
@@ -278,11 +272,6 @@
 @media (max-width: 600px) {
   .match3-wrapper {
     grid-template-columns: 1fr;
-    grid-template-areas:
-      'sidebar'
-      'game'
-      'progress'
-      'next';
   }
 
   .leaderboard-wrapper {
