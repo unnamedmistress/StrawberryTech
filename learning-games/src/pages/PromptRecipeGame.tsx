@@ -365,12 +365,15 @@ export default function PromptRecipeGame() {
                   draggable
                   tabIndex={0}
                   role="button"
+
                   onDragStart={(e: MouseEvent | TouchEvent | PointerEvent) =>
                     handleDragStart(
                       e as unknown as React.DragEvent<HTMLDivElement>,
                       card,
                     )
                   }
+
+
                   onKeyDown={e => handleCardKeyDown(e, card)}
                 >
                   {card.text}
