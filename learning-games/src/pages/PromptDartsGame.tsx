@@ -28,50 +28,61 @@ export const ROUNDS: DartRound[] = [
     good: 'Summarize 2 key causes of climate change in one paragraph.',
   },
   {
+    category: 'Translation',
     bad: 'Translate this paragraph.',
     good: 'Translate the following paragraph from English to Spanish, keeping technical terms.',
   },
   {
+    category: 'Coding',
     bad: 'Write code.',
     good: 'Generate a Python function that returns the factorial of a number.',
   },
   {
+    category: 'Marketing',
     bad: 'How do I sell my product?',
     good: 'Give 5 social media marketing ideas for a new eco-friendly water bottle.',
   },
   {
+    category: 'Work',
     bad: 'Summarize this article about remote work.',
     good: 'Provide a 2-sentence summary of an article on remote work trends.',
   },
   {
+    category: 'Birthday',
     bad: 'Give ideas for a birthday party.',
     good: 'List 4 affordable birthday party themes for a 10-year-old.',
   },
   {
+    category: 'Cooking',
     bad: 'How do I bake a cake?',
     good: 'Outline 5 steps to bake a basic vanilla cake.',
   },
   {
+    category: 'Product',
     bad: 'Describe our new phone.',
     good: 'Write a short product description highlighting 3 features of our new smartphone.',
   },
   {
+    category: 'Market',
     bad: 'How is the market doing?',
     good: 'Summarize key trends in the 2023 smartphone market in 3 bullet points.',
   },
   {
+    category: 'Support',
     bad: 'Talk to me about support.',
     good: 'Simulate a brief chat between a customer and support about resetting a password.',
   },
   {
+    category: 'Story',
     bad: 'Tell a story.',
     good: 'Write a 3-sentence short story about a robot discovering music.',
   },
   {
+    category: 'Design',
     bad: 'Make a logo.',
     good: 'Provide a text description of a logo idea for a coffee shop named Bean Buzz.',
   },
-]
+];
 
 export function checkChoice(_round: DartRound, choice: 'bad' | 'good') {
   return choice === 'good'
