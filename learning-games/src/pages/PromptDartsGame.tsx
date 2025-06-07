@@ -67,6 +67,11 @@ export default function PromptDartsGame() {
       <InstructionBanner>
         Choose the clearer prompt that best targets the requested format.
       </InstructionBanner>
+      <img
+        src="https://media.giphy.com/media/xT0xezQGU5xCDJuCPe/giphy.gif"
+        alt="Dartboard animation"
+        style={{ width: '120px', margin: '1rem auto' }}
+      />
       <div className="darts-wrapper">
         <aside className="darts-sidebar">
           <h3>Why Clarity Matters</h3>

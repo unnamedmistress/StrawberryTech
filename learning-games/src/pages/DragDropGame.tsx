@@ -66,6 +66,11 @@ export default function DragDropGame() {
       <div className="dragdrop-wrapper">
         <div className="dragdrop-game">
           <h2>Drag a tone into the blank</h2>
+          <img
+            src="https://media.giphy.com/media/3o7TKu8RvQuomFfUUU/giphy.gif"
+            alt="Drag and drop animation"
+            style={{ width: '120px', marginBottom: '1rem' }}
+          />
           <p className="sentence">
           Write a
           <span
