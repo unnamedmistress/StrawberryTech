@@ -1,15 +1,16 @@
-import { useContext, useEffect, useRef } from 'react'
+import { useContext, useEffect, useRef, useState } from 'react'
 import confetti from 'canvas-confetti'
 import { Link } from 'react-router-dom'
 import { UserContext } from '../../context/UserContext'
-import { DUMMY_SCORES } from '../../pages/LeaderboardPage'
 import Tooltip from '../ui/Tooltip'
+import type { ScoreEntry } from '../../pages/LeaderboardPage'
 
 export default function ProgressSidebar() {
   const { user } = useContext(UserContext)
   const totalPoints = Object.values(user.scores).reduce((a, b) => a + b, 0)
   const GOAL_POINTS = 300
   const celebrated = useRef(false)
+  const [scores, setScores] = useState<ScoreEntry[]>([])
 
   useEffect(() => {
     if (totalPoints >= GOAL_POINTS && !celebrated.current) {
@@ -17,7 +18,20 @@ export default function ProgressSidebar() {
       celebrated.current = true
     }
   }, [totalPoints])
-  const leaderboard = DUMMY_SCORES.tone
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const base = window.location.origin
+      fetch(`${base}/api/scores`)
+        .then((res) => (res.ok ? res.json() : {}))
+        .then((data: Record<string, ScoreEntry[]>) => {
+          setScores(Array.isArray(data.tone) ? data.tone : [])
+        })
+        .catch(() => {})
+    }
+  }, [])
+
+  const leaderboard = scores
     .concat({ name: user.name ?? 'You', score: user.scores['tone'] ?? 0 })
     .sort((a, b) => b.score - a.score)
     .slice(0, 3)

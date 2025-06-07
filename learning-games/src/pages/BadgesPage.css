@@ -1,0 +1,23 @@
+.badges-page {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 1rem;
+  font-family: 'Poppins', sans-serif;
+}
+
+.badge-list {
+  list-style: none;
+  padding: 0;
+}
+
+.badge-list li {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.badge-list li.earned {
+  border-color: #ee3a57;
+  background: #fff5f7;
+}
