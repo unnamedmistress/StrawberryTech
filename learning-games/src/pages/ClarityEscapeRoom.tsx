@@ -2,7 +2,11 @@ import { useState, useEffect, useContext } from 'react'
 import { motion } from 'framer-motion'
 import ProgressSidebar from '../components/layout/ProgressSidebar'
 import InstructionBanner from '../components/ui/InstructionBanner'
+
+import ProgressBar from '../components/ui/ProgressBar'
+
 import DoorAnimation from '../components/DoorAnimation'
+
 import { UserContext } from '../context/UserContext'
 import './ClarityEscapeRoom.css'
 
@@ -41,6 +45,7 @@ export default function ClarityEscapeRoom() {
   const [openPercent, setOpenPercent] = useState(0)
   const [hintVisible, setHintVisible] = useState(false)
   const [openPercent, setOpenPercent] = useState(0)
+
   const segments = [
     'The door creaks open a little.',
     'A sliver of light spills through.',
@@ -108,6 +113,7 @@ export default function ClarityEscapeRoom() {
   }, [door])
 
   useEffect(() => {
+
     const percent = Math.round((door / tasks.length) * 100)
     setOpenPercent(percent)
   }, [door, tasks.length])
@@ -122,6 +128,7 @@ export default function ClarityEscapeRoom() {
   }, [openPercent, revealIndex])
 
   useEffect(() => {
+
     if (door === tasks.length) {
       setScore('escape', score)
     }
@@ -177,6 +184,7 @@ export default function ClarityEscapeRoom() {
             <button type="submit" className="btn-primary">Submit</button>
             <button type="button" onClick={showHint} className="btn-primary">Hint</button>
           </form>
+          <ProgressBar percent={openPercent} />
           {hintVisible && (
             <p className="hint-keywords">Keywords: {current.keywords.join(', ')}</p>
           )}
