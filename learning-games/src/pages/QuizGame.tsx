@@ -12,6 +12,46 @@ interface StatementSet {
   lieIndex: number
 }
 
+async function generateStatementSet(): Promise<StatementSet | null> {
+  try {
+    const resp = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${import.meta.env.VITE_OPENAI_API_KEY}`,
+      },
+      body: JSON.stringify({
+        model: 'gpt-3.5-turbo',
+        messages: [
+          {
+            role: 'system',
+            content:
+              'Create three short statements about general knowledge where exactly one is false. Respond strictly in JSON with fields "statements" (array) and "lieIndex" (0-2).',
+          },
+          { role: 'user', content: 'Generate the statements now.' },
+        ],
+        temperature: 0.7,
+      }),
+    })
+    const data = await resp.json()
+    const text: string | undefined = data?.choices?.[0]?.message?.content?.trim()
+    if (!text) return null
+    // Extract JSON in case extra text was returned
+    const match = text.match(/\{[\s\S]*\}/)
+    if (!match) return null
+    const parsed = JSON.parse(match[0])
+    if (
+      Array.isArray(parsed.statements) &&
+      typeof parsed.lieIndex === 'number'
+    ) {
+      return parsed as StatementSet
+    }
+  } catch (err) {
+    console.error('AI generation failed', err)
+  }
+  return null
+}
+
 const ROUNDS: StatementSet[] = [
   {
     statements: [
@@ -133,11 +173,12 @@ export default function QuizGame() {
   const { user, setScore, addBadge } = useContext(UserContext)
   const navigate = useNavigate()
   const [round, setRound] = useState(0)
+  const [dynamicRound, setDynamicRound] = useState<StatementSet | null>(null)
   const [choice, setChoice] = useState<number | null>(null)
   const [score, setScoreState] = useState(0)
   const [played, setPlayed] = useState(0)
 
-  const current = ROUNDS[round]
+  const current = dynamicRound ?? ROUNDS[round]
   const correct = choice === current.lieIndex
 
   function handleSelect(idx: number) {
@@ -147,8 +188,15 @@ export default function QuizGame() {
 
   function refreshRound() {
     setChoice(null)
-    const next = Math.floor(Math.random() * ROUNDS.length)
-    setRound(next)
+    generateStatementSet().then((set) => {
+      if (set) {
+        setDynamicRound(set)
+      } else {
+        const next = Math.floor(Math.random() * ROUNDS.length)
+        setRound(next)
+        setDynamicRound(null)
+      }
+    })
   }
 
   function nextRound() {
@@ -167,10 +215,12 @@ export default function QuizGame() {
       setPlayed(0)
       setChoice(null)
       setRound(0)
+      setDynamicRound(null)
       return
     }
     setChoice(null)
     setRound((r) => (r + 1) % ROUNDS.length)
+    setDynamicRound(null)
   }
 
   useEffect(() => {
