@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import ThemeToggle from './ThemeToggle'
 import Tooltip from '../ui/Tooltip'
 
 export default function NavBar() {
@@ -16,7 +15,6 @@ export default function NavBar() {
         />
         StrawberryTech
       </div>
-      <ThemeToggle />
       <button
         className="menu-toggle"
         aria-label="Toggle navigation"
