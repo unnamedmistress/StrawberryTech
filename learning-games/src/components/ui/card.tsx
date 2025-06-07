@@ -1,13 +1,13 @@
-import React from 'react';
+import type { FC, ReactNode, CSSProperties } from 'react'
 
 export interface CardProps {
-  children: React.ReactNode;
+  children: ReactNode;
   className?: string;
   onClick?: () => void;
-  style?: React.CSSProperties;
+  style?: CSSProperties;
 }
 
-const Card: React.FC<CardProps> = ({
+const Card: FC<CardProps> = ({
   children,
   className = '',
   onClick,
@@ -30,11 +30,10 @@ const Card: React.FC<CardProps> = ({
       {children}
     </div>
   );
-};
+}
 
-export const CardContent: React.FC<{ children: React.ReactNode; className?: string }> = ({ children, className = '' }) => (
+export const CardContent: FC<{ children: ReactNode; className?: string }> = ({ children, className = '' }) => (
   <div className={`card-content ${className}`}>{children}</div>
-);
+)
 
-export { Card };
 export default Card;
