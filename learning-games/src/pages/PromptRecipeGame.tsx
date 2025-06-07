@@ -1,8 +1,12 @@
 import { useState, useEffect, useContext } from 'react'
+import { motion } from 'framer-motion'
+import confetti from 'canvas-confetti'
 import { toast } from 'react-hot-toast'
 
 import ProgressSidebar from '../components/layout/ProgressSidebar'
 import InstructionBanner from '../components/ui/InstructionBanner'
+import Tooltip from '../components/ui/Tooltip'
+import ProgressBar from '../components/ui/ProgressBar'
 import { UserContext } from '../context/UserContext'
 import './PromptRecipeGame.css'
 
@@ -113,6 +117,8 @@ async function generateCards(): Promise<Card[]> {
 }
 
 export default function PromptRecipeGame() {
+  const TOTAL_TIME = 30
+
   const { setScore, addBadge, user } = useContext(UserContext)
   const [cards, setCards] = useState<Card[]>([])
   const [roundCards, setRoundCards] = useState<Card[]>([])
@@ -126,8 +132,9 @@ export default function PromptRecipeGame() {
   const [perfectRounds, setPerfectRounds] = useState(0)
   const [showPrompt, setShowPrompt] = useState(false)
   const [hoverSlot, setHoverSlot] = useState<Slot | null>(null)
-  const [timeLeft, setTimeLeft] = useState(30)
+  const [timeLeft, setTimeLeft] = useState(TOTAL_TIME)
   const [hintSlot, setHintSlot] = useState<Slot | null>(null)
+  const [selectedCard, setSelectedCard] = useState<Card | null>(null)
   const [feedback, setFeedback] = useState<Record<Slot, 'correct' | 'wrong' | null>>({
     Action: null,
     Context: null,
@@ -143,7 +150,8 @@ export default function PromptRecipeGame() {
     setDropped({ Action: null, Context: null, Format: null, Constraints: null })
     setShowPrompt(false)
     setExample(null)
-    setTimeLeft(30)
+    setTimeLeft(TOTAL_TIME)
+    setSelectedCard(null)
     setHintSlot(null)
     setFeedback({
       Action: null,
@@ -185,6 +193,7 @@ export default function PromptRecipeGame() {
       const finalScore = gained + Math.floor(timeLeft / 5)
       setScoreState(s => s + finalScore)
       if (perfect) {
+        confetti({ particleCount: 70, spread: 60, origin: { y: 0.7 } })
         setPerfectRounds(p => p + 1)
         if (perfectRounds + 1 >= 10 && !user.badges.includes('prompt-chef')) {
           addBadge('prompt-chef')
@@ -195,8 +204,21 @@ export default function PromptRecipeGame() {
     }
   }, [dropped])
 
+  function dropSelected(slot: Slot) {
+    if (!selectedCard) return
+    const correctText = roundCards.find(c => c.type === slot)?.text
+    const correct = selectedCard.text === correctText
+    setDropped(prev => ({ ...prev, [slot]: selectedCard.text }))
+    if (correct) {
+      setCards(cs => cs.filter(c => c.text !== selectedCard.text))
+    }
+    setFeedback(f => ({ ...f, [slot]: correct ? 'correct' : 'wrong' }))
+    setSelectedCard(null)
+  }
+
   function handleDragStart(e: React.DragEvent<HTMLDivElement>, card: Card) {
     e.dataTransfer.setData('application/json', JSON.stringify(card))
+    setSelectedCard(card)
   }
 
   function handleDrop(slot: Slot, e: React.DragEvent<HTMLDivElement>) {
@@ -204,13 +226,8 @@ export default function PromptRecipeGame() {
     const data = e.dataTransfer.getData('application/json')
     if (!data) return
     const card = JSON.parse(data) as Card
-    const correctText = roundCards.find(c => c.type === slot)?.text
-    const correct = card.text === correctText
-    setDropped(prev => ({ ...prev, [slot]: card.text }))
-    if (correct) {
-      setCards(cs => cs.filter(c => c.text !== card.text))
-    }
-    setFeedback(f => ({ ...f, [slot]: correct ? 'correct' : 'wrong' }))
+    setSelectedCard(card)
+    dropSelected(slot)
     setHoverSlot(null)
   }
 
@@ -221,6 +238,23 @@ export default function PromptRecipeGame() {
 
   function handleDragLeave() {
     setHoverSlot(null)
+  }
+
+  function handleCardKeyDown(
+    e: React.KeyboardEvent<HTMLDivElement>,
+    card: Card,
+  ) {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault()
+      setSelectedCard(card)
+    }
+  }
+
+  function handleBowlKeyDown(slot: Slot, e: React.KeyboardEvent<HTMLDivElement>) {
+    if ((e.key === 'Enter' || e.key === ' ') && selectedCard) {
+      e.preventDefault()
+      dropSelected(slot)
+    }
   }
 
   function shuffle<T>(arr: T[]): T[] {
@@ -279,12 +313,19 @@ export default function PromptRecipeGame() {
     }
   }
 
+  function copyPrompt() {
+    navigator.clipboard.writeText(promptText).then(() => {
+      toast.success('Prompt copied!')
+    })
+  }
+
   const promptText = `${dropped.Action ?? ''} ${dropped.Context ?? ''} ${dropped.Format ?? ''} ${dropped.Constraints ?? ''}`
 
   return (
     <div className="recipe-page">
       <InstructionBanner>
         Drag each ingredient card into the correct bowl to build the prompt recipe.
+        You can also press Enter on a card then Enter on a bowl to place it.
       </InstructionBanner>
       <div className="recipe-wrapper">
         <aside className="recipe-sidebar">
@@ -298,6 +339,7 @@ export default function PromptRecipeGame() {
             <span className="score">Score: {score}</span>
             <span className="timer">Time: {timeLeft}s</span>
           </div>
+          <ProgressBar percent={(timeLeft / TOTAL_TIME) * 100} />
           <div className="bowls">
             {(['Action', 'Context', 'Format', 'Constraints'] as Slot[]).map(slot => (
               <div
@@ -306,6 +348,9 @@ export default function PromptRecipeGame() {
                 onDrop={e => handleDrop(slot, e)}
                 onDragOver={e => handleDragOver(slot, e)}
                 onDragLeave={handleDragLeave}
+                tabIndex={0}
+                role="button"
+                onKeyDown={e => handleBowlKeyDown(slot, e)}
               >
                 <strong>{slot}</strong>
                 <div className="bowl-content">{dropped[slot] || 'Drop here'}</div>
@@ -314,14 +359,18 @@ export default function PromptRecipeGame() {
           </div>
           <div className="cards">
             {cards.map(card => (
-              <div
-                key={card.text}
-                className="card"
-                draggable
-                onDragStart={e => handleDragStart(e, card)}
-              >
-                {card.text}
-              </div>
+              <Tooltip key={card.text} message={`Add the ${card.type.toLowerCase()}` }>
+                <motion.div
+                  className={`card${selectedCard?.text === card.text ? ' selected' : ''}`}
+                  draggable
+                  tabIndex={0}
+                  role="button"
+                  onDragStart={e => handleDragStart(e, card)}
+                  onKeyDown={e => handleCardKeyDown(e, card)}
+                >
+                  {card.text}
+                </motion.div>
+              </Tooltip>
             ))}
           </div>
           <div className="game-actions">
@@ -333,6 +382,14 @@ export default function PromptRecipeGame() {
               <h3>Your Prompt</h3>
               <p>{promptText}</p>
               {example && <p className="sample-output">{example}</p>}
+              <img
+                className="prompt-image"
+                src="https://images.unsplash.com/photo-1495567720989-cebdbdd97913?auto=format&fit=crop&w=400&q=60"
+                alt="prompt context"
+              />
+              <button className="btn-primary copy-btn" onClick={copyPrompt}>
+                Copy Prompt
+              </button>
             </div>
           )}
         </div>
