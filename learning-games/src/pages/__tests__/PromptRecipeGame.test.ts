@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { evaluateRecipe, Dropped, Card } from '../PromptRecipeGame'
+import { evaluateRecipe, type Dropped, type Card } from '../PromptRecipeGame'
 
 describe('evaluateRecipe', () => {
   it('scores 4 and is perfect when all placements correct', () => {
