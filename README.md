@@ -21,6 +21,7 @@ Drag cards to assemble a prompt. Each round now fetches fresh card text from the
 - A unified leaderboard with tabs displays top scores for every game.
 - A dedicated Badges page lets you track all achievements.
 - A hidden `/stats` page displays live visitor analytics collected on the server.
+- A community playlist page lets everyone share bad and good prompt pairs.
 
 ## Getting Started
 1. Install dependencies and start the dev server:
