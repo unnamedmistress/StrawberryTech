@@ -1,6 +1,7 @@
 import { useState, useEffect, useContext } from 'react'
 import ProgressSidebar from '../components/layout/ProgressSidebar'
 import InstructionBanner from '../components/ui/InstructionBanner'
+import ProgressBar from '../components/ui/ProgressBar'
 import { UserContext } from '../context/UserContext'
 import './ClarityEscapeRoom.css'
 
@@ -37,6 +38,7 @@ export default function ClarityEscapeRoom() {
   const [start] = useState(() => Date.now())
   const [timeLeft, setTimeLeft] = useState(30)
   const [hintVisible, setHintVisible] = useState(false)
+  const [openPercent, setOpenPercent] = useState(0)
 
   const current = tasks[door]
 
@@ -95,6 +97,10 @@ export default function ClarityEscapeRoom() {
   }, [door])
 
   useEffect(() => {
+    setOpenPercent(Math.round((door / tasks.length) * 100))
+  }, [door, tasks.length])
+
+  useEffect(() => {
     if (door === tasks.length) {
       setScore('escape', score)
     }
@@ -134,6 +140,7 @@ export default function ClarityEscapeRoom() {
             <button type="submit" className="btn-primary">Submit</button>
             <button type="button" onClick={showHint} className="btn-primary">Hint</button>
           </form>
+          <ProgressBar percent={openPercent} />
           {hintVisible && (
             <p className="hint-keywords">Keywords: {current.keywords.join(', ')}</p>
           )}
