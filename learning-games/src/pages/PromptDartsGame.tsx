@@ -22,8 +22,8 @@ export const ROUNDS: DartRound[] = [
   },
 ]
 
-export function checkChoice(_round: DartRound, choice: 'bad' | 'good') {
-  return choice === 'good'
+export function checkChoice(round: DartRound, choice: 'bad' | 'good') {
+  return round[choice] === round.good
 }
 
 export default function PromptDartsGame() {

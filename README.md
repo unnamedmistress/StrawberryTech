@@ -43,6 +43,7 @@ Node **18+** is recommended. Major dependencies include React 19, React Router 7
 - `npm run lint` checks code style with ESLint.
 - `npm run test` runs the Vitest unit tests.
 - `npm run build` creates a production build in `dist/`.
+- Run `npm install` before `npm run build` if dependencies haven't been installed.
 
 ### Running Tests
 
