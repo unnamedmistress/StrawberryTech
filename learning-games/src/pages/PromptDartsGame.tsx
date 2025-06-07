@@ -10,6 +10,15 @@ export interface DartRound {
   bad: string
   good: string
 
+  why: string
+}
+
+export const ROUNDS: DartRound[] = [
+  {
+    bad: 'Tell me about AI.',
+    good: 'List 3 use cases of AI in customer service.',
+    why: 'Specific requests guide AI toward focused answers.',
+
   category: string
 }
 
@@ -19,18 +28,26 @@ export const ROUNDS: DartRound[] = [
     category: 'AI',
     bad: 'Tell me about AI.',
     good: 'List 3 use cases of AI in customer service.',
+
   },
   {
     category: 'Email',
     bad: 'Write an email.',
     good: 'Draft a 3-sentence email to a hiring manager explaining your interest.',
+
+    why: 'Mentioning the audience and length sets clear expectations.',
+
     response:
       'Dear Hiring Manager, I am excited about the role and believe my skills fit well. I look forward to contributing to the team. Thank you for your consideration.',
+
   },
   {
     category: 'Environment',
     bad: 'Explain climate change.',
     good: 'Summarize 2 key causes of climate change in one paragraph.',
+
+    why: 'Constrained length and key points make the answer concise.',
+
     response:
       'Burning fossil fuels releases greenhouse gases, while deforestation reduces carbon absorption—both drive rising temperatures.',
   },
@@ -77,6 +94,7 @@ export const ROUNDS: DartRound[] = [
   {
     bad: 'Make a logo.',
     good: 'Provide a text description of a logo idea for a coffee shop named Bean Buzz.',
+
   },
 ]
 
@@ -150,7 +168,10 @@ export default function PromptDartsGame() {
                   ? 'Correct! Clear prompts hit the bullseye.'
                   : 'Not quite. Aim for specific wording.'}
               </p>
+
+              <p className="why-message">{current.why}</p>
               <pre className="canned-response">{current.response}</pre>
+
             </>
           )}
         </div>

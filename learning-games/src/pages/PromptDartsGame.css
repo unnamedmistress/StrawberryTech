@@ -58,6 +58,10 @@
   margin-bottom: 0.5rem;
 }
 
+
+.why-message {
+  margin-bottom: 0.5rem;
+
 .canned-response {
   background: var(--color-background);
   color: var(--color-text-dark);
