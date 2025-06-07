@@ -29,6 +29,7 @@ export default function CommunityPage() {
     return initialPosts
   })
   const [message, setMessage] = useState('')
+  const [error, setError] = useState('')
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -61,6 +62,10 @@ export default function CommunityPage() {
         content: message.trim(),
         date: new Date().toISOString(),
       }
+      if (posts.some(p => p.author === newPost.author)) {
+        setError('Limit reached: only one post per user')
+        return
+      }
       setPosts((prev) => [...prev, newPost])
       if (typeof window !== 'undefined') {
         const base = window.location.origin
@@ -70,6 +75,7 @@ export default function CommunityPage() {
           body: JSON.stringify(newPost),
         }).catch(() => {})
       }
+      setError('')
       setMessage('')
     }
   }
@@ -90,6 +96,11 @@ export default function CommunityPage() {
           Post
         </button>
       </form>
+      {error && (
+        <p role="alert" style={{ color: 'red' }}>
+          {error}
+        </p>
+      )}
       {posts
         .slice()
         .reverse()
