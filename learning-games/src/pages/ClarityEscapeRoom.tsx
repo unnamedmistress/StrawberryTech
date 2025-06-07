@@ -1,4 +1,5 @@
 import { useState, useEffect, useContext } from 'react'
+import { motion } from 'framer-motion'
 import ProgressSidebar from '../components/layout/ProgressSidebar'
 import InstructionBanner from '../components/ui/InstructionBanner'
 import DoorAnimation from '../components/DoorAnimation'
@@ -39,6 +40,14 @@ export default function ClarityEscapeRoom() {
   const [timeLeft, setTimeLeft] = useState(30)
   const [openPercent, setOpenPercent] = useState(0)
   const [hintVisible, setHintVisible] = useState(false)
+  const [openPercent, setOpenPercent] = useState(0)
+  const segments = [
+    'The door creaks open a little.',
+    'A sliver of light spills through.',
+    'Almost there, keep going...',
+    'The door swings wide open!'
+  ]
+  const [revealIndex, setRevealIndex] = useState(0)
 
   const current = tasks[door]
 
@@ -99,6 +108,20 @@ export default function ClarityEscapeRoom() {
   }, [door])
 
   useEffect(() => {
+    const percent = Math.round((door / tasks.length) * 100)
+    setOpenPercent(percent)
+  }, [door, tasks.length])
+
+  useEffect(() => {
+    const thresholds = [25, 50, 75, 100]
+    for (let i = 0; i < thresholds.length; i++) {
+      if (openPercent >= thresholds[i] && revealIndex < i + 1) {
+        setRevealIndex(i + 1)
+      }
+    }
+  }, [openPercent, revealIndex])
+
+  useEffect(() => {
     if (door === tasks.length) {
       setScore('escape', score)
     }
@@ -127,7 +150,24 @@ export default function ClarityEscapeRoom() {
         </aside>
         <div className="room">
           <h3>{current.hint}</h3>
+          <p className="hint">Door {door + 1}</p>
+          <p className="timer">Time left: {timeLeft}s</p>
+          <p className="door-progress">
+            {segments.slice(0, revealIndex).map((text, idx) => (
+              <motion.span
+                key={idx}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5 }}
+                style={{ display: 'block' }}
+              >
+                {text}
+              </motion.span>
+            ))}
+          </p>
+
           <DoorAnimation openPercent={openPercent} />
+
           <form onSubmit={handleSubmit} className="prompt-form">
             <input
               value={input}
