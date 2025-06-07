@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import ProgressSidebar from '../components/layout/ProgressSidebar'
-import InstructionBanner from '../components/ui/InstructionBanner'
 import './DragDropGame.css'
 
 const tones = [
@@ -64,9 +63,6 @@ export default function DragDropGame() {
 
   return (
     <div className="dragdrop-page">
-      <InstructionBanner>
-        Drag a tone into the blank to see how the wording changes.
-      </InstructionBanner>
       <div className="dragdrop-wrapper">
         <div className="dragdrop-game">
           <h2>Drag a tone into the blank</h2>
