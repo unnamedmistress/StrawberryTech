@@ -20,6 +20,7 @@ Drag cards to assemble a prompt. Each round now fetches fresh card text from the
 - High contrast theme preference persists via `ThemeToggle`.
 - A unified leaderboard with tabs displays top scores for every game.
 - A dedicated Badges page lets you track all achievements.
+- A hidden `/stats` page displays live visitor analytics collected on the server.
 
 ## Getting Started
 1. Install dependencies and start the dev server:
@@ -58,6 +59,12 @@ npm test
 
 Without installing the packages first the `vitest` command used by
 `npm test` will not be available and the tests will fail.
+
+### Visitor Statistics
+
+Analytics data is stored by the server in `server/db.json`. Open the hidden
+`/stats` page while the server is running to see live counts of page views,
+unique visitors, and average session length.
 
 ## Environment Variables
 RobotChat and the Prompt Recipe Builder use the OpenAI API. Create a `.env` file inside `learning-games` containing:
