@@ -18,15 +18,27 @@ const TASKS: Task[] = [
   { hint: 'Condense this paragraph', keywords: ['condense', 'paragraph'] },
 ]
 
+function shuffle<T>(arr: T[]): T[] {
+  const copy = [...arr]
+  for (let i = copy.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[copy[i], copy[j]] = [copy[j], copy[i]]
+  }
+  return copy
+}
+
 export default function ClarityEscapeRoom() {
   const { setScore, addBadge, user } = useContext(UserContext)
   const [door, setDoor] = useState(0)
+  const [tasks] = useState<Task[]>(() => shuffle(TASKS))
   const [input, setInput] = useState('')
   const [score, setScoreState] = useState(0)
   const [message, setMessage] = useState('')
   const [start] = useState(() => Date.now())
+  const [timeLeft, setTimeLeft] = useState(30)
+  const [hintVisible, setHintVisible] = useState(false)
 
-  const current = TASKS[door]
+  const current = tasks[door]
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -37,13 +49,13 @@ export default function ClarityEscapeRoom() {
       const nextScore = score + 50
       setScoreState(nextScore)
       setMessage('The door unlocks with a click!')
-      if (door + 1 === TASKS.length) {
+      if (door + 1 === tasks.length) {
         const time = Date.now() - start
         setScore('escape', nextScore)
         if (time < 180000 && !user.badges.includes('escape-artist')) {
           addBadge('escape-artist')
         }
-        setDoor(TASKS.length)
+        setDoor(tasks.length)
       } else {
         setDoor(d => d + 1)
         setInput('')
@@ -54,13 +66,41 @@ export default function ClarityEscapeRoom() {
     }
   }
 
+  function showHint() {
+    if (!hintVisible) {
+      setHintVisible(true)
+      setScoreState(s => Math.max(0, s - 5))
+    }
+  }
+
   useEffect(() => {
-    if (door === TASKS.length) {
+    setTimeLeft(30)
+    const id = setInterval(() => {
+      setTimeLeft(t => {
+        if (t <= 1) {
+          setScoreState(s => Math.max(0, s - 20))
+          setMessage('Too slow! The door remains locked.')
+          setInput('')
+          setHintVisible(false)
+          return 30
+        }
+        return t - 1
+      })
+    }, 1000)
+    return () => clearInterval(id)
+  }, [door])
+
+  useEffect(() => {
+    setHintVisible(false)
+  }, [door])
+
+  useEffect(() => {
+    if (door === tasks.length) {
       setScore('escape', score)
     }
-  }, [door, score, setScore])
+  }, [door, score, setScore, tasks.length])
 
-  if (door === TASKS.length) {
+  if (door === tasks.length) {
     return (
       <div className="escape-page">
         <InstructionBanner>You escaped the room!</InstructionBanner>
@@ -84,6 +124,7 @@ export default function ClarityEscapeRoom() {
         <div className="room">
           <h3>{current.hint}</h3>
           <p className="hint">Door {door + 1}</p>
+          <p className="timer">Time left: {timeLeft}s</p>
           <form onSubmit={handleSubmit} className="prompt-form">
             <input
               value={input}
@@ -91,7 +132,11 @@ export default function ClarityEscapeRoom() {
               placeholder="Type your prompt"
             />
             <button type="submit" className="btn-primary">Submit</button>
+            <button type="button" onClick={showHint} className="btn-primary">Hint</button>
           </form>
+          {hintVisible && (
+            <p className="hint-keywords">Keywords: {current.keywords.join(', ')}</p>
+          )}
           {message && <p className="feedback">{message}</p>}
           <p className="score">Score: {score}</p>
         </div>
