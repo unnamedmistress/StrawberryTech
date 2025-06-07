@@ -26,7 +26,9 @@ export default function ProfilePage() {
           onChange={(e) => setNameState(e.target.value)}
           style={{ marginLeft: '0.5rem' }}
         />
+
         <button type="submit" className="btn-primary" style={{ marginLeft: '0.5rem' }}>Save Name</button>
+
       </form>
       <AgeInputForm allowEdit onSaved={() => navigate('/leaderboard')} />
       <p style={{ marginTop: '1rem' }}>

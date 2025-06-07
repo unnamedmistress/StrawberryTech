@@ -3,6 +3,14 @@
   line-height: 1.5;
   font-weight: 400;
 
+
+  --color-purple: #f43f5e;
+  --color-orange: #ff6b00;
+  --color-lime: #a3e635;
+  --color-blue: #1e3a8a;
+  --color-purple-dark: #6d28d9;
+  /* Strawberry palette */
+
   --color-brand: #ee3a57;
   --color-background: #f8d7e1;
   --color-accent: #6dbf4d;
@@ -59,6 +67,7 @@ h6 {
 h1 {
   font-family: 'Poppins', sans-serif;
   font-size: 3.2em;
+
 }
 h2, h3 {
   font-family: 'Poppins', sans-serif;
@@ -93,6 +102,16 @@ button:hover {
 button:focus,
 button:focus-visible {
   outline: 4px auto var(--color-accent);
+}
+
+.btn-primary {
+  background-color: var(--color-brand);
+  border-radius: 8px;
+  padding: 0.8rem 1.6rem;
+}
+
+.btn-primary:hover {
+  background-color: var(--color-deep-red);
 }
 
 .btn-primary {

@@ -111,10 +111,14 @@
 
 .progress-summary progress {
   width: 80%;
+
   height: 20px;
   accent-color: var(--color-accent);
   background-color: var(--color-secondary);
   border-radius: 10px;
+  height: 1rem;
+  accent-color: var(--color-accent);
+
   display: block;
   margin: 0 auto;
 }
