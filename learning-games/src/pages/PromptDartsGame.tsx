@@ -12,14 +12,25 @@ export interface DartRound {
 
 export const ROUNDS: DartRound[] = [
   { bad: 'Tell me about AI.', good: 'List 3 use cases of AI in customer service.' },
-  {
-    bad: 'Write an email.',
-    good: 'Draft a 3-sentence email to a hiring manager explaining your interest.',
-  },
-  {
-    bad: 'Explain climate change.',
-    good: 'Summarize 2 key causes of climate change in one paragraph.',
-  },
+  { bad: 'Write an email.', good: 'Draft a 3-sentence email to a hiring manager explaining your interest.' },
+  { bad: 'Explain climate change.', good: 'Summarize 2 key causes of climate change in one paragraph.' },
+  { bad: 'Summarize this article.', good: 'Provide a two-sentence summary highlighting the main argument.' },
+  { bad: 'Translate this text.', good: 'Translate the following text from English to Spanish.' },
+  { bad: 'Analyze our sales.', good: 'List 3 key insights from last quarter\'s sales data in bullet form.' },
+  { bad: 'Write marketing copy.', good: 'Compose a short tweet promoting our new product and mention its top benefit.' },
+  { bad: 'Weather?', good: 'Give today\'s weather forecast for Tokyo in Celsius.' },
+  { bad: 'Code a function.', good: 'Write a Python function that reverses a string.' },
+  { bad: 'Story please.', good: 'Write a short bedtime story about a dragon who learns to code.' },
+  { bad: 'Advice on focus.', good: 'Provide three tips for staying productive while working remotely.' },
+  { bad: 'Help with calculus.', good: 'Explain in two sentences how to find the derivative of x^2.' },
+  { bad: 'Improve sentence.', good: 'Rewrite the following sentence to sound more professional.' },
+  { bad: 'List activities.', good: 'Provide five kid-friendly indoor activities for a rainy day.' },
+  { bad: 'History facts.', good: 'Give a brief overview of the causes of the French Revolution.' },
+  { bad: 'Get user data.', good: 'Create an SQL query to find the ten most recent orders.' },
+  { bad: 'Recipe ideas.', good: 'Share a simple recipe for vegan chocolate chip cookies.' },
+  { bad: 'Explain quantum.', good: 'Explain quantum entanglement in simple terms for beginners.' },
+  { bad: 'Fix my laptop.', good: 'List three common solutions for a laptop that won\'t turn on.' },
+  { bad: 'Make an outline.', good: 'Create a 5-point outline for a blog post about time management tips.' },
 ]
 
 export function checkChoice(_round: DartRound, choice: 'bad' | 'good') {
