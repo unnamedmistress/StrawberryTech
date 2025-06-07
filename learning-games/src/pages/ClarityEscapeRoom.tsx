@@ -154,8 +154,11 @@ export default function ClarityEscapeRoom() {
         <div className="room">
           <InstructionBanner>
             <p>Enter a precise prompt to unlock each door.</p>
-            <p>Add more details to open the door.</p>
-            <p>Each submitted prompt reveals more of the answer.</p>
+            <ol>
+              <li>Read the hint for clues.</li>
+              <li>Rewrite it clearly so the AI understands.</li>
+            </ol>
+            <p>Example: "Condense this paragraph into three bullet points."</p>
             <p>You can submit up to 100 characters per attempt.</p>
           </InstructionBanner>
           <h3>{current.hint}</h3>
