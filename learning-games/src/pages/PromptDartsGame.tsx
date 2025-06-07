@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react'
+import { useState, useContext, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import ProgressSidebar from '../components/layout/ProgressSidebar'
 import InstructionBanner from '../components/ui/InstructionBanner'
@@ -108,12 +108,32 @@ export default function PromptDartsGame() {
   const [round, setRound] = useState(0)
   const [choice, setChoice] = useState<'bad' | 'good' | null>(null)
   const [score, setScoreState] = useState(0)
-  const current = rounds[round]
+
+  const TOTAL_TIME = 15
+  const MAX_POINTS = 10
+  const [timeLeft, setTimeLeft] = useState(TOTAL_TIME)
+  const [pointsLeft, setPointsLeft] = useState(MAX_POINTS)
+  const current = ROUNDS[round]
+
+
+  useEffect(() => {
+    setTimeLeft(TOTAL_TIME)
+    setPointsLeft(MAX_POINTS)
+  }, [round])
+
+  useEffect(() => {
+    if (choice !== null || timeLeft <= 0) return
+    const id = setTimeout(() => {
+      setTimeLeft(t => t - 1)
+      setPointsLeft(p => Math.max(0, p - 1))
+    }, 1000)
+    return () => clearTimeout(id)
+  }, [timeLeft, choice])
 
   function handleSelect(option: 'bad' | 'good') {
     setChoice(option)
     if (checkChoice(current, option)) {
-      setScoreState(s => s + 10)
+      setScoreState(s => s + pointsLeft)
     }
   }
 
@@ -121,6 +141,8 @@ export default function PromptDartsGame() {
     if (round + 1 < rounds.length) {
       setRound(r => r + 1)
       setChoice(null)
+      setTimeLeft(TOTAL_TIME)
+      setPointsLeft(MAX_POINTS)
     } else {
       setScore('darts', score)
       setRound(r => r + 1)
@@ -154,7 +176,9 @@ export default function PromptDartsGame() {
         <div className="darts-game">
 
           <h3>Round {round + 1} of {ROUNDS.length}</h3>
-          <p className="round-category">{current.category}</p>
+
+          <p className="timer">Time: {timeLeft}s</p>
+          <p className="points">Available points: {pointsLeft}</p>
 
           <p>Which prompt is clearer?</p>
           <div className="options">
@@ -162,6 +186,7 @@ export default function PromptDartsGame() {
             <button className="btn-primary" onClick={() => handleSelect('good')} disabled={choice !== null}>{current.good}</button>
           </div>
           {choice !== null && (
+
             <>
               <p className="feedback">
                 {checkChoice(current, choice)
@@ -173,6 +198,10 @@ export default function PromptDartsGame() {
               <pre className="canned-response">{current.response}</pre>
 
             </>
+
+          )}
+          {timeLeft === 0 && choice === null && (
+            <p className="feedback">Time’s up! No points this round.</p>
           )}
         </div>
         <ProgressSidebar />
