@@ -31,11 +31,25 @@ export default function CommunityPage() {
   const [message, setMessage] = useState('')
 
   useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const base = window.location.origin
+      fetch(`${base}/api/posts`)
+        .then((res) => (res.ok ? res.json() : []))
+        .then((data: PostData[]) => setPosts(data.length ? data : initialPosts))
+        .catch(() => {})
+    }
+  }, [])
+
+  useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(posts))
   }, [posts])
 
   function flagPost(id: number) {
     setPosts((prev) => prev.map((p) => (p.id === id ? { ...p, flagged: true } : p)))
+    if (typeof window !== 'undefined') {
+      const base = window.location.origin
+      fetch(`${base}/api/posts/${id}/flag`, { method: 'POST' }).catch(() => {})
+    }
   }
 
   function addPost(e: React.FormEvent) {
@@ -48,6 +62,14 @@ export default function CommunityPage() {
         date: new Date().toISOString(),
       }
       setPosts((prev) => [...prev, newPost])
+      if (typeof window !== 'undefined') {
+        const base = window.location.origin
+        fetch(`${base}/api/posts`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(newPost),
+        }).catch(() => {})
+      }
       setMessage('')
     }
   }
