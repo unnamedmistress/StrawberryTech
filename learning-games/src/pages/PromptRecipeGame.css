@@ -104,6 +104,29 @@
   border-color: var(--color-brand);
 }
 
+.bowl.correct {
+  border-color: var(--color-accent);
+  background: #e6f7e0;
+}
+
+.bowl.wrong {
+  border-color: var(--color-deep-red);
+  background: #f8d7da;
+}
+
+.bowl.hint {
+  animation: hintGlow 0.8s ease-in-out infinite alternate;
+}
+
+@keyframes hintGlow {
+  from {
+    box-shadow: 0 0 0 0 rgba(238, 58, 87, 0.5);
+  }
+  to {
+    box-shadow: 0 0 10px 4px rgba(238, 58, 87, 0.5);
+  }
+}
+
 .bowl-content {
   margin-top: 0.25rem;
   min-height: 1.2rem;
@@ -134,6 +157,19 @@
 .card:hover {
   background: var(--color-brand);
   box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+}
+
+.status-bar {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+.game-actions {
+  margin-top: 0.5rem;
+  display: flex;
+  gap: 0.5rem;
 }
 
 .bowls {

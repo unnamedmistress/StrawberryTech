@@ -75,6 +75,15 @@ export default function PromptRecipeGame() {
   const [perfectRounds, setPerfectRounds] = useState(0)
   const [showPrompt, setShowPrompt] = useState(false)
   const [hoverSlot, setHoverSlot] = useState<Slot | null>(null)
+  const [level, setLevel] = useState(1)
+  const [timeLeft, setTimeLeft] = useState(30)
+  const [hintSlot, setHintSlot] = useState<Slot | null>(null)
+  const [feedback, setFeedback] = useState<Record<Slot, 'correct' | 'wrong' | null>>({
+    Action: null,
+    Context: null,
+    Format: null,
+    Constraints: null,
+  })
 
   function startRound() {
     const newCards: Card[] = [
@@ -87,6 +96,14 @@ export default function PromptRecipeGame() {
     setCards(shuffle([...newCards]))
     setDropped({ Action: null, Context: null, Format: null, Constraints: null })
     setShowPrompt(false)
+    setTimeLeft(30)
+    setHintSlot(null)
+    setFeedback({
+      Action: null,
+      Context: null,
+      Format: null,
+      Constraints: null,
+    })
   }
 
   useEffect(() => {
@@ -94,16 +111,32 @@ export default function PromptRecipeGame() {
   }, [])
 
   useEffect(() => {
+    if (showPrompt) return
+    const id = setInterval(() => {
+      setTimeLeft(t => {
+        if (t <= 1) {
+          clearInterval(id)
+          setShowPrompt(true)
+          return 0
+        }
+        return t - 1
+      })
+    }, 1000)
+    return () => clearInterval(id)
+  }, [showPrompt])
+
+  useEffect(() => {
     if (Object.values(dropped).every(Boolean)) {
       const { score: gained, perfect } = evaluateRecipe(dropped, roundCards)
-      setScoreState(s => s + gained)
+      const finalScore = gained + Math.floor(timeLeft / 5)
+      setScoreState(s => s + finalScore)
       if (perfect) {
         setPerfectRounds(p => p + 1)
         if (perfectRounds + 1 >= 10 && !user.badges.includes('prompt-chef')) {
           addBadge('prompt-chef')
         }
       }
-      setScore('recipe', score + gained)
+      setScore('recipe', score + finalScore)
       setShowPrompt(true)
     }
   }, [dropped])
@@ -117,8 +150,13 @@ export default function PromptRecipeGame() {
     const data = e.dataTransfer.getData('application/json')
     if (!data) return
     const card = JSON.parse(data) as Card
+    const correctText = roundCards.find(c => c.type === slot)?.text
+    const correct = card.text === correctText
     setDropped(prev => ({ ...prev, [slot]: card.text }))
-    setCards(cs => cs.filter(c => c.text !== card.text))
+    if (correct) {
+      setCards(cs => cs.filter(c => c.text !== card.text))
+    }
+    setFeedback(f => ({ ...f, [slot]: correct ? 'correct' : 'wrong' }))
     setHoverSlot(null)
   }
 
@@ -141,7 +179,28 @@ export default function PromptRecipeGame() {
   }
 
   function nextRound() {
+    setLevel(l => l + 1)
     startRound()
+  }
+
+  function clearRound() {
+    setCards(shuffle([...roundCards]))
+    setDropped({ Action: null, Context: null, Format: null, Constraints: null })
+    setFeedback({
+      Action: null,
+      Context: null,
+      Format: null,
+      Constraints: null,
+    })
+    setHintSlot(null)
+  }
+
+  function showHint() {
+    const remaining = roundCards.filter(c => !Object.values(dropped).includes(c.text))
+    if (remaining.length === 0) return
+    const card = remaining[Math.floor(Math.random() * remaining.length)]
+    setHintSlot(card.type)
+    setScoreState(s => Math.max(0, s - 1))
   }
 
   const promptText = `${dropped.Action ?? ''} ${dropped.Context ?? ''} ${dropped.Format ?? ''} ${dropped.Constraints ?? ''}`
@@ -159,11 +218,15 @@ export default function PromptRecipeGame() {
           <p className="sidebar-tip">Arrange each ingredient to craft a clear request.</p>
         </aside>
         <div className="recipe-game">
+          <div className="status-bar">
+            <span className="score">Score: {score}</span>
+            <span className="timer">Time: {timeLeft}s</span>
+          </div>
           <div className="bowls">
             {(['Action', 'Context', 'Format', 'Constraints'] as Slot[]).map(slot => (
               <div
                 key={slot}
-                className={`bowl${hoverSlot === slot ? ' hover' : ''}`}
+                className={`bowl${hoverSlot === slot ? ' hover' : ''}${hintSlot === slot ? ' hint' : ''}${feedback[slot] === 'correct' ? ' correct' : ''}${feedback[slot] === 'wrong' ? ' wrong' : ''}`}
                 onDrop={e => handleDrop(slot, e)}
                 onDragOver={e => handleDragOver(slot, e)}
                 onDragLeave={handleDragLeave}
@@ -184,6 +247,10 @@ export default function PromptRecipeGame() {
                 {card.text}
               </div>
             ))}
+          </div>
+          <div className="game-actions">
+            <button className="btn-primary" onClick={showHint}>Hint</button>
+            <button className="btn-primary" onClick={clearRound}>Clear</button>
           </div>
           {showPrompt && (
             <div className="plate">
