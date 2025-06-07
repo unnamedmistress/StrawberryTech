@@ -7,4 +7,11 @@ describe('checkChoice', () => {
     expect(checkChoice(round, 'good')).toBe(true)
     expect(checkChoice(round, 'bad')).toBe(false)
   })
+
+  it('each round provides a canned response', () => {
+    for (const round of ROUNDS) {
+      expect(round.response).toBeDefined()
+      expect(typeof round.response).toBe('string')
+    }
+  })
 })
