@@ -2,6 +2,7 @@ import { useContext, useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import AgeInputForm from './AgeInputForm'
 import { UserContext } from '../context/UserContext'
+import ThemeToggle from '../components/layout/ThemeToggle'
 
 export default function ProfilePage() {
   const { user, setName } = useContext(UserContext)
@@ -31,6 +32,10 @@ export default function ProfilePage() {
 
       </form>
       <AgeInputForm allowEdit onSaved={() => navigate('/leaderboard')} />
+      <div style={{ marginTop: '1rem' }}>
+        <span style={{ marginRight: '0.5rem' }}>High Contrast Mode:</span>
+        <ThemeToggle />
+      </div>
       <p style={{ marginTop: '1rem' }}>
         <Link to="/leaderboard">Return to Progress</Link>
       </p>
