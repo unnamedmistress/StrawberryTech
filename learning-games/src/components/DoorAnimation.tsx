@@ -6,19 +6,18 @@ export interface DoorAnimationProps {
 }
 
 export default function DoorAnimation({ openPercent }: DoorAnimationProps) {
-  const percent = Math.max(0, Math.min(100, openPercent))
+  const angle = Math.max(0, Math.min(75, (openPercent / 100) * 75))
   return (
     <div className="door-container">
-      <motion.div
-        className="door-half left"
-        animate={{ x: `-${percent}%` }}
-        transition={{ type: 'tween', duration: 0.5 }}
-      />
-      <motion.div
-        className="door-half right"
-        animate={{ x: `${percent}%` }}
-        transition={{ type: 'tween', duration: 0.5 }}
-      />
+      <div className="door-frame">
+        <motion.div
+          className="door"
+          animate={{ rotateY: -angle }}
+          transition={{ type: 'tween', ease: 'easeOut', duration: 0.8 }}
+        >
+          <div className="door-handle" />
+        </motion.div>
+      </div>
     </div>
   )
 }
