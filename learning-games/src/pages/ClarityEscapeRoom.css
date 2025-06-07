@@ -18,6 +18,24 @@
   border-radius: 10px;
 }
 
+.room-grid {
+  display: grid;
+  grid-template-columns: 1fr 160px;
+  gap: 1rem;
+  align-items: start;
+}
+
+.room-main {
+  display: flex;
+  flex-direction: column;
+}
+
+.door-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .hint {
   font-style: italic;
   margin-bottom: 0.5rem;
@@ -108,6 +126,9 @@
       'progress'
       'next';
   }
+  .room-grid {
+    grid-template-columns: 1fr;
+  }
   .progress-sidebar {
     max-width: none;
   }
@@ -122,6 +143,7 @@
 
 .escape-video {
   width: 100%;
+  height: auto;
   border-radius: 8px;
   margin-bottom: 0.5rem;
 }
