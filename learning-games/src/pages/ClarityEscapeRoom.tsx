@@ -13,16 +13,56 @@ import './ClarityEscapeRoom.css'
 
 type Task = {
   hint: string
-  keywords: string[]
+  /**
+   * System prompt used when asking the language model if the
+   * player's input satisfies the hint. The model should reply
+   * with only "yes" or "no".
+   */
+  checkPrompt: string
 }
 
 const TASKS: Task[] = [
-  { hint: 'Draft an email', keywords: ['draft', 'email'] },
-  { hint: 'Improve this greeting', keywords: ['rewrite', 'formal'] },
-  { hint: 'Fix this text', keywords: ['correct', 'grammar'] },
-  { hint: 'Summarize the announcement', keywords: ['summarize', 'sentences'] },
-  { hint: 'Format for email', keywords: ['email'] },
-  { hint: 'Condense this paragraph', keywords: ['condense', 'paragraph'] },
+  {
+    hint: 'Write a short email canceling a meeting',
+    checkPrompt:
+      'Does the player ask the AI to politely cancel a meeting via email?'
+  },
+  {
+    hint: 'Summarize your day in one sentence',
+    checkPrompt: 'Is the player requesting a one sentence summary of a day?'
+  },
+  {
+    hint: 'Suggest weekend plans for a family',
+    checkPrompt: 'Is the user asking for family friendly weekend plans?'
+  },
+  {
+    hint: 'Share a quick morning workout',
+    checkPrompt: 'Does the prompt request a morning exercise routine?'
+  },
+  {
+    hint: 'Write a thank-you note to a teacher',
+    checkPrompt: 'Is the input about thanking a teacher in a short note?'
+  },
+  {
+    hint: 'Give tips for being more productive',
+    checkPrompt: 'Is the player asking for productivity tips?'
+  },
+  {
+    hint: 'Paraphrase the quote "Knowledge is power"',
+    checkPrompt: 'Does the prompt request a paraphrase of the quote "Knowledge is power"?'
+  },
+  {
+    hint: 'Translate "good morning" to Spanish',
+    checkPrompt: 'Is the player asking to translate "good morning" into Spanish?'
+  },
+  {
+    hint: 'Share a quick pasta recipe',
+    checkPrompt: 'Does the input seek a short pasta recipe?'
+  },
+  {
+    hint: 'Compose a tweet about reading a new book',
+    checkPrompt: 'Is the player trying to craft a short social post about a new book?'
+  }
 ]
 
 function shuffle<T>(arr: T[]): T[] {
@@ -32,6 +72,36 @@ function shuffle<T>(arr: T[]): T[] {
     ;[copy[i], copy[j]] = [copy[j], copy[i]]
   }
   return copy
+}
+
+async function evaluatePrompt(task: Task, inputText: string): Promise<boolean> {
+  try {
+    const resp = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${import.meta.env.VITE_OPENAI_API_KEY}`,
+      },
+      body: JSON.stringify({
+        model: 'gpt-3.5-turbo',
+        messages: [
+          {
+            role: 'system',
+            content: `${task.checkPrompt} Reply only with yes or no.`,
+          },
+          { role: 'user', content: inputText },
+        ],
+        max_tokens: 1,
+        temperature: 0,
+      }),
+    })
+    const data = await resp.json()
+    const text: string = data?.choices?.[0]?.message?.content?.trim().toLowerCase() ?? ''
+    return text.startsWith('yes')
+  } catch (err) {
+    console.error(err)
+    return false
+  }
 }
 
 export default function ClarityEscapeRoom() {
@@ -56,11 +126,10 @@ export default function ClarityEscapeRoom() {
 
   const current = tasks[door]
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     if (!input.trim()) return
-    const lower = input.toLowerCase()
-    const success = current.keywords.every(k => lower.includes(k))
+    const success = await evaluatePrompt(current, input)
     if (success) {
       const nextScore = score + 50
       setScoreState(nextScore)
@@ -150,6 +219,11 @@ export default function ClarityEscapeRoom() {
     <div className="escape-page">
       <div className="escape-wrapper">
         <aside className="escape-sidebar">
+          <img
+            src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=400&q=80"
+            alt="Mysterious door"
+            className="escape-img"
+          />
           <h3>Why Clarity Matters</h3>
           <p>Vague inputs lock AI in confusion loops; precise prompts open doors.</p>
           <blockquote className="sidebar-quote">Why Card: Why Clarity Matters</blockquote>
@@ -183,6 +257,13 @@ export default function ClarityEscapeRoom() {
           </p>
 
           <DoorAnimation openPercent={openPercent} />
+          <video
+            className="escape-video"
+            autoPlay
+            loop
+            muted
+            src="https://www.w3schools.com/html/mov_bbb.mp4"
+          />
 
           <form onSubmit={handleSubmit} className="prompt-form">
             <label htmlFor="prompt-input">Your prompt</label>
@@ -197,7 +278,7 @@ export default function ClarityEscapeRoom() {
           </form>
           <ProgressBar percent={openPercent} />
           {hintVisible && (
-            <p className="hint-keywords">Keywords: {current.keywords.join(', ')}</p>
+            <p className="hint-keywords">Hint: {current.checkPrompt}</p>
           )}
           {message && <p className="feedback">{message}</p>}
           <p className="score">Score: {score}</p>
