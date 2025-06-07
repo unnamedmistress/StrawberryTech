@@ -23,8 +23,10 @@ export default function ProgressSidebar() {
     if (typeof window !== 'undefined') {
       const base = window.location.origin
       fetch(`${base}/api/scores`)
-        .then(res => (res.ok ? res.json() : {}))
-        .then(data => setScores(Array.isArray(data.tone) ? data.tone : []))
+        .then((res) => (res.ok ? res.json() : {}))
+        .then((data: Record<string, ScoreEntry[]>) => {
+          setScores(Array.isArray(data.tone) ? data.tone : [])
+        })
         .catch(() => {})
     }
   }, [])
