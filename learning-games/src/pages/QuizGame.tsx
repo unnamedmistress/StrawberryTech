@@ -10,6 +10,7 @@ import InstructionBanner from '../components/ui/InstructionBanner'
 interface StatementSet {
   statements: string[]
   lieIndex: number
+  category?: string
 }
 
 async function generateStatementSet(): Promise<StatementSet | null> {
@@ -54,6 +55,7 @@ async function generateStatementSet(): Promise<StatementSet | null> {
 
 const ROUNDS: StatementSet[] = [
   {
+    category: 'Science',
     statements: [
       'Bananas are berries.',
       'Venus is hotter than Mercury.',
@@ -62,6 +64,7 @@ const ROUNDS: StatementSet[] = [
     lieIndex: 2,
   },
   {
+    category: 'World Facts',
     statements: [
       'Adult humans have 206 bones.',
       'The Amazon River is the longest river in the world.',
@@ -70,6 +73,7 @@ const ROUNDS: StatementSet[] = [
     lieIndex: 1,
   },
   {
+    category: 'Human Body',
     statements: [
       'Honey never spoils.',
       'Mount Everest is the highest mountain above sea level.',
@@ -265,6 +269,9 @@ export default function QuizGame() {
             Pick the hallucination from the three statements.
           </p>
           <p className="round-info">Round {round + 1} / {ROUNDS.length}</p>
+          {current.category && (
+            <p className="round-category">{current.category}</p>
+          )}
           <ul className="statement-list">
             {current.statements.map((s, i) => (
               <li key={i}>

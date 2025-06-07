@@ -18,10 +18,10 @@ function loadData() {
     return JSON.parse(fs.readFileSync(DB_FILE, 'utf8'));
   } catch {
     return {
-      user: { name: null, age: null, badges: [], scores: {} },
+      user: { name: null, age: null, badges: [], scores: { darts: 0 } },
       posts: [],
       views: [],
-      scores: {},
+      scores: { darts: [] },
       sessions: [],
     };
   }
@@ -33,10 +33,12 @@ function saveData(data) {
 
 let data = loadData();
 if (!data.views) data.views = [];
-if (!data.scores) data.scores = {};
-if (!data.user) data.user = { name: null, age: null, badges: [], scores: {} };
+if (!data.scores) data.scores = { darts: [] };
+if (!data.scores.darts) data.scores.darts = [];
+if (!data.user) data.user = { name: null, age: null, badges: [], scores: { darts: 0 } };
 if (!data.user.badges) data.user.badges = [];
-if (!data.user.scores) data.user.scores = {};
+if (!data.user.scores) data.user.scores = { darts: 0 };
+if (data.user.scores.darts === undefined) data.user.scores.darts = 0;
 if (!data.sessions) data.sessions = [];
 
 app.get('/api/user', (req, res) => {
