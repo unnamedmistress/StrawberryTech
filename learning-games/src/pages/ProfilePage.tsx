@@ -1,44 +1,53 @@
 import { useContext, useState } from 'react'
-import { useNavigate, Link } from 'react-router-dom'
-import AgeInputForm from './AgeInputForm'
+import { Link } from 'react-router-dom'
+import { toast } from 'react-hot-toast'
 import { UserContext } from '../context/UserContext'
-import ThemeToggle from '../components/layout/ThemeToggle'
+import './ProfilePage.css'
 
 export default function ProfilePage() {
-  const { user, setName } = useContext(UserContext)
+  const { user, setName, setAge } = useContext(UserContext)
   const [name, setNameState] = useState(user.name ?? '')
-  const navigate = useNavigate()
+  const [age, setAgeState] = useState<string>(user.age ? String(user.age) : '')
 
-  function handleSaveName(e: React.FormEvent) {
+  function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    setName(name)
-    navigate('/leaderboard')
+    const ageNum = Number(age)
+    if (!name.trim()) {
+      toast.error('Please enter your name')
+      return
+    }
+    if (!age || Number.isNaN(ageNum) || ageNum <= 0) {
+      toast.error('Age must be a valid number')
+      return
+    }
+    setName(name.trim())
+    setAge(ageNum)
+    toast.success('Profile saved successfully!')
   }
 
   return (
-    <div style={{ textAlign: 'center' }}>
-      <h2>Edit Profile</h2>
-      <form onSubmit={handleSaveName} style={{ marginBottom: '1rem' }}>
-        <label htmlFor="name">Name:</label>
+    <div className="profile-page">
+      <form className="profile-card" onSubmit={handleSubmit}>
+        <h2>Edit Profile</h2>
+        <label htmlFor="name">Name</label>
         <input
           id="name"
           type="text"
           value={name}
           onChange={(e) => setNameState(e.target.value)}
-          style={{ marginLeft: '0.5rem' }}
         />
-
-        <button type="submit" className="btn-primary" style={{ marginLeft: '0.5rem' }}>Save Name</button>
-
+        <label htmlFor="age">Age</label>
+        <input
+          id="age"
+          type="number"
+          value={age}
+          onChange={(e) => setAgeState(e.target.value)}
+        />
+        <button type="submit">Save</button>
+        <Link to="/leaderboard" className="return-link">
+          Return to Progress
+        </Link>
       </form>
-      <AgeInputForm allowEdit onSaved={() => navigate('/leaderboard')} />
-      <div style={{ marginTop: '1rem' }}>
-        <span style={{ marginRight: '0.5rem' }}>High Contrast Mode:</span>
-        <ThemeToggle />
-      </div>
-      <p style={{ marginTop: '1rem' }}>
-        <Link to="/leaderboard">Return to Progress</Link>
-      </p>
     </div>
   )
 }
