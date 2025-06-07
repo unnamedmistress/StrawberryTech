@@ -11,6 +11,7 @@ import ClarityEscapeRoom from './pages/ClarityEscapeRoom'
 
 import LeaderboardPage from './pages/LeaderboardPage'
 import CommunityPage from './pages/CommunityPage'
+import CommunityPlaylistPage from './pages/CommunityPlaylistPage'
 import ProfilePage from './pages/ProfilePage'
 import HelpPage from './pages/HelpPage'
 import PrivacyPage from './pages/PrivacyPage'
@@ -43,6 +44,7 @@ function App() {
         <Route path="/leaderboard" element={<LeaderboardPage />} />
         <Route path="/badges" element={<BadgesPage />} />
         <Route path="/community" element={<CommunityPage />} />
+        <Route path="/playlist" element={<CommunityPlaylistPage />} />
         <Route path="/help" element={<HelpPage />} />
         <Route path="/privacy" element={<PrivacyPage />} />
         <Route path="/terms" element={<TermsPage />} />
