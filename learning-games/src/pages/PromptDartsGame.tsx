@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import ProgressSidebar from '../components/layout/ProgressSidebar'
 import InstructionBanner from '../components/ui/InstructionBanner'
 import { UserContext } from '../context/UserContext'
+import shuffle from '../utils/shuffle'
 import './PromptDartsGame.css'
 
 export interface DartRound {
@@ -28,10 +29,11 @@ export function checkChoice(_round: DartRound, choice: 'bad' | 'good') {
 
 export default function PromptDartsGame() {
   const { setScore } = useContext(UserContext)
+  const [rounds] = useState<DartRound[]>(() => shuffle(ROUNDS))
   const [round, setRound] = useState(0)
   const [choice, setChoice] = useState<'bad' | 'good' | null>(null)
   const [score, setScoreState] = useState(0)
-  const current = ROUNDS[round]
+  const current = rounds[round]
 
   function handleSelect(option: 'bad' | 'good') {
     setChoice(option)
@@ -41,7 +43,7 @@ export default function PromptDartsGame() {
   }
 
   function next() {
-    if (round + 1 < ROUNDS.length) {
+    if (round + 1 < rounds.length) {
       setRound(r => r + 1)
       setChoice(null)
     } else {
@@ -50,7 +52,7 @@ export default function PromptDartsGame() {
     }
   }
 
-  if (round >= ROUNDS.length) {
+  if (round >= rounds.length) {
     return (
       <div className="darts-page">
         <InstructionBanner>You finished Prompt Darts!</InstructionBanner>
@@ -75,7 +77,7 @@ export default function PromptDartsGame() {
           <p className="sidebar-tip">Align prompt language with output types (teaching specificity and clarity).</p>
         </aside>
         <div className="darts-game">
-          <h3>Round {round + 1} of {ROUNDS.length}</h3>
+          <h3>Round {round + 1} of {rounds.length}</h3>
           <p>Which prompt is clearer?</p>
           <div className="options">
             <button className="btn-primary" onClick={() => handleSelect('bad')} disabled={choice !== null}>{current.bad}</button>
@@ -90,7 +92,7 @@ export default function PromptDartsGame() {
         <ProgressSidebar />
         <div className="next-area">
           {choice !== null && (
-            <button className="btn-primary" onClick={next}>{round + 1 < ROUNDS.length ? 'Next Round' : 'Finish'}</button>
+            <button className="btn-primary" onClick={next}>{round + 1 < rounds.length ? 'Next Round' : 'Finish'}</button>
           )}
         </div>
       </div>
