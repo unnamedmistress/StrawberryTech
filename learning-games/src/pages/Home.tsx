@@ -60,6 +60,14 @@ export default function Home() {
         >
           Community
         </button>
+        <button
+          onClick={() => navigate('/playlist')}
+          className="btn-primary"
+          style={{ marginLeft: '1rem' }}
+          aria-label="See prompt playlist"
+        >
+          Playlist
+        </button>
       </section>
 
 
