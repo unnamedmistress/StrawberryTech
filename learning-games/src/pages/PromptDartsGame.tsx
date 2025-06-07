@@ -8,17 +8,27 @@ import './PromptDartsGame.css'
 export interface DartRound {
   bad: string
   good: string
+  response: string
 }
 
 export const ROUNDS: DartRound[] = [
-  { bad: 'Tell me about AI.', good: 'List 3 use cases of AI in customer service.' },
+  {
+    bad: 'Tell me about AI.',
+    good: 'List 3 use cases of AI in customer service.',
+    response:
+      'Chatbots for FAQs, automated ticket triage, and personalized recommendations.',
+  },
   {
     bad: 'Write an email.',
     good: 'Draft a 3-sentence email to a hiring manager explaining your interest.',
+    response:
+      'Dear Hiring Manager, I am excited about the role and believe my skills fit well. I look forward to contributing to the team. Thank you for your consideration.',
   },
   {
     bad: 'Explain climate change.',
     good: 'Summarize 2 key causes of climate change in one paragraph.',
+    response:
+      'Burning fossil fuels releases greenhouse gases, while deforestation reduces carbon absorption—both drive rising temperatures.',
   },
 ]
 
@@ -82,9 +92,14 @@ export default function PromptDartsGame() {
             <button className="btn-primary" onClick={() => handleSelect('good')} disabled={choice !== null}>{current.good}</button>
           </div>
           {choice !== null && (
-            <p className="feedback">
-              {checkChoice(current, choice) ? 'Correct! Clear prompts hit the bullseye.' : 'Not quite. Aim for specific wording.'}
-            </p>
+            <>
+              <p className="feedback">
+                {checkChoice(current, choice)
+                  ? 'Correct! Clear prompts hit the bullseye.'
+                  : 'Not quite. Aim for specific wording.'}
+              </p>
+              <pre className="canned-response">{current.response}</pre>
+            </>
           )}
         </div>
         <ProgressSidebar />
