@@ -190,7 +190,7 @@ export default function ClarityEscapeRoom() {
               id="prompt-input"
               value={input}
               onChange={e => setInput(e.target.value.slice(0, 100))}
-              placeholder="Type your prompt"
+              placeholder="e.g., 'Rewrite in a formal tone'"
             />
             <button type="submit" className="btn-primary">Submit</button>
             <button type="button" onClick={showHint} className="btn-primary">Hint</button>
