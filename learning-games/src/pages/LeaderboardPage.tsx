@@ -135,15 +135,6 @@ export default function LeaderboardPage() {
         <p style={{ marginTop: '2rem' }}>
           <Link to="/">Return Home</Link>
         </p>
-        <div className="buy-coffee">
-          <a
-            href="https://coff.ee/strawberrytech"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Did you like this content? Buy me a coffee as a thank you
-          </a>
-        </div>
       </div>
       <ProgressSidebar />
     </div>
