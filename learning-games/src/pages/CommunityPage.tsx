@@ -55,6 +55,11 @@ export default function CommunityPage() {
   return (
     <div className="community-page">
       <h2>Community</h2>
+      <img
+        src="https://media.giphy.com/media/ASd0Ukj0y3qMM/giphy.gif"
+        alt="Handshake animation"
+        style={{ width: '120px', marginBottom: '1rem' }}
+      />
       <form onSubmit={addPost} style={{ marginBottom: '1rem' }}>
         <label htmlFor="message">Share your thoughts:</label>
         <textarea

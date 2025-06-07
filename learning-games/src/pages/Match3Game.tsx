@@ -318,6 +318,11 @@ export default function Match3Game() {
       <InstructionBanner>
         Match adjectives to explore how tone changes the meaning of a message.
       </InstructionBanner>
+      <img
+        src="https://media.giphy.com/media/26BRBupaYwJv2K3Sw/giphy.gif"
+        alt="Matching animation"
+        style={{ width: '120px', margin: '1rem auto' }}
+      />
       <div className="match3-wrapper">
         <aside className="match3-sidebar">
           <h3>Why Tone Matters</h3>
