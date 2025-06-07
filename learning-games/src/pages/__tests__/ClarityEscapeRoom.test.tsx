@@ -18,7 +18,7 @@ beforeEach(() => {
   vi.spyOn(Math, 'random').mockReturnValue(0)
   vi.spyOn(global, 'fetch').mockResolvedValue({
     json: async () => ({ choices: [{ message: { content: 'yes' } }] }),
-  } as any)
+  } as unknown as Response)
 })
 
 afterEach(() => {
