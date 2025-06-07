@@ -197,9 +197,9 @@ export default function QuizGame() {
         for new prompts and then select your answer.
       </InstructionBanner>
       <div className="truth-game">
-        <ProgressSidebar />
         <WhyItMatters />
-        <div className="statements">
+        <div className="game-area">
+          <div className="statements">
           <div className="statement-header">
             <h2>Hallucinations</h2>
             <button
@@ -241,14 +241,16 @@ export default function QuizGame() {
         )}
         </div>
         <ChatBox />
-        <p style={{ marginTop: '1rem', textAlign: 'center' }}>
-
-          <button className="btn-primary" onClick={() => navigate('/leaderboard')}>Next</button>
-
-        </p>
-        <p style={{ marginTop: '1rem', textAlign: 'center' }}>
-          <Link to="/leaderboard">Return to Progress</Link>
-        </p>
+        </div>
+        <ProgressSidebar />
+        <div className="next-area">
+          <p style={{ marginTop: '1rem', textAlign: 'center' }}>
+            <button className="btn-primary" onClick={() => navigate('/leaderboard')}>Next</button>
+          </p>
+          <p style={{ marginTop: '1rem', textAlign: 'center' }}>
+            <Link to="/leaderboard">Return to Progress</Link>
+          </p>
+        </div>
       </div>
     </div>
   )
