@@ -25,7 +25,7 @@ export default function ProgressSidebar() {
       fetch(`${base}/api/scores`)
         .then((res) => (res.ok ? res.json() : {}))
         .then((data: Record<string, ScoreEntry[]>) => {
-          setScores(Array.isArray(data.tone) ? data.tone : [])
+          setScores(Array.isArray(data.darts) ? data.darts : [])
         })
         .catch(() => {})
     }
