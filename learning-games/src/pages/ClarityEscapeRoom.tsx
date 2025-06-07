@@ -1,6 +1,7 @@
 import { useState, useEffect, useContext } from 'react'
 import ProgressSidebar from '../components/layout/ProgressSidebar'
 import InstructionBanner from '../components/ui/InstructionBanner'
+import DoorAnimation from '../components/DoorAnimation'
 import { UserContext } from '../context/UserContext'
 import './ClarityEscapeRoom.css'
 
@@ -36,6 +37,7 @@ export default function ClarityEscapeRoom() {
   const [message, setMessage] = useState('')
   const [start] = useState(() => Date.now())
   const [timeLeft, setTimeLeft] = useState(30)
+  const [openPercent, setOpenPercent] = useState(0)
   const [hintVisible, setHintVisible] = useState(false)
 
   const current = tasks[door]
@@ -49,7 +51,9 @@ export default function ClarityEscapeRoom() {
       const nextScore = score + 50
       setScoreState(nextScore)
       setMessage('The door unlocks with a click!')
-      if (door + 1 === tasks.length) {
+      const newDoor = door + 1
+      setOpenPercent((newDoor / tasks.length) * 100)
+      if (newDoor === tasks.length) {
         const time = Date.now() - start
         setScore('escape', nextScore)
         if (time < 180000 && !user.badges.includes('escape-artist')) {
@@ -57,7 +61,7 @@ export default function ClarityEscapeRoom() {
         }
         setDoor(tasks.length)
       } else {
-        setDoor(d => d + 1)
+        setDoor(newDoor)
         setInput('')
       }
     } else {
@@ -123,8 +127,7 @@ export default function ClarityEscapeRoom() {
         </aside>
         <div className="room">
           <h3>{current.hint}</h3>
-          <p className="hint">Door {door + 1}</p>
-          <p className="timer">Time left: {timeLeft}s</p>
+          <DoorAnimation openPercent={openPercent} />
           <form onSubmit={handleSubmit} className="prompt-form">
             <input
               value={input}
