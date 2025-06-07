@@ -47,11 +47,9 @@ export default function Home() {
           className="hero-img"
         />
         <p className="tagline">Play engaging games and sharpen your skills.</p>
-        <button
-          onClick={() => navigate('/games/tone')}
-          aria-label="Play Tone Puzzle"
-          className="btn-primary"
-        >
+
+        <button onClick={() => navigate('/games/tone')} className="btn-primary" aria-label="Play Tone Puzzle">
+
           Play Now
         </button>
         <button
