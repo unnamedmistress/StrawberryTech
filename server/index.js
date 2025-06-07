@@ -15,7 +15,7 @@ function loadData() {
   try {
     return JSON.parse(fs.readFileSync(DB_FILE, 'utf8'));
   } catch {
-    return { user: { name: null, age: null }, posts: [] };
+    return { user: { name: null, age: null }, posts: [], views: [] };
   }
 }
 
@@ -24,6 +24,7 @@ function saveData(data) {
 }
 
 let data = loadData();
+if (!data.views) data.views = [];
 
 app.get('/api/user', (req, res) => {
   res.json(data.user);
@@ -40,9 +41,14 @@ app.get('/api/posts', (req, res) => {
 });
 
 app.post('/api/posts', (req, res) => {
+  const author = req.body.author || 'Anonymous';
+  if (data.posts.some((p) => p.author === author)) {
+    res.status(400).json({ error: 'Limit reached: only one post per user' });
+    return;
+  }
   const post = {
     id: Date.now(),
-    author: req.body.author || 'Anonymous',
+    author,
     content: req.body.content || '',
     date: new Date().toISOString(),
   };
@@ -61,6 +67,24 @@ app.post('/api/posts/:id/flag', (req, res) => {
   } else {
     res.status(404).end();
   }
+});
+
+app.get('/api/views', (req, res) => {
+  res.json(data.views);
+});
+
+app.post('/api/views', (req, res) => {
+  const view = {
+    id: Date.now(),
+    user: req.body.user || null,
+    path: req.body.path || '',
+    timestamp: new Date().toISOString(),
+    ip: req.ip,
+    agent: req.headers['user-agent'] || '',
+  };
+  data.views.push(view);
+  saveData(data);
+  res.status(201).json(view);
 });
 
 app.listen(PORT, () => {
