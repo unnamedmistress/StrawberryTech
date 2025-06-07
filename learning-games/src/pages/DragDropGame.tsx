@@ -100,11 +100,9 @@ export default function DragDropGame() {
                 onChange={(e) => setUserMessage(e.target.value)}
                 placeholder="Type your message..."
               />
-              <button
-                onClick={handleSubmit}
-                disabled={!userMessage.trim()}
-                className="btn-primary"
-              >
+
+              <button onClick={handleSubmit} className="btn-primary" disabled={!userMessage.trim()}>
+
                 Submit Message
               </button>
             </div>
@@ -125,6 +123,7 @@ export default function DragDropGame() {
             {tones.map((tone) => (
               <button
                 key={tone}
+                className="btn-primary"
                 onClick={() => setQuizAnswer(tone)}
                 disabled={!!quizAnswer}
               >

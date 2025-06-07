@@ -1,7 +1,8 @@
 :root {
-  font-family: 'Poppins', 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Roboto', sans-serif;
   line-height: 1.5;
   font-weight: 400;
+
 
   --color-purple: #f43f5e;
   --color-orange: #ff6b00;
@@ -9,6 +10,7 @@
   --color-blue: #1e3a8a;
   --color-purple-dark: #6d28d9;
   /* Strawberry palette */
+
   --color-brand: #ee3a57;
   --color-background: #f8d7e1;
   --color-accent: #6dbf4d;
@@ -16,10 +18,15 @@
   --color-deep-red: #b41c2d;
   --color-mint: #a8e6cf;
   --color-text-dark: #333;
+  /* legacy variable names */
+  --color-purple: var(--color-brand);
+  --color-orange: var(--color-secondary);
+  --color-lime: var(--color-accent);
+  --color-blue: var(--color-mint);
+  --color-purple-dark: var(--color-deep-red);
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  color: var(--color-text-dark);
+  background-color: var(--color-background);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -37,7 +44,7 @@ a {
   text-decoration: inherit;
 }
 a:hover {
-  color: var(--color-orange);
+  color: var(--color-accent);
 }
 
 body {
@@ -58,7 +65,12 @@ h6 {
   line-height: 1.1;
 }
 h1 {
+  font-family: 'Poppins', sans-serif;
   font-size: 3.2em;
+
+}
+h2, h3 {
+  font-family: 'Poppins', sans-serif;
 }
 
 button {
@@ -74,11 +86,32 @@ button {
   transition: background-color 0.25s;
 }
 button:hover {
-  background-color: var(--color-orange);
+  background-color: var(--color-deep-red);
+}
+
+.btn-primary {
+  background-color: var(--color-brand);
+  border-radius: 8px;
+  padding: 0.8rem 1.6rem;
+  color: #fff;
+  transition: background-color 0.25s;
+}
+.btn-primary:hover {
+  background-color: var(--color-deep-red);
 }
 button:focus,
 button:focus-visible {
-  outline: 4px auto var(--color-lime);
+  outline: 4px auto var(--color-accent);
+}
+
+.btn-primary {
+  background-color: var(--color-brand);
+  border-radius: 8px;
+  padding: 0.8rem 1.6rem;
+}
+
+.btn-primary:hover {
+  background-color: var(--color-deep-red);
 }
 
 .btn-primary {

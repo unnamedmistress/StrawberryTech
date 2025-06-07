@@ -201,7 +201,7 @@ export default function QuizGame() {
           <div className="statement-header">
             <h2>Hallucinations</h2>
             <button
-              className="refresh-btn"
+              className="refresh-btn btn-primary"
               onClick={refreshRound}
               aria-label="New statements"
             >
@@ -216,7 +216,7 @@ export default function QuizGame() {
             {current.statements.map((s, i) => (
               <li key={i}>
                 <button
-                className={`statement-btn ${choice === i ? 'selected' : ''}`}
+                className={`statement-btn btn-primary ${choice === i ? 'selected' : ''}`}
                 onClick={() => handleSelect(i)}
                 disabled={choice !== null}
               >
@@ -232,13 +232,17 @@ export default function QuizGame() {
                 ? '✅ Correct! You spotted the hallucination.'
                 : '❌ Incorrect. That one is true.'}
             </p>
-            <button onClick={nextRound} className="btn-primary">Next Round</button>
+
+            <button className="btn-primary" onClick={nextRound}>Next Round</button>
+
           </>
         )}
         </div>
         <ChatBox />
         <p style={{ marginTop: '1rem', textAlign: 'center' }}>
-          <button onClick={() => navigate('/leaderboard')} className="btn-primary">Next</button>
+
+          <button className="btn-primary" onClick={() => navigate('/leaderboard')}>Next</button>
+
         </p>
         <p style={{ marginTop: '1rem', textAlign: 'center' }}>
           <Link to="/leaderboard">Return to Progress</Link>

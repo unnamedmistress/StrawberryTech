@@ -79,8 +79,8 @@ export default function PromptDartsGame() {
           <h3>Round {round + 1} of {ROUNDS.length}</h3>
           <p>Which prompt is clearer?</p>
           <div className="options">
-            <button onClick={() => handleSelect('bad')} disabled={choice !== null}>{current.bad}</button>
-            <button onClick={() => handleSelect('good')} disabled={choice !== null}>{current.good}</button>
+            <button className="btn-primary" onClick={() => handleSelect('bad')} disabled={choice !== null}>{current.bad}</button>
+            <button className="btn-primary" onClick={() => handleSelect('good')} disabled={choice !== null}>{current.good}</button>
           </div>
           {choice !== null && (
             <p className="feedback">
@@ -88,7 +88,9 @@ export default function PromptDartsGame() {
             </p>
           )}
           {choice !== null && (
-            <button onClick={next} className="btn-primary">{round + 1 < ROUNDS.length ? 'Next Round' : 'Finish'}</button>
+
+            <button className="btn-primary" onClick={next}>{round + 1 < ROUNDS.length ? 'Next Round' : 'Finish'}</button>
+
           )}
         </div>
       </div>
