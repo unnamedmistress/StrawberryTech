@@ -12,6 +12,9 @@ export default function BadgesPage() {
       <ul className="badge-list">
         {BADGES.map(b => (
           <li key={b.id} className={user.badges.includes(b.id) ? 'earned' : ''}>
+            <span className="emoji" role="img" aria-label={b.name}>
+              {b.emoji}
+            </span>
             <strong>{b.name}</strong>
             <p>{b.description}</p>
           </li>
@@ -21,8 +24,15 @@ export default function BadgesPage() {
         <button
           type="button"
           onClick={() => {
-            const earned = user.badges.join(', ') || 'none'
-            const text = `I have earned these badges on StrawberryTech: ${earned}`
+            const earnedList = user.badges
+              .map(id => {
+                const badge = BADGES.find(b => b.id === id)
+                return badge ? `${badge.emoji} ${badge.name}` : id
+              })
+              .join(', ')
+            const text = earnedList
+              ? `Check out my StrawberryTech badges: ${earnedList}! Try the games at https://strawberry-tech.vercel.app/`
+              : `I'm playing StrawberryTech! Earn badges at https://strawberry-tech.vercel.app/`
             if (navigator.share) {
               navigator.share({ text }).catch(() => {})
             } else {
