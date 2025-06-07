@@ -111,9 +111,6 @@ export default function ClarityEscapeRoom() {
 
   return (
     <div className="escape-page">
-      <InstructionBanner>
-        Enter a precise prompt to unlock each door.
-      </InstructionBanner>
       <div className="escape-wrapper">
         <aside className="escape-sidebar">
           <h3>Why Clarity Matters</h3>
@@ -122,6 +119,12 @@ export default function ClarityEscapeRoom() {
           <p className="sidebar-tip">Shows how specificity opens doors—literally. Teaching players to apply intent, tone, and task format.</p>
         </aside>
         <div className="room">
+          <InstructionBanner>
+            <p>Enter a precise prompt to unlock each door.</p>
+            <p>Add more details to open the door.</p>
+            <p>Each submitted prompt reveals more of the answer.</p>
+            <p>You can submit up to 100 characters per attempt.</p>
+          </InstructionBanner>
           <h3>{current.hint}</h3>
           <p className="hint">Door {door + 1}</p>
           <p className="timer">Time left: {timeLeft}s</p>
