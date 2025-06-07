@@ -68,7 +68,6 @@ export default function PromptDartsGame() {
         Choose the clearer prompt that best targets the requested format.
       </InstructionBanner>
       <div className="darts-wrapper">
-        <ProgressSidebar />
         <aside className="darts-sidebar">
           <h3>Why Clarity Matters</h3>
           <p>The clearer your target, the better your aim. Clear prompts act like aiming sights for AI.</p>
@@ -87,10 +86,11 @@ export default function PromptDartsGame() {
               {checkChoice(current, choice) ? 'Correct! Clear prompts hit the bullseye.' : 'Not quite. Aim for specific wording.'}
             </p>
           )}
+        </div>
+        <ProgressSidebar />
+        <div className="next-area">
           {choice !== null && (
-
             <button className="btn-primary" onClick={next}>{round + 1 < ROUNDS.length ? 'Next Round' : 'Finish'}</button>
-
           )}
         </div>
       </div>
