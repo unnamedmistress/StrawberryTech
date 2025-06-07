@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import ProgressSidebar from '../components/layout/ProgressSidebar'
 import './DragDropGame.css'
 
@@ -63,7 +64,6 @@ export default function DragDropGame() {
   return (
     <div className="dragdrop-page">
       <div className="dragdrop-wrapper">
-        <ProgressSidebar />
         <div className="dragdrop-game">
           <h2>Drag a tone into the blank</h2>
           <p className="sentence">
@@ -140,6 +140,12 @@ export default function DragDropGame() {
           )}
         </div>
       )}
+        </div>
+        <ProgressSidebar />
+        <div className="next-area">
+          <p style={{ marginTop: '1rem', textAlign: 'center' }}>
+            <Link to="/leaderboard">Return to Progress</Link>
+          </p>
         </div>
       </div>
     </div>
