@@ -10,6 +10,9 @@ Swap adjectives to explore how word choice affects tone. Matches award points an
 ### Hallucinations
 A short quiz where you spot the single AI hallucination hidden among two truthful statements.
 
+### Prompt Recipe Builder
+Drag cards to assemble a prompt. Each round now fetches fresh card text from the OpenAI API and shows a short sample response after you build the recipe.
+
 ## Age‑Adaptive Features
 - Players enter their age and name on first visit.
 - Games read the stored age to tweak difficulty and show tailored tips.
@@ -31,7 +34,7 @@ A short quiz where you spot the single AI hallucination hidden among two truthfu
    npm start
    ```
 3. Create a `.env` file inside `learning-games` with your
-   `VITE_OPENAI_API_KEY=<your key>` for the Robot chat feature.
+   `VITE_OPENAI_API_KEY=<your key>` for the Robot chat and recipe features.
 4. Open the printed URL in your browser.
 
 Node **18+** is recommended. Major dependencies include React 19, React Router 7, Vite 6 and TypeScript. Toast notifications are provided by `react-hot-toast` and unit tests use `vitest`.
@@ -55,13 +58,13 @@ Without installing the packages first the `vitest` command used by
 `npm test` will not be available and the tests will fail.
 
 ## Environment Variables
-RobotChat uses the OpenAI API. Create a `.env` file inside `learning-games` containing:
+RobotChat and the Prompt Recipe Builder use the OpenAI API. Create a `.env` file inside `learning-games` containing:
 
 ```bash
 VITE_OPENAI_API_KEY=your-key
 ```
 
-Without this key, the RobotChat feature will not work.
+Without this key, the RobotChat and recipe features will not work.
 
 ## License
 This project is released under the [MIT License](LICENSE). Contributions are welcome under the same terms.
