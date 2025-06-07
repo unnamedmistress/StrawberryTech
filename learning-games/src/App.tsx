@@ -23,11 +23,13 @@ import { Toaster } from 'react-hot-toast'
 import NavBar from './components/layout/NavBar'
 import Footer from './components/layout/Footer'
 import AnalyticsTracker from './components/AnalyticsTracker'
+import ScrollToTop from './components/ScrollToTop'
 import './App.css'
 
 function App() {
   return (
     <Router>
+      <ScrollToTop />
       <NavBar />
       <AnalyticsTracker />
       <Routes>
