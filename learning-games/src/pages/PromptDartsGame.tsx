@@ -8,17 +8,24 @@ import './PromptDartsGame.css'
 export interface DartRound {
   bad: string
   good: string
+  why: string
 }
 
 export const ROUNDS: DartRound[] = [
-  { bad: 'Tell me about AI.', good: 'List 3 use cases of AI in customer service.' },
+  {
+    bad: 'Tell me about AI.',
+    good: 'List 3 use cases of AI in customer service.',
+    why: 'Specific requests guide AI toward focused answers.',
+  },
   {
     bad: 'Write an email.',
     good: 'Draft a 3-sentence email to a hiring manager explaining your interest.',
+    why: 'Mentioning the audience and length sets clear expectations.',
   },
   {
     bad: 'Explain climate change.',
     good: 'Summarize 2 key causes of climate change in one paragraph.',
+    why: 'Constrained length and key points make the answer concise.',
   },
 ]
 
@@ -82,9 +89,14 @@ export default function PromptDartsGame() {
             <button className="btn-primary" onClick={() => handleSelect('good')} disabled={choice !== null}>{current.good}</button>
           </div>
           {choice !== null && (
-            <p className="feedback">
-              {checkChoice(current, choice) ? 'Correct! Clear prompts hit the bullseye.' : 'Not quite. Aim for specific wording.'}
-            </p>
+            <>
+              <p className="feedback">
+                {checkChoice(current, choice)
+                  ? 'Correct! Clear prompts hit the bullseye.'
+                  : 'Not quite. Aim for specific wording.'}
+              </p>
+              <p className="why-message">{current.why}</p>
+            </>
           )}
         </div>
         <ProgressSidebar />
