@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import ProgressSidebar from '../components/layout/ProgressSidebar'
 import InstructionBanner from '../components/ui/InstructionBanner'
+import InfoButton from '../components/ui/InfoButton'
 
 import ProgressBar from '../components/ui/ProgressBar'
 
@@ -234,15 +235,11 @@ export default function ClarityEscapeRoom() {
         <div className="room">
           <div className="room-grid">
             <div className="room-main">
-          <InstructionBanner>
-            <p>Enter a precise prompt to unlock each door.</p>
-            <ol>
-              <li>Read the hint for clues.</li>
-              <li>Rewrite it clearly so the AI understands.</li>
-            </ol>
-            <p>Example: "Condense this paragraph into three bullet points."</p>
-            <p>You can submit up to 100 characters per attempt.</p>
-          </InstructionBanner>
+          <div className="info-btn-container">
+            <InfoButton
+              message={`Enter a precise prompt to unlock each door.\n1. Read the hint for clues.\n2. Rewrite it clearly so the AI understands.\nExample: "Condense this paragraph into three bullet points."\nYou can submit up to 100 characters per attempt.`}
+            />
+          </div>
           <h3>{current.hint}</h3>
           <p className="hint">Door {door + 1}</p>
           <p className="timer">Time left: {timeLeft}s</p>
