@@ -75,7 +75,6 @@ export default function PromptRecipeGame() {
   const [perfectRounds, setPerfectRounds] = useState(0)
   const [showPrompt, setShowPrompt] = useState(false)
   const [hoverSlot, setHoverSlot] = useState<Slot | null>(null)
-  const [level, setLevel] = useState(1)
   const [timeLeft, setTimeLeft] = useState(30)
   const [hintSlot, setHintSlot] = useState<Slot | null>(null)
   const [feedback, setFeedback] = useState<Record<Slot, 'correct' | 'wrong' | null>>({
@@ -179,7 +178,6 @@ export default function PromptRecipeGame() {
   }
 
   function nextRound() {
-    setLevel(l => l + 1)
     startRound()
   }
 
