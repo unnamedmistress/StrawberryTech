@@ -16,6 +16,14 @@ export default function Footer() {
           <a href="/terms">Terms of Service</a>
           <a href="/contact">Contact</a>
         </nav>
+        <a
+          className="coffee-link"
+          href="https://coff.ee/strawberrytech"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          ☕️ Buy me a coffee
+        </a>
       </div>
     </footer>
   )

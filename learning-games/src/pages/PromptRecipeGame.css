@@ -180,6 +180,15 @@
   font-weight: bold;
 }
 
+.round-info {
+  margin-right: auto;
+}
+
+.final-score {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
 .game-actions {
   margin-top: 0.5rem;
   display: flex;
