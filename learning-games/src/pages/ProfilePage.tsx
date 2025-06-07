@@ -5,9 +5,10 @@ import { UserContext } from '../context/UserContext'
 import './ProfilePage.css'
 
 export default function ProfilePage() {
-  const { user, setName, setAge } = useContext(UserContext)
+  const { user, setName, setAge, setDifficulty } = useContext(UserContext)
   const [name, setNameState] = useState(user.name ?? '')
   const [age, setAgeState] = useState<string>(user.age ? String(user.age) : '')
+  const [difficulty, setDifficultyState] = useState(user.difficulty)
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -22,6 +23,7 @@ export default function ProfilePage() {
     }
     setName(name.trim())
     setAge(ageNum)
+    setDifficulty(difficulty)
     toast.success('Profile saved successfully!')
   }
 
@@ -43,6 +45,16 @@ export default function ProfilePage() {
           value={age}
           onChange={(e) => setAgeState(e.target.value)}
         />
+        <label htmlFor="difficulty">Difficulty</label>
+        <select
+          id="difficulty"
+          value={difficulty}
+          onChange={e => setDifficultyState(e.target.value as 'easy' | 'medium' | 'hard')}
+        >
+          <option value="easy">Easy</option>
+          <option value="medium">Medium</option>
+          <option value="hard">Hard</option>
+        </select>
         <button type="submit">Save</button>
         <Link to="/leaderboard" className="return-link">
           Return to Progress
