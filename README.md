@@ -23,9 +23,16 @@ A short quiz where you spot the single AI hallucination hidden among two truthfu
    npm install
    npm run dev
    ```
-2. Create a `.env` file inside `learning-games` with your
+2. In a separate terminal start the API server to persist user info and
+   community posts:
+   ```bash
+   cd server
+   npm install
+   npm start
+   ```
+3. Create a `.env` file inside `learning-games` with your
    `VITE_OPENAI_API_KEY=<your key>` for the Robot chat feature.
-3. Open the printed URL in your browser.
+4. Open the printed URL in your browser.
 
 Node **18+** is recommended. Major dependencies include React 19, React Router 7, Vite 6 and TypeScript. Toast notifications are provided by `react-hot-toast` and unit tests use `vitest`.
 
