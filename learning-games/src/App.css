@@ -332,6 +332,7 @@
 @media (max-width: 600px) {
   .match3-wrapper {
     grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
   }
 
   .leaderboard-wrapper {
@@ -342,6 +343,7 @@
   .match3-container {
     max-width: none;
     grid-column: auto;
+    grid-row: auto;
   }
 
   .match3-sidebar {
