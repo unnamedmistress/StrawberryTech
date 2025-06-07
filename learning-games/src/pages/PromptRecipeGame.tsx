@@ -117,9 +117,11 @@ async function generateCards(): Promise<Card[]> {
 }
 
 export default function PromptRecipeGame() {
-  const TOTAL_TIME = 30
-
   const { setScore, addBadge, user } = useContext(UserContext)
+  const TOTAL_TIME =
+    user.difficulty === 'easy' ? 45 : user.difficulty === 'hard' ? 20 : 30
+  const SCORE_MULT =
+    user.difficulty === 'easy' ? 1 : user.difficulty === 'hard' ? 2 : 1.5
   const [cards, setCards] = useState<Card[]>([])
   const [roundCards, setRoundCards] = useState<Card[]>([])
   const [dropped, setDropped] = useState<Dropped>({
@@ -190,7 +192,8 @@ export default function PromptRecipeGame() {
   useEffect(() => {
     if (Object.values(dropped).every(Boolean)) {
       const { score: gained, perfect } = evaluateRecipe(dropped, roundCards)
-      const finalScore = gained + Math.floor(timeLeft / 5)
+      const baseScore = gained + Math.floor(timeLeft / 5)
+      const finalScore = Math.round(baseScore * SCORE_MULT)
       setScoreState(s => s + finalScore)
       if (perfect) {
         confetti({ particleCount: 70, spread: 60, origin: { y: 0.7 } })

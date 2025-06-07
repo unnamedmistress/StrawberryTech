@@ -18,11 +18,12 @@ function loadData() {
     return JSON.parse(fs.readFileSync(DB_FILE, 'utf8'));
   } catch {
     return {
-      user: { name: null, age: null, badges: [], scores: {} },
+      user: { name: null, age: null, badges: [], scores: { darts: 0 } },
       posts: [],
       views: [],
-      scores: {},
+      scores: { darts: [] },
       sessions: [],
+      promptPairs: [],
     };
   }
 }
@@ -33,11 +34,14 @@ function saveData(data) {
 
 let data = loadData();
 if (!data.views) data.views = [];
-if (!data.scores) data.scores = {};
-if (!data.user) data.user = { name: null, age: null, badges: [], scores: {} };
+if (!data.scores) data.scores = { darts: [] };
+if (!data.scores.darts) data.scores.darts = [];
+if (!data.user) data.user = { name: null, age: null, badges: [], scores: { darts: 0 } };
 if (!data.user.badges) data.user.badges = [];
-if (!data.user.scores) data.user.scores = {};
+if (!data.user.scores) data.user.scores = { darts: 0 };
+if (data.user.scores.darts === undefined) data.user.scores.darts = 0;
 if (!data.sessions) data.sessions = [];
+if (!data.promptPairs) data.promptPairs = [];
 
 app.get('/api/user', (req, res) => {
   res.json(data.user);
@@ -80,6 +84,21 @@ app.post('/api/posts/:id/flag', (req, res) => {
   } else {
     res.status(404).end();
   }
+});
+
+app.get('/api/pairs', (req, res) => {
+  res.json(data.promptPairs);
+});
+
+app.post('/api/pairs', (req, res) => {
+  const pair = {
+    id: Date.now(),
+    bad: req.body.bad || '',
+    good: req.body.good || '',
+  };
+  data.promptPairs.push(pair);
+  saveData(data);
+  res.status(201).json(pair);
 });
 
 app.get('/api/views', (req, res) => {

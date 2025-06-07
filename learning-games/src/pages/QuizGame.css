@@ -89,6 +89,11 @@
   margin-bottom: 0.5rem;
 }
 
+.round-category {
+  font-style: italic;
+  margin-bottom: 0.5rem;
+}
+
 .header-instruction {
   margin-bottom: 0.25rem;
 }
