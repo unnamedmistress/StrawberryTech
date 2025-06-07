@@ -429,6 +429,30 @@
   cursor: pointer;
 }
 
+@media (max-width: 600px) {
+  .navbar {
+    flex-wrap: wrap;
+  }
+
+  .menu-toggle {
+    display: block;
+  }
+
+  .navbar ul {
+    display: none;
+    width: 100%;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+    background: var(--color-brand);
+    padding: 0.5rem 0;
+  }
+
+  .navbar ul.open {
+    display: flex;
+  }
+}
+
 .hero {
   background: linear-gradient(135deg, var(--color-blue), var(--color-brand));
   background-size: 200% 200%;
