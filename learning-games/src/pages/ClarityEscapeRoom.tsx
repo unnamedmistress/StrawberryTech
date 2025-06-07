@@ -106,13 +106,15 @@ async function evaluatePrompt(task: Task, inputText: string): Promise<boolean> {
 
 export default function ClarityEscapeRoom() {
   const { setScore, addBadge, user } = useContext(UserContext)
+  const BASE_TIME =
+    user.difficulty === 'easy' ? 45 : user.difficulty === 'hard' ? 20 : 30
   const [door, setDoor] = useState(0)
   const [tasks] = useState<Task[]>(() => shuffle(TASKS))
   const [input, setInput] = useState('')
   const [score, setScoreState] = useState(0)
   const [message, setMessage] = useState('')
   const [start] = useState(() => Date.now())
-  const [timeLeft, setTimeLeft] = useState(30)
+  const [timeLeft, setTimeLeft] = useState(BASE_TIME)
   const [openPercent, setOpenPercent] = useState(0)
   const [hintVisible, setHintVisible] = useState(false)
 
@@ -161,7 +163,7 @@ export default function ClarityEscapeRoom() {
   }
 
   useEffect(() => {
-    setTimeLeft(30)
+    setTimeLeft(BASE_TIME)
     const id = setInterval(() => {
       setTimeLeft(t => {
         if (t <= 1) {
@@ -169,7 +171,7 @@ export default function ClarityEscapeRoom() {
           setMessage('Too slow! The door remains locked.')
           setInput('')
           setHintVisible(false)
-          return 30
+          return BASE_TIME
         }
         return t - 1
       })

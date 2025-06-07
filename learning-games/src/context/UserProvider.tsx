@@ -47,6 +47,10 @@ export function UserProvider({ children }: { children: ReactNode }) {
     setUser((prev) => ({ ...prev, name }))
   }, [])
 
+  const setDifficulty = useCallback((level: 'easy' | 'medium' | 'hard') => {
+    setUser(prev => ({ ...prev, difficulty: level }))
+  }, [])
+
   // Record the best score for a specific game
   const setScore = useCallback(
     (game: string, score: number) => {
@@ -102,6 +106,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
             age: user.age,
             badges: user.badges,
             scores: user.scores,
+            difficulty: user.difficulty,
           }),
         }).catch((err) => console.error('Failed to save user', err))
       }
@@ -111,7 +116,15 @@ export function UserProvider({ children }: { children: ReactNode }) {
 
   return (
     <UserContext.Provider
-      value={{ user, setUser, setAge, setName, setScore, addBadge }}
+      value={{
+        user,
+        setUser,
+        setAge,
+        setName,
+        setScore,
+        addBadge,
+        setDifficulty,
+      }}
     >
       {children}
     </UserContext.Provider>
