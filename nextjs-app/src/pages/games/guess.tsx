@@ -293,3 +293,18 @@ export default function PromptGuessEscape() {
     </div>
   )
 }
+
+export function Head() {
+  return (
+    <>
+      <title>Guess the Prompt Game | StrawberryTech</title>
+      <meta
+        name="description"
+        content="Deduce the prompt from the AI's reply before time runs out."
+      />
+      <link rel="canonical" href="https://strawberrytech.com/games/guess" />
+    </>
+  )
+}
+
+export const getStaticProps = async () => ({ props: {} });

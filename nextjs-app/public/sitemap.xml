@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://example.com/age</loc></url>
+  <url><loc>https://example.com/badges</loc></url>
+  <url><loc>https://example.com/community</loc></url>
+  <url><loc>https://example.com/contact</loc></url>
+  <url><loc>https://example.com/games/compose</loc></url>
+  <url><loc>https://example.com/games/darts</loc></url>
+  <url><loc>https://example.com/games/dragdrop</loc></url>
+  <url><loc>https://example.com/games/escape</loc></url>
+  <url><loc>https://example.com/games/guess</loc></url>
+  <url><loc>https://example.com/games/quiz</loc></url>
+  <url><loc>https://example.com/games/recipe</loc></url>
+  <url><loc>https://example.com/games/tone</loc></url>
+  <url><loc>https://example.com/help</loc></url>
+  <url><loc>https://example.com/</loc></url>
+  <url><loc>https://example.com/leaderboard</loc></url>
+  <url><loc>https://example.com/playlist</loc></url>
+  <url><loc>https://example.com/privacy</loc></url>
+  <url><loc>https://example.com/profile</loc></url>
+  <url><loc>https://example.com/stats</loc></url>
+  <url><loc>https://example.com/terms</loc></url>
+  <url><loc>https://example.com/welcome</loc></url>
+</urlset>

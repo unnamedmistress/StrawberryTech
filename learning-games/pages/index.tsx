@@ -1,76 +1,33 @@
 import { useContext, useEffect } from 'react'
-import Head from 'next/head'
-import Link from 'next/link'; import { useRouter } from 'next/router'
-import { UserContext } from '../context/UserContext'
-import '../styles/Home.css'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { UserContext } from '../src/context/UserContext'
 
-/**
- * Home page listing available games.
- * If the user's age isn't known we send them to the age input form first.
- */
-export default function Home() {
+export default function HomePage() {
   const { user } = useContext(UserContext)
   const router = useRouter()
 
-  // Redirect to the age form if age hasn't been provided yet
   useEffect(() => {
     if (user.age === null) {
       router.push('/age')
     }
-  }, [user.age, navigate])
+  }, [user.age, router])
 
-  // Apply reveal animation when elements scroll into view
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('visible')
-          }
-        })
-      },
-      { threshold: 0.1 }
-    )
-    document.querySelectorAll('.reveal').forEach((el) => observer.observe(el))
+    if (typeof window === 'undefined') return
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible')
+      })
+    }, { threshold: 0.1 })
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el))
     return () => observer.disconnect()
   }, [])
 
   const totalPoints = Object.values(user.scores).reduce((a, b) => a + b, 0)
 
   return (
-    <>
-      <Head>
-        <title>StrawberryTech Learning Games</title>
-        <meta property="og:title" content="StrawberryTech Learning Games" />
-        <meta
-          property="og:description"
-          content="Play engaging games and sharpen your skills in our fruity learning arcade."
-        />
-        <meta
-          property="og:image"
-          content="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_12_36%20PM.png"
-        />
-        <meta
-          property="og:url"
-          content="https://strawberry-tech.vercel.app/"
-        />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="StrawberryTech Learning Games" />
-        <meta
-          name="twitter:description"
-          content="Play engaging games and sharpen your skills in our fruity learning arcade."
-        />
-        <meta
-          name="twitter:image"
-          content="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_12_36%20PM.png"
-        />
-        <meta
-          name="twitter:url"
-          content="https://strawberry-tech.vercel.app/"
-        />
-      </Head>
-      <div className="home">
-      {/* hero section */}
+    <div className="home">
       <section className="hero reveal" aria-label="Homepage hero">
         <h1 className="hero-title">Embark on a Fruity Learning Adventure!</h1>
         <img
@@ -79,9 +36,7 @@ export default function Home() {
           className="hero-img"
         />
         <p className="tagline">Play engaging games and sharpen your skills.</p>
-
         <button onClick={() => router.push('/games/tone')} className="btn-primary" aria-label="Play Tone Puzzle">
-
           Play Now
         </button>
         <button
@@ -102,17 +57,6 @@ export default function Home() {
         </button>
       </section>
 
-
-      {/* greeting - temporarily disabled per UX review */}
-      {/**
-      {user.age && (
-        <h2 className="reveal">
-          Welcome{user.name ? `, ${user.name}` : ''}! Age group: {user.age}
-        </h2>
-      )}
-      */}
-
-      {/* game list */}
       <div className="game-grid reveal">
         <Link className="game-card" href="/games/tone">
           <img
@@ -124,7 +68,7 @@ export default function Home() {
         </Link>
         <Link className="game-card" href="/games/quiz">
           <img
-            src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExcTZoaHpxY3AwbmN1OTMwN3dkY3c5eXI1eXB3cDJ5ajNudDdkcnJ6cSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9dg/SR6WK6jz0rRWf2QK0t/giphy.gif"
+            src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExcTZoaHpxY3AwbmN1OTMwN3dkY3c5eXI1eXB3cDJ5ajNudDdkcnJ6cSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9dG/SR6WK6jz0rRWf2QK0t/giphy.gif"
             alt="Hallucinations preview"
             className="game-icon"
           />
@@ -142,7 +86,6 @@ export default function Home() {
           <img
             src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExa3h3cTR0cmEybWt0ZGM2Ymx0ZHB4ZjltbmR2dG55M3Y0MWh6dnRjZCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/Ll22OhMLAlVDbDS3Mo/giphy.gif"
             alt="Prompt recipe preview"
-
             className="game-icon"
           />
           <span className="game-title">Prompt Builder</span>
@@ -157,40 +100,22 @@ export default function Home() {
         </Link>
       </div>
 
-      {/* navigation */}
       <p className="reveal">
         <Link href="/leaderboard">View Progress</Link>
       </p>
 
-      {/* progress summary */}
       {totalPoints > 0 && (
         <div className="progress-summary reveal">
           <p>Total Points: {totalPoints}</p>
           <progress value={totalPoints} max={100} />
           <p>Badges Earned: {user.badges.length}</p>
           <div className="badge-icons">
-            {user.badges.map((b) => (
+            {user.badges.map(b => (
               <span key={b}>🏅</span>
             ))}
           </div>
         </div>
       )}
     </div>
-    </>
   )
 }
-
-export function Head() {
-  return (
-    <>
-      <title>StrawberryTech Games</title>
-      <meta
-        name="description"
-        content="Explore mini games that teach AI prompting techniques."
-      />
-      <link rel="canonical" href="https://strawberrytech.com/" />
-    </>
-  )
-}
-
-export const getStaticProps = async () => ({ props: {} });

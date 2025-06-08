@@ -63,3 +63,15 @@ export default function ProfilePage() {
     </div>
   )
 }
+
+export function Head() {
+  return (
+    <>
+      <title>Your Profile | StrawberryTech</title>
+      <meta name="description" content="Edit your name, age and difficulty level." />
+      <link rel="canonical" href="https://strawberrytech.com/profile" />
+    </>
+  )
+}
+
+export const getStaticProps = async () => ({ props: {} });

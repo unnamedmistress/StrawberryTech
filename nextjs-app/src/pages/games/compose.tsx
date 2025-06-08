@@ -186,3 +186,18 @@ export default function ComposeTweetGame() {
     </div>
   )
 }
+
+export function Head() {
+  return (
+    <>
+      <title>Compose Tweet Game | StrawberryTech</title>
+      <meta
+        name="description"
+        content="Guess the hidden tweet prompt to unlock the door."
+      />
+      <link rel="canonical" href="https://strawberrytech.com/games/compose" />
+    </>
+  )
+}
+
+export const getStaticProps = async () => ({ props: {} });

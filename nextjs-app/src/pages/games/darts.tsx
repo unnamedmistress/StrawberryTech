@@ -7,6 +7,7 @@ import { UserContext } from '../../context/UserContext'
 import shuffle from '../../utils/shuffle'
 import { getTimeLimit } from '../../utils/time'
 import '../../styles/PromptDartsGame.css'
+import Head from 'next/head'
 
 const CONGRATS_VIDEO_URL = 'https://www.youtube.com/embed/dQw4w9WgXcQ'
 
@@ -435,7 +436,38 @@ export default function PromptDartsGame() {
   }
 
   return (
-    <div className="darts-page">
+    <>
+      <Head>
+        <title>Prompt Darts - StrawberryTech</title>
+        <meta property="og:title" content="Prompt Darts - StrawberryTech" />
+        <meta
+          property="og:description"
+          content="Choose the clearer prompt to hit the bullseye and earn points."
+        />
+        <meta
+          property="og:image"
+          content="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_24_00%20PM.png"
+        />
+        <meta
+          property="og:url"
+          content="https://strawberry-tech.vercel.app/games/darts"
+        />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Prompt Darts - StrawberryTech" />
+        <meta
+          name="twitter:description"
+          content="Choose the clearer prompt to hit the bullseye and earn points."
+        />
+        <meta
+          name="twitter:image"
+          content="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_24_00%20PM.png"
+        />
+        <meta
+          name="twitter:url"
+          content="https://strawberry-tech.vercel.app/games/darts"
+        />
+      </Head>
+      <div className="darts-page">
       <InstructionBanner>
         Choose the clearer prompt that best targets the requested format.
       </InstructionBanner>
@@ -514,5 +546,21 @@ export default function PromptDartsGame() {
         </div>
       </div>
     </div>
+    </>
   )
 }
+
+export function Head() {
+  return (
+    <>
+      <title>Prompt Darts | StrawberryTech</title>
+      <meta
+        name="description"
+        content="Choose the clearest prompt to hit the bullseye."
+      />
+      <link rel="canonical" href="https://strawberrytech.com/games/darts" />
+    </>
+  )
+}
+
+export const getStaticProps = async () => ({ props: {} });

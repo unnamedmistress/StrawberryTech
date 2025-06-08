@@ -97,3 +97,18 @@ export default function CommunityPlaylistPage() {
     </div>
   )
 }
+
+export function Head() {
+  return (
+    <>
+      <title>Community Playlist | StrawberryTech</title>
+      <meta
+        name="description"
+        content="Share good and bad prompt pairs with the community."
+      />
+      <link rel="canonical" href="https://strawberrytech.com/playlist" />
+    </>
+  )
+}
+
+export const getStaticProps = async () => ({ props: {} });
