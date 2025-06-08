@@ -101,6 +101,12 @@ const CLUES: Clue[] = [
 
 const TOTAL_STEPS = 4
 
+const BASE_SCORE = 20
+const BASE_TIME = 30
+const FAIL_THRESHOLD = 3
+const SCORE_DROP = 5
+const EXTRA_TIME = 10
+
 
 export default function PromptGuessEscape() {
   const navigate = useNavigate()
@@ -114,14 +120,17 @@ export default function PromptGuessEscape() {
   const [hintIndex, setHintIndex] = useState(0)
   const [hintCount, setHintCount] = useState(0)
   const [showNext, setShowNext] = useState(false)
-  const [timeLeft, setTimeLeft] = useState(30)
+  const [timeLeft, setTimeLeft] = useState(BASE_TIME)
   const [openPercent, setOpenPercent] = useState(0)
+  const [failStreak, setFailStreak] = useState(0)
+  const [scoreThreshold, setScoreThreshold] = useState(BASE_SCORE)
   const startRef = useRef(Date.now())
 
   const clue = doors[index]
 
   useEffect(() => {
-    setTimeLeft(30)
+    const extra = failStreak >= FAIL_THRESHOLD ? EXTRA_TIME : 0
+    setTimeLeft(BASE_TIME + extra)
     startRef.current = Date.now()
     const id = setInterval(() => {
       setTimeLeft(t => {
@@ -130,13 +139,20 @@ export default function PromptGuessEscape() {
           setMessage("Time's up! The door remains closed.")
           setStatus('error')
           setShowNext(true)
+          setFailStreak(fs => {
+            const next = fs + 1
+            if (next >= FAIL_THRESHOLD) {
+              setScoreThreshold(s => Math.max(1, s - SCORE_DROP))
+            }
+            return next
+          })
           return 0
         }
         return t - 1
       })
     }, 1000)
     return () => clearInterval(id)
-  }, [index])
+  }, [index, failStreak])
 
   const revealHint = useCallback(() => {
     setHintIndex(i => {
@@ -162,7 +178,7 @@ export default function PromptGuessEscape() {
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     const { score, tips } = scorePrompt(clue.expectedPrompt, input.trim())
-    if (score >= 20) {
+    if (score >= scoreThreshold) {
       const timeBonus = Date.now() - startRef.current < 10000 ? 5 : 0
       const penalty = hintCount * 2
       const total = Math.max(0, score + 10 + timeBonus - penalty)
@@ -171,10 +187,19 @@ export default function PromptGuessEscape() {
       setStatus('success')
       setOpenPercent(((index + 1) / TOTAL_STEPS) * 100)
       setShowNext(true)
+      setFailStreak(0)
+      setScoreThreshold(BASE_SCORE)
     } else {
       const tipText = tips.join(' ')
       setMessage(`Too vague. ${tipText}`)
       setStatus('error')
+      setFailStreak(fs => {
+        const next = fs + 1
+        if (next >= FAIL_THRESHOLD) {
+          setScoreThreshold(s => Math.max(1, s - SCORE_DROP))
+        }
+        return next
+      })
     }
   }
 
