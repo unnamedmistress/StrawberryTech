@@ -143,12 +143,20 @@ export function checkChoice(_round: DartRound, choice: 'bad' | 'good') {
   return choice === 'good'
 }
 
+export const STREAK_THRESHOLD = 3
+export const STREAK_BONUS = 5
+
+export function streakBonus(streak: number) {
+  return streak > 0 && streak % STREAK_THRESHOLD === 0 ? STREAK_BONUS : 0
+}
+
 export default function PromptDartsGame() {
   const { setScore } = useContext(UserContext)
   const [rounds] = useState<DartRound[]>(() => shuffle(ROUNDS))
   const [round, setRound] = useState(0)
   const [choice, setChoice] = useState<'bad' | 'good' | null>(null)
   const [score, setScoreState] = useState(0)
+  const [streak, setStreak] = useState(0)
 
   const TOTAL_TIME = 15
   const MAX_POINTS = 10
@@ -171,10 +179,21 @@ export default function PromptDartsGame() {
     return () => clearTimeout(id)
   }, [timeLeft, choice])
 
+  useEffect(() => {
+    if (timeLeft === 0 && choice === null) {
+      setStreak(0)
+    }
+  }, [timeLeft, choice])
+
   function handleSelect(option: 'bad' | 'good') {
     setChoice(option)
     if (checkChoice(current, option)) {
-      setScoreState(s => s + pointsLeft)
+      const nextStreak = streak + 1
+      setStreak(nextStreak)
+      const bonus = streakBonus(nextStreak)
+      setScoreState(s => s + pointsLeft + bonus)
+    } else {
+      setStreak(0)
     }
   }
 
