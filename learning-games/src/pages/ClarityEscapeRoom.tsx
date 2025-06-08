@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useContext, useCallback } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import CompletionModal from '../components/ui/CompletionModal'
 import InstructionBanner from '../components/ui/InstructionBanner'
 import ProgressBar from '../components/ui/ProgressBar'
@@ -104,6 +105,7 @@ const TOTAL_STEPS = 4
 
 export default function ClarityEscapeRoom() {
   const { setScore } = useContext(UserContext)
+  const navigate = useNavigate()
   const [doors] = useState(() => shuffle(CLUES).slice(0, TOTAL_STEPS))
   const [index, setIndex] = useState(0)
   const [input, setInput] = useState('')
@@ -298,6 +300,19 @@ export default function ClarityEscapeRoom() {
           </div>
         </div>
         <ProgressSidebar />
+        <div className="next-area">
+          <p style={{ marginTop: '1rem', textAlign: 'center' }}>
+            <button
+              className="btn-primary"
+              onClick={() => navigate('/games/recipe')}
+            >
+              Next
+            </button>
+          </p>
+          <p style={{ marginTop: '1rem', textAlign: 'center' }}>
+            <Link to="/games/recipe">Skip to Prompt Builder</Link>
+          </p>
+        </div>
       </div>
       {showSummary && (
         <CompletionModal

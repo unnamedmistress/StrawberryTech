@@ -302,7 +302,12 @@ export default function QuizGame() {
         <ProgressSidebar />
         <div className="next-area">
           <p style={{ marginTop: '1rem', textAlign: 'center' }}>
-            <button className="btn-primary" onClick={() => router.push('/leaderboard')}>Next</button>
+            <button
+              className="btn-primary"
+              onClick={() => router.push('/games/escape')}
+            >
+              Next
+            </button>
           </p>
           <p style={{ marginTop: '1rem', textAlign: 'center' }}>
             <Link href="/leaderboard">Return to Progress</Link>

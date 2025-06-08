@@ -260,7 +260,12 @@ export default function QuizGame() {
         <ProgressSidebar />
         <div className="next-area">
           <p style={{ marginTop: '1rem', textAlign: 'center' }}>
-            <button className="btn-primary" onClick={() => navigate('/leaderboard')}>Next</button>
+            <button
+              className="btn-primary"
+              onClick={() => navigate('/games/escape')}
+            >
+              Next
+            </button>
           </p>
           <p style={{ marginTop: '1rem', textAlign: 'center' }}>
             <Link to="/leaderboard">Return to Progress</Link>
