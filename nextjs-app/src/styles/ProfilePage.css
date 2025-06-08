@@ -1,0 +1,74 @@
+.profile-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+  padding: 1rem;
+}
+
+/* Card container with Strawberry gradient */
+.profile-card {
+  background: linear-gradient(135deg, var(--color-brand) 0%, var(--color-secondary) 100%);
+  border-radius: 16px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+  padding: 2rem;
+  width: 320px;
+  max-width: 100%;
+  color: #fff;
+}
+
+.profile-card h2 {
+  font-family: 'Poppins', sans-serif;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.profile-card label {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-weight: 600;
+}
+
+.profile-card input {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  border-radius: 8px;
+  border: none;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+}
+
+.profile-card button {
+  background-color: var(--color-deep-red);
+  color: #fff;
+  font-weight: 700;
+  width: 100%;
+  padding: 0.8rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.profile-card button:hover {
+  background-color: #7d121a;
+}
+
+.return-link {
+  display: block;
+  margin-top: 1rem;
+  text-align: center;
+  color: var(--color-brand);
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.return-link:hover {
+  color: var(--color-deep-red);
+}
+
+@media (max-width: 480px) {
+  .profile-card {
+    width: 100%;
+  }
+}

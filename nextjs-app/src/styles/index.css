@@ -1,0 +1,208 @@
+:root {
+  font-family: 'Roboto', sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+
+  --color-purple: #f43f5e;
+  --color-orange: #ff6b00;
+  --color-lime: #a3e635;
+  --color-blue: #1e3a8a;
+  --color-purple-dark: #6d28d9;
+  /* Strawberry palette */
+
+  --color-brand: #ee3a57;
+  --color-background: #f8d7e1;
+  --color-accent: #6dbf4d;
+  --color-secondary: #f8b7b6;
+  --color-deep-red: #b41c2d;
+  --color-mint: #a8e6cf;
+  --color-yellow: #fef08a;
+  --color-text-dark: #333;
+  /* legacy variable names */
+  --color-purple: var(--color-brand);
+  --color-orange: var(--color-secondary);
+  --color-lime: var(--color-accent);
+  --color-blue: var(--color-mint);
+  --color-purple-dark: var(--color-deep-red);
+
+  color: var(--color-text-dark);
+  background-color: var(--color-background);
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+a {
+  font-weight: 500;
+  color: var(--color-brand);
+  text-decoration: inherit;
+}
+a:hover {
+  color: var(--color-accent);
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  padding: 0 1rem;
+  font-family: 'Roboto', sans-serif;
+  font-size: 18px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Poppins', sans-serif;
+  line-height: 1.1;
+}
+h1 {
+  font-family: 'Poppins', sans-serif;
+  font-size: 3.2em;
+
+}
+h2, h3 {
+  font-family: 'Poppins', sans-serif;
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: var(--color-brand);
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.25s;
+}
+button:hover {
+  background-color: var(--color-deep-red);
+}
+
+.btn-primary {
+  background-color: var(--color-brand);
+  border-radius: 8px;
+  padding: 0.8rem 1.6rem;
+  color: #fff;
+  transition: background-color 0.25s;
+}
+.btn-primary:hover {
+  background-color: var(--color-deep-red);
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto var(--color-accent);
+}
+
+.btn-primary {
+  background-color: var(--color-brand);
+  border-radius: 8px;
+  padding: 0.8rem 1.6rem;
+}
+
+.btn-primary:hover {
+  background-color: var(--color-deep-red);
+}
+
+.btn-primary {
+  background-color: var(--color-brand);
+  border-radius: 8px;
+  padding: 0.8rem 1.6rem;
+}
+
+.btn-primary:hover {
+  background-color: var(--color-deep-red);
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: var(--color-background);
+  }
+  a:hover {
+    color: var(--color-lime);
+  }
+  button {
+    background-color: var(--color-brand);
+  }
+}
+
+body.high-contrast {
+  --color-brand: #000000;
+  --color-orange: #000000;
+  --color-lime: #000000;
+  --color-blue: #000000;
+  --color-text-dark: #000000;
+  background-color: #ffffff;
+  color: #000000;
+}
+
+body.high-contrast button {
+  background-color: #000000;
+  color: #ffffff;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.game-card-image {
+  float: left;
+  width: 120px;
+  height: auto;
+  margin: 0 1rem 1rem 0;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.game-text {
+  line-height: 1.5;
+  font-size: 1rem;
+  color: #333;
+}
+
+.clearfix::after {
+  content: '';
+  display: table;
+  clear: both;
+}
+
+@media (max-width: 600px) {
+  .game-card-image {
+    float: none;
+    display: block;
+    margin: 0 0 1rem 0;
+    width: 100%;
+    height: auto;
+  }
+}

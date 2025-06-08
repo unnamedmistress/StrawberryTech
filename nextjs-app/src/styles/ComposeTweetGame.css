@@ -1,0 +1,84 @@
+.compose-wrapper {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 200px 1fr 200px;
+  grid-template-areas:
+    'sidebar game progress';
+  gap: 1rem;
+  align-items: start;
+}
+
+.compose-sidebar {
+  grid-area: sidebar;
+  background: var(--color-background);
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.compose-game {
+  grid-area: game;
+  background: var(--color-background);
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.ai-box {
+  background: #ee3a57;
+  color: white;
+  padding: 0.75rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  min-height: 60px;
+}
+
+.prompt-form {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.prompt-form input {
+  flex: 1;
+  padding: 0.5rem;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.feedback {
+  font-weight: bold;
+}
+
+.door-area {
+  text-align: center;
+}
+
+.prompt-tip {
+  font-weight: bold;
+  color: var(--color-accent);
+  margin-top: 0.5rem;
+}
+
+.timer {
+  font-weight: bold;
+  color: var(--color-orange);
+}
+
+.final-score {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+@media (max-width: 600px) {
+  .compose-wrapper {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      'game'
+      'sidebar'
+      'progress';
+  }
+}
