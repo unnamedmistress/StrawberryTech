@@ -5,8 +5,8 @@ export default function Footer() {
       <div className="footer-content">
         <div className="brand">
           <img
-            src="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%206%2C%202025%2C%2011_24_31%20AM.png"
-            alt="Strawberry logo"
+            src="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_12_36%20PM.png"
+            alt="Home page strawberry mascot welcomes players at entrance of learning arcade with pastel tones."
             className="brand-logo"
           />
           <span>&copy; {year} StrawberryTech</span>

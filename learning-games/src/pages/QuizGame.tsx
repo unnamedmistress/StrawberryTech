@@ -199,6 +199,12 @@ export default function QuizGame() {
       <div className="truth-game">
         <WhyItMatters />
         <div className="game-area">
+          <img
+            src="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_51_28%20PM.png"
+            alt="Detective-themed strawberry examining statement cards under magnifying glass to spot false claim."
+            className="hero-img"
+            style={{ width: '200px' }}
+          />
           <div className="statements">
           <div className="statement-header">
             <h2>Hallucinations</h2>
