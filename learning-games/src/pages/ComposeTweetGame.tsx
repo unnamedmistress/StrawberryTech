@@ -47,6 +47,12 @@ export default function ComposeTweetGame() {
   return (
     <div className="compose-page">
       <InstructionBanner>Guess the Prompt</InstructionBanner>
+      <img
+        src="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_47_46%20PM.png"
+        alt="Strawberry calling out sick wrapped in blanket, holding phone with polite sick day message bubble."
+        className="hero-img"
+        style={{ width: '200px' }}
+      />
       <div className="compose-wrapper">
         <aside className="compose-sidebar">
           <p className="timer">Time left: {timeLeft}s</p>
@@ -84,6 +90,14 @@ export default function ComposeTweetGame() {
               width={100}
               height={150}
             />
+            {doorUnlocked && (
+              <img
+                src="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_47_29%20PM.png"
+                alt="Another version of strawberry calling out sick, same description."
+                className="hero-img"
+                style={{ width: '200px' }}
+              />
+            )}
           </div>
         </div>
         <ProgressSidebar />

@@ -42,8 +42,8 @@ export default function Home() {
       <section className="hero reveal" aria-label="Homepage hero">
         <h1 className="hero-title">Embark on a Fruity Learning Adventure!</h1>
         <img
-          src="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%206%2C%202025%2C%2011_24_31%20AM.png"
-          alt="Strawberry logo"
+          src="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_12_36%20PM.png"
+          alt="Home page strawberry mascot welcomes players at entrance of learning arcade with pastel tones."
           className="hero-img"
         />
         <p className="tagline">Play engaging games and sharpen your skills.</p>
