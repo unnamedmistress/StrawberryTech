@@ -3,6 +3,7 @@ import ProgressSidebar from '../components/layout/ProgressSidebar'
 import { motion } from 'framer-motion'
 import { toast } from 'react-hot-toast'
 import { Link, useNavigate } from 'react-router-dom'
+import CompletionModal from '../components/ui/CompletionModal'
 import { UserContext } from '../context/UserContext'
 import './QuizGame.css'
 import InstructionBanner from '../components/ui/InstructionBanner'
@@ -127,6 +128,7 @@ export default function QuizGame() {
   const [score, setScoreState] = useState(0)
   const [played, setPlayed] = useState(0)
   const [streak, setStreak] = useState(0)
+  const [finished, setFinished] = useState(false)
   const NUM_STATEMENTS = 3
 
   const current = ROUNDS[round]
@@ -161,10 +163,7 @@ export default function QuizGame() {
         addBadge('quiz-whiz')
       }
       toast.success(`You scored ${newScore} out of ${ROUNDS.length}`)
-      setScoreState(0)
-      setPlayed(0)
-      setChoice(null)
-      setRound(0)
+      setFinished(true)
       return
     }
     setChoice(null)
@@ -190,6 +189,7 @@ export default function QuizGame() {
   }, [])
 
   return (
+    <>
     <div className="quiz-page">
       <ChallengeBanner />
       <InstructionBanner>
@@ -268,5 +268,16 @@ export default function QuizGame() {
         </div>
       </div>
     </div>
+    {finished && (
+      <CompletionModal
+        imageSrc="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_51_28%20PM.png"
+        buttonHref="/games/escape"
+        buttonLabel="Play Escape Room"
+      >
+        <h3>You finished the quiz!</h3>
+        <p className="final-score">Your score: {score}</p>
+      </CompletionModal>
+    )}
+    </>
   )
 }

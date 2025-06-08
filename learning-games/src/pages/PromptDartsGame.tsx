@@ -1,5 +1,5 @@
 import { useState, useContext, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import CompletionModal from '../components/ui/CompletionModal'
 import ProgressSidebar from '../components/layout/ProgressSidebar'
 import InstructionBanner from '../components/ui/InstructionBanner'
 import TimerBar from '../components/ui/TimerBar'
@@ -7,8 +7,6 @@ import { UserContext } from '../context/UserContext'
 import shuffle from '../utils/shuffle'
 import { getTimeLimit } from '../utils/time'
 import './PromptDartsGame.css'
-
-const CONGRATS_VIDEO_URL = 'https://www.youtube.com/embed/dQw4w9WgXcQ'
 
 const KEYWORDS = [
   'list',
@@ -414,30 +412,14 @@ export default function PromptDartsGame() {
   if (round >= rounds.length) {
     return (
       <div className="darts-page">
-        <div className="congrats-overlay">
-          <div className="congrats-modal" role="dialog" aria-modal="true">
-            <h3>Congratulations!</h3>
-            <p className="final-score">Your score: {score}</p>
-            <p>Would you like to play the next game or support us?</p>
-            <iframe
-              className="congrats-video"
-              src={CONGRATS_VIDEO_URL}
-              title="Celebration video"
-              allowFullScreen
-            />
-            <Link to="/games/compose" className="btn-primary" style={{ display: 'block', marginTop: '0.5rem' }}>
-              Play Compose Tweet
-            </Link>
-            <a
-              className="coffee-link"
-              href="https://coff.ee/strawberrytech"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              ☕️ Buy me a coffee
-            </a>
-          </div>
-        </div>
+        <CompletionModal
+          imageSrc="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_24_00%20PM.png"
+          buttonHref="/games/compose"
+          buttonLabel="Play Compose Tweet"
+        >
+          <h3>Congratulations!</h3>
+          <p className="final-score">Your score: {score}</p>
+        </CompletionModal>
       </div>
     )
   }

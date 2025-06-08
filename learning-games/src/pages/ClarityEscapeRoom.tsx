@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useContext, useCallback } from 'react'
-import { useNavigate } from 'react-router-dom'
+import CompletionModal from '../components/ui/CompletionModal'
 import InstructionBanner from '../components/ui/InstructionBanner'
 import ProgressBar from '../components/ui/ProgressBar'
 import DoorAnimation from '../components/DoorAnimation'
@@ -103,7 +103,6 @@ const TOTAL_STEPS = 4
 
 
 export default function ClarityEscapeRoom() {
-  const navigate = useNavigate()
   const { setScore } = useContext(UserContext)
   const [doors] = useState(() => shuffle(CLUES).slice(0, TOTAL_STEPS))
   const [index, setIndex] = useState(0)
@@ -119,7 +118,6 @@ export default function ClarityEscapeRoom() {
 
   const [aiHint, setAiHint] = useState('')
   const startRef = useRef(Date.now())
-  const [rounds, setRounds] = useState<{ prompt: string; expected: string; tip: string }[]>([])
   const [showSummary, setShowSummary] = useState(false)
 
   const clue = doors[index]
@@ -224,9 +222,8 @@ export default function ClarityEscapeRoom() {
   }
 
   function nextChallenge() {
-    const { tips } = scorePrompt(clue.expectedPrompt, input.trim())
-    const tip = tips[0] || 'Aim for a clearer prompt next time.'
-    setRounds(r => [...r, { prompt: input.trim(), expected: clue.expectedPrompt, tip }])
+    // Previously we recorded each prompt and tip for a summary modal. The new
+    // completion modal omits that detail, so we simply advance the round.
     if (index + 1 < TOTAL_STEPS) {
       setIndex(i => i + 1)
       setInput('')
@@ -303,23 +300,14 @@ export default function ClarityEscapeRoom() {
         <ProgressSidebar />
       </div>
       {showSummary && (
-        <div className="summary-overlay" onClick={() => setShowSummary(false)}>
-          <div className="summary-modal" onClick={e => e.stopPropagation()}>
-            <h3>Round Summary</h3>
-            <ul>
-              {rounds.map((r, i) => (
-                <li key={i}>
-                  <p><strong>Your Prompt:</strong> {r.prompt || '(none)'}</p>
-                  <p><strong>Expected:</strong> {r.expected}</p>
-                  <p className="tip"><strong>Tip:</strong> {r.tip}</p>
-                </li>
-              ))}
-            </ul>
-            <button className="btn-primary" onClick={() => navigate('/leaderboard')}>
-              View Leaderboard
-            </button>
-          </div>
-        </div>
+        <CompletionModal
+          imageSrc="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_12_36%20PM.png"
+          buttonHref="/games/recipe"
+          buttonLabel="Play Prompt Builder"
+        >
+          <h3>Escape Complete!</h3>
+          <p className="final-score">Score: {points}</p>
+        </CompletionModal>
       )}
     </div>
   )
