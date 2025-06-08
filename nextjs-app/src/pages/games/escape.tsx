@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useContext, useCallback } from 'react'
 import { useRouter } from 'next/router'
+import Link from 'next/link'
 import InstructionBanner from '../../components/ui/InstructionBanner'
 import ProgressBar from '../../components/ui/ProgressBar'
 import DoorAnimation from '../../components/DoorAnimation'
@@ -345,6 +346,19 @@ export default function ClarityEscapeRoom() {
           </div>
         </div>
         <ProgressSidebar />
+        <div className="next-area">
+          <p style={{ marginTop: '1rem', textAlign: 'center' }}>
+            <button
+              className="btn-primary"
+              onClick={() => router.push('/games/recipe')}
+            >
+              Next
+            </button>
+          </p>
+          <p style={{ marginTop: '1rem', textAlign: 'center' }}>
+            <Link href="/games/recipe">Skip to Prompt Builder</Link>
+          </p>
+        </div>
       </div>
       {showSummary && (
         <CompletionModal

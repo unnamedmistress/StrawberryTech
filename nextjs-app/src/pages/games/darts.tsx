@@ -1,5 +1,6 @@
 import { useState, useContext, useEffect } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import ProgressSidebar from '../../components/layout/ProgressSidebar'
 import InstructionBanner from '../../components/ui/InstructionBanner'
 import TimerBar from '../../components/ui/TimerBar'
@@ -270,6 +271,7 @@ export function streakBonus(streak: number) {
 export default function PromptDartsGame() {
 
   const { setScore, user } = useContext(UserContext)
+  const router = useRouter()
   const [rounds, setRounds] = useState<DartRound[]>([])
   const [round, setRound] = useState(0)
 
@@ -537,8 +539,21 @@ export default function PromptDartsGame() {
         <ProgressSidebar />
         <div className="next-area">
           {choice !== null && (
-            <button className="btn-primary" onClick={next}>{round + 1 < rounds.length ? 'Next Round' : 'Finish'}</button>
+            <button className="btn-primary" onClick={next}>
+              {round + 1 < rounds.length ? 'Next Round' : 'Finish'}
+            </button>
           )}
+          <p style={{ marginTop: '1rem', textAlign: 'center' }}>
+            <button
+              className="btn-primary"
+              onClick={() => router.push('/games/compose')}
+            >
+              Next
+            </button>
+          </p>
+          <p style={{ marginTop: '1rem', textAlign: 'center' }}>
+            <Link href="/games/compose">Skip to Compose</Link>
+          </p>
         </div>
       </div>
     </div>

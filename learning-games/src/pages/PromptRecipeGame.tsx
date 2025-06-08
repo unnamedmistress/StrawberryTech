@@ -1,4 +1,5 @@
 import { useState, useEffect, useContext } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import CompletionModal from '../components/ui/CompletionModal'
 import { motion } from 'framer-motion'
 import confetti from 'canvas-confetti'
@@ -172,6 +173,7 @@ async function generateCards(): Promise<Card[]> {
 
 export default function PromptRecipeGame() {
   const { setScore, addBadge, user } = useContext(UserContext)
+  const navigate = useNavigate()
   const TOTAL_ROUNDS = 5
   const TOTAL_TIME = getTimeLimit(user, {
     easy: 45,
@@ -524,6 +526,19 @@ export default function PromptRecipeGame() {
             <button className="btn-primary" onClick={nextRound}>Next Recipe</button>
           </div>
         )}
+        <div className="next-area">
+          <p style={{ marginTop: '1rem', textAlign: 'center' }}>
+            <button
+              className="btn-primary"
+              onClick={() => navigate('/games/darts')}
+            >
+              Next
+            </button>
+          </p>
+          <p style={{ marginTop: '1rem', textAlign: 'center' }}>
+            <Link to="/games/darts">Skip to Prompt Darts</Link>
+          </p>
+        </div>
       </div>
     </div>
   )
