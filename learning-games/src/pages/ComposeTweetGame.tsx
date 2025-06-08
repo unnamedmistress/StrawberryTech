@@ -1,6 +1,8 @@
 
 import { useState, useEffect, useRef } from 'react'
+
 import { scorePrompt } from '../utils/scorePrompt'
+
 import InstructionBanner from '../components/ui/InstructionBanner'
 import ProgressSidebar from '../components/layout/ProgressSidebar'
 import { UserContext } from '../context/UserContext'
@@ -17,6 +19,7 @@ const PROMPT_TIPS = [
   'Break complex tasks into clear steps.',
   'State the desired length or format.',
   'Offer examples to show the style you expect.',
+
 ]
 
 export default function ComposeTweetGame() {
@@ -26,33 +29,41 @@ export default function ComposeTweetGame() {
   const [doorUnlocked, setDoorUnlocked] = useState(false)
   const [tipIndex, setTipIndex] = useState(0)
   const [timeLeft, setTimeLeft] = useState(30)
+
   const [score, setScoreState] = useState<number | null>(null)
+
   const timerRef = useRef<number | null>(null)
+  const pair = pairs[round]
 
   useEffect(() => {
+    setTimeLeft(30)
     timerRef.current = window.setInterval(() => {
       setTimeLeft(t => {
         if (t <= 1) {
           clearInterval(timerRef.current!)
           setFeedback('Too slow! The door remains locked.')
+          setShowNext(true)
           return 0
         }
         return t - 1
       })
     }, 1000)
     return () => clearInterval(timerRef.current!)
-  }, [])
+  }, [round])
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
 
     const { score, tips } = scorePrompt(CORRECT_PROMPT, guess)
     if (score >= SCORE_THRESHOLD) {
+
       setFeedback('Correct! The door is unlocked.')
 
       setDoorUnlocked(true)
 
+
       setScoreState(points)
+
       clearInterval(timerRef.current!)
       setScore('compose', points)
       if (points >= 20 && !user.badges.includes('speedy-composer')) {
@@ -65,7 +76,19 @@ export default function ComposeTweetGame() {
   }
 
   function handleHint() {
-    setFeedback(`Hint: The prompt is about ${CORRECT_PROMPT.split(' ')[2]}...`)
+    const words = pair.prompt.split(' ')
+    setFeedback(`Hint: The prompt is about ${words[2]}...`)
+  }
+
+  function nextRound() {
+    if (round + 1 < pairs.length) {
+      clearInterval(timerRef.current!)
+      setRound(r => r + 1)
+      setGuess('')
+      setFeedback('')
+      setDoorUnlocked(false)
+      setShowNext(false)
+    }
   }
 
   return (
@@ -82,7 +105,7 @@ export default function ComposeTweetGame() {
             className="game-card-image"
           />
           <div className="ai-box" aria-live="polite">
-            {SAMPLE_RESPONSE}
+            {pair.response}
           </div>
           <form onSubmit={handleSubmit} className="prompt-form">
             <label htmlFor="prompt-input">Your guess</label>
@@ -132,6 +155,14 @@ export default function ComposeTweetGame() {
               </p>
             )}
           </div>
+          {showNext && round + 1 < pairs.length && (
+            <button className="btn-primary" onClick={nextRound}>
+              Next Prompt
+            </button>
+          )}
+          {showNext && round + 1 >= pairs.length && (
+            <p className="feedback">All prompts complete!</p>
+          )}
         </div>
         <ProgressSidebar />
       </div>
