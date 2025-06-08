@@ -1,40 +1,37 @@
+
 import { useState, useEffect, useRef } from 'react'
-import shuffle from '../utils/shuffle'
+
+import { scorePrompt } from '../utils/scorePrompt'
+
 import InstructionBanner from '../components/ui/InstructionBanner'
 import ProgressSidebar from '../components/layout/ProgressSidebar'
+import { UserContext } from '../context/UserContext'
 import './ComposeTweetGame.css'
 
-interface Pair {
-  response: string
-  prompt: string
-}
+const SAMPLE_RESPONSE =
+  'Just finished reading an amazing book on technology! Highly recommend it to everyone. #BookLovers'
+const CORRECT_PROMPT = 'Compose a tweet about reading a new book'
+const SCORE_THRESHOLD = 20
 
-const PAIRS: Pair[] = [
-  {
-    response:
-      'Just finished reading an amazing book on technology! Highly recommend it to everyone. #BookLovers',
-    prompt: 'Compose a tweet about reading a new book',
-  },
-  {
-    response:
-      "Thrilled to announce our summer sale starts June 1st! Huge discounts storewide.",
-    prompt: 'Write a tweet announcing our summer sale starting June 1st',
-  },
-  {
-    response:
-      'Remember to stretch and take short breaks while studying to keep your mind sharp.',
-    prompt: 'Tweet a quick study break tip',
-  },
+const PROMPT_TIPS = [
+  'Be specific about what you want the AI to do.',
+  'Provide context so the AI understands your request.',
+  'Break complex tasks into clear steps.',
+  'State the desired length or format.',
+  'Offer examples to show the style you expect.',
+
 ]
 
 export default function ComposeTweetGame() {
+  const { setScore, addBadge, user } = useContext(UserContext)
   const [guess, setGuess] = useState('')
   const [feedback, setFeedback] = useState('')
   const [doorUnlocked, setDoorUnlocked] = useState(false)
+  const [tipIndex, setTipIndex] = useState(0)
   const [timeLeft, setTimeLeft] = useState(30)
-  const [round, setRound] = useState(0)
-  const [pairs] = useState(() => shuffle(PAIRS))
-  const [showNext, setShowNext] = useState(false)
+
+  const [score, setScoreState] = useState<number | null>(null)
+
   const timerRef = useRef<number | null>(null)
   const pair = pairs[round]
 
@@ -56,13 +53,24 @@ export default function ComposeTweetGame() {
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    if (guess.trim().toLowerCase() === pair.prompt.toLowerCase()) {
+
+    const { score, tips } = scorePrompt(CORRECT_PROMPT, guess)
+    if (score >= SCORE_THRESHOLD) {
+
       setFeedback('Correct! The door is unlocked.')
+
       setDoorUnlocked(true)
-      setShowNext(true)
+
+
+      setScoreState(points)
+
       clearInterval(timerRef.current!)
+      setScore('compose', points)
+      if (points >= 20 && !user.badges.includes('speedy-composer')) {
+        addBadge('speedy-composer')
+      }
     } else {
-      setFeedback('Incorrect guess, try again.')
+      setFeedback(tips.join(' '))
     }
     setGuess('')
   }
@@ -121,6 +129,11 @@ export default function ComposeTweetGame() {
             </button>
           </form>
           {feedback && <p className="feedback">{feedback}</p>}
+          {score !== null && (
+            <p className="final-score" aria-live="polite">
+              Your score: {score}
+            </p>
+          )}
           <div className="door-area">
             <img
               src={doorUnlocked ? '/images/door-open.png' : '/images/door-closed.png'}
@@ -135,6 +148,11 @@ export default function ComposeTweetGame() {
                 className="hero-img"
                 style={{ width: '200px' }}
               />
+            )}
+            {doorUnlocked && (
+              <p className="prompt-tip" role="status" aria-live="polite">
+                {PROMPT_TIPS[tipIndex]}
+              </p>
             )}
           </div>
           {showNext && round + 1 < pairs.length && (

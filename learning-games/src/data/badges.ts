@@ -52,4 +52,10 @@ export const BADGES: BadgeDefinition[] = [
     description: 'Spot five lies in a row in the Hallucinations quiz',
     emoji: '🔎',
   },
+  {
+    id: 'speedy-composer',
+    name: 'Speedy Composer',
+    description: 'Unlock the tweet door with 20 seconds left',
+    emoji: '🚀',
+  },
 ]

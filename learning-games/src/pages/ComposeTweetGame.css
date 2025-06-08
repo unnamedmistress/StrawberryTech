@@ -57,9 +57,20 @@
   text-align: center;
 }
 
+.prompt-tip {
+  font-weight: bold;
+  color: var(--color-accent);
+  margin-top: 0.5rem;
+}
+
 .timer {
   font-weight: bold;
   color: var(--color-orange);
+}
+
+.final-score {
+  font-size: 1.2rem;
+  font-weight: bold;
 }
 
 @media (max-width: 600px) {
