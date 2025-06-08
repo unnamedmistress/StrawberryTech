@@ -267,7 +267,11 @@ export default function PromptDartsGame() {
   const [round, setRound] = useState(0)
 
   const [choice, setChoice] = useState<number | null>(null)
-  const [order, setOrder] = useState<number[]>([])
+
+  const [choices, setChoices] = useState<string[]>(() =>
+    rounds.length ? shuffle([...rounds[0].options]) : []
+  )
+
 
   const [score, setScoreState] = useState(0)
   const [streak, setStreak] = useState(0)
@@ -317,8 +321,11 @@ export default function PromptDartsGame() {
     if (!rounds.length) return
     setTimeLeft(TOTAL_TIME)
     setPointsLeft(MAX_POINTS)
-    setOrder(shuffle(rounds[round].options.map((_, i) => i)))
-  }, [round, TOTAL_TIME, MAX_POINTS, rounds])
+
+    setChoices(shuffle([...rounds[round].options]))
+
+
+  }, [round, TOTAL_TIME, MAX_POINTS])
 
 
 
@@ -338,8 +345,9 @@ export default function PromptDartsGame() {
   }, [timeLeft, choice])
 
   function handleSelect(index: number) {
-    setChoice(index)
-    if (checkChoice(current, index)) {
+    const originalIndex = current.options.indexOf(choices[index])
+    setChoice(originalIndex)
+    if (checkChoice(current, originalIndex)) {
       setScoreState(s => s + pointsLeft + streakBonus(streak + 1))
       setStreak(s => s + 1)
       setPenaltyMsg('')
@@ -356,7 +364,7 @@ export default function PromptDartsGame() {
     if (round + 1 < rounds.length) {
       setRound(r => r + 1)
       setChoice(null)
-      setOrder(shuffle(rounds[round + 1].options.map((_, i) => i)))
+      setChoices(shuffle([...rounds[round + 1].options]))
       setTimeLeft(TOTAL_TIME)
       setPointsLeft(MAX_POINTS)
     } else {
@@ -414,14 +422,14 @@ export default function PromptDartsGame() {
           <div className="options">
 
 
-            {order.map(i => (
+            {choices.map((text, i) => (
               <button
                 key={i}
                 className="btn-primary"
                 onClick={() => handleSelect(i)}
                 disabled={choice !== null}
               >
-                {highlightPrompt(current.options[i])}
+                {highlightPrompt(text)}
 
               </button>
             ))}

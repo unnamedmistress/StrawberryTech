@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import Tooltip from '../ui/Tooltip'
+import ThemeToggle from './ThemeToggle'
 
 export default function NavBar() {
   const [open, setOpen] = useState(false)
@@ -15,6 +16,9 @@ export default function NavBar() {
         />
         StrawberryTech
       </div>
+      <Tooltip message="Improve readability">
+        <ThemeToggle />
+      </Tooltip>
       <button
         className="menu-toggle"
         aria-label="Toggle navigation"
