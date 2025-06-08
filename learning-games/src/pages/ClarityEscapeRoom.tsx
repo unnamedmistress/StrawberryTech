@@ -9,7 +9,6 @@ import { UserContext } from '../context/UserContext'
 import shuffle from '../utils/shuffle'
 import './ClarityEscapeRoom.css'
 import { scorePrompt } from '../utils/scorePrompt'
-import { generateRoomDescription } from '../utils/generateRoomDescription'
 
 interface Clue {
   aiResponse: string
