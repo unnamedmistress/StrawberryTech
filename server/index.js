@@ -12,6 +12,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 const DB_FILE = path.join(__dirname, 'db.json');
+const DARTS_FILE = path.join(__dirname, 'darts.json');
 
 function loadData() {
   try {
@@ -30,6 +31,19 @@ function loadData() {
 
 function saveData(data) {
   fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2));
+}
+
+function loadDartRounds() {
+  try {
+    const rounds = JSON.parse(fs.readFileSync(DARTS_FILE, 'utf8'));
+    for (let i = rounds.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [rounds[i], rounds[j]] = [rounds[j], rounds[i]];
+    }
+    return rounds;
+  } catch {
+    return [];
+  }
 }
 
 let data = loadData();
@@ -99,6 +113,11 @@ app.post('/api/pairs', (req, res) => {
   data.promptPairs.push(pair);
   saveData(data);
   res.status(201).json(pair);
+});
+
+app.get('/api/darts', (req, res) => {
+  const rounds = loadDartRounds();
+  res.json(rounds);
 });
 
 app.get('/api/views', (req, res) => {
