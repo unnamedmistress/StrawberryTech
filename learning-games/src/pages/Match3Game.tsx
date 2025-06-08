@@ -193,7 +193,7 @@ function ToneMatchGame({ onComplete }: { onComplete: (score: number) => void }) 
 
 
   useEffect(() => {
-    if (used.size === tones.length) {
+    if (used.size >= 3) {
       recordScore('tone', score)
       onComplete(score)
     }
@@ -288,6 +288,7 @@ export default function Match3Game() {
     () =>
       tips[Math.floor(Math.random() * tips.length)],
   )
+  const [showComplete, setShowComplete] = useState(false)
 
   function handleComplete(score: number) {
     const earned: string[] = [];
@@ -309,8 +310,41 @@ export default function Match3Game() {
     if (earned.length > 0) {
       confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
     }
-    toast.success(`${msg} Moving on to the quiz.`);
-    navigate("/games/quiz");
+    toast.success(msg);
+    setShowComplete(true);
+  }
+
+  if (showComplete) {
+    return (
+      <div className="match3-page">
+        <div className="congrats-overlay">
+          <div className="congrats-modal" role="dialog" aria-modal="true">
+            <img
+              src="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_47_46%20PM.png"
+              alt="Strawberry calling out sick wrapped in blanket, holding phone with polite sick day message bubble."
+              style={{ width: '200px', display: 'block', margin: '0 auto' }}
+            />
+            <p>Great job matching tones! Ready for a quick quiz?</p>
+            <button
+              className="btn-primary"
+              onClick={() => navigate('/games/quiz')}
+              style={{ display: 'block', marginTop: '0.5rem' }}
+            >
+              Start Quiz
+            </button>
+            <a
+              className="coffee-link"
+              href="https://coff.ee/strawberrytech"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ display: 'block', marginTop: '0.5rem' }}
+            >
+              ☕ Buy me a coffee
+            </a>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   return (
