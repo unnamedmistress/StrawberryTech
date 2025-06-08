@@ -245,6 +245,9 @@ export const FALLBACK_ROUNDS: DartRound[] = [
   }
 ]
 
+// TODO: swap this alias for data loaded from `server/darts.json`
+export const ROUNDS: DartRound[] = FALLBACK_ROUNDS
+
 
 export function checkChoice(round: DartRound, index: number) {
   return index === round.correct
