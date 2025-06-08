@@ -23,8 +23,10 @@ const GamePageLayout: React.FC<GamePageLayoutProps> = ({
   return (
     <div className="game-page-container">
       <aside className="left-column">
-        <img src={imageSrc} alt={imageAlt} className="game-image" />
-        <div className="info-card">{infoCardContent}</div>
+        <div className="info-card">
+          <img src={imageSrc} alt={imageAlt} className="game-image" />
+          {infoCardContent}
+        </div>
       </aside>
       <main className="right-column">
         <div className="instructions-box">{instructions}</div>

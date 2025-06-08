@@ -47,16 +47,16 @@ export default function ComposeTweetGame() {
   return (
     <div className="compose-page clearfix">
       <InstructionBanner>Guess the Prompt</InstructionBanner>
-      <img
-        src="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_47_46%20PM.png"
-        alt="Strawberry calling out sick wrapped in blanket, holding phone with polite sick day message bubble."
-        className="game-card-image"
-      />
       <div className="compose-wrapper">
         <aside className="compose-sidebar">
           <p className="timer">Time left: {timeLeft}s</p>
         </aside>
         <div className="compose-game">
+          <img
+            src="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_47_46%20PM.png"
+            alt="Strawberry calling out sick wrapped in blanket, holding phone with polite sick day message bubble."
+            className="game-card-image"
+          />
           <div className="ai-box" aria-live="polite">
             {SAMPLE_RESPONSE}
           </div>
