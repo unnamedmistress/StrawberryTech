@@ -122,6 +122,9 @@ export function Head() {
         name="description"
         content="Read and share posts with other players."
       />
+      <link rel="canonical" href="https://strawberrytech.com/community" />
     </>
   )
 }
+
+export const getStaticProps = async () => ({ props: {} });

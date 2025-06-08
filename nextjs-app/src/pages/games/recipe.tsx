@@ -4,6 +4,7 @@ import Head from 'next/head'
 import { motion } from 'framer-motion'
 import confetti from 'canvas-confetti'
 import { toast } from 'react-hot-toast'
+import JsonLd from '../../components/seo/JsonLd'
 
 import ProgressSidebar from '../../components/layout/ProgressSidebar'
 import InstructionBanner from '../../components/ui/InstructionBanner'
@@ -433,6 +434,16 @@ export default function PromptRecipeGame() {
 
   return (
     <>
+      <JsonLd
+        data={{
+          '@context': 'https://schema.org',
+          '@type': 'Game',
+          name: 'Prompt Builder Game',
+          description: 'Drag cards to craft the perfect AI prompt.',
+          image:
+            'https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_19_23%20PM.png',
+        }}
+      />
       <Head>
         <title>Prompt Recipe Builder - StrawberryTech</title>
         <meta property="og:title" content="Prompt Recipe Builder - StrawberryTech" />
@@ -569,6 +580,9 @@ export function Head() {
         name="description"
         content="Drag cards to craft the perfect AI prompt."
       />
+      <link rel="canonical" href="https://strawberrytech.com/games/recipe" />
     </>
   )
 }
+
+export const getStaticProps = async () => ({ props: {} });

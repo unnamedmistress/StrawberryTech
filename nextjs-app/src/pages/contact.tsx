@@ -17,6 +17,9 @@ export function Head() {
     <>
       <title>Contact Us | StrawberryTech</title>
       <meta name="description" content="Get in touch with the StrawberryTech team." />
+      <link rel="canonical" href="https://strawberrytech.com/contact" />
     </>
   )
 }
+
+export const getStaticProps = async () => ({ props: {} });
