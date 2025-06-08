@@ -150,6 +150,9 @@ export default function PromptDartsGame() {
   const [choice, setChoice] = useState<'bad' | 'good' | null>(null)
   const [score, setScoreState] = useState(0)
 
+  const PENALTY = 2
+  const [penaltyMsg, setPenaltyMsg] = useState('')
+
   const TOTAL_TIME = 15
   const MAX_POINTS = 10
   const [timeLeft, setTimeLeft] = useState(TOTAL_TIME)
@@ -175,6 +178,10 @@ export default function PromptDartsGame() {
     setChoice(option)
     if (checkChoice(current, option)) {
       setScoreState(s => s + pointsLeft)
+      setPenaltyMsg('')
+    } else {
+      setScoreState(s => Math.max(0, s - PENALTY))
+      setPenaltyMsg(`Incorrect! -${PENALTY} points`)
     }
   }
 
@@ -240,6 +247,9 @@ export default function PromptDartsGame() {
                   ? 'Correct! Clear prompts hit the bullseye.'
                   : 'Not quite. Aim for specific wording.'}
               </p>
+              {penaltyMsg && !checkChoice(current, choice) && (
+                <p className="penalty">{penaltyMsg}</p>
+              )}
 
               <p className="why-message">{current.why}</p>
               <pre className="canned-response">{current.response}</pre>
