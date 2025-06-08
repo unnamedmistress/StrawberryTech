@@ -41,7 +41,6 @@ export default function ComposeTweetGame() {
 
   const [round, setRound] = useState(0)
   const [showNext, setShowNext] = useState(false)
-  const [points, setPoints] = useState(0)
 
   const [score, setScoreState] = useState<number | null>(null)
 
@@ -80,7 +79,6 @@ export default function ComposeTweetGame() {
       setFeedback('Correct! The door is unlocked.')
       setDoorUnlocked(true)
       const earned = guessScore + timeLeft
-      setPoints(earned)
       setScoreState(earned)
       clearInterval(timerRef.current!)
       setScore('compose', earned)

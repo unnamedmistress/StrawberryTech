@@ -77,6 +77,10 @@
   font-weight: bold;
   margin-bottom: 0.5rem;
 }
+.room-desc {
+  font-style: italic;
+  margin-bottom: 0.5rem;
+}
 
 .escape-sidebar {
   grid-area: sidebar;
@@ -166,4 +170,38 @@
   .escape-sidebar {
     max-width: none;
   }
+}
+
+.summary-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.summary-modal {
+  background: var(--color-background);
+  color: var(--color-text-dark);
+  padding: 1rem;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 400px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+.summary-modal ul {
+  list-style: none;
+  padding: 0;
+}
+.summary-modal li {
+  margin-bottom: 1rem;
+}
+.summary-modal .tip {
+  font-style: italic;
 }

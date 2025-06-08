@@ -174,7 +174,7 @@ export default function DragDropGame() {
           totalPoints={totalPoints}
           badgesEarned={badgesEarned}
           goalPoints={300}
-          topScores={[{ name: 'You', points: user.scores['tone'] ?? 0 }]}
+          topScores={[{ name: 'You', points: user.scores['darts'] ?? 0 }]}
         />
       </div>
       <div className="next-area">
