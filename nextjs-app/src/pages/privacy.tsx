@@ -23,6 +23,7 @@ export function Head() {
     <>
       <title>Privacy Policy | StrawberryTech</title>
       <meta name="description" content="Learn how StrawberryTech handles your data." />
+      <link rel="canonical" href="https://strawberrytech.com/privacy" />
     </>
   )
 }

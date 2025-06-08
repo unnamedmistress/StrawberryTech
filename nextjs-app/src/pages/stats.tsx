@@ -100,6 +100,7 @@ export function Head() {
     <>
       <title>Site Statistics | StrawberryTech</title>
       <meta name="description" content="View visitor analytics collected by the server." />
+      <link rel="canonical" href="https://strawberrytech.com/stats" />
     </>
   )
 }
