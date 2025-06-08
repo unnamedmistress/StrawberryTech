@@ -6,6 +6,31 @@ import { UserContext } from '../context/UserContext'
 import shuffle from '../utils/shuffle'
 import './PromptDartsGame.css'
 
+const KEYWORDS = [
+  'list',
+  'draft',
+  'summarize',
+  'provide',
+  'translate',
+  'compose',
+  'give',
+  'write',
+  'explain',
+  'rewrite',
+  'create',
+  'share'
+]
+
+function highlightPrompt(text: string) {
+  return text.split(' ').map((word, i) => {
+    const clean = word.toLowerCase().replace(/[^a-z0-9]/g, '')
+    const highlight = KEYWORDS.includes(clean) || /\d/.test(word)
+    return (
+      <span key={i} className={highlight ? 'hint-highlight' : undefined}>{word} </span>
+    )
+  })
+}
+
 export interface DartRound {
   bad: string
   good: string
@@ -154,12 +179,16 @@ export default function PromptDartsGame() {
   const MAX_POINTS = 10
   const [timeLeft, setTimeLeft] = useState(TOTAL_TIME)
   const [pointsLeft, setPointsLeft] = useState(MAX_POINTS)
+  const [showHint, setShowHint] = useState(false)
+  const [hintUsed, setHintUsed] = useState(false)
   const current = ROUNDS[round]
 
 
   useEffect(() => {
     setTimeLeft(TOTAL_TIME)
     setPointsLeft(MAX_POINTS)
+    setShowHint(false)
+    setHintUsed(false)
   }, [round])
 
   useEffect(() => {
@@ -176,6 +205,13 @@ export default function PromptDartsGame() {
     if (checkChoice(current, option)) {
       setScoreState(s => s + pointsLeft)
     }
+  }
+
+  function handleHint() {
+    if (hintUsed) return
+    setHintUsed(true)
+    setShowHint(true)
+    setPointsLeft(p => Math.max(0, p - 2))
   }
 
   function next() {
@@ -229,8 +265,15 @@ export default function PromptDartsGame() {
 
           <p>Which prompt is clearer?</p>
           <div className="options">
-            <button className="btn-primary" onClick={() => handleSelect('bad')} disabled={choice !== null}>{current.bad}</button>
-            <button className="btn-primary" onClick={() => handleSelect('good')} disabled={choice !== null}>{current.good}</button>
+            <button className="btn-primary" onClick={() => handleSelect('bad')} disabled={choice !== null}>
+              {showHint ? highlightPrompt(current.bad) : current.bad}
+            </button>
+            <button className="btn-primary" onClick={() => handleSelect('good')} disabled={choice !== null}>
+              {showHint ? highlightPrompt(current.good) : current.good}
+            </button>
+            <button type="button" className="btn-primary" onClick={handleHint} disabled={hintUsed || choice !== null}>
+              Hint
+            </button>
           </div>
           {choice !== null && (
 
