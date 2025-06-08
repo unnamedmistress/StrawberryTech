@@ -10,6 +10,12 @@ export interface PostData {
   date: string
   /** Whether a post has been flagged by a user */
   flagged?: boolean
+  /** Sentiment score from -1 to 1 */
+  sentiment?: number
+  /** Approval status */
+  status?: 'approved' | 'pending'
+  /** Number of likes */
+  likes?: number
 }
 
 export interface PostProps {
