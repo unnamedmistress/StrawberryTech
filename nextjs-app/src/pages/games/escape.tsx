@@ -8,6 +8,7 @@ import Tooltip from '../../components/ui/Tooltip'
 import { UserContext } from '../../context/UserContext'
 import shuffle from '../../utils/shuffle'
 import '../../styles/ClarityEscapeRoom.css'
+import CompletionModal from '../../components/ui/CompletionModal'
 import { scorePrompt } from '../../utils/scorePrompt'
 import Head from 'next/head'
 import JsonLd from '../../components/seo/JsonLd'
@@ -346,23 +347,14 @@ export default function ClarityEscapeRoom() {
         <ProgressSidebar />
       </div>
       {showSummary && (
-        <div className="summary-overlay" onClick={() => setShowSummary(false)}>
-          <div className="summary-modal" onClick={e => e.stopPropagation()}>
-            <h3>Round Summary</h3>
-            <ul>
-              {rounds.map((r, i) => (
-                <li key={i}>
-                  <p><strong>Your Prompt:</strong> {r.prompt || '(none)'}</p>
-                  <p><strong>Expected:</strong> {r.expected}</p>
-                  <p className="tip"><strong>Tip:</strong> {r.tip}</p>
-                </li>
-              ))}
-            </ul>
-            <button className="btn-primary" onClick={() => router.push('/leaderboard')}>
-              View Leaderboard
-            </button>
-          </div>
-        </div>
+        <CompletionModal
+          imageSrc="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_12_36%20PM.png"
+          buttonHref="/games/recipe"
+          buttonLabel="Play Prompt Builder"
+        >
+          <h3>Escape Complete!</h3>
+          <p className="final-score">Score: {points}</p>
+        </CompletionModal>
       )}
     </div>
     </>
