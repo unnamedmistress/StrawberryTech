@@ -1,5 +1,6 @@
 import { useState, useEffect, useContext } from 'react'
 import Link from 'next/link'
+import Head from 'next/head'
 import { motion } from 'framer-motion'
 import confetti from 'canvas-confetti'
 import { toast } from 'react-hot-toast'
@@ -431,7 +432,38 @@ export default function PromptRecipeGame() {
   const allFilled = Object.values(dropped).every(Boolean)
 
   return (
-    <div className="recipe-page">
+    <>
+      <Head>
+        <title>Prompt Recipe Builder - StrawberryTech</title>
+        <meta property="og:title" content="Prompt Recipe Builder - StrawberryTech" />
+        <meta
+          property="og:description"
+          content="Drag cards to craft clear prompts and see the AI's response."
+        />
+        <meta
+          property="og:image"
+          content="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_19_23%20PM.png"
+        />
+        <meta
+          property="og:url"
+          content="https://strawberry-tech.vercel.app/games/recipe"
+        />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Prompt Recipe Builder - StrawberryTech" />
+        <meta
+          name="twitter:description"
+          content="Drag cards to craft clear prompts and see the AI's response."
+        />
+        <meta
+          name="twitter:image"
+          content="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_19_23%20PM.png"
+        />
+        <meta
+          name="twitter:url"
+          content="https://strawberry-tech.vercel.app/games/recipe"
+        />
+      </Head>
+      <div className="recipe-page">
       <InstructionBanner>
         Drag each card to the category it best fits to build a clear AI prompt.
       </InstructionBanner>
@@ -525,6 +557,7 @@ export default function PromptRecipeGame() {
         )}
       </div>
     </div>
+    </>
   )
 }
 
