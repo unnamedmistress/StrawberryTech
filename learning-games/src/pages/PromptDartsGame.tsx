@@ -263,14 +263,15 @@ export function streakBonus(streak: number) {
 export default function PromptDartsGame() {
 
   const { setScore, user } = useContext(UserContext)
-  const [rounds] = useState<DartRound[]>(() => shuffle(ROUNDS))
-
+  const [rounds, setRounds] = useState<DartRound[]>([])
   const [round, setRound] = useState(0)
 
   const [choice, setChoice] = useState<number | null>(null)
+
   const [choices, setChoices] = useState<string[]>(() =>
     rounds.length ? shuffle([...rounds[0].options]) : []
   )
+
 
   const [score, setScoreState] = useState(0)
   const [streak, setStreak] = useState(0)
@@ -289,11 +290,38 @@ export default function PromptDartsGame() {
 
   const current = rounds[round]
 
+  // Load rounds from the server on mount
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      setRounds(shuffle(ROUNDS))
+      return
+    }
+    const base = window.location.origin
+    fetch(`${base}/api/darts`)
+      .then(res => (res.ok ? res.json() : null))
+      .then(data => {
+        if (Array.isArray(data) && data.length) {
+          const fetched = data.map((r: any) => ({
+            options: r.options ?? [r.bad, r.good].filter(Boolean),
+            correct: typeof r.correct === 'number' ? r.correct : 1,
+            why: r.why ?? '',
+            response: r.response ?? ''
+          })) as DartRound[]
+          setRounds(shuffle(fetched))
+        } else {
+          setRounds(shuffle(ROUNDS))
+        }
+      })
+      .catch(() => setRounds(shuffle(ROUNDS)))
+  }, [])
+
 
 
   useEffect(() => {
+    if (!rounds.length) return
     setTimeLeft(TOTAL_TIME)
     setPointsLeft(MAX_POINTS)
+
     setChoices(shuffle([...rounds[round].options]))
 
 
