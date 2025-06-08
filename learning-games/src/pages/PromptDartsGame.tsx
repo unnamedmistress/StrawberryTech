@@ -209,7 +209,7 @@ export default function PromptDartsGame() {
       </InstructionBanner>
       <img
         src="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_24_00%20PM.png"
-        alt="Strawberry throwing dart hitting \"Clear Prompt\" bullseye on prompt darts target."
+        alt="Strawberry throwing dart hitting 'Clear Prompt' bullseye on prompt darts target."
         className="hero-img"
         style={{ width: '200px' }}
       />
@@ -248,7 +248,7 @@ export default function PromptDartsGame() {
 
           )}
           {timeLeft === 0 && choice === null && (
-            <p className="feedback">Time’s up! No points this round.</p>
+            <p className="feedback">Time's up! No points this round.</p>
           )}
         </div>
         <ProgressSidebar />
