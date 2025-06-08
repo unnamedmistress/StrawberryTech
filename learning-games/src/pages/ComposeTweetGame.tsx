@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import { scorePrompt } from '../utils/scorePrompt'
 import InstructionBanner from '../components/ui/InstructionBanner'
 import ProgressSidebar from '../components/layout/ProgressSidebar'
 import './ComposeTweetGame.css'
@@ -6,6 +7,7 @@ import './ComposeTweetGame.css'
 const SAMPLE_RESPONSE =
   'Just finished reading an amazing book on technology! Highly recommend it to everyone. #BookLovers'
 const CORRECT_PROMPT = 'Compose a tweet about reading a new book'
+const SCORE_THRESHOLD = 20
 
 export default function ComposeTweetGame() {
   const [guess, setGuess] = useState('')
@@ -30,12 +32,13 @@ export default function ComposeTweetGame() {
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    if (guess.trim().toLowerCase() === CORRECT_PROMPT.toLowerCase()) {
+    const { score, tips } = scorePrompt(CORRECT_PROMPT, guess)
+    if (score >= SCORE_THRESHOLD) {
       setFeedback('Correct! The door is unlocked.')
       setDoorUnlocked(true)
       clearInterval(timerRef.current!)
     } else {
-      setFeedback('Incorrect guess, try again.')
+      setFeedback(tips.join(' '))
     }
     setGuess('')
   }
