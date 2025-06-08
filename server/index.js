@@ -90,6 +90,47 @@ async function analyzeSentiment(text) {
   }
 }
 
+// Remove personal details and generate an alias for anonymous posting
+async function sanitizeComment(text) {
+  if (!OPENAI_API_KEY) {
+    const withoutAge = text.replace(/\b\d{1,3}\b/g, '');
+    return { sanitized: withoutAge.trim(), alias: 'Guest' };
+  }
+  try {
+    const resp = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${OPENAI_API_KEY}`,
+      },
+      body: JSON.stringify({
+        model: 'gpt-3.5-turbo',
+        messages: [
+          {
+            role: 'system',
+            content:
+              'Remove names, ages and personal identifiers from the text. Provide a short friendly alias summarizing the tone. Respond only in JSON with keys "sanitized" and "alias".',
+          },
+          { role: 'user', content: text.slice(0, 300) },
+        ],
+        max_tokens: 60,
+        temperature: 0.4,
+      }),
+    });
+    const data = await resp.json();
+    let result = { sanitized: text, alias: 'Guest' };
+    try {
+      result = JSON.parse(data?.choices?.[0]?.message?.content || '');
+    } catch {}
+    if (!result.sanitized) result.sanitized = text;
+    if (!result.alias) result.alias = 'Guest';
+    return result;
+  } catch (err) {
+    console.error('Sanitize request failed', err);
+    return { sanitized: text, alias: 'Guest' };
+  }
+}
+
 app.post('/api/sentiment', async (req, res) => {
   const text = req.body.text || '';
   const score = await analyzeSentiment(text);
@@ -123,22 +164,18 @@ app.get('/api/posts', (req, res) => {
 });
 
 app.post('/api/posts', async (req, res) => {
-  const author = req.body.author || 'Anonymous';
-  if (data.posts.some((p) => p.author === author)) {
-    res.status(400).json({ error: 'Limit reached: only one post per user' });
-    return;
-  }
   const content = req.body.content || '';
   const score = await analyzeSentiment(content);
   if (score < -0.1) {
-    res.status(400).json({ error: 'Only positive testimonials are allowed.' });
+    res.status(400).json({ error: 'Only positive feedback is allowed.' });
     return;
   }
+  const { sanitized, alias } = await sanitizeComment(content);
   const status = score <= 0.2 ? 'pending' : 'approved';
   const post = {
     id: Date.now(),
-    author,
-    content,
+    author: alias,
+    content: sanitized,
     date: new Date().toISOString(),
     sentiment: score,
     status,
