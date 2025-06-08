@@ -11,53 +11,31 @@ export interface DartRound {
   options: string[]
   /** Index of the clearest prompt in the options array */
   correct: number
-  why: string
   /** Example model response for the clear prompt */
-  response: string
-}
-
-
-export const FALLBACK_ROUNDS: DartRound[] = [
-  {
     options: [
       'Tell me about AI.',
       'List 3 use cases of AI in customer service.',
       'Share some general info about artificial intelligence.'
     ],
     correct: 1,
-    why: 'The good prompt is specific about the desired output.',
-    response: '1. Answer common questions\n2. Route tickets\n3. Provide 24/7 help'
-  },
-  {
     options: [
       'Write an email.',
       'Draft a 3-sentence email to a hiring manager explaining your interest.',
       'Send an email for me.'
     ],
     correct: 1,
-    why: 'It clearly states the format and audience.',
-    response: 'Dear Hiring Manager, ... (three sentences)'
-  },
-  {
     options: [
       'Explain climate change.',
       'Summarize 2 key causes of climate change in one paragraph.',
       'Describe the climate.'
     ],
     correct: 1,
-    why: 'A concise request focuses the response.',
-    response: 'The main causes are greenhouse gases and deforestation.'
-  },
-  {
     options: [
       'Summarize this article.',
       'Provide a two-sentence summary highlighting the main argument.',
       'Give me the gist.'
     ],
     correct: 1,
-    why: 'Defining length keeps the summary tight.',
-    response: 'Sentence one. Sentence two.'
-  },
   {
     options: [
       'Translate this text.',
@@ -65,6 +43,147 @@ export const FALLBACK_ROUNDS: DartRound[] = [
       'Help me with a translation.'
     ],
     correct: 1,
+    options: [
+      'Analyze our sales.',
+      "List 3 key insights from last quarter's sales data in bullet form.",
+      'Review the sales numbers.'
+    ],
+    correct: 1,
+    options: [
+      'Write marketing copy.',
+      'Compose a short tweet promoting our new product and mention its top benefit.',
+      'Tell people about our product.'
+    ],
+    correct: 1,
+    options: [
+      'Weather?',
+      "Give today's weather forecast for Tokyo in Celsius.",
+      'What is the weather like?'
+    ],
+    correct: 1,
+  },
+  {
+    options: [
+      'Code a function.',
+      'Write a Python function that reverses a string.',
+      'Give me some code.'
+    ],
+    correct: 1,
+    options: [
+      'Story please.',
+      'Write a short bedtime story about a dragon who learns to code.',
+      'Tell me something fun.'
+    ],
+    correct: 1,
+    options: [
+      'Advice on focus.',
+      'Provide three tips for staying productive while working remotely.',
+      'How do I stay focused?'
+    ],
+    correct: 1,
+    options: [
+      'Help with calculus.',
+      'Explain in two sentences how to find the derivative of x^2.',
+      'Teach me calculus.'
+    ],
+    correct: 1,
+  },
+  {
+    options: [
+      'Improve sentence.',
+      'Rewrite the following sentence to sound more professional.',
+      'Make this sound better.'
+    ],
+    correct: 1,
+    options: [
+      'List activities.',
+      'Provide five kid-friendly indoor activities for a rainy day.',
+      'Any fun ideas?'
+    ],
+    correct: 1,
+    options: [
+      'History facts.',
+      'Give a brief overview of the causes of the French Revolution.',
+      'Share some history.'
+    ],
+    correct: 1,
+    options: [
+      'Get user data.',
+      'Create an SQL query to find the ten most recent orders.',
+      'Find recent orders.'
+    ],
+    correct: 1,
+  },
+  {
+    options: [
+      'Recipe ideas.',
+      'Share a simple recipe for vegan chocolate chip cookies.',
+      'What should I cook?'
+    ],
+    correct: 1,
+    options: [
+      'Explain quantum.',
+      'Explain quantum entanglement in simple terms for beginners.',
+      'Tell me about physics.'
+    ],
+    correct: 1,
+    options: [
+      'Fix my laptop.',
+      "List three common solutions for a laptop that won't turn on.",
+      'My laptop is broken.'
+    ],
+    correct: 1,
+    options: [
+      'Make an outline.',
+      'Create a 5-point outline for a blog post about time management tips.',
+      'Outline tips.'
+    ],
+    correct: 1,
+export function checkChoice(round: DartRound, index: number) {
+  return index === round.correct
+}
+
+export const STREAK_THRESHOLD = 3
+export const STREAK_BONUS = 5
+
+export function streakBonus(streak: number) {
+  return streak > 0 && streak % STREAK_THRESHOLD === 0 ? STREAK_BONUS : 0
+
+  const { setScore, user } = useContext(UserContext)
+
+
+  const [order, setOrder] = useState<Array<'bad' | 'good'>>(() =>
+    Math.random() < 0.5 ? ['bad', 'good'] : ['good', 'bad']
+  )
+
+  const [streak, setStreak] = useState(0)
+  const [penaltyMsg, setPenaltyMsg] = useState('')
+
+  const PENALTY = 2
+
+
+  const TOTAL_TIME =
+    user.difficulty === 'easy' ? 20 : user.difficulty === 'hard' ? 10 : 15
+  const MAX_POINTS =
+    user.difficulty === 'easy' ? 8 : user.difficulty === 'hard' ? 12 : 10
+
+  }, [round, TOTAL_TIME, MAX_POINTS])
+
+  useEffect(() => {
+    if (timeLeft === 0 && choice === null) {
+      setStreak(0)
+    }
+  }, [timeLeft, choice])
+
+      setScoreState(s => s + pointsLeft + streakBonus(streak + 1))
+      setStreak(s => s + 1)
+      setPenaltyMsg('')
+    } else {
+      setScoreState(s => Math.max(0, s - PENALTY))
+      setStreak(0)
+      setPenaltyMsg(`Incorrect! -${PENALTY} points`)
+
+      setOrder(Math.random() < 0.5 ? ['bad', 'good'] : ['good', 'bad'])
     why: 'Specifying languages makes the task clear.',
     response: 'Texto traducido al español.'
   },
@@ -226,8 +345,21 @@ export function checkChoice(round: DartRound, index: number) {
 }
 
 export const STREAK_THRESHOLD = 3
-export const STREAK_BONUS = 5
 
+            {order.map(opt => (
+              <button
+                key={opt}
+                className="btn-primary"
+                onClick={() => handleSelect(opt)}
+                disabled={choice !== null}
+              >
+                {current[opt]}
+
+              </button>
+            ))}
+              {penaltyMsg && !checkChoice(current, choice) && (
+                <p className="penalty">{penaltyMsg}</p>
+              )}
 export function streakBonus(streak: number) {
   return streak > 0 && streak % STREAK_THRESHOLD === 0 ? STREAK_BONUS : 0
 }
