@@ -569,6 +569,7 @@ export function Head() {
         name="description"
         content="Drag cards to craft the perfect AI prompt."
       />
+      <link rel="canonical" href="https://strawberrytech.com/games/recipe" />
     </>
   )
 }

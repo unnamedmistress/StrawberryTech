@@ -194,6 +194,7 @@ export function Head() {
         name="description"
         content="Drag adjectives to explore how tone changes a message."
       />
+      <link rel="canonical" href="https://strawberrytech.com/games/dragdrop" />
     </>
   )
 }

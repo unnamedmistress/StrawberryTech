@@ -55,6 +55,7 @@ export function Head() {
     <>
       <title>Badges | StrawberryTech</title>
       <meta name="description" content="View the badges you've earned from playing." />
+      <link rel="canonical" href="https://strawberrytech.com/badges" />
     </>
   )
 }

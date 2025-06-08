@@ -195,6 +195,7 @@ export function Head() {
         name="description"
         content="Guess the hidden tweet prompt to unlock the door."
       />
+      <link rel="canonical" href="https://strawberrytech.com/games/compose" />
     </>
   )
 }
