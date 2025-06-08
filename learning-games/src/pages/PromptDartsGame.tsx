@@ -2,8 +2,10 @@ import { useState, useContext, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import ProgressSidebar from '../components/layout/ProgressSidebar'
 import InstructionBanner from '../components/ui/InstructionBanner'
+import TimerBar from '../components/ui/TimerBar'
 import { UserContext } from '../context/UserContext'
 import shuffle from '../utils/shuffle'
+import { getTimeLimit } from '../utils/time'
 import './PromptDartsGame.css'
 
 const KEYWORDS = [
@@ -263,50 +265,78 @@ export function streakBonus(streak: number) {
 export default function PromptDartsGame() {
 
   const { setScore, user } = useContext(UserContext)
-  const [rounds] = useState<DartRound[]>(() => shuffle(ROUNDS))
-
+  const [rounds, setRounds] = useState<DartRound[]>([])
   const [round, setRound] = useState(0)
 
   const [choice, setChoice] = useState<number | null>(null)
-  const [order, setOrder] = useState<number[]>(() =>
-    rounds.length ? shuffle(rounds[0].options.map((_, i) => i)) : []
+
+  const [choices, setChoices] = useState<string[]>(() =>
+    rounds.length ? shuffle([...rounds[0].options]) : []
   )
+
 
   const [score, setScoreState] = useState(0)
   const [streak, setStreak] = useState(0)
   const [penaltyMsg, setPenaltyMsg] = useState('')
 
+  const [hint, setHint] = useState<string | null>(null)
+  const [hintUsed, setHintUsed] = useState(false)
+
   const PENALTY = 2
+  const HINT_PENALTY = 2
 
 
-  const TIME_BY_DIFFICULTY = {
-    easy: 30,
-    medium: 20,
+
+  const TOTAL_TIME = getTimeLimit(user, {
+    easy: 20,
+    medium: 15,
     hard: 10,
-  } as const
-  const POINTS_BY_DIFFICULTY = {
-    easy: 8,
-    medium: 10,
-    hard: 12,
-  } as const
-
-  const TOTAL_TIME = TIME_BY_DIFFICULTY[user.difficulty]
-  const MAX_POINTS = POINTS_BY_DIFFICULTY[user.difficulty]
+  })
+  const MAX_POINTS =
+    user.difficulty === 'easy' ? 8 : user.difficulty === 'hard' ? 12 : 10
 
   const [timeLeft, setTimeLeft] = useState(TOTAL_TIME)
   const [pointsLeft, setPointsLeft] = useState(MAX_POINTS)
 
   const current = rounds[round]
 
+  // Load rounds from the server on mount
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      setRounds(shuffle(ROUNDS))
+      return
+    }
+    const base = window.location.origin
+    fetch(`${base}/api/darts`)
+      .then(res => (res.ok ? res.json() : null))
+      .then(data => {
+        if (Array.isArray(data) && data.length) {
+          const fetched = data.map((r: any) => ({
+            options: r.options ?? [r.bad, r.good].filter(Boolean),
+            correct: typeof r.correct === 'number' ? r.correct : 1,
+            why: r.why ?? '',
+            response: r.response ?? ''
+          })) as DartRound[]
+          setRounds(shuffle(fetched))
+        } else {
+          setRounds(shuffle(ROUNDS))
+        }
+      })
+      .catch(() => setRounds(shuffle(ROUNDS)))
+  }, [])
+
 
 
   useEffect(() => {
+    if (!rounds.length) return
     setTimeLeft(TOTAL_TIME)
     setPointsLeft(MAX_POINTS)
-    setOrder(shuffle(rounds[round].options.map((_, i) => i)))
 
 
-  }, [round, TOTAL_TIME, MAX_POINTS])
+    setChoices(shuffle([...rounds[round].options]))
+
+
+  }, [round, TOTAL_TIME, MAX_POINTS, rounds])
 
 
 
@@ -326,8 +356,9 @@ export default function PromptDartsGame() {
   }, [timeLeft, choice])
 
   function handleSelect(index: number) {
-    setChoice(index)
-    if (checkChoice(current, index)) {
+    const originalIndex = current.options.indexOf(choices[index])
+    setChoice(originalIndex)
+    if (checkChoice(current, originalIndex)) {
       setScoreState(s => s + pointsLeft + streakBonus(streak + 1))
       setStreak(s => s + 1)
       setPenaltyMsg('')
@@ -339,14 +370,24 @@ export default function PromptDartsGame() {
     }
   }
 
+  function revealHint() {
+    if (hintUsed) return
+    const clue = current.why.split(' ').slice(0, 6).join(' ')
+    setHint(clue + (current.why.split(' ').length > 6 ? '...' : ''))
+    setHintUsed(true)
+    setPointsLeft(p => Math.max(0, p - HINT_PENALTY))
+  }
+
 
   function next() {
     if (round + 1 < rounds.length) {
       setRound(r => r + 1)
       setChoice(null)
-      setOrder(shuffle(rounds[round + 1].options.map((_, i) => i)))
+      setChoices(shuffle([...rounds[round + 1].options]))
       setTimeLeft(TOTAL_TIME)
       setPointsLeft(MAX_POINTS)
+      setHint(null)
+      setHintUsed(false)
     } else {
       setScore('darts', score)
       setRound(r => r + 1)
@@ -394,7 +435,7 @@ export default function PromptDartsGame() {
           />
 
           <h3>Round {round + 1} of {rounds.length}</h3>
-
+          <TimerBar timeLeft={timeLeft} TOTAL_TIME={TOTAL_TIME} />
           <p className="timer">Time: {timeLeft}s</p>
           <p className="points">Available points: {pointsLeft}</p>
 
@@ -402,19 +443,27 @@ export default function PromptDartsGame() {
           <div className="options">
 
 
-            {order.map(i => (
+            {choices.map((text, i) => (
               <button
                 key={i}
                 className="btn-primary"
                 onClick={() => handleSelect(i)}
                 disabled={choice !== null}
               >
-                {highlightPrompt(current.options[i])}
+                {highlightPrompt(text)}
 
               </button>
             ))}
 
           </div>
+          <button
+            className="btn-primary"
+            onClick={revealHint}
+            disabled={hintUsed || choice !== null}
+          >
+            Hint
+          </button>
+          {hint && <p className="hint-text">{hint}</p>}
           {choice !== null && (
 
             <>
