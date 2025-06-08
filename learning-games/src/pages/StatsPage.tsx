@@ -72,6 +72,12 @@ export default function StatsPage() {
   return (
     <div className="stats-page">
       <h2>Site Statistics</h2>
+      <img
+        src="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_12_36%20PM.png"
+        alt="Home page strawberry mascot welcomes players at entrance of learning arcade with pastel tones."
+        className="brand-logo"
+        style={{ width: '48px' }}
+      />
       <p>Total Views: {views.length}</p>
       <p>Unique Visitors: {uniqueVisitors}</p>
       <p>Average Session (s): {avgDuration}</p>

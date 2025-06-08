@@ -457,8 +457,8 @@ export default function PromptRecipeGame() {
               {example && <p className="sample-output">{example}</p>}
               <img
                 className="prompt-image"
-                src="https://images.unsplash.com/photo-1495567720989-cebdbdd97913?auto=format&fit=crop&w=400&q=60"
-                alt="prompt context"
+                src="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_19_23%20PM.png"
+                alt="Prompt recipe builder strawberry chef tossing cards labeled Action, Context, Format, Constraints."
               />
               <button className="btn-primary copy-btn" onClick={copyPrompt}>
                 Copy Prompt

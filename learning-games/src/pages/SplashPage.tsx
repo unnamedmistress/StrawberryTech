@@ -31,6 +31,11 @@ export default function SplashPage() {
     <div className="splash-container">
       <div className="overlay">
         <h1>Welcome to StrawberryTech! 🍓</h1>
+        <img
+          src="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_12_36%20PM.png"
+          alt="Home page strawberry mascot welcomes players at entrance of learning arcade with pastel tones."
+          className="hero-img"
+        />
         <p>Play while you learn.</p>
         <form onSubmit={handleSubmit} className="start-form">
           <input

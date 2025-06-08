@@ -318,6 +318,12 @@ export default function Match3Game() {
       <InstructionBanner>
         Match adjectives to explore how tone changes the meaning of a message.
       </InstructionBanner>
+      <img
+        src="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_16_34%20PM.png"
+        alt="Earlier prompt recipe builder with similar strawberry chef and cards."
+        className="hero-img"
+        style={{ width: '200px' }}
+      />
       <div className="match3-wrapper">
         <aside className="match3-sidebar">
           <h3>Why Tone Matters</h3>
