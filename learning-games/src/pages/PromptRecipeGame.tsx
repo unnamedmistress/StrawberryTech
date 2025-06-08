@@ -7,8 +7,9 @@ import { toast } from 'react-hot-toast'
 import ProgressSidebar from '../components/layout/ProgressSidebar'
 import InstructionBanner from '../components/ui/InstructionBanner'
 import Tooltip from '../components/ui/Tooltip'
-import ProgressBar from '../components/ui/ProgressBar'
+import TimerBar from '../components/ui/TimerBar'
 import { UserContext } from '../context/UserContext'
+import { getTimeLimit } from '../utils/time'
 import './PromptRecipeGame.css'
 
 export type Slot = 'Action' | 'Context' | 'Format' | 'Constraints'
@@ -172,8 +173,11 @@ async function generateCards(): Promise<Card[]> {
 export default function PromptRecipeGame() {
   const { setScore, addBadge, user } = useContext(UserContext)
   const TOTAL_ROUNDS = 5
-  const TOTAL_TIME =
-    user.difficulty === 'easy' ? 45 : user.difficulty === 'hard' ? 20 : 30
+  const TOTAL_TIME = getTimeLimit(user, {
+    easy: 45,
+    medium: 30,
+    hard: 20,
+  })
   const SCORE_MULT =
     user.difficulty === 'easy' ? 1 : user.difficulty === 'hard' ? 2 : 1.5
   const [cards, setCards] = useState<Card[]>([])
@@ -444,7 +448,7 @@ export default function PromptRecipeGame() {
             <span className="score">Score: {score}</span>
             <span className="timer">Time: {timeLeft}s</span>
           </div>
-          <ProgressBar percent={(timeLeft / TOTAL_TIME) * 100} />
+          <TimerBar timeLeft={timeLeft} TOTAL_TIME={TOTAL_TIME} />
           <div className="bowls">
             {(['Action', 'Context', 'Format', 'Constraints'] as Slot[]).map(slot => (
               <div
