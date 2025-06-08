@@ -24,6 +24,7 @@ Drag cards to assemble a prompt. Each round now fetches fresh card text from the
 - A dedicated Badges page lets you track all achievements.
 - A hidden `/stats` page displays live visitor analytics collected on the server.
 - A community playlist page lets everyone share bad and good prompt pairs.
+- A testimonials page highlights positive feedback from players.
 
 ## Getting Started
 1. Install dependencies and start the dev server:
@@ -33,7 +34,7 @@ Drag cards to assemble a prompt. Each round now fetches fresh card text from the
    npm run dev
    ```
 2. In a separate terminal start the API server to persist user info,
-   community posts and shared high scores:
+  testimonial posts and shared high scores:
    ```bash
    cd server
    npm install
@@ -75,6 +76,10 @@ RobotChat and the Prompt Recipe Builder use the OpenAI API. Create a `.env` file
 ```bash
 VITE_OPENAI_API_KEY=your-key
 ```
+
+The community testimonial page uses the same API for sentiment filtering. Set
+`OPENAI_API_KEY` in the server environment so posts can be screened before
+publishing.
 
 Without this key, the RobotChat and recipe features will not work.
 
