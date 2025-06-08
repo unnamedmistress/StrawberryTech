@@ -144,14 +144,16 @@ export function checkChoice(_round: DartRound, choice: 'bad' | 'good') {
 }
 
 export default function PromptDartsGame() {
-  const { setScore } = useContext(UserContext)
+  const { setScore, user } = useContext(UserContext)
   const [rounds] = useState<DartRound[]>(() => shuffle(ROUNDS))
   const [round, setRound] = useState(0)
   const [choice, setChoice] = useState<'bad' | 'good' | null>(null)
   const [score, setScoreState] = useState(0)
 
-  const TOTAL_TIME = 15
-  const MAX_POINTS = 10
+  const TOTAL_TIME =
+    user.difficulty === 'easy' ? 20 : user.difficulty === 'hard' ? 10 : 15
+  const MAX_POINTS =
+    user.difficulty === 'easy' ? 8 : user.difficulty === 'hard' ? 12 : 10
   const [timeLeft, setTimeLeft] = useState(TOTAL_TIME)
   const [pointsLeft, setPointsLeft] = useState(MAX_POINTS)
   const current = ROUNDS[round]
@@ -160,7 +162,7 @@ export default function PromptDartsGame() {
   useEffect(() => {
     setTimeLeft(TOTAL_TIME)
     setPointsLeft(MAX_POINTS)
-  }, [round])
+  }, [round, TOTAL_TIME, MAX_POINTS])
 
   useEffect(() => {
     if (choice !== null || timeLeft <= 0) return
