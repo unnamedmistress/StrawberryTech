@@ -15,7 +15,7 @@ export interface DartRound {
 }
 
 
-export const ROUNDS: DartRound[] = [
+export const FALLBACK_ROUNDS: DartRound[] = [
   {
     bad: 'Tell me about AI.',
     good: 'List 3 use cases of AI in customer service.',
@@ -145,7 +145,7 @@ export function checkChoice(_round: DartRound, choice: 'bad' | 'good') {
 
 export default function PromptDartsGame() {
   const { setScore } = useContext(UserContext)
-  const [rounds] = useState<DartRound[]>(() => shuffle(ROUNDS))
+  const [rounds, setRounds] = useState<DartRound[]>([])
   const [round, setRound] = useState(0)
   const [choice, setChoice] = useState<'bad' | 'good' | null>(null)
   const [score, setScoreState] = useState(0)
@@ -154,7 +154,21 @@ export default function PromptDartsGame() {
   const MAX_POINTS = 10
   const [timeLeft, setTimeLeft] = useState(TOTAL_TIME)
   const [pointsLeft, setPointsLeft] = useState(MAX_POINTS)
-  const current = ROUNDS[round]
+  const current = rounds[round]
+
+  useEffect(() => {
+    const base = window.location.origin
+    fetch(`${base}/api/darts`)
+      .then(res => (res.ok ? res.json() : Promise.reject()))
+      .then((data: DartRound[]) => {
+        if (Array.isArray(data) && data.length) {
+          setRounds(shuffle(data))
+        } else {
+          setRounds(shuffle(FALLBACK_ROUNDS))
+        }
+      })
+      .catch(() => setRounds(shuffle(FALLBACK_ROUNDS)))
+  }, [])
 
 
   useEffect(() => {
@@ -190,6 +204,14 @@ export default function PromptDartsGame() {
     }
   }
 
+  if (!rounds.length) {
+    return (
+      <div className="darts-page">
+        <InstructionBanner>Loading rounds...</InstructionBanner>
+      </div>
+    )
+  }
+
   if (round >= rounds.length) {
     return (
       <div className="darts-page">
@@ -222,7 +244,7 @@ export default function PromptDartsGame() {
             style={{ width: '200px' }}
           />
 
-          <h3>Round {round + 1} of {ROUNDS.length}</h3>
+          <h3>Round {round + 1} of {rounds.length}</h3>
 
           <p className="timer">Time: {timeLeft}s</p>
           <p className="points">Available points: {pointsLeft}</p>
