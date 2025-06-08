@@ -85,9 +85,14 @@ export default function DragDropGame() {
           onCTAClick={() => {}}
           ctaText="Start Playing"
         >
-          <div className="dragdrop-game">
+          <div className="dragdrop-game clearfix">
             <h2>Drag a tone into the blank</h2>
-            <p className="sentence">
+            <img
+              src="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_19_23%20PM.png"
+              alt="Tone game illustration"
+              className="game-card-image"
+            />
+            <p className="sentence game-text">
               Write a
               <span
                 className="drop-area"
