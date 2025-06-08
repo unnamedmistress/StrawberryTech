@@ -7,174 +7,267 @@ import shuffle from '../utils/shuffle'
 import './PromptDartsGame.css'
 
 export interface DartRound {
-  bad: string
-  good: string
+  /** List of prompt options */
+  options: string[]
+  /** Index of the clearest prompt in the options array */
+  correct: number
   why: string
-  /** Example model response for the good prompt */
+  /** Example model response for the clear prompt */
   response: string
 }
 
 
 export const FALLBACK_ROUNDS: DartRound[] = [
   {
-    bad: 'Tell me about AI.',
-    good: 'List 3 use cases of AI in customer service.',
+    options: [
+      'Tell me about AI.',
+      'List 3 use cases of AI in customer service.',
+      'Share some general info about artificial intelligence.'
+    ],
+    correct: 1,
     why: 'The good prompt is specific about the desired output.',
     response: '1. Answer common questions\n2. Route tickets\n3. Provide 24/7 help'
   },
   {
-    bad: 'Write an email.',
-    good: 'Draft a 3-sentence email to a hiring manager explaining your interest.',
+    options: [
+      'Write an email.',
+      'Draft a 3-sentence email to a hiring manager explaining your interest.',
+      'Send an email for me.'
+    ],
+    correct: 1,
     why: 'It clearly states the format and audience.',
     response: 'Dear Hiring Manager, ... (three sentences)'
   },
   {
-    bad: 'Explain climate change.',
-    good: 'Summarize 2 key causes of climate change in one paragraph.',
+    options: [
+      'Explain climate change.',
+      'Summarize 2 key causes of climate change in one paragraph.',
+      'Describe the climate.'
+    ],
+    correct: 1,
     why: 'A concise request focuses the response.',
     response: 'The main causes are greenhouse gases and deforestation.'
   },
   {
-    bad: 'Summarize this article.',
-    good: 'Provide a two-sentence summary highlighting the main argument.',
+    options: [
+      'Summarize this article.',
+      'Provide a two-sentence summary highlighting the main argument.',
+      'Give me the gist.'
+    ],
+    correct: 1,
     why: 'Defining length keeps the summary tight.',
     response: 'Sentence one. Sentence two.'
   },
   {
-    bad: 'Translate this text.',
-    good: 'Translate the following text from English to Spanish.',
+    options: [
+      'Translate this text.',
+      'Translate the following text from English to Spanish.',
+      'Help me with a translation.'
+    ],
+    correct: 1,
     why: 'Specifying languages makes the task clear.',
     response: 'Texto traducido al español.'
   },
   {
-    bad: 'Analyze our sales.',
-    good: "List 3 key insights from last quarter's sales data in bullet form.",
+    options: [
+      'Analyze our sales.',
+      "List 3 key insights from last quarter's sales data in bullet form.",
+      'Review the sales numbers.'
+    ],
+    correct: 1,
     why: 'The format and focus are spelled out.',
     response: '- Insight one\n- Insight two\n- Insight three'
   },
   {
-    bad: 'Write marketing copy.',
-    good: 'Compose a short tweet promoting our new product and mention its top benefit.',
+    options: [
+      'Write marketing copy.',
+      'Compose a short tweet promoting our new product and mention its top benefit.',
+      'Tell people about our product.'
+    ],
+    correct: 1,
     why: 'Including format and detail improves clarity.',
     response: 'Check out our new product! It saves you time ⏱️ #NewRelease'
   },
   {
-    bad: 'Weather?',
-    good: "Give today's weather forecast for Tokyo in Celsius.",
+    options: [
+      'Weather?',
+      "Give today's weather forecast for Tokyo in Celsius.",
+      'What is the weather like?'
+    ],
+    correct: 1,
     why: 'Location and units guide the response.',
     response: 'Today in Tokyo it will be 22°C with light rain.'
   },
   {
-    bad: 'Code a function.',
-    good: 'Write a Python function that reverses a string.',
+    options: [
+      'Code a function.',
+      'Write a Python function that reverses a string.',
+      'Give me some code.'
+    ],
+    correct: 1,
     why: 'The good prompt specifies language and purpose.',
     response: 'def reverse_string(s):\n    return s[::-1]'
   },
   {
-    bad: 'Story please.',
-    good: 'Write a short bedtime story about a dragon who learns to code.',
+    options: [
+      'Story please.',
+      'Write a short bedtime story about a dragon who learns to code.',
+      'Tell me something fun.'
+    ],
+    correct: 1,
     why: 'Topic and tone are defined.',
     response: 'Once upon a time, a curious dragon learned Python...'
   },
   {
-    bad: 'Advice on focus.',
-    good: 'Provide three tips for staying productive while working remotely.',
+    options: [
+      'Advice on focus.',
+      'Provide three tips for staying productive while working remotely.',
+      'How do I stay focused?'
+    ],
+    correct: 1,
     why: 'Numbered tips make expectations clear.',
     response: '1. Keep a routine\n2. Set boundaries\n3. Take breaks'
   },
   {
-    bad: 'Help with calculus.',
-    good: 'Explain in two sentences how to find the derivative of x^2.',
+    options: [
+      'Help with calculus.',
+      'Explain in two sentences how to find the derivative of x^2.',
+      'Teach me calculus.'
+    ],
+    correct: 1,
     why: 'The good prompt constrains the explanation.',
     response: 'Use the power rule: bring down the exponent and subtract one.'
   },
   {
-    bad: 'Improve sentence.',
-    good: 'Rewrite the following sentence to sound more professional.',
+    options: [
+      'Improve sentence.',
+      'Rewrite the following sentence to sound more professional.',
+      'Make this sound better.'
+    ],
+    correct: 1,
     why: 'The instruction is clearer about the goal.',
     response: 'Original: ... Revised: ...'
   },
   {
-    bad: 'List activities.',
-    good: 'Provide five kid-friendly indoor activities for a rainy day.',
+    options: [
+      'List activities.',
+      'Provide five kid-friendly indoor activities for a rainy day.',
+      'Any fun ideas?'
+    ],
+    correct: 1,
     why: 'Quantity and audience are defined.',
     response: '1. Build a blanket fort...'
   },
   {
-    bad: 'History facts.',
-    good: 'Give a brief overview of the causes of the French Revolution.',
+    options: [
+      'History facts.',
+      'Give a brief overview of the causes of the French Revolution.',
+      'Share some history.'
+    ],
+    correct: 1,
     why: 'The good prompt specifies the scope.',
     response: 'High taxes and social inequality led to unrest...'
   },
   {
-    bad: 'Get user data.',
-    good: 'Create an SQL query to find the ten most recent orders.',
+    options: [
+      'Get user data.',
+      'Create an SQL query to find the ten most recent orders.',
+      'Find recent orders.'
+    ],
+    correct: 1,
     why: 'The request defines exactly what results are needed.',
     response: 'SELECT * FROM orders ORDER BY created_at DESC LIMIT 10;'
   },
   {
-    bad: 'Recipe ideas.',
-    good: 'Share a simple recipe for vegan chocolate chip cookies.',
+    options: [
+      'Recipe ideas.',
+      'Share a simple recipe for vegan chocolate chip cookies.',
+      'What should I cook?'
+    ],
+    correct: 1,
     why: 'Specifying ingredients helps produce a useful recipe.',
     response: 'Mix flour, sugar, vegan butter and chocolate chips...'
   },
   {
-    bad: 'Explain quantum.',
-    good: 'Explain quantum entanglement in simple terms for beginners.',
+    options: [
+      'Explain quantum.',
+      'Explain quantum entanglement in simple terms for beginners.',
+      'Tell me about physics.'
+    ],
+    correct: 1,
     why: 'The audience is clearly defined.',
     response: 'Entanglement means two particles share a linked state even when far apart.'
   },
   {
-    bad: 'Fix my laptop.',
-    good: "List three common solutions for a laptop that won't turn on.",
+    options: [
+      'Fix my laptop.',
+      "List three common solutions for a laptop that won't turn on.",
+      'My laptop is broken.'
+    ],
+    correct: 1,
     why: 'Stating number and issue guides troubleshooting.',
     response: '1. Check the power cable\n2. Remove the battery\n3. Try a hard reset'
   },
   {
-    bad: 'Make an outline.',
-    good: 'Create a 5-point outline for a blog post about time management tips.',
+    options: [
+      'Make an outline.',
+      'Create a 5-point outline for a blog post about time management tips.',
+      'Outline tips.'
+    ],
+    correct: 1,
     why: 'The structure and topic are spelled out.',
     response: 'I. Introduction ... V. Conclusion'
   }
 ]
 
 
-export function checkChoice(_round: DartRound, choice: 'bad' | 'good') {
-  return choice === 'good'
+export function checkChoice(round: DartRound, index: number) {
+  return index === round.correct
+}
+
+export const STREAK_THRESHOLD = 3
+export const STREAK_BONUS = 5
+
+export function streakBonus(streak: number) {
+  return streak > 0 && streak % STREAK_THRESHOLD === 0 ? STREAK_BONUS : 0
 }
 
 export default function PromptDartsGame() {
-  const { setScore } = useContext(UserContext)
-  const [rounds, setRounds] = useState<DartRound[]>([])
-  const [round, setRound] = useState(0)
-  const [choice, setChoice] = useState<'bad' | 'good' | null>(null)
-  const [score, setScoreState] = useState(0)
 
-  const TOTAL_TIME = 15
-  const MAX_POINTS = 10
+  const { setScore, user } = useContext(UserContext)
+  const [rounds] = useState<DartRound[]>(() => shuffle(ROUNDS))
+
+  const [round, setRound] = useState(0)
+
+  const [choice, setChoice] = useState<'bad' | 'good' | null>(null)
+  const [order, setOrder] = useState<Array<'bad' | 'good'>>(() =>
+    Math.random() < 0.5 ? ['bad', 'good'] : ['good', 'bad']
+  )
+
+  const [score, setScoreState] = useState(0)
+  const [streak, setStreak] = useState(0)
+  const [penaltyMsg, setPenaltyMsg] = useState('')
+
+  const PENALTY = 2
+
+
+  const TOTAL_TIME =
+    user.difficulty === 'easy' ? 20 : user.difficulty === 'hard' ? 10 : 15
+  const MAX_POINTS =
+    user.difficulty === 'easy' ? 8 : user.difficulty === 'hard' ? 12 : 10
+
   const [timeLeft, setTimeLeft] = useState(TOTAL_TIME)
   const [pointsLeft, setPointsLeft] = useState(MAX_POINTS)
   const current = rounds[round]
 
-  useEffect(() => {
-    const base = window.location.origin
-    fetch(`${base}/api/darts`)
-      .then(res => (res.ok ? res.json() : Promise.reject()))
-      .then((data: DartRound[]) => {
-        if (Array.isArray(data) && data.length) {
-          setRounds(shuffle(data))
-        } else {
-          setRounds(shuffle(FALLBACK_ROUNDS))
-        }
-      })
-      .catch(() => setRounds(shuffle(FALLBACK_ROUNDS)))
-  }, [])
 
 
   useEffect(() => {
     setTimeLeft(TOTAL_TIME)
     setPointsLeft(MAX_POINTS)
-  }, [round])
+
+  }, [round, TOTAL_TIME, MAX_POINTS])
+
 
   useEffect(() => {
     if (choice !== null || timeLeft <= 0) return
@@ -185,10 +278,23 @@ export default function PromptDartsGame() {
     return () => clearTimeout(id)
   }, [timeLeft, choice])
 
+  useEffect(() => {
+    if (timeLeft === 0 && choice === null) {
+      setStreak(0)
+    }
+  }, [timeLeft, choice])
+
   function handleSelect(option: 'bad' | 'good') {
     setChoice(option)
     if (checkChoice(current, option)) {
-      setScoreState(s => s + pointsLeft)
+      setScoreState(s => s + pointsLeft + streakBonus(streak + 1))
+      setStreak(s => s + 1)
+      setPenaltyMsg('')
+    } else {
+      setScoreState(s => Math.max(0, s - PENALTY))
+      setStreak(0)
+      setPenaltyMsg(`Incorrect! -${PENALTY} points`)
+
     }
   }
 
@@ -196,6 +302,7 @@ export default function PromptDartsGame() {
     if (round + 1 < rounds.length) {
       setRound(r => r + 1)
       setChoice(null)
+      setOrder(Math.random() < 0.5 ? ['bad', 'good'] : ['good', 'bad'])
       setTimeLeft(TOTAL_TIME)
       setPointsLeft(MAX_POINTS)
     } else {
@@ -251,8 +358,18 @@ export default function PromptDartsGame() {
 
           <p>Which prompt is clearer?</p>
           <div className="options">
-            <button className="btn-primary" onClick={() => handleSelect('bad')} disabled={choice !== null}>{current.bad}</button>
-            <button className="btn-primary" onClick={() => handleSelect('good')} disabled={choice !== null}>{current.good}</button>
+
+            {order.map(opt => (
+              <button
+                key={opt}
+                className="btn-primary"
+                onClick={() => handleSelect(opt)}
+                disabled={choice !== null}
+              >
+                {current[opt]}
+
+              </button>
+            ))}
           </div>
           {choice !== null && (
 
@@ -262,6 +379,9 @@ export default function PromptDartsGame() {
                   ? 'Correct! Clear prompts hit the bullseye.'
                   : 'Not quite. Aim for specific wording.'}
               </p>
+              {penaltyMsg && !checkChoice(current, choice) && (
+                <p className="penalty">{penaltyMsg}</p>
+              )}
 
               <p className="why-message">{current.why}</p>
               <pre className="canned-response">{current.response}</pre>
