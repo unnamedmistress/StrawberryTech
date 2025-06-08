@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from 'react'
+import { useState, useEffect, useContext, useMemo } from 'react'
 import ProgressSidebar from '../components/layout/ProgressSidebar'
 import { motion } from 'framer-motion'
 import { toast } from 'react-hot-toast'
@@ -6,6 +6,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { UserContext } from '../context/UserContext'
 import './QuizGame.css'
 import InstructionBanner from '../components/ui/InstructionBanner'
+import { HALLUCINATION_EXAMPLES } from '../data/hallucinationExamples'
 
 interface StatementSet {
   statements: string[]
@@ -13,7 +14,7 @@ interface StatementSet {
   category?: string
 }
 
-async function generateStatementSet(): Promise<StatementSet | null> {
+async function generateStatementSet(count = 3): Promise<StatementSet | null> {
   try {
     const resp = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
@@ -27,7 +28,7 @@ async function generateStatementSet(): Promise<StatementSet | null> {
           {
             role: 'system',
             content:
-              'Create three short statements about general knowledge where exactly one is false. Respond strictly in JSON with fields "statements" (array) and "lieIndex" (0-2).',
+              `Create ${count} short statements about general knowledge where exactly one is false. Respond strictly in JSON with fields "statements" and "lieIndex" indicating which index (0-${count - 1}) is the lie.`,
           },
           { role: 'user', content: 'Generate the statements now.' },
         ],
@@ -104,12 +105,21 @@ function ChallengeBanner() {
 }
 
 function WhyItMatters() {
+  const example = useMemo(
+    () =>
+      HALLUCINATION_EXAMPLES[Math.floor(Math.random() * HALLUCINATION_EXAMPLES.length)],
+    [],
+  )
   return (
     <aside className="quiz-sidebar reveal">
       <h3>Why It Matters</h3>
       <p>AI hallucinations occur when the system confidently states something untrue.</p>
       <blockquote className="sidebar-quote">{QUOTE}</blockquote>
       <p className="sidebar-tip">{TIP}</p>
+      <p className="sidebar-example">
+        Example: {example.statement}{' '}
+        <a href={example.source} target="_blank" rel="noopener noreferrer">Source</a>
+      </p>
     </aside>
   )
 }
@@ -181,6 +191,12 @@ export default function QuizGame() {
   const [choice, setChoice] = useState<number | null>(null)
   const [score, setScoreState] = useState(0)
   const [played, setPlayed] = useState(0)
+  const [streak, setStreak] = useState(0)
+  const [numStatements, setNumStatements] = useState(() => {
+    if (user.difficulty === 'hard') return 5
+    if (user.difficulty === 'easy') return 3
+    return 4
+  })
 
   const current = dynamicRound ?? ROUNDS[round]
   const correct = choice === current.lieIndex
@@ -192,7 +208,7 @@ export default function QuizGame() {
 
   function refreshRound() {
     setChoice(null)
-    generateStatementSet().then((set) => {
+    generateStatementSet(numStatements).then((set) => {
       if (set) {
         setDynamicRound(set)
       } else {
@@ -208,6 +224,15 @@ export default function QuizGame() {
     const newScore = wasCorrect ? score + 1 : score
     setScoreState(newScore)
     setPlayed(p => p + 1)
+    setStreak(wasCorrect ? streak + 1 : 0)
+
+    if (wasCorrect && streak + 1 >= 5 && !user.badges.includes('hallucination-hunter')) {
+      addBadge('hallucination-hunter')
+    }
+
+    if (wasCorrect && numStatements < 6) {
+      setNumStatements(n => n + 1)
+    }
 
     if (played + 1 === ROUNDS.length) {
       setScore('quiz', newScore)
@@ -223,8 +248,14 @@ export default function QuizGame() {
       return
     }
     setChoice(null)
-    setRound((r) => (r + 1) % ROUNDS.length)
-    setDynamicRound(null)
+    generateStatementSet(numStatements).then((set) => {
+      if (set) {
+        setDynamicRound(set)
+      } else {
+        setRound((r) => (r + 1) % ROUNDS.length)
+        setDynamicRound(null)
+      }
+    })
   }
 
   useEffect(() => {
@@ -239,6 +270,7 @@ export default function QuizGame() {
     }, { threshold: 0.1 })
 
     document.querySelectorAll('.reveal').forEach((el) => observer.observe(el))
+    refreshRound()
 
 
     return () => observer.disconnect()
@@ -266,7 +298,7 @@ export default function QuizGame() {
           </button>
           </div>
           <p className="header-instruction">
-            Pick the hallucination from the three statements.
+            Pick the hallucination from the {numStatements} statements.
           </p>
           <p className="round-info">Round {round + 1} / {ROUNDS.length}</p>
           {current.category && (
