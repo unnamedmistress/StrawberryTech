@@ -16,6 +16,8 @@ Drag cards to assemble a prompt. Each round now fetches fresh card text from the
 ## Age‑Adaptive Features
 - Players enter their age and name on first visit.
 - Games read the stored age to tweak difficulty and show tailored tips.
+- On easy difficulty, older players automatically receive extra time for tasks
+  (5s at 40+, 10s at 50+, 15s at 60+).
 - Scores and badges now sync to a small server so progress follows you across devices.
 - High contrast theme preference persists via `ThemeToggle`.
 - A unified leaderboard with tabs displays top scores for every game.

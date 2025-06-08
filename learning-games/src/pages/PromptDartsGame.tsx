@@ -4,6 +4,7 @@ import ProgressSidebar from '../components/layout/ProgressSidebar'
 import InstructionBanner from '../components/ui/InstructionBanner'
 import { UserContext } from '../context/UserContext'
 import shuffle from '../utils/shuffle'
+import { getTimeLimit } from '../utils/time'
 import './PromptDartsGame.css'
 
 const KEYWORDS = [
@@ -279,8 +280,11 @@ export default function PromptDartsGame() {
   const PENALTY = 2
 
 
-  const TOTAL_TIME =
-    user.difficulty === 'easy' ? 20 : user.difficulty === 'hard' ? 10 : 15
+  const TOTAL_TIME = getTimeLimit(user, {
+    easy: 20,
+    medium: 15,
+    hard: 10,
+  })
   const MAX_POINTS =
     user.difficulty === 'easy' ? 8 : user.difficulty === 'hard' ? 12 : 10
 
