@@ -1,4 +1,5 @@
 import { useContext, useEffect } from 'react'
+import Head from 'next/head'
 import Link from 'next/link'; import { useRouter } from 'next/router'
 import { UserContext } from '../context/UserContext'
 import '../styles/Home.css'
@@ -37,7 +38,38 @@ export default function Home() {
   const totalPoints = Object.values(user.scores).reduce((a, b) => a + b, 0)
 
   return (
-    <div className="home">
+    <>
+      <Head>
+        <title>StrawberryTech Learning Games</title>
+        <meta property="og:title" content="StrawberryTech Learning Games" />
+        <meta
+          property="og:description"
+          content="Play engaging games and sharpen your skills in our fruity learning arcade."
+        />
+        <meta
+          property="og:image"
+          content="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_12_36%20PM.png"
+        />
+        <meta
+          property="og:url"
+          content="https://strawberry-tech.vercel.app/"
+        />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="StrawberryTech Learning Games" />
+        <meta
+          name="twitter:description"
+          content="Play engaging games and sharpen your skills in our fruity learning arcade."
+        />
+        <meta
+          name="twitter:image"
+          content="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_12_36%20PM.png"
+        />
+        <meta
+          name="twitter:url"
+          content="https://strawberry-tech.vercel.app/"
+        />
+      </Head>
+      <div className="home">
       {/* hero section */}
       <section className="hero reveal" aria-label="Homepage hero">
         <h1 className="hero-title">Embark on a Fruity Learning Adventure!</h1>
@@ -144,5 +176,6 @@ export default function Home() {
         </div>
       )}
     </div>
+    </>
   )
 }
