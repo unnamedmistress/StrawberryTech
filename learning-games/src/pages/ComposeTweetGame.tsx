@@ -7,10 +7,19 @@ const SAMPLE_RESPONSE =
   'Just finished reading an amazing book on technology! Highly recommend it to everyone. #BookLovers'
 const CORRECT_PROMPT = 'Compose a tweet about reading a new book'
 
+const PROMPT_TIPS = [
+  'Be specific about what you want the AI to do.',
+  'Provide context so the AI understands your request.',
+  'Break complex tasks into clear steps.',
+  'State the desired length or format.',
+  'Offer examples to show the style you expect.',
+]
+
 export default function ComposeTweetGame() {
   const [guess, setGuess] = useState('')
   const [feedback, setFeedback] = useState('')
   const [doorUnlocked, setDoorUnlocked] = useState(false)
+  const [tipIndex, setTipIndex] = useState(0)
   const [timeLeft, setTimeLeft] = useState(30)
   const timerRef = useRef<number | null>(null)
 
@@ -33,6 +42,7 @@ export default function ComposeTweetGame() {
     if (guess.trim().toLowerCase() === CORRECT_PROMPT.toLowerCase()) {
       setFeedback('Correct! The door is unlocked.')
       setDoorUnlocked(true)
+      setTipIndex(i => (i + 1) % PROMPT_TIPS.length)
       clearInterval(timerRef.current!)
     } else {
       setFeedback('Incorrect guess, try again.')
@@ -96,6 +106,11 @@ export default function ComposeTweetGame() {
                 className="hero-img"
                 style={{ width: '200px' }}
               />
+            )}
+            {doorUnlocked && (
+              <p className="prompt-tip" role="status" aria-live="polite">
+                {PROMPT_TIPS[tipIndex]}
+              </p>
             )}
           </div>
         </div>
