@@ -8,6 +8,7 @@ import ProgressSidebar from '../components/layout/ProgressSidebar'
 import { UserContext } from '../context/UserContext'
 import shuffle from '../utils/shuffle'
 import './PromptGuessEscape.css'
+import { scorePrompt } from '../utils/scorePrompt'
 
 interface Clue {
   aiResponse: string
@@ -68,28 +69,6 @@ const CLUES: Clue[] = [
   }
 ]
 
-const ACTION_WORDS = ['write', 'tell', 'show', 'give', 'describe', 'explain', 'summarize', 'suggest']
-
-function scoreGuess(expected: string, guess: string): number {
-  const normGuess = guess.toLowerCase()
-  const normExpected = expected.toLowerCase()
-  let score = 0
-
-  const tokens = normExpected.split(/\W+/)
-  const overlap = tokens.filter(t => t && normGuess.includes(t)).length
-  if (overlap >= Math.max(1, Math.floor(tokens.length / 2))) score += 10
-
-  // Check for numbers or context words present in both strings
-  const contextMatch = /\d+|teacher|teen|student|man|python|cell|water|french/.exec(normExpected)
-  if (contextMatch && normGuess.includes(contextMatch[0])) {
-    score += 10
-  }
-
-  if (ACTION_WORDS.some(w => normGuess.includes(w))) score += 5
-  if (/simple|quick|short|daily|weekly|fun|persuasive/.test(normGuess)) score += 5
-
-  return score
-}
 
 export default function PromptGuessEscape() {
   const navigate = useNavigate()
@@ -128,7 +107,7 @@ export default function PromptGuessEscape() {
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    const score = scoreGuess(clue.expectedPrompt, input.trim())
+    const { score, tips } = scorePrompt(clue.expectedPrompt, input.trim())
     if (score >= 20) {
       const timeBonus = Date.now() - startRef.current < 10000 ? 5 : 0
       const total = score + 10 + timeBonus
@@ -138,7 +117,8 @@ export default function PromptGuessEscape() {
       setOpenPercent(((index + 1) / doors.length) * 100)
       setShowNext(true)
     } else {
-      setMessage('Too vague or off-target. Try again!')
+      const tipText = tips.join(' ')
+      setMessage(`Too vague. ${tipText}`)
       setStatus('error')
     }
   }
