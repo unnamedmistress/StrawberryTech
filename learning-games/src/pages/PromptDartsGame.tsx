@@ -207,12 +207,6 @@ export default function PromptDartsGame() {
       <InstructionBanner>
         Choose the clearer prompt that best targets the requested format.
       </InstructionBanner>
-      <img
-        src="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_24_00%20PM.png"
-        alt="Strawberry throwing dart hitting 'Clear Prompt' bullseye on prompt darts target."
-        className="hero-img"
-        style={{ width: '200px' }}
-      />
       <div className="darts-wrapper">
         <aside className="darts-sidebar">
           <h3>Why Clarity Matters</h3>
@@ -221,6 +215,12 @@ export default function PromptDartsGame() {
           <p className="sidebar-tip">Align prompt language with output types (teaching specificity and clarity).</p>
         </aside>
         <div className="darts-game">
+          <img
+            src="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_24_00%20PM.png"
+            alt="Strawberry throwing dart hitting 'Clear Prompt' bullseye on prompt darts target."
+            className="hero-img"
+            style={{ width: '200px' }}
+          />
 
           <h3>Round {round + 1} of {ROUNDS.length}</h3>
 
