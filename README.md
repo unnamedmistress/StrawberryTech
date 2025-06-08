@@ -66,7 +66,7 @@ Without installing the packages first the `vitest` command used by
 
 ### Visitor Statistics
 
-Analytics data is stored by the server in `server/db.json`. Open the hidden
+Analytics data is now stored by the server in **Firebase Firestore**. Open the hidden
 `/stats` page while the server is running to see live counts of page views,
 unique visitors, and average session length.
 
@@ -80,6 +80,10 @@ VITE_OPENAI_API_KEY=your-key
 The community feedback page uses the same API for sentiment filtering. Set
 `OPENAI_API_KEY` in the server environment so posts can be screened before
 publishing.
+
+The API server now persists data in Firebase. Provide service account credentials
+by setting `FIREBASE_SERVICE_ACCOUNT` to a JSON string or path, or use
+`GOOGLE_APPLICATION_CREDENTIALS` to point to a credentials file.
 
 Without this key, the RobotChat and recipe features will not work.
 
