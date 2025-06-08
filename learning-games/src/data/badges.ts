@@ -44,6 +44,12 @@ export const BADGES: BadgeDefinition[] = [
     id: 'prompt-chef',
     name: 'Master Chef of Prompts',
     description: 'Create 10 flawless prompt recipes',
-    emoji: '👩‍🍳',
+    emoji: '👩‍🍳'
+  },
+  {
+    id: 'hallucination-hunter',
+    name: 'Hallucination Hunter',
+    description: 'Spot five lies in a row in the Hallucinations quiz',
+    emoji: '🔎',
   },
 ]
