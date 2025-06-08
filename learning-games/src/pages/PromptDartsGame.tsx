@@ -8,6 +8,8 @@ import shuffle from '../utils/shuffle'
 import { getTimeLimit } from '../utils/time'
 import './PromptDartsGame.css'
 
+const CONGRATS_VIDEO_URL = 'https://www.youtube.com/embed/dQw4w9WgXcQ'
+
 const KEYWORDS = [
   'list',
   'draft',
@@ -405,11 +407,29 @@ export default function PromptDartsGame() {
   if (round >= rounds.length) {
     return (
       <div className="darts-page">
-        <InstructionBanner>You finished Prompt Darts!</InstructionBanner>
-        <p className="final-score">Your score: {score}</p>
-        <p style={{ marginTop: '1rem' }}>
-          <Link to="/leaderboard">Return to Progress</Link>
-        </p>
+        <div className="congrats-overlay">
+          <div className="congrats-modal" role="dialog" aria-modal="true">
+            <h3>Congratulations!</h3>
+            <p className="final-score">Your score: {score}</p>
+            <iframe
+              className="congrats-video"
+              src={CONGRATS_VIDEO_URL}
+              title="Celebration video"
+              allowFullScreen
+            />
+            <Link to="/games/compose" className="btn-primary" style={{ display: 'block', marginTop: '0.5rem' }}>
+              Play Compose Tweet
+            </Link>
+            <a
+              className="coffee-link"
+              href="https://coff.ee/strawberrytech"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              ☕️ Buy me a coffee
+            </a>
+          </div>
+        </div>
       </div>
     )
   }
