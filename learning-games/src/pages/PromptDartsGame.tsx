@@ -279,10 +279,19 @@ export default function PromptDartsGame() {
   const PENALTY = 2
 
 
-  const TOTAL_TIME =
-    user.difficulty === 'easy' ? 20 : user.difficulty === 'hard' ? 10 : 15
-  const MAX_POINTS =
-    user.difficulty === 'easy' ? 8 : user.difficulty === 'hard' ? 12 : 10
+  const TIME_BY_DIFFICULTY = {
+    easy: 30,
+    medium: 20,
+    hard: 10,
+  } as const
+  const POINTS_BY_DIFFICULTY = {
+    easy: 8,
+    medium: 10,
+    hard: 12,
+  } as const
+
+  const TOTAL_TIME = TIME_BY_DIFFICULTY[user.difficulty]
+  const MAX_POINTS = POINTS_BY_DIFFICULTY[user.difficulty]
 
   const [timeLeft, setTimeLeft] = useState(TOTAL_TIME)
   const [pointsLeft, setPointsLeft] = useState(MAX_POINTS)
