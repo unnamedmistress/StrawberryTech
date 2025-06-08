@@ -6,6 +6,7 @@ import { scorePrompt } from '../../utils/scorePrompt'
 import InstructionBanner from '../../components/ui/InstructionBanner'
 import ProgressSidebar from '../../components/layout/ProgressSidebar'
 import { UserContext } from '../../context/UserContext'
+import JsonLd from '../../components/seo/JsonLd'
 import '../../styles/ComposeTweetGame.css'
 
 const SAMPLE_RESPONSE =
@@ -109,7 +110,18 @@ export default function ComposeTweetGame() {
   }
 
   return (
-    <div className="compose-page clearfix">
+    <>
+      <JsonLd
+        data={{
+          '@context': 'https://schema.org',
+          '@type': 'Game',
+          name: 'Compose Tweet Game',
+          description: 'Guess the hidden tweet prompt to unlock the door.',
+          image:
+            'https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_16_34%20PM.png',
+        }}
+      />
+      <div className="compose-page clearfix">
       <InstructionBanner>Guess the Prompt</InstructionBanner>
       <div className="compose-wrapper">
         <aside className="compose-sidebar">
@@ -184,6 +196,7 @@ export default function ComposeTweetGame() {
         <ProgressSidebar />
       </div>
     </div>
+    </>
   )
 }
 

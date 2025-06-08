@@ -8,6 +8,7 @@ import shuffle from '../../utils/shuffle'
 import { getTimeLimit } from '../../utils/time'
 import '../../styles/PromptDartsGame.css'
 import Head from 'next/head'
+import JsonLd from '../../components/seo/JsonLd'
 
 const CONGRATS_VIDEO_URL = 'https://www.youtube.com/embed/dQw4w9WgXcQ'
 
@@ -331,11 +332,9 @@ export default function PromptDartsGame() {
 
 
   useEffect(() => {
-    if (!rounds.length) return
+    if (!rounds.length || round >= rounds.length) return
     setTimeLeft(TOTAL_TIME)
     setPointsLeft(MAX_POINTS)
-
-
     setChoices(shuffle([...rounds[round].options]))
 
 
@@ -402,8 +401,9 @@ export default function PromptDartsGame() {
       <div className="darts-page">
         <InstructionBanner>Loading rounds...</InstructionBanner>
       </div>
-    )
-  }
+    </>
+  )
+}
 
   if (round >= rounds.length) {
     return (
@@ -412,6 +412,7 @@ export default function PromptDartsGame() {
           <div className="congrats-modal" role="dialog" aria-modal="true">
             <h3>Congratulations!</h3>
             <p className="final-score">Your score: {score}</p>
+            <p>Would you like to play the next game or support us?</p>
             <iframe
               className="congrats-video"
               src={CONGRATS_VIDEO_URL}
@@ -437,6 +438,16 @@ export default function PromptDartsGame() {
 
   return (
     <>
+      <JsonLd
+        data={{
+          '@context': 'https://schema.org',
+          '@type': 'Game',
+          name: 'Prompt Darts',
+          description: 'Choose the clearer prompt to hit the bullseye and earn points.',
+          image:
+            'https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_24_00%20PM.png',
+        }}
+      />
       <Head>
         <title>Prompt Darts - StrawberryTech</title>
         <meta property="og:title" content="Prompt Darts - StrawberryTech" />
