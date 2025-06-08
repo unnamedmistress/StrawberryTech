@@ -2,6 +2,7 @@ import { useState, useContext, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import ProgressSidebar from '../components/layout/ProgressSidebar'
 import InstructionBanner from '../components/ui/InstructionBanner'
+import TimerBar from '../components/ui/TimerBar'
 import { UserContext } from '../context/UserContext'
 import shuffle from '../utils/shuffle'
 import './PromptDartsGame.css'
@@ -385,7 +386,7 @@ export default function PromptDartsGame() {
           />
 
           <h3>Round {round + 1} of {rounds.length}</h3>
-
+          <TimerBar timeLeft={timeLeft} TOTAL_TIME={TOTAL_TIME} />
           <p className="timer">Time: {timeLeft}s</p>
           <p className="points">Available points: {pointsLeft}</p>
 
