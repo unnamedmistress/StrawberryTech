@@ -24,6 +24,7 @@ export function Head() {
     <>
       <title>How to Play | StrawberryTech</title>
       <meta name="description" content="Instructions for getting started with the games." />
+      <link rel="canonical" href="https://strawberrytech.com/help" />
     </>
   )
 }

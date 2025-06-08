@@ -388,6 +388,7 @@ export function Head() {
         name="description"
         content="Match adjectives to explore how tone changes a message."
       />
+      <link rel="canonical" href="https://strawberrytech.com/games/tone" />
     </>
   )
 }
