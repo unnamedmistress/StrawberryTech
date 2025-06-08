@@ -10,6 +10,7 @@ import ProgressSidebar from '../../components/layout/ProgressSidebar'
 import InstructionBanner from '../../components/ui/InstructionBanner'
 import Tooltip from '../../components/ui/Tooltip'
 import TimerBar from '../../components/ui/TimerBar'
+import CompletionModal from '../../components/ui/CompletionModal'
 import { UserContext } from '../../context/UserContext'
 import { getTimeLimit } from '../../utils/time'
 import '../../styles/PromptRecipeGame.css'
@@ -419,13 +420,14 @@ export default function PromptRecipeGame() {
 
   if (finished) {
     return (
-      <div className="recipe-page">
-        <InstructionBanner>You finished Prompt Builder!</InstructionBanner>
+      <CompletionModal
+        imageSrc="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_19_23%20PM.png"
+        buttonHref="/games/darts"
+        buttonLabel="Play Prompt Darts"
+      >
+        <h3>You finished Prompt Builder!</h3>
         <p className="final-score">Your score: {score}</p>
-        <p style={{ marginTop: '1rem' }}>
-          <Link href="/leaderboard">Return to Progress</Link>
-        </p>
-      </div>
+      </CompletionModal>
     )
   }
 
