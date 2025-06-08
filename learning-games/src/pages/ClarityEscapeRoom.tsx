@@ -9,6 +9,7 @@ import { UserContext } from '../context/UserContext'
 import shuffle from '../utils/shuffle'
 import './ClarityEscapeRoom.css'
 import { scorePrompt } from '../utils/scorePrompt'
+import { generateRoomDescription } from '../utils/generateRoomDescription'
 
 interface Clue {
   aiResponse: string
@@ -116,6 +117,7 @@ export default function ClarityEscapeRoom() {
   const [showNext, setShowNext] = useState(false)
   const [timeLeft, setTimeLeft] = useState(30)
   const [openPercent, setOpenPercent] = useState(0)
+
   const [aiHint, setAiHint] = useState('')
   const startRef = useRef(Date.now())
 
@@ -208,7 +210,9 @@ export default function ClarityEscapeRoom() {
       setStatus('success')
       setOpenPercent(((index + 1) / TOTAL_STEPS) * 100)
       setShowNext(true)
+
       setAiHint('')
+
     } else {
       const tipText = tips.join(' ')
       setMessage(`Too vague. ${tipText}`)
@@ -226,7 +230,9 @@ export default function ClarityEscapeRoom() {
       setStatus('')
       setHintIndex(0)
       setHintCount(0)
+
       setAiHint('')
+
       setShowNext(false)
     } else {
       setScore('escape', points)
@@ -277,6 +283,9 @@ export default function ClarityEscapeRoom() {
               )}
               {message && (
                 <p className={`feedback ${status}`}>{status === 'success' ? '✔️' : '⚠️'} {message}</p>
+              )}
+              {roomDescription && (
+                <p className="room-desc" aria-live="polite">{roomDescription}</p>
               )}
               {showNext && (
                 <div className="next-area">
