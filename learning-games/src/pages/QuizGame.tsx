@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from 'react'
+import { useState, useEffect, useContext, useMemo } from 'react'
 import ProgressSidebar from '../components/layout/ProgressSidebar'
 import { motion } from 'framer-motion'
 import { toast } from 'react-hot-toast'
@@ -6,38 +6,19 @@ import { Link, useNavigate } from 'react-router-dom'
 import { UserContext } from '../context/UserContext'
 import './QuizGame.css'
 import InstructionBanner from '../components/ui/InstructionBanner'
+import { HALLUCINATION_EXAMPLES } from '../data/hallucinationExamples'
+import { H_ROUNDS } from '../data/hallucinationRounds'
 
 interface StatementSet {
   statements: string[]
   lieIndex: number
+  source: string
+  correction: string
+  category?: string
 }
 
-const ROUNDS: StatementSet[] = [
-  {
-    statements: [
-      'Bananas are berries.',
-      'Venus is hotter than Mercury.',
-      'Goldfish have a memory span of only three seconds.',
-    ],
-    lieIndex: 2,
-  },
-  {
-    statements: [
-      'Adult humans have 206 bones.',
-      'The Amazon River is the longest river in the world.',
-      'The Eiffel Tower can be 15 cm taller during the summer.',
-    ],
-    lieIndex: 1,
-  },
-  {
-    statements: [
-      'Honey never spoils.',
-      'Mount Everest is the highest mountain above sea level.',
-      'Humans can breathe and swallow at the same time.',
-    ],
-    lieIndex: 2,
-  },
-]
+
+const ROUNDS: StatementSet[] = H_ROUNDS
 
 const QUOTE = 'Always verify surprising claims.'
 const TIP = 'Tip: ask for sources when something sounds off.'
@@ -60,12 +41,21 @@ function ChallengeBanner() {
 }
 
 function WhyItMatters() {
+  const example = useMemo(
+    () =>
+      HALLUCINATION_EXAMPLES[Math.floor(Math.random() * HALLUCINATION_EXAMPLES.length)],
+    [],
+  )
   return (
     <aside className="quiz-sidebar reveal">
       <h3>Why It Matters</h3>
       <p>AI hallucinations occur when the system confidently states something untrue.</p>
       <blockquote className="sidebar-quote">{QUOTE}</blockquote>
       <p className="sidebar-tip">{TIP}</p>
+      <p className="sidebar-example">
+        Example: {example.statement}{' '}
+        <a href={example.source} target="_blank" rel="noopener noreferrer">Source</a>
+      </p>
     </aside>
   )
 }
@@ -136,6 +126,8 @@ export default function QuizGame() {
   const [choice, setChoice] = useState<number | null>(null)
   const [score, setScoreState] = useState(0)
   const [played, setPlayed] = useState(0)
+  const [streak, setStreak] = useState(0)
+  const NUM_STATEMENTS = 3
 
   const current = ROUNDS[round]
   const correct = choice === current.lieIndex
@@ -156,6 +148,12 @@ export default function QuizGame() {
     const newScore = wasCorrect ? score + 1 : score
     setScoreState(newScore)
     setPlayed(p => p + 1)
+    setStreak(wasCorrect ? streak + 1 : 0)
+
+    if (wasCorrect && streak + 1 >= 5 && !user.badges.includes('hallucination-hunter')) {
+      addBadge('hallucination-hunter')
+    }
+
 
     if (played + 1 === ROUNDS.length) {
       setScore('quiz', newScore)
@@ -184,6 +182,7 @@ export default function QuizGame() {
     }, { threshold: 0.1 })
 
     document.querySelectorAll('.reveal').forEach((el) => observer.observe(el))
+    refreshRound()
 
     return () => observer.disconnect()
   }, [])
@@ -198,6 +197,12 @@ export default function QuizGame() {
       <div className="truth-game">
         <WhyItMatters />
         <div className="game-area">
+          <img
+            src="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_51_28%20PM.png"
+            alt="Detective-themed strawberry examining statement cards under magnifying glass to spot false claim."
+            className="hero-img"
+            style={{ width: '200px' }}
+          />
           <div className="statements">
           <div className="statement-header">
             <h2>Hallucinations</h2>
@@ -210,9 +215,12 @@ export default function QuizGame() {
             </button>
           </div>
           <p className="header-instruction">
-            Pick the hallucination from the three statements.
+            Pick the hallucination from the {NUM_STATEMENTS} statements.
           </p>
           <p className="round-info">Round {round + 1} / {ROUNDS.length}</p>
+          {current.category && (
+            <p className="round-category">{current.category}</p>
+          )}
           <ul className="statement-list">
             {current.statements.map((s, i) => (
               <li key={i}>
@@ -232,6 +240,12 @@ export default function QuizGame() {
               {correct
                 ? '✅ Correct! You spotted the hallucination.'
                 : '❌ Incorrect. That one is true.'}
+            </p>
+            <p className="feedback-source">
+              The hallucination was: "{current.statements[current.lieIndex]}".{' '}
+              <a href={current.source} target="_blank" rel="noopener noreferrer">
+                Article
+              </a>
             </p>
 
             <button className="btn-primary" onClick={nextRound}>Next Round</button>

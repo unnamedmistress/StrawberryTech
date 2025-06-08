@@ -23,18 +23,17 @@ afterEach(() => {
 })
 
 describe('ClarityEscapeRoom', () => {
-  it('increments openPercent and reveals next segment on valid prompt', () => {
-    const { getByPlaceholderText, getByText } = setup()
-    const input = getByPlaceholderText(/type your prompt/i)
-    fireEvent.change(input, { target: { value: 'rewrite formal' } })
+  it('unlocks the door when the guess matches', async () => {
+    const { getByLabelText, findByText } = setup()
+    const input = getByLabelText(/your prompt/i)
+    fireEvent.change(input, { target: { value: 'Write a thank you note to a teacher' } })
     fireEvent.submit(input.closest('form')!)
-    expect(getByText(/door 2/i)).toBeTruthy()
-    expect(getByText(/The door unlocks with a click/i)).toBeTruthy()
+    expect(await findByText(/Door unlocked/i)).toBeTruthy()
   })
 
   it('limits input to 100 characters', () => {
-    const { getAllByPlaceholderText } = setup()
-    const input = getAllByPlaceholderText(/type your prompt/i)[0] as HTMLInputElement
+    const { getAllByLabelText } = setup()
+    const input = getAllByLabelText(/your prompt/i)[0] as HTMLInputElement
     const longText = 'a'.repeat(150)
     fireEvent.change(input, { target: { value: longText } })
     expect(input.value.length).toBeLessThanOrEqual(100)

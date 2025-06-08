@@ -18,6 +18,32 @@
   border-radius: 10px;
 }
 
+.room-grid {
+  display: grid;
+  grid-template-columns: 1fr 160px;
+  gap: 1rem;
+  align-items: start;
+}
+
+.room-main {
+  display: flex;
+  flex-direction: column;
+}
+
+.info-btn-container {
+  align-self: flex-end;
+  margin-bottom: 0.5rem;
+}
+
+.door-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.1);
+  padding: 0.5rem;
+  border-radius: 8px;
+}
+
 .hint {
   font-style: italic;
   margin-bottom: 0.5rem;
@@ -25,6 +51,7 @@
 
 .prompt-form {
   display: flex;
+  align-items: center;
   gap: 0.5rem;
   margin-bottom: 0.5rem;
 }
@@ -107,9 +134,36 @@
       'progress'
       'next';
   }
+  .room-grid {
+    grid-template-columns: 1fr;
+  }
   .progress-sidebar {
     max-width: none;
   }
 }
 .prompt-form input::placeholder { color: #999; }
 .score { font-weight: bold; color: var(--color-brand); margin-top: 0.5rem; }
+.escape-img {
+  width: 100%;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+}
+
+@media (max-width: 360px) {
+  .prompt-form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .prompt-form input {
+    width: 100%;
+  }
+
+  .prompt-form button {
+    width: 100%;
+  }
+
+  .escape-sidebar {
+    max-width: none;
+  }
+}

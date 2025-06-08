@@ -1,5 +1,6 @@
-import { useContext, useMemo, useState } from 'react'
+import { useContext, useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { toast } from 'react-hot-toast'
 import { UserContext } from '../context/UserContext'
 import ProgressSidebar from '../components/layout/ProgressSidebar'
 import './LeaderboardPage.css'
@@ -9,15 +10,6 @@ export interface ScoreEntry {
   score: number
 }
 
-// Dummy leaderboards for each game. In a real multi-user app this data would
-// be fetched from a server.
-export const DUMMY_SCORES: Record<string, ScoreEntry[]> = {
-  tone: [
-    { name: 'Alice', score: 240 },
-    { name: 'Bob', score: 180 },
-    { name: 'Charlie', score: 150 },
-  ],
-}
 
 export default function LeaderboardPage() {
   const { user } = useContext(UserContext)
@@ -26,9 +18,25 @@ export default function LeaderboardPage() {
   const [sortField, setSortField] = useState<'name' | 'score'>('score')
   const [ascending, setAscending] = useState(false)
 
+  const [scores, setScores] = useState<Record<string, ScoreEntry[]>>({})
+  const [game, setGame] = useState('tone')
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const base = window.location.origin
+      fetch(`${base}/api/scores`)
+        .then(res => (res.ok ? res.json() : {}))
+        .then(data => setScores(data))
+        .catch(() => {})
+    }
+  }, [])
+
   const entries = useMemo(() => {
-    return DUMMY_SCORES.tone
-      .concat({ name: user.name ?? 'You', score: user.scores['tone'] ?? 0 })
+    const list = (scores[game] ?? []).slice()
+    const playerName = user.name ?? 'You'
+    const existing = list.find(e => e.name === playerName)
+    if (!existing) list.push({ name: playerName, score: user.scores[game] ?? 0 })
+    return list
       .filter((e) => e.name.toLowerCase().includes(filter.toLowerCase()))
       .sort((a, b) => {
         if (sortField === 'name') {
@@ -38,7 +46,7 @@ export default function LeaderboardPage() {
         const cmp = a.score - b.score
         return ascending ? cmp : -cmp
       })
-  }, [filter, sortField, ascending, user.name, user.scores])
+  }, [filter, sortField, ascending, user.name, user.scores, scores, game])
 
   function handleSort(field: 'name' | 'score') {
     if (sortField === field) {
@@ -54,6 +62,18 @@ export default function LeaderboardPage() {
       <div>
         <h2>Leaderboard</h2>
         <section className="leaderboard-card">
+          <div className="game-tabs">
+            {Object.keys(scores).map(key => (
+              <button
+                key={key}
+                className={game === key ? 'active' : undefined}
+                type="button"
+                onClick={() => setGame(key)}
+              >
+                {key}
+              </button>
+            ))}
+          </div>
           <div className="search-box">
             <input
               type="text"
@@ -62,7 +82,7 @@ export default function LeaderboardPage() {
               onChange={(e) => setFilter(e.target.value)}
             />
           </div>
-          <h3>Tone High Scores</h3>
+          <h3>{game} High Scores</h3>
           <table className="leaderboard-table">
             <thead>
               <tr>
@@ -94,6 +114,22 @@ export default function LeaderboardPage() {
               ))}
             </tbody>
           </table>
+          <p style={{ textAlign: 'right' }}>
+            <button
+              type="button"
+              onClick={() => {
+                const text = `My top score in ${game} is ${user.scores[game] ?? 0}!`
+                if (navigator.share) {
+                  navigator.share({ text }).catch(() => {})
+                } else {
+                  navigator.clipboard.writeText(text).catch(() => {})
+                  toast.success('Score copied to clipboard')
+                }
+              }}
+            >
+              Share My Score
+            </button>
+          </p>
         </section>
 
         <p style={{ marginTop: '2rem' }}>

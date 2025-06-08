@@ -143,8 +143,7 @@
   background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
   padding: 1rem;
   border-radius: 8px;
-  grid-column: 2;
-  grid-row: 1;
+  grid-area: game;
 }
 
 .match3-page {
@@ -160,6 +159,7 @@
   gap: 1rem;
   justify-content: center;
   align-items: start;
+  grid-template-areas: 'sidebar game';
 }
 
 .leaderboard-wrapper {
@@ -192,6 +192,21 @@
   background: #fbe4e9;
 }
 
+.buy-coffee {
+  margin-top: 1.5rem;
+  text-align: center;
+}
+
+.buy-coffee a {
+  color: var(--color-brand);
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+.buy-coffee a:hover {
+  color: var(--color-deep-red);
+}
+
 .match3-sidebar {
   max-width: 240px;
   background: var(--color-background);
@@ -200,8 +215,7 @@
   border-radius: 8px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   text-align: left;
-  grid-column: 1;
-  grid-row: 1;
+  grid-area: sidebar;
 }
 
 
@@ -284,9 +298,43 @@
   }
 }
 
+.top-scores-title {
+  margin-top: 1rem;
+}
+.top-scores-card {
+  background: var(--color-background);
+  padding: 0.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.top-scores-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+.top-scores-list li {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.25rem 0;
+  font-size: 0.9rem;
+}
+.top-scores-list li.top {
+  color: var(--color-brand);
+  font-weight: bold;
+}
+.view-leaderboard a {
+  text-decoration: underline;
+}
+.view-leaderboard a:hover {
+  color: var(--color-orange);
+}
 @media (max-width: 600px) {
   .match3-wrapper {
     grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+    grid-template-areas:
+      'sidebar'
+      'game';
   }
 
   .leaderboard-wrapper {
@@ -296,7 +344,6 @@
   .match3-sidebar,
   .match3-container {
     max-width: none;
-    grid-column: auto;
   }
 
   .match3-sidebar {
@@ -305,6 +352,10 @@
 
   .progress-sidebar {
     max-width: none;
+  }
+
+  .buy-coffee {
+    margin-top: 1rem;
   }
 
 }
@@ -321,6 +372,8 @@
   padding: 1rem 2rem;
   color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  overflow-x: hidden;
 }
 .theme-toggle {
   margin-right: 1rem;
@@ -376,6 +429,30 @@
   color: #fff;
   font-size: 1.5rem;
   cursor: pointer;
+}
+
+@media (max-width: 1000px) {
+  .navbar {
+    flex-wrap: wrap;
+  }
+
+  .menu-toggle {
+    display: block;
+  }
+
+  .navbar ul {
+    display: none;
+    width: 100%;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+    background: var(--color-brand);
+    padding: 0.5rem 0;
+  }
+
+  .navbar ul.open {
+    display: flex;
+  }
 }
 
 .hero {
@@ -476,6 +553,26 @@
 .footer-links a:hover {
   color: var(--color-lime);
   text-decoration: underline;
+}
+
+.coffee-link {
+  color: #fff;
+  font-weight: 700;
+  text-decoration: none;
+  animation: coffee-pulse 2s ease-in-out infinite;
+}
+
+.coffee-link:hover {
+  color: var(--color-lime);
+}
+
+@keyframes coffee-pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
 }
 
 @media (max-width: 480px) {
@@ -670,54 +767,3 @@
   border-color: var(--color-mint);
 }
 
-@media (max-width: 600px) {
-  .menu-toggle {
-    display: block;
-  }
-  .navbar ul {
-    position: absolute;
-    top: 100%;
-    right: 0;
-    left: 0;
-    flex-direction: column;
-    background: var(--color-purple);
-    padding: 1rem;
-    display: none;
-  }
-  .navbar ul.open {
-    display: flex;
-  }
-}
-
-.top-scores-list{list-style:none;padding-left:0;margin:0;} .top-scores-list li{display:flex;justify-content:space-between;padding:0.25rem 0;font-size:0.9rem;} .top-scores-list li.top{color:#d4af37;font-weight:bold;} .view-leaderboard a{text-decoration:underline;} .view-leaderboard a:hover{color:var(--color-orange);} .top-scores-title{margin-top:1rem;}
-
-.top-scores-title {
-  margin-top: 1rem;
-}
-.top-scores-card {
-  background: var(--color-background);
-  padding: 0.5rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-.top-scores-list {
-  list-style: none;
-  padding-left: 0;
-  margin: 0;
-}
-.top-scores-list li {
-  display: flex;
-  justify-content: space-between;
-  padding: 0.25rem 0;
-  font-size: 0.9rem;
-}
-.top-scores-list li.top {
-  color: var(--color-brand);
-  font-weight: bold;
-}
-.view-leaderboard a {
-  text-decoration: underline;
-}
-.view-leaderboard a:hover {
-  color: var(--color-orange);
-}

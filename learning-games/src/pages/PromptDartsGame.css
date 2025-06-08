@@ -58,6 +58,27 @@
   margin-bottom: 0.5rem;
 }
 
+
+.why-message {
+  margin-bottom: 0.5rem;
+}
+
+.canned-response {
+  background: var(--color-background);
+  color: var(--color-text-dark);
+  padding: 0.5rem;
+  border-left: 4px solid var(--color-brand);
+  margin-bottom: 0.5rem;
+  white-space: pre-wrap;
+
+}
+
+.hint-highlight {
+  background: var(--color-yellow);
+  padding: 0 2px;
+  border-radius: 2px;
+}
+
 .final-score {
   font-size: 1.2rem;
   font-weight: bold;

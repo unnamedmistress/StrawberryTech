@@ -62,6 +62,16 @@
 .kitchen {
   background: url('https://images.unsplash.com/photo-1606851092836-944c99e60463?auto=format&fit=crop&w=800&q=60');
   background-size: cover;
+  animation: kitchenZoom 20s infinite alternate;
+}
+
+@keyframes kitchenZoom {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.05);
+  }
 }
 
 .recipe-game {
@@ -159,10 +169,23 @@
   box-shadow: 0 4px 6px rgba(0,0,0,0.15);
 }
 
+.card.selected {
+  outline: 2px solid var(--color-brand);
+}
+
 .status-bar {
   display: flex;
   justify-content: space-between;
   margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+.round-info {
+  margin-right: auto;
+}
+
+.final-score {
+  font-size: 1.2rem;
   font-weight: bold;
 }
 
@@ -199,6 +222,16 @@
 .sample-output {
   margin-top: 0.5rem;
   font-weight: normal;
+}
+
+.prompt-image {
+  margin-top: 0.5rem;
+  width: 100%;
+  border-radius: 6px;
+}
+
+.copy-btn {
+  margin-top: 0.5rem;
 }
 
 @media (max-width: 600px) {

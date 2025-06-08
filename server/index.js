@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
 const fs = require('fs');
 const path = require('path');
 
@@ -8,14 +9,23 @@ const PORT = process.env.PORT || 3001;
 
 app.use(cors());
 app.use(express.json());
+app.use(cookieParser());
 
 const DB_FILE = path.join(__dirname, 'db.json');
+const DARTS_FILE = path.join(__dirname, 'darts.json');
 
 function loadData() {
   try {
     return JSON.parse(fs.readFileSync(DB_FILE, 'utf8'));
   } catch {
-    return { user: { name: null, age: null }, posts: [], views: [] };
+    return {
+      user: { name: null, age: null, badges: [], scores: { darts: 0 } },
+      posts: [],
+      views: [],
+      scores: { darts: [] },
+      sessions: [],
+      promptPairs: [],
+    };
   }
 }
 
@@ -23,8 +33,29 @@ function saveData(data) {
   fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2));
 }
 
+function loadDartRounds() {
+  try {
+    const rounds = JSON.parse(fs.readFileSync(DARTS_FILE, 'utf8'));
+    for (let i = rounds.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [rounds[i], rounds[j]] = [rounds[j], rounds[i]];
+    }
+    return rounds;
+  } catch {
+    return [];
+  }
+}
+
 let data = loadData();
 if (!data.views) data.views = [];
+if (!data.scores) data.scores = { darts: [] };
+if (!data.scores.darts) data.scores.darts = [];
+if (!data.user) data.user = { name: null, age: null, badges: [], scores: { darts: 0 } };
+if (!data.user.badges) data.user.badges = [];
+if (!data.user.scores) data.user.scores = { darts: 0 };
+if (data.user.scores.darts === undefined) data.user.scores.darts = 0;
+if (!data.sessions) data.sessions = [];
+if (!data.promptPairs) data.promptPairs = [];
 
 app.get('/api/user', (req, res) => {
   res.json(data.user);
@@ -69,6 +100,26 @@ app.post('/api/posts/:id/flag', (req, res) => {
   }
 });
 
+app.get('/api/pairs', (req, res) => {
+  res.json(data.promptPairs);
+});
+
+app.post('/api/pairs', (req, res) => {
+  const pair = {
+    id: Date.now(),
+    bad: req.body.bad || '',
+    good: req.body.good || '',
+  };
+  data.promptPairs.push(pair);
+  saveData(data);
+  res.status(201).json(pair);
+});
+
+app.get('/api/darts', (req, res) => {
+  const rounds = loadDartRounds();
+  res.json(rounds);
+});
+
 app.get('/api/views', (req, res) => {
   res.json(data.views);
 });
@@ -76,15 +127,45 @@ app.get('/api/views', (req, res) => {
 app.post('/api/views', (req, res) => {
   const view = {
     id: Date.now(),
+    visitorId: req.body.visitorId || null,
     user: req.body.user || null,
     path: req.body.path || '',
-    timestamp: new Date().toISOString(),
+    referrer: req.body.referrer || req.headers.referer || '',
+    agent: req.body.agent || req.headers['user-agent'] || '',
     ip: req.ip,
-    agent: req.headers['user-agent'] || '',
+    start: new Date().toISOString(),
   };
   data.views.push(view);
   saveData(data);
   res.status(201).json(view);
+});
+
+app.post('/api/views/:id/end', (req, res) => {
+  const id = Number(req.params.id);
+  const view = data.views.find((v) => v.id === id);
+  if (!view) {
+    res.status(404).end();
+    return;
+  }
+  view.end = new Date().toISOString();
+  view.duration = Number(view.duration || Date.now() - new Date(view.start).getTime());
+  saveData(data);
+  res.json(view);
+});
+
+app.get('/api/scores', (req, res) => {
+  res.json(data.scores);
+});
+
+app.post('/api/scores/:game', (req, res) => {
+  const game = req.params.game;
+  const entry = { name: req.body.name || 'Anonymous', score: Number(req.body.score) || 0 };
+  if (!data.scores[game]) data.scores[game] = [];
+  data.scores[game].push(entry);
+  data.scores[game].sort((a, b) => b.score - a.score);
+  data.scores[game] = data.scores[game].slice(0, 10);
+  saveData(data);
+  res.json(data.scores[game]);
 });
 
 app.listen(PORT, () => {

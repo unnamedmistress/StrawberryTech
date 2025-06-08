@@ -3,9 +3,14 @@ import { Link } from 'react-router-dom'
 
 interface ViewData {
   id: number
+  visitorId: string | null
   user: string | null
   path: string
-  timestamp: string
+  referrer?: string
+  agent?: string
+  start: string
+  end?: string
+  duration?: number
 }
 
 export default function StatsPage() {
@@ -27,10 +32,10 @@ export default function StatsPage() {
   const lastWeek = now - 7 * 24 * 60 * 60 * 1000
   const lastMonth = now - 30 * 24 * 60 * 60 * 1000
 
-  const viewsLastHour = views.filter(v => new Date(v.timestamp).getTime() >= lastHour).length
-  const viewsLastDay = views.filter(v => new Date(v.timestamp).getTime() >= lastDay).length
-  const viewsLastWeek = views.filter(v => new Date(v.timestamp).getTime() >= lastWeek).length
-  const viewsLastMonth = views.filter(v => new Date(v.timestamp).getTime() >= lastMonth).length
+  const viewsLastHour = views.filter(v => new Date(v.start).getTime() >= lastHour).length
+  const viewsLastDay = views.filter(v => new Date(v.start).getTime() >= lastDay).length
+  const viewsLastWeek = views.filter(v => new Date(v.start).getTime() >= lastWeek).length
+  const viewsLastMonth = views.filter(v => new Date(v.start).getTime() >= lastMonth).length
 
   const dayCounts = Array.from({ length: 7 }).map((_, i) => {
     const start = new Date(now - (6 - i) * 24 * 60 * 60 * 1000)
@@ -38,10 +43,20 @@ export default function StatsPage() {
     const end = new Date(start)
     end.setDate(start.getDate() + 1)
     return views.filter(v => {
-      const t = new Date(v.timestamp).getTime()
+      const t = new Date(v.start).getTime()
       return t >= start.getTime() && t < end.getTime()
     }).length
   })
+
+  const uniqueVisitors = new Set(views.map(v => v.visitorId)).size
+  const sessionViews = views.filter(v => typeof v.duration === 'number')
+  const avgDuration = sessionViews.length
+    ? Math.round(
+        sessionViews.reduce((sum, v) => sum + (v.duration || 0), 0) /
+          sessionViews.length /
+          1000
+      )
+    : 0
 
   const chartWidth = 280
   const chartHeight = 80
@@ -57,7 +72,15 @@ export default function StatsPage() {
   return (
     <div className="stats-page">
       <h2>Site Statistics</h2>
+      <img
+        src="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_12_36%20PM.png"
+        alt="Home page strawberry mascot welcomes players at entrance of learning arcade with pastel tones."
+        className="brand-logo"
+        style={{ width: '48px' }}
+      />
       <p>Total Views: {views.length}</p>
+      <p>Unique Visitors: {uniqueVisitors}</p>
+      <p>Average Session (s): {avgDuration}</p>
       <p>Views last hour: {viewsLastHour}</p>
       <p>Views last day: {viewsLastDay}</p>
       <p>Views last week: {viewsLastWeek}</p>

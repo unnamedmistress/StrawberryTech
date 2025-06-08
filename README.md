@@ -2,7 +2,7 @@
 
 StrawberryTech is a collection of small web games built with **React**, **TypeScript** and **Vite**. Each game adapts content based on the player's age, which is stored locally so progress persists between sessions.
 
-## Mini Games
+## Mini Games 
 
 ### Tone Puzzle
 Swap adjectives to explore how word choice affects tone. Matches award points and may show leadership tips that vary by age group. Scores and badges are saved for later.
@@ -16,8 +16,12 @@ Drag cards to assemble a prompt. Each round now fetches fresh card text from the
 ## Age‑Adaptive Features
 - Players enter their age and name on first visit.
 - Games read the stored age to tweak difficulty and show tailored tips.
-- High scores and earned badges persist using `localStorage`.
+- Scores and badges now sync to a small server so progress follows you across devices.
 - High contrast theme preference persists via `ThemeToggle`.
+- A unified leaderboard with tabs displays top scores for every game.
+- A dedicated Badges page lets you track all achievements.
+- A hidden `/stats` page displays live visitor analytics collected on the server.
+- A community playlist page lets everyone share bad and good prompt pairs.
 
 ## Getting Started
 1. Install dependencies and start the dev server:
@@ -26,8 +30,8 @@ Drag cards to assemble a prompt. Each round now fetches fresh card text from the
    npm install
    npm run dev
    ```
-2. In a separate terminal start the API server to persist user info and
-   community posts:
+2. In a separate terminal start the API server to persist user info,
+   community posts and shared high scores:
    ```bash
    cd server
    npm install
@@ -56,6 +60,12 @@ npm test
 
 Without installing the packages first the `vitest` command used by
 `npm test` will not be available and the tests will fail.
+
+### Visitor Statistics
+
+Analytics data is stored by the server in `server/db.json`. Open the hidden
+`/stats` page while the server is running to see live counts of page views,
+unique visitors, and average session length.
 
 ## Environment Variables
 RobotChat and the Prompt Recipe Builder use the OpenAI API. Create a `.env` file inside `learning-games` containing:

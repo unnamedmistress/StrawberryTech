@@ -1,0 +1,95 @@
+.guess-wrapper {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 220px 1fr 160px 260px;
+  grid-template-areas:
+    'sidebar game door progress'
+    'sidebar game door progress';
+  gap: 1rem;
+  justify-content: center;
+  align-items: start;
+}
+
+.guess-sidebar {
+  grid-area: sidebar;
+  max-width: 240px;
+  background: var(--color-background);
+  color: var(--color-text-dark);
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.guess-game {
+  grid-area: game;
+  background: var(--color-background);
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.door-area {
+  grid-area: door;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.progress-sidebar {
+  grid-area: progress;
+}
+
+.timer {
+  font-weight: bold;
+  color: var(--color-orange);
+}
+
+.prompt-form {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.prompt-form input {
+  flex: 1;
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.feedback {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  transition: opacity 0.3s;
+}
+.feedback.success {
+  color: var(--color-accent);
+}
+.feedback.error {
+  color: var(--color-orange);
+}
+
+.next-area {
+  margin-top: 0.5rem;
+}
+
+.hint-text {
+  display: inline-block;
+  background: var(--color-background);
+  padding: 0.4rem 0.6rem;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  margin-bottom: 0.5rem;
+}
+
+@media (max-width: 600px) {
+  .guess-wrapper {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      'game'
+      'door'
+      'sidebar'
+      'progress';
+  }
+}
