@@ -1,7 +1,12 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import InstructionBanner from '../components/ui/InstructionBanner'
 import Tooltip from '../components/ui/Tooltip'
+import ProgressBar from '../components/ui/ProgressBar'
+import DoorAnimation from '../components/DoorAnimation'
+import ProgressSidebar from '../components/layout/ProgressSidebar'
+import { UserContext } from '../context/UserContext'
+import shuffle from '../utils/shuffle'
 import './PromptGuessEscape.css'
 
 interface Clue {
@@ -12,24 +17,84 @@ interface Clue {
 
 const CLUES: Clue[] = [
   {
-    aiResponse: "Sure! Here’s a quick recipe for chicken stir-fry with vegetables.",
-    expectedPrompt: "Give me a quick recipe for chicken stir-fry with vegetables.",
-    hint: "Think about how you’d ask for a recipe with chicken and vegetables."
+    aiResponse: "Here's a fun joke: Why don't skeletons fight each other? They don't have the guts!",
+    expectedPrompt: 'Tell me a kid-friendly joke',
+    hint: 'Try asking for a joke suitable for children.'
   },
   {
-    aiResponse: "Buenos días means good morning in Spanish.",
-    expectedPrompt: "How do you say good morning in Spanish?",
-    hint: "You're basically asking for a short translation."
+    aiResponse: 'This thank-you note expresses deep gratitude to a teacher for their support.',
+    expectedPrompt: 'Write a thank-you note to a teacher',
+    hint: 'Think about thanking a teacher in a short note.'
   },
   {
-    aiResponse: "Knowledge is power' could be restated as 'Having information gives you strength and influence.'",
-    expectedPrompt: "Paraphrase the quote 'Knowledge is power'.",
-    hint: "Consider requesting a rewording of that famous quote."
+    aiResponse: 'A healthy meal plan for teens should include protein, whole grains, and veggies.',
+    expectedPrompt: 'Suggest a healthy weekly meal plan for teenagers',
+    hint: 'Mention a healthy weekly meal plan for teens.'
+  },
+  {
+    aiResponse: 'To improve sleep, reduce screen time before bed and maintain a consistent schedule.',
+    expectedPrompt: 'Give sleep hygiene tips for students',
+    hint: 'Ask for sleep hygiene tips aimed at students.'
+  },
+  {
+    aiResponse: 'The mitochondria is the powerhouse of the cell. It generates energy through respiration.',
+    expectedPrompt: 'Explain what mitochondria does in a cell',
+    hint: 'Request a short explanation of mitochondria.'
+  },
+  {
+    aiResponse: 'For a 50-year-old man, a basic workout includes stretching, walking, and light weights.',
+    expectedPrompt: 'Write a workout routine for a man in his 50s',
+    hint: 'Mention a workout routine for someone in his 50s.'
+  },
+  {
+    aiResponse: 'The water cycle includes evaporation, condensation, precipitation, and collection.',
+    expectedPrompt: 'Describe the steps of the water cycle',
+    hint: 'Think about describing each step of the water cycle.'
+  },
+  {
+    aiResponse: 'A persuasive paragraph includes a claim, evidence, and a strong conclusion.',
+    expectedPrompt: 'How do you write a persuasive paragraph?',
+    hint: 'You want instructions for writing a persuasive paragraph.'
+  },
+  {
+    aiResponse: 'A simple Python function to reverse a string uses slicing: return s[::-1]',
+    expectedPrompt: 'Show how to reverse a string in Python',
+    hint: 'Ask for Python code that reverses a string.'
+  },
+  {
+    aiResponse: 'The economic causes of the French Revolution include debt, taxation, and inequality.',
+    expectedPrompt: 'Summarize the economic causes of the French Revolution',
+    hint: 'Request a short summary of the French Revolution\'s economic causes.'
   }
 ]
 
+const ACTION_WORDS = ['write', 'tell', 'show', 'give', 'describe', 'explain', 'summarize', 'suggest']
+
+function scoreGuess(expected: string, guess: string): number {
+  const normGuess = guess.toLowerCase()
+  const normExpected = expected.toLowerCase()
+  let score = 0
+
+  const tokens = normExpected.split(/\W+/)
+  const overlap = tokens.filter(t => t && normGuess.includes(t)).length
+  if (overlap >= Math.max(1, Math.floor(tokens.length / 2))) score += 10
+
+  // Check for numbers or context words present in both strings
+  const contextMatch = /\d+|teacher|teen|student|man|python|cell|water|french/.exec(normExpected)
+  if (contextMatch && normGuess.includes(contextMatch[0])) {
+    score += 10
+  }
+
+  if (ACTION_WORDS.some(w => normGuess.includes(w))) score += 5
+  if (/simple|quick|short|daily|weekly|fun|persuasive/.test(normGuess)) score += 5
+
+  return score
+}
+
 export default function PromptGuessEscape() {
   const navigate = useNavigate()
+  const { setScore, user } = useContext(UserContext)
+  const [doors] = useState(() => shuffle(CLUES))
   const [index, setIndex] = useState(0)
   const [input, setInput] = useState('')
   const [points, setPoints] = useState(0)
@@ -38,11 +103,14 @@ export default function PromptGuessEscape() {
   const [showHint, setShowHint] = useState(false)
   const [showNext, setShowNext] = useState(false)
   const [timeLeft, setTimeLeft] = useState(30)
+  const [openPercent, setOpenPercent] = useState(0)
+  const startRef = useRef(Date.now())
 
-  const clue = CLUES[index]
+  const clue = doors[index]
 
   useEffect(() => {
     setTimeLeft(30)
+    startRef.current = Date.now()
     const id = setInterval(() => {
       setTimeLeft(t => {
         if (t <= 1) {
@@ -60,19 +128,23 @@ export default function PromptGuessEscape() {
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    if (input.trim() === clue.expectedPrompt) {
-      setMessage('Correct! You unlocked the door. +10 points earned.')
+    const score = scoreGuess(clue.expectedPrompt, input.trim())
+    if (score >= 20) {
+      const timeBonus = Date.now() - startRef.current < 10000 ? 5 : 0
+      const total = score + 10 + timeBonus
+      setPoints(p => p + total)
+      setMessage(`Door unlocked! +${total} points`)
       setStatus('success')
-      setPoints(p => p + 10)
+      setOpenPercent(((index + 1) / doors.length) * 100)
       setShowNext(true)
     } else {
-      setMessage('Not quite right. Try again or use a hint.')
+      setMessage('Too vague or off-target. Try again!')
       setStatus('error')
     }
   }
 
   function nextChallenge() {
-    if (index + 1 < CLUES.length) {
+    if (index + 1 < doors.length) {
       setIndex(i => i + 1)
       setInput('')
       setMessage('')
@@ -80,7 +152,8 @@ export default function PromptGuessEscape() {
       setShowHint(false)
       setShowNext(false)
     } else {
-      navigate('/prompt-builder')
+      setScore('escape', points)
+      navigate('/leaderboard')
     }
   }
 
@@ -89,14 +162,11 @@ export default function PromptGuessEscape() {
       <InstructionBanner>Escape Room: Guess the Prompt</InstructionBanner>
       <div className="guess-wrapper">
         <aside className="guess-sidebar">
-          <h3>Progress</h3>
-          <p className="total-points">Total Points: {points}</p>
-          <p>Badges Earned: {Math.floor(points / 300)}</p>
-          <p className="goal">Reach 300 points to unlock a new badge!</p>
+          <h3>Why Clarity Matters</h3>
+          <p>Vague inputs lock AI in confusion loops; precise prompts open doors.</p>
         </aside>
         <div className="guess-game">
           <p className="ai-response"><strong>AI Response:</strong> "{clue.aiResponse}"</p>
-          <p className="instructions">Your task: Type the exact prompt that would produce the above AI response.</p>
           <p className="timer">Time left: {timeLeft}s</p>
           <form onSubmit={handleSubmit} className="prompt-form">
             <label htmlFor="prompt-input">Your Prompt</label>
@@ -111,6 +181,7 @@ export default function PromptGuessEscape() {
               Hint
             </button>
           </form>
+          <ProgressBar percent={openPercent} />
           {showHint && (
             <Tooltip message={clue.hint}>
               <span className="hint-text">{clue.hint}</span>
@@ -125,6 +196,10 @@ export default function PromptGuessEscape() {
             </div>
           )}
         </div>
+        <div className="door-area">
+          <DoorAnimation openPercent={openPercent} />
+        </div>
+        <ProgressSidebar />
       </div>
     </div>
   )
