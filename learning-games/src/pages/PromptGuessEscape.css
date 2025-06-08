@@ -1,10 +1,10 @@
 .guess-wrapper {
   width: 100%;
   display: grid;
-  grid-template-columns: 260px 1fr;
+  grid-template-columns: 220px 1fr 160px 260px;
   grid-template-areas:
-    'sidebar game'
-    'sidebar game';
+    'sidebar game door progress'
+    'sidebar game door progress';
   gap: 1rem;
   justify-content: center;
   align-items: start;
@@ -26,6 +26,17 @@
   padding: 1rem;
   border-radius: 8px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.door-area {
+  grid-area: door;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.progress-sidebar {
+  grid-area: progress;
 }
 
 .timer {
@@ -77,6 +88,8 @@
     grid-template-columns: 1fr;
     grid-template-areas:
       'game'
-      'sidebar';
+      'door'
+      'sidebar'
+      'progress';
   }
 }
