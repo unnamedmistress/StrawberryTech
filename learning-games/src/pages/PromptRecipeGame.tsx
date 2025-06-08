@@ -1,5 +1,6 @@
 import { useState, useEffect, useContext } from 'react'
 import { Link } from 'react-router-dom'
+import CompletionModal from '../components/ui/CompletionModal'
 import { motion } from 'framer-motion'
 import confetti from 'canvas-confetti'
 import { toast } from 'react-hot-toast'
@@ -417,13 +418,14 @@ export default function PromptRecipeGame() {
 
   if (finished) {
     return (
-      <div className="recipe-page">
-        <InstructionBanner>You finished Prompt Builder!</InstructionBanner>
+      <CompletionModal
+        imageSrc="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_19_23%20PM.png"
+        buttonHref="/games/darts"
+        buttonLabel="Play Prompt Darts"
+      >
+        <h3>You finished Prompt Builder!</h3>
         <p className="final-score">Your score: {score}</p>
-        <p style={{ marginTop: '1rem' }}>
-          <Link to="/leaderboard">Return to Progress</Link>
-        </p>
-      </div>
+      </CompletionModal>
     )
   }
 
