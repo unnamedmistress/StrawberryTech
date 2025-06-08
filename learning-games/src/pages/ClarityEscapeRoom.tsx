@@ -120,6 +120,8 @@ export default function ClarityEscapeRoom() {
 
   const [aiHint, setAiHint] = useState('')
   const startRef = useRef(Date.now())
+  const [rounds, setRounds] = useState<{ prompt: string; expected: string; tip: string }[]>([])
+  const [showSummary, setShowSummary] = useState(false)
 
   const clue = doors[index]
 
@@ -223,6 +225,9 @@ export default function ClarityEscapeRoom() {
   }
 
   function nextChallenge() {
+    const { tips } = scorePrompt(clue.expectedPrompt, input.trim())
+    const tip = tips[0] || 'Aim for a clearer prompt next time.'
+    setRounds(r => [...r, { prompt: input.trim(), expected: clue.expectedPrompt, tip }])
     if (index + 1 < TOTAL_STEPS) {
       setIndex(i => i + 1)
       setInput('')
@@ -236,7 +241,7 @@ export default function ClarityEscapeRoom() {
       setShowNext(false)
     } else {
       setScore('escape', points)
-      navigate('/leaderboard')
+      setShowSummary(true)
     }
   }
 
@@ -301,6 +306,25 @@ export default function ClarityEscapeRoom() {
         </div>
         <ProgressSidebar />
       </div>
+      {showSummary && (
+        <div className="summary-overlay" onClick={() => setShowSummary(false)}>
+          <div className="summary-modal" onClick={e => e.stopPropagation()}>
+            <h3>Round Summary</h3>
+            <ul>
+              {rounds.map((r, i) => (
+                <li key={i}>
+                  <p><strong>Your Prompt:</strong> {r.prompt || '(none)'}</p>
+                  <p><strong>Expected:</strong> {r.expected}</p>
+                  <p className="tip"><strong>Tip:</strong> {r.tip}</p>
+                </li>
+              ))}
+            </ul>
+            <button className="btn-primary" onClick={() => navigate('/leaderboard')}>
+              View Leaderboard
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
