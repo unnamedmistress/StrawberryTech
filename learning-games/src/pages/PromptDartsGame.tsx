@@ -151,15 +151,22 @@ export function streakBonus(streak: number) {
 }
 
 export default function PromptDartsGame() {
-  const { setScore } = useContext(UserContext)
+  const { setScore, user } = useContext(UserContext)
   const [rounds] = useState<DartRound[]>(() => shuffle(ROUNDS))
   const [round, setRound] = useState(0)
   const [choice, setChoice] = useState<'bad' | 'good' | null>(null)
+  const [order, setOrder] = useState<Array<'bad' | 'good'>>(() =>
+    Math.random() < 0.5 ? ['bad', 'good'] : ['good', 'bad']
+  )
   const [score, setScoreState] = useState(0)
   const [streak, setStreak] = useState(0)
 
-  const TOTAL_TIME = 15
-  const MAX_POINTS = 10
+
+  const TOTAL_TIME =
+    user.difficulty === 'easy' ? 20 : user.difficulty === 'hard' ? 10 : 15
+  const MAX_POINTS =
+    user.difficulty === 'easy' ? 8 : user.difficulty === 'hard' ? 12 : 10
+n
   const [timeLeft, setTimeLeft] = useState(TOTAL_TIME)
   const [pointsLeft, setPointsLeft] = useState(MAX_POINTS)
   const current = ROUNDS[round]
@@ -168,7 +175,9 @@ export default function PromptDartsGame() {
   useEffect(() => {
     setTimeLeft(TOTAL_TIME)
     setPointsLeft(MAX_POINTS)
-  }, [round])
+
+  }, [round, TOTAL_TIME, MAX_POINTS])
+
 
   useEffect(() => {
     if (choice !== null || timeLeft <= 0) return
@@ -188,12 +197,13 @@ export default function PromptDartsGame() {
   function handleSelect(option: 'bad' | 'good') {
     setChoice(option)
     if (checkChoice(current, option)) {
-      const nextStreak = streak + 1
-      setStreak(nextStreak)
-      const bonus = streakBonus(nextStreak)
-      setScoreState(s => s + pointsLeft + bonus)
+
+      setScoreState(s => s + pointsLeft)
+      setPenaltyMsg('')
     } else {
-      setStreak(0)
+      setScoreState(s => Math.max(0, s - PENALTY))
+      setPenaltyMsg(`Incorrect! -${PENALTY} points`)
+
     }
   }
 
@@ -248,8 +258,16 @@ export default function PromptDartsGame() {
 
           <p>Which prompt is clearer?</p>
           <div className="options">
-            <button className="btn-primary" onClick={() => handleSelect('bad')} disabled={choice !== null}>{current.bad}</button>
-            <button className="btn-primary" onClick={() => handleSelect('good')} disabled={choice !== null}>{current.good}</button>
+            {order.map(opt => (
+              <button
+                key={opt}
+                className="btn-primary"
+                onClick={() => handleSelect(opt)}
+                disabled={choice !== null}
+              >
+                {current[opt]}
+              </button>
+            ))}
           </div>
           {choice !== null && (
 
@@ -259,6 +277,9 @@ export default function PromptDartsGame() {
                   ? 'Correct! Clear prompts hit the bullseye.'
                   : 'Not quite. Aim for specific wording.'}
               </p>
+              {penaltyMsg && !checkChoice(current, choice) && (
+                <p className="penalty">{penaltyMsg}</p>
+              )}
 
               <p className="why-message">{current.why}</p>
               <pre className="canned-response">{current.response}</pre>
