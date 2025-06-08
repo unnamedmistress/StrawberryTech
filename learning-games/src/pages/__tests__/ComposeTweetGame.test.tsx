@@ -2,11 +2,14 @@ import { describe, it, expect, afterEach } from 'vitest'
 import { render, fireEvent, cleanup } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import ComposeTweetGame from '../ComposeTweetGame'
+import { UserProvider } from '../../context/UserProvider'
 
 function setup() {
   return render(
     <MemoryRouter>
-      <ComposeTweetGame />
+      <UserProvider>
+        <ComposeTweetGame />
+      </UserProvider>
     </MemoryRouter>
   )
 }
