@@ -148,6 +148,9 @@ export default function PromptDartsGame() {
   const [rounds] = useState<DartRound[]>(() => shuffle(ROUNDS))
   const [round, setRound] = useState(0)
   const [choice, setChoice] = useState<'bad' | 'good' | null>(null)
+  const [order, setOrder] = useState<Array<'bad' | 'good'>>(() =>
+    Math.random() < 0.5 ? ['bad', 'good'] : ['good', 'bad']
+  )
   const [score, setScoreState] = useState(0)
 
   const TOTAL_TIME = 15
@@ -160,6 +163,7 @@ export default function PromptDartsGame() {
   useEffect(() => {
     setTimeLeft(TOTAL_TIME)
     setPointsLeft(MAX_POINTS)
+    setOrder(Math.random() < 0.5 ? ['bad', 'good'] : ['good', 'bad'])
   }, [round])
 
   useEffect(() => {
@@ -229,8 +233,16 @@ export default function PromptDartsGame() {
 
           <p>Which prompt is clearer?</p>
           <div className="options">
-            <button className="btn-primary" onClick={() => handleSelect('bad')} disabled={choice !== null}>{current.bad}</button>
-            <button className="btn-primary" onClick={() => handleSelect('good')} disabled={choice !== null}>{current.good}</button>
+            {order.map(opt => (
+              <button
+                key={opt}
+                className="btn-primary"
+                onClick={() => handleSelect(opt)}
+                disabled={choice !== null}
+              >
+                {current[opt]}
+              </button>
+            ))}
           </div>
           {choice !== null && (
 
