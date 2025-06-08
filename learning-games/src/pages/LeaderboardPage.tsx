@@ -20,6 +20,11 @@ export default function LeaderboardPage() {
 
   const [scores, setScores] = useState<Record<string, ScoreEntry[]>>({})
   const [game, setGame] = useState('tone')
+  const tabs = useMemo(() => {
+    const base = ['tone', 'quiz', 'darts', 'recipe', 'escape', 'compose']
+    const dynamic = Object.keys(scores)
+    return Array.from(new Set([...base, ...dynamic]))
+  }, [scores])
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -63,7 +68,7 @@ export default function LeaderboardPage() {
         <h2>Leaderboard</h2>
         <section className="leaderboard-card">
           <div className="game-tabs">
-            {Object.keys(scores).map(key => (
+            {tabs.map(key => (
               <button
                 key={key}
                 className={game === key ? 'active' : undefined}

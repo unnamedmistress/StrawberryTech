@@ -1,6 +1,7 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useContext } from 'react'
 import InstructionBanner from '../components/ui/InstructionBanner'
 import ProgressSidebar from '../components/layout/ProgressSidebar'
+import { UserContext } from '../context/UserContext'
 import './ComposeTweetGame.css'
 
 const SAMPLE_RESPONSE =
@@ -8,10 +9,12 @@ const SAMPLE_RESPONSE =
 const CORRECT_PROMPT = 'Compose a tweet about reading a new book'
 
 export default function ComposeTweetGame() {
+  const { setScore, addBadge, user } = useContext(UserContext)
   const [guess, setGuess] = useState('')
   const [feedback, setFeedback] = useState('')
   const [doorUnlocked, setDoorUnlocked] = useState(false)
   const [timeLeft, setTimeLeft] = useState(30)
+  const [score, setScoreState] = useState<number | null>(null)
   const timerRef = useRef<number | null>(null)
 
   useEffect(() => {
@@ -31,9 +34,15 @@ export default function ComposeTweetGame() {
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     if (guess.trim().toLowerCase() === CORRECT_PROMPT.toLowerCase()) {
-      setFeedback('Correct! The door is unlocked.')
+      const points = timeLeft
+      setFeedback(`Correct! The door is unlocked. You scored ${points} points.`)
       setDoorUnlocked(true)
+      setScoreState(points)
       clearInterval(timerRef.current!)
+      setScore('compose', points)
+      if (points >= 20 && !user.badges.includes('speedy-composer')) {
+        addBadge('speedy-composer')
+      }
     } else {
       setFeedback('Incorrect guess, try again.')
     }
@@ -82,6 +91,11 @@ export default function ComposeTweetGame() {
             </button>
           </form>
           {feedback && <p className="feedback">{feedback}</p>}
+          {score !== null && (
+            <p className="final-score" aria-live="polite">
+              Your score: {score}
+            </p>
+          )}
           <div className="door-area">
             <img
               src={doorUnlocked ? '/images/door-open.png' : '/images/door-closed.png'}
