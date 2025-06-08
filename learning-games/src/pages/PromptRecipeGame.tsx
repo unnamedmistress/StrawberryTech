@@ -146,9 +146,9 @@ async function generateCards(): Promise<Card[]> {
           {
             role: 'system',
             content:
-              'Return four short phrases representing the action, context, format and constraints in that order, each on its own line. Do not include the words Action, Context, Format or Constraints.',
+              'Provide four short phrases that clearly fit the labels Action, Context, Format and Constraints. Output exactly four lines in that order and prefix each line with the matching label followed by a colon. Example:\nAction: Write a thank you note\nContext: to a colleague\nFormat: as a short poem\nConstraints: under 50 words.',
           },
-          { role: 'user', content: 'Provide the phrases.' },
+          { role: 'user', content: 'Provide the labeled phrases.' },
         ],
         max_tokens: 50,
         temperature: 0.8,
