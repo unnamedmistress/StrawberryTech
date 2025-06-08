@@ -112,3 +112,36 @@
     grid-template-columns: 1fr 1fr;
   }
 }
+
+.congrats-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.congrats-modal {
+  background: var(--color-background);
+  color: var(--color-text-dark);
+  padding: 1rem;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 400px;
+  max-height: 80vh;
+  overflow-y: auto;
+  text-align: center;
+}
+
+.congrats-video {
+  width: 100%;
+  height: 215px;
+  border: none;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+}
