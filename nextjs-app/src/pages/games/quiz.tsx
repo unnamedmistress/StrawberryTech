@@ -312,6 +312,7 @@ export function Head() {
         name="description"
         content="Spot the AI's false statement among the truths."
       />
+      <link rel="canonical" href="https://strawberrytech.com/games/quiz" />
     </>
   )
 }

@@ -151,6 +151,7 @@ export function Head() {
     <>
       <title>Leaderboard | StrawberryTech</title>
       <meta name="description" content="See top scores across all games." />
+      <link rel="canonical" href="https://strawberrytech.com/leaderboard" />
     </>
   )
 }

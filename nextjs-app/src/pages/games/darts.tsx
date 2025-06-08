@@ -558,6 +558,7 @@ export function Head() {
         name="description"
         content="Choose the clearest prompt to hit the bullseye."
       />
+      <link rel="canonical" href="https://strawberrytech.com/games/darts" />
     </>
   )
 }
