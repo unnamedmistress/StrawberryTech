@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useContext } from 'react'
+import { useState, useEffect, useRef, useContext, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import InstructionBanner from '../components/ui/InstructionBanner'
 import Tooltip from '../components/ui/Tooltip'
@@ -13,60 +13,90 @@ import { scorePrompt } from '../utils/scorePrompt'
 interface Clue {
   aiResponse: string
   expectedPrompt: string
-  hint: string
+  hints: string[]
 }
 
 const CLUES: Clue[] = [
   {
     aiResponse: "Here's a fun joke: Why don't skeletons fight each other? They don't have the guts!",
     expectedPrompt: 'Tell me a kid-friendly joke',
-    hint: 'Try asking for a joke suitable for children.'
+    hints: [
+      'The subject is humor suitable for children.',
+      "The verb asks to 'tell' something funny.",
+    ],
   },
   {
     aiResponse: 'This thank-you note expresses deep gratitude to a teacher for their support.',
     expectedPrompt: 'Write a thank-you note to a teacher',
-    hint: 'Think about thanking a teacher in a short note.'
+    hints: [
+      "It's about appreciating an educator.",
+      "The key verb is 'write'.",
+    ],
   },
   {
     aiResponse: 'A healthy meal plan for teens should include protein, whole grains, and veggies.',
     expectedPrompt: 'Suggest a healthy weekly meal plan for teenagers',
-    hint: 'Mention a healthy weekly meal plan for teens.'
+    hints: [
+      'Topic relates to nutrition for teens.',
+      "The verb asks to 'suggest' meals.",
+    ],
   },
   {
     aiResponse: 'To improve sleep, reduce screen time before bed and maintain a consistent schedule.',
     expectedPrompt: 'Give sleep hygiene tips for students',
-    hint: 'Ask for sleep hygiene tips aimed at students.'
+    hints: [
+      'Focuses on better rest for students.',
+      "The verb asks to 'give' advice.",
+    ],
   },
   {
     aiResponse: 'The mitochondria is the powerhouse of the cell. It generates energy through respiration.',
     expectedPrompt: 'Explain what mitochondria does in a cell',
-    hint: 'Request a short explanation of mitochondria.'
+    hints: [
+      "It's about a part of a cell that makes energy.",
+      "The verb is 'explain'.",
+    ],
   },
   {
     aiResponse: 'For a 50-year-old man, a basic workout includes stretching, walking, and light weights.',
     expectedPrompt: 'Write a workout routine for a man in his 50s',
-    hint: 'Mention a workout routine for someone in his 50s.'
+    hints: [
+      'Concerns fitness for a middle-aged man.',
+      "Starts with the verb 'write'.",
+    ],
   },
   {
     aiResponse: 'The water cycle includes evaporation, condensation, precipitation, and collection.',
     expectedPrompt: 'Describe the steps of the water cycle',
-    hint: 'Think about describing each step of the water cycle.'
+    hints: [
+      'Topic involves evaporation and precipitation.',
+      "Uses the verb 'describe'.",
+    ],
   },
   {
     aiResponse: 'A persuasive paragraph includes a claim, evidence, and a strong conclusion.',
     expectedPrompt: 'How do you write a persuasive paragraph?',
-    hint: 'You want instructions for writing a persuasive paragraph.'
+    hints: [
+      'About constructing convincing writing.',
+      "Includes the verb 'write'.",
+    ],
   },
   {
     aiResponse: 'A simple Python function to reverse a string uses slicing: return s[::-1]',
     expectedPrompt: 'Show how to reverse a string in Python',
-    hint: 'Ask for Python code that reverses a string.'
+    hints: [
+      'Deals with coding in a popular language.',
+      "The verb is 'show'.",
+    ],
   },
   {
     aiResponse: 'The economic causes of the French Revolution include debt, taxation, and inequality.',
     expectedPrompt: 'Summarize the economic causes of the French Revolution',
-  hint: 'Request a short summary of the French Revolution\'s economic causes.'
-  }
+    hints: [
+      'Concerns French history and its finances.',
+      "Begins with the verb 'summarize'.",
+    ],
+  },
 ]
 
 const TOTAL_STEPS = 4
@@ -81,7 +111,8 @@ export default function PromptGuessEscape() {
   const [points, setPoints] = useState(0)
   const [message, setMessage] = useState('')
   const [status, setStatus] = useState<'success' | 'error' | ''>('')
-  const [showHint, setShowHint] = useState(false)
+  const [hintIndex, setHintIndex] = useState(0)
+  const [hintCount, setHintCount] = useState(0)
   const [showNext, setShowNext] = useState(false)
   const [timeLeft, setTimeLeft] = useState(30)
   const [openPercent, setOpenPercent] = useState(0)
@@ -107,12 +138,34 @@ export default function PromptGuessEscape() {
     return () => clearInterval(id)
   }, [index])
 
+  const revealHint = useCallback(() => {
+    setHintIndex(i => {
+      if (i < clue.hints.length) {
+        setHintCount(c => c + 1)
+        return i + 1
+      }
+      return i
+    })
+  }, [clue.hints])
+
+  useEffect(() => {
+    function onKey(e: KeyboardEvent) {
+      if (e.key.toLowerCase() === 'h') {
+        e.preventDefault()
+        revealHint()
+      }
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [revealHint])
+
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     const { score, tips } = scorePrompt(clue.expectedPrompt, input.trim())
     if (score >= 20) {
       const timeBonus = Date.now() - startRef.current < 10000 ? 5 : 0
-      const total = score + 10 + timeBonus
+      const penalty = hintCount * 2
+      const total = Math.max(0, score + 10 + timeBonus - penalty)
       setPoints(p => p + total)
       setMessage(`Door unlocked! +${total} points`)
       setStatus('success')
@@ -131,7 +184,8 @@ export default function PromptGuessEscape() {
       setInput('')
       setMessage('')
       setStatus('')
-      setShowHint(false)
+      setHintIndex(0)
+      setHintCount(0)
       setShowNext(false)
     } else {
       setScore('escape', points)
@@ -159,15 +213,19 @@ export default function PromptGuessEscape() {
               placeholder="Type the prompt that caused this reply"
             />
             <button type="submit" className="btn-primary">Submit</button>
-            <button type="button" className="btn-primary" onClick={() => setShowHint(h => !h)}>
-              Hint
+            <button type="button" className="btn-primary" onClick={revealHint}>
+              Hint (H)
             </button>
           </form>
           <ProgressBar percent={openPercent} />
-          {showHint && (
-            <Tooltip message={clue.hint}>
-              <span className="hint-text">{clue.hint}</span>
-            </Tooltip>
+          {hintIndex > 0 && (
+            <div>
+              {clue.hints.slice(0, hintIndex).map(h => (
+                <Tooltip key={h} message={h}>
+                  <span className="hint-text">{h}</span>
+                </Tooltip>
+              ))}
+            </div>
           )}
           {message && (
             <p className={`feedback ${status}`}>{status === 'success' ? '✔️' : '⚠️'} {message}</p>
