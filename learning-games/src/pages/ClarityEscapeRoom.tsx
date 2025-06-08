@@ -117,7 +117,8 @@ export default function ClarityEscapeRoom() {
   const [showNext, setShowNext] = useState(false)
   const [timeLeft, setTimeLeft] = useState(30)
   const [openPercent, setOpenPercent] = useState(0)
-  const [roomDescription, setRoomDescription] = useState('')
+
+  const [aiHint, setAiHint] = useState('')
   const startRef = useRef(Date.now())
 
   const clue = doors[index]
@@ -125,6 +126,7 @@ export default function ClarityEscapeRoom() {
   useEffect(() => {
     setTimeLeft(30)
     startRef.current = Date.now()
+    setAiHint('')
     const id = setInterval(() => {
       setTimeLeft(t => {
         if (t <= 1) {
@@ -161,6 +163,41 @@ export default function ClarityEscapeRoom() {
     return () => window.removeEventListener('keydown', onKey)
   }, [revealHint])
 
+  async function fetchAiHint(guess: string) {
+    try {
+      const resp = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${import.meta.env.VITE_OPENAI_API_KEY}`,
+        },
+        body: JSON.stringify({
+          model: 'gpt-3.5-turbo',
+          messages: [
+            {
+              role: 'system',
+              content:
+                'Provide a single short hint referencing the user\'s guess without revealing the answer.',
+            },
+            {
+              role: 'user',
+              content: `The correct prompt is "${clue.expectedPrompt}". The user guessed "${guess}". Give a helpful hint in under 15 words.`,
+            },
+          ],
+          max_tokens: 30,
+          temperature: 0.7,
+        }),
+      })
+      const data = await resp.json()
+      const hintText: string | undefined = data?.choices?.[0]?.message?.content
+      if (hintText) {
+        setAiHint(hintText.trim())
+      }
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     const { score, tips } = scorePrompt(clue.expectedPrompt, input.trim())
@@ -173,11 +210,15 @@ export default function ClarityEscapeRoom() {
       setStatus('success')
       setOpenPercent(((index + 1) / TOTAL_STEPS) * 100)
       setShowNext(true)
-      generateRoomDescription().then(setRoomDescription)
+
+      setAiHint('')
+
     } else {
       const tipText = tips.join(' ')
       setMessage(`Too vague. ${tipText}`)
       setStatus('error')
+      setAiHint('')
+      fetchAiHint(input.trim())
     }
   }
 
@@ -189,7 +230,9 @@ export default function ClarityEscapeRoom() {
       setStatus('')
       setHintIndex(0)
       setHintCount(0)
-      setRoomDescription('')
+
+      setAiHint('')
+
       setShowNext(false)
     } else {
       setScore('escape', points)
@@ -231,6 +274,11 @@ export default function ClarityEscapeRoom() {
                       <span className="hint-text">{h}</span>
                     </Tooltip>
                   ))}
+                  {aiHint && (
+                    <Tooltip message={aiHint}>
+                      <span className="hint-text">{aiHint}</span>
+                    </Tooltip>
+                  )}
                 </div>
               )}
               {message && (
