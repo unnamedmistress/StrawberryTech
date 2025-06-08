@@ -17,7 +17,7 @@ export interface DartRound {
 }
 
 
-export const ROUNDS: DartRound[] = [
+export const FALLBACK_ROUNDS: DartRound[] = [
   {
     options: [
       'Tell me about AI.',
@@ -233,8 +233,10 @@ export function streakBonus(streak: number) {
 }
 
 export default function PromptDartsGame() {
+
   const { setScore, user } = useContext(UserContext)
   const [rounds] = useState<DartRound[]>(() => shuffle(ROUNDS))
+
   const [round, setRound] = useState(0)
 
   const [choice, setChoice] = useState<'bad' | 'good' | null>(null)
@@ -257,6 +259,7 @@ export default function PromptDartsGame() {
   const [timeLeft, setTimeLeft] = useState(TOTAL_TIME)
   const [pointsLeft, setPointsLeft] = useState(MAX_POINTS)
   const current = rounds[round]
+
 
 
   useEffect(() => {
@@ -308,6 +311,14 @@ export default function PromptDartsGame() {
     }
   }
 
+  if (!rounds.length) {
+    return (
+      <div className="darts-page">
+        <InstructionBanner>Loading rounds...</InstructionBanner>
+      </div>
+    )
+  }
+
   if (round >= rounds.length) {
     return (
       <div className="darts-page">
@@ -340,7 +351,7 @@ export default function PromptDartsGame() {
             style={{ width: '200px' }}
           />
 
-          <h3>Round {round + 1} of {ROUNDS.length}</h3>
+          <h3>Round {round + 1} of {rounds.length}</h3>
 
           <p className="timer">Time: {timeLeft}s</p>
           <p className="points">Available points: {pointsLeft}</p>
