@@ -57,6 +57,11 @@ export default function NavBar() {
         </li>
         <li>
           <Tooltip message="Hover here for a surprise!">
+            <Link to="/games/compose">Compose Tweet</Link>
+          </Tooltip>
+        </li>
+        <li>
+          <Tooltip message="Hover here for a surprise!">
             <Link to="/leaderboard">Progress</Link>
           </Tooltip>
         </li>

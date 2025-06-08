@@ -7,6 +7,7 @@ import QuizGame from './pages/QuizGame'
 import PromptRecipeGame from './pages/PromptRecipeGame'
 import PromptDartsGame from './pages/PromptDartsGame'
 import PromptGuessEscape from './pages/PromptGuessEscape'
+import ComposeTweetGame from './pages/ComposeTweetGame'
 
 import ClarityEscapeRoom from './pages/ClarityEscapeRoom'
 
@@ -41,6 +42,7 @@ function App() {
         <Route path="/games/quiz" element={<QuizGame />} />
         <Route path="/games/recipe" element={<PromptRecipeGame />} />
         <Route path="/games/darts" element={<PromptDartsGame />} />
+        <Route path="/games/compose" element={<ComposeTweetGame />} />
         <Route path="/games/guess" element={<PromptGuessEscape />} />
         <Route path="/prompt-builder" element={<PromptRecipeGame />} />
 
