@@ -11,11 +11,20 @@ const SAMPLE_RESPONSE =
 const CORRECT_PROMPT = 'Compose a tweet about reading a new book'
 const SCORE_THRESHOLD = 20
 
+const PROMPT_TIPS = [
+  'Be specific about what you want the AI to do.',
+  'Provide context so the AI understands your request.',
+  'Break complex tasks into clear steps.',
+  'State the desired length or format.',
+  'Offer examples to show the style you expect.',
+]
+
 export default function ComposeTweetGame() {
   const { setScore, addBadge, user } = useContext(UserContext)
   const [guess, setGuess] = useState('')
   const [feedback, setFeedback] = useState('')
   const [doorUnlocked, setDoorUnlocked] = useState(false)
+  const [tipIndex, setTipIndex] = useState(0)
   const [timeLeft, setTimeLeft] = useState(30)
   const [score, setScoreState] = useState<number | null>(null)
   const timerRef = useRef<number | null>(null)
@@ -42,6 +51,7 @@ export default function ComposeTweetGame() {
       setFeedback('Correct! The door is unlocked.')
 
       setDoorUnlocked(true)
+
       setScoreState(points)
       clearInterval(timerRef.current!)
       setScore('compose', points)
@@ -115,6 +125,11 @@ export default function ComposeTweetGame() {
                 className="hero-img"
                 style={{ width: '200px' }}
               />
+            )}
+            {doorUnlocked && (
+              <p className="prompt-tip" role="status" aria-live="polite">
+                {PROMPT_TIPS[tipIndex]}
+              </p>
             )}
           </div>
         </div>
