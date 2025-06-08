@@ -1,4 +1,6 @@
-import { useState, useEffect, useRef, useContext } from 'react'
+
+import { useState, useEffect, useRef } from 'react'
+import { scorePrompt } from '../utils/scorePrompt'
 import InstructionBanner from '../components/ui/InstructionBanner'
 import ProgressSidebar from '../components/layout/ProgressSidebar'
 import { UserContext } from '../context/UserContext'
@@ -7,6 +9,7 @@ import './ComposeTweetGame.css'
 const SAMPLE_RESPONSE =
   'Just finished reading an amazing book on technology! Highly recommend it to everyone. #BookLovers'
 const CORRECT_PROMPT = 'Compose a tweet about reading a new book'
+const SCORE_THRESHOLD = 20
 
 export default function ComposeTweetGame() {
   const { setScore, addBadge, user } = useContext(UserContext)
@@ -33,9 +36,11 @@ export default function ComposeTweetGame() {
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    if (guess.trim().toLowerCase() === CORRECT_PROMPT.toLowerCase()) {
-      const points = timeLeft
-      setFeedback(`Correct! The door is unlocked. You scored ${points} points.`)
+
+    const { score, tips } = scorePrompt(CORRECT_PROMPT, guess)
+    if (score >= SCORE_THRESHOLD) {
+      setFeedback('Correct! The door is unlocked.')
+
       setDoorUnlocked(true)
       setScoreState(points)
       clearInterval(timerRef.current!)
@@ -44,7 +49,7 @@ export default function ComposeTweetGame() {
         addBadge('speedy-composer')
       }
     } else {
-      setFeedback('Incorrect guess, try again.')
+      setFeedback(tips.join(' '))
     }
     setGuess('')
   }
