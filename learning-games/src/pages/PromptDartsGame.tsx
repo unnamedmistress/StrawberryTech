@@ -330,12 +330,6 @@ export default function PromptDartsGame() {
     }
   }
 
-  function handleHint() {
-    if (hintUsed) return
-    setHintUsed(true)
-    setShowHint(true)
-    setPointsLeft(p => Math.max(0, p - 2))
-  }
 
   function next() {
     if (round + 1 < rounds.length) {
