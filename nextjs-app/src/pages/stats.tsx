@@ -94,3 +94,12 @@ export default function StatsPage() {
     </div>
   )
 }
+
+export function Head() {
+  return (
+    <>
+      <title>Site Statistics | StrawberryTech</title>
+      <meta name="description" content="View visitor analytics collected by the server." />
+    </>
+  )
+}
