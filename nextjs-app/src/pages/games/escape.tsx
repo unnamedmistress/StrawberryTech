@@ -9,6 +9,7 @@ import { UserContext } from '../../context/UserContext'
 import shuffle from '../../utils/shuffle'
 import '../../styles/ClarityEscapeRoom.css'
 import { scorePrompt } from '../../utils/scorePrompt'
+import Head from 'next/head'
 
 interface Clue {
   aiResponse: string
@@ -245,7 +246,38 @@ export default function ClarityEscapeRoom() {
   }
 
   return (
-    <div className="escape-page">
+    <>
+      <Head>
+        <title>Clarity Escape Room - StrawberryTech</title>
+        <meta property="og:title" content="Clarity Escape Room - StrawberryTech" />
+        <meta
+          property="og:description"
+          content="Solve prompt puzzles to break out of the clarity escape room."
+        />
+        <meta
+          property="og:image"
+          content="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_12_36%20PM.png"
+        />
+        <meta
+          property="og:url"
+          content="https://strawberry-tech.vercel.app/games/escape"
+        />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Clarity Escape Room - StrawberryTech" />
+        <meta
+          name="twitter:description"
+          content="Solve prompt puzzles to break out of the clarity escape room."
+        />
+        <meta
+          name="twitter:image"
+          content="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_12_36%20PM.png"
+        />
+        <meta
+          name="twitter:url"
+          content="https://strawberry-tech.vercel.app/games/escape"
+        />
+      </Head>
+      <div className="escape-page">
       <InstructionBanner>Escape Room: Guess the Prompt</InstructionBanner>
       <div className="escape-wrapper">
         <aside className="escape-sidebar">
@@ -322,5 +354,6 @@ export default function ClarityEscapeRoom() {
         </div>
       )}
     </div>
+    </>
   )
 }
