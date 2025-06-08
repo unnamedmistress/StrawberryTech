@@ -7,82 +7,18 @@ import { UserContext } from '../context/UserContext'
 import './QuizGame.css'
 import InstructionBanner from '../components/ui/InstructionBanner'
 import { HALLUCINATION_EXAMPLES } from '../data/hallucinationExamples'
+import { H_ROUNDS } from '../data/hallucinationRounds'
 
 interface StatementSet {
   statements: string[]
   lieIndex: number
+  source: string
+  correction: string
   category?: string
 }
 
-async function generateStatementSet(count = 3): Promise<StatementSet | null> {
-  try {
-    const resp = await fetch('https://api.openai.com/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${import.meta.env.VITE_OPENAI_API_KEY}`,
-      },
-      body: JSON.stringify({
-        model: 'gpt-3.5-turbo',
-        messages: [
-          {
-            role: 'system',
-            content:
-              `Create ${count} short statements about general knowledge where exactly one is false. Respond strictly in JSON with fields "statements" and "lieIndex" indicating which index (0-${count - 1}) is the lie.`,
-          },
-          { role: 'user', content: 'Generate the statements now.' },
-        ],
-        temperature: 0.7,
-      }),
-    })
-    const data = await resp.json()
-    const text: string | undefined = data?.choices?.[0]?.message?.content?.trim()
-    if (!text) return null
-    // Extract JSON in case extra text was returned
-    const match = text.match(/\{[\s\S]*\}/)
-    if (!match) return null
-    const parsed = JSON.parse(match[0])
-    if (
-      Array.isArray(parsed.statements) &&
-      typeof parsed.lieIndex === 'number'
-    ) {
-      return parsed as StatementSet
-    }
-  } catch (err) {
-    console.error('AI generation failed', err)
-  }
-  return null
-}
 
-const ROUNDS: StatementSet[] = [
-  {
-    category: 'Science',
-    statements: [
-      'Bananas are berries.',
-      'Venus is hotter than Mercury.',
-      'Goldfish have a memory span of only three seconds.',
-    ],
-    lieIndex: 2,
-  },
-  {
-    category: 'World Facts',
-    statements: [
-      'Adult humans have 206 bones.',
-      'The Amazon River is the longest river in the world.',
-      'The Eiffel Tower can be 15 cm taller during the summer.',
-    ],
-    lieIndex: 1,
-  },
-  {
-    category: 'Human Body',
-    statements: [
-      'Honey never spoils.',
-      'Mount Everest is the highest mountain above sea level.',
-      'Humans can breathe and swallow at the same time.',
-    ],
-    lieIndex: 2,
-  },
-]
+const ROUNDS: StatementSet[] = H_ROUNDS
 
 const QUOTE = 'Always verify surprising claims.'
 const TIP = 'Tip: ask for sources when something sounds off.'
@@ -187,18 +123,13 @@ export default function QuizGame() {
   const { user, setScore, addBadge } = useContext(UserContext)
   const navigate = useNavigate()
   const [round, setRound] = useState(0)
-  const [dynamicRound, setDynamicRound] = useState<StatementSet | null>(null)
   const [choice, setChoice] = useState<number | null>(null)
   const [score, setScoreState] = useState(0)
   const [played, setPlayed] = useState(0)
   const [streak, setStreak] = useState(0)
-  const [numStatements, setNumStatements] = useState(() => {
-    if (user.difficulty === 'hard') return 5
-    if (user.difficulty === 'easy') return 3
-    return 4
-  })
+  const NUM_STATEMENTS = 3
 
-  const current = dynamicRound ?? ROUNDS[round]
+  const current = ROUNDS[round]
   const correct = choice === current.lieIndex
 
   function handleSelect(idx: number) {
@@ -208,15 +139,8 @@ export default function QuizGame() {
 
   function refreshRound() {
     setChoice(null)
-    generateStatementSet(numStatements).then((set) => {
-      if (set) {
-        setDynamicRound(set)
-      } else {
-        const next = Math.floor(Math.random() * ROUNDS.length)
-        setRound(next)
-        setDynamicRound(null)
-      }
-    })
+    const next = Math.floor(Math.random() * ROUNDS.length)
+    setRound(next)
   }
 
   function nextRound() {
@@ -230,9 +154,6 @@ export default function QuizGame() {
       addBadge('hallucination-hunter')
     }
 
-    if (wasCorrect && numStatements < 6) {
-      setNumStatements(n => n + 1)
-    }
 
     if (played + 1 === ROUNDS.length) {
       setScore('quiz', newScore)
@@ -244,18 +165,10 @@ export default function QuizGame() {
       setPlayed(0)
       setChoice(null)
       setRound(0)
-      setDynamicRound(null)
       return
     }
     setChoice(null)
-    generateStatementSet(numStatements).then((set) => {
-      if (set) {
-        setDynamicRound(set)
-      } else {
-        setRound((r) => (r + 1) % ROUNDS.length)
-        setDynamicRound(null)
-      }
-    })
+    setRound((r) => (r + 1) % ROUNDS.length)
   }
 
   useEffect(() => {
@@ -298,7 +211,7 @@ export default function QuizGame() {
           </button>
           </div>
           <p className="header-instruction">
-            Pick the hallucination from the {numStatements} statements.
+            Pick the hallucination from the {NUM_STATEMENTS} statements.
           </p>
           <p className="round-info">Round {round + 1} / {ROUNDS.length}</p>
           {current.category && (
@@ -323,6 +236,12 @@ export default function QuizGame() {
               {correct
                 ? '✅ Correct! You spotted the hallucination.'
                 : '❌ Incorrect. That one is true.'}
+            </p>
+            <p className="feedback-source">
+              The hallucination was: "{current.statements[current.lieIndex]}".{' '}
+              <a href={current.source} target="_blank" rel="noopener noreferrer">
+                Article
+              </a>
             </p>
 
             <button className="btn-primary" onClick={nextRound}>Next Round</button>
