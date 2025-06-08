@@ -17,6 +17,7 @@
   --color-secondary: #f8b7b6;
   --color-deep-red: #b41c2d;
   --color-mint: #a8e6cf;
+  --color-yellow: #fef08a;
   --color-text-dark: #333;
   /* legacy variable names */
   --color-purple: var(--color-brand);
