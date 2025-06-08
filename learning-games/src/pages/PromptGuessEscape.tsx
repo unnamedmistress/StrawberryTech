@@ -65,15 +65,17 @@ const CLUES: Clue[] = [
   {
     aiResponse: 'The economic causes of the French Revolution include debt, taxation, and inequality.',
     expectedPrompt: 'Summarize the economic causes of the French Revolution',
-    hint: 'Request a short summary of the French Revolution\'s economic causes.'
+  hint: 'Request a short summary of the French Revolution\'s economic causes.'
   }
 ]
+
+const TOTAL_STEPS = 4
 
 
 export default function PromptGuessEscape() {
   const navigate = useNavigate()
   const { setScore } = useContext(UserContext)
-  const [doors] = useState(() => shuffle(CLUES))
+  const [doors] = useState(() => shuffle(CLUES).slice(0, TOTAL_STEPS))
   const [index, setIndex] = useState(0)
   const [input, setInput] = useState('')
   const [points, setPoints] = useState(0)
@@ -114,7 +116,7 @@ export default function PromptGuessEscape() {
       setPoints(p => p + total)
       setMessage(`Door unlocked! +${total} points`)
       setStatus('success')
-      setOpenPercent(((index + 1) / doors.length) * 100)
+      setOpenPercent(((index + 1) / TOTAL_STEPS) * 100)
       setShowNext(true)
     } else {
       const tipText = tips.join(' ')
@@ -124,7 +126,7 @@ export default function PromptGuessEscape() {
   }
 
   function nextChallenge() {
-    if (index + 1 < doors.length) {
+    if (index + 1 < TOTAL_STEPS) {
       setIndex(i => i + 1)
       setInput('')
       setMessage('')
