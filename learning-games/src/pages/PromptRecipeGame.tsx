@@ -110,6 +110,24 @@ const CONSTRAINTS = [
   'limit to three sentences',
 ]
 
+const CATEGORY_POOLS: Record<Slot, string[]> = {
+  Action: ACTIONS,
+  Context: CONTEXTS,
+  Format: FORMATS,
+  Constraints: CONSTRAINTS,
+}
+
+export function ensureCardSet(lines: string[]): Card[] {
+  const categories: Slot[] = ['Action', 'Context', 'Format', 'Constraints']
+  return categories.map((cat, idx) => ({
+    type: cat,
+    text:
+      lines[idx] && lines[idx].trim()
+        ? lines[idx].trim()
+        : randomItem(CATEGORY_POOLS[cat]),
+  }))
+}
+
 function randomItem<T>(arr: T[]): T {
   return arr[Math.floor(Math.random() * arr.length)]
 }
@@ -141,24 +159,14 @@ async function generateCards(): Promise<Card[]> {
     if (text) {
       const lines = parseCardLines(text)
       if (lines.length >= 4) {
-        return [
-          { type: 'Action', text: lines[0] },
-          { type: 'Context', text: lines[1] },
-          { type: 'Format', text: lines[2] },
-          { type: 'Constraints', text: lines[3] },
-        ]
+        return ensureCardSet(lines)
       }
     }
   } catch (err) {
     console.error(err)
     toast.error('Unable to fetch new cards. Using defaults.')
   }
-  return [
-    { type: 'Action', text: randomItem(ACTIONS) },
-    { type: 'Context', text: randomItem(CONTEXTS) },
-    { type: 'Format', text: randomItem(FORMATS) },
-    { type: 'Constraints', text: randomItem(CONSTRAINTS) },
-  ]
+  return ensureCardSet([])
 }
 
 export default function PromptRecipeGame() {
