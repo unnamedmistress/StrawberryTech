@@ -271,7 +271,6 @@ function ToneMatchGame({ onComplete }: { onComplete: (score: number) => void }) 
         </div>
       )}
     </div>
-    </>
   );
 }
 
@@ -377,5 +376,6 @@ export default function Match3Game() {
         <Link href="/leaderboard">Return to Progress</Link>
       </p>
     </div>
+    </>
   );
 }
