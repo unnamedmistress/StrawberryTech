@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest'
 import {
   evaluateRecipe,
   parseCardLines,
+  ensureCardSet,
   type Dropped,
   type Card,
 } from '../PromptRecipeGame'
@@ -67,5 +68,20 @@ describe('parseCardLines', () => {
       'bullet',
       'short',
     ])
+  })
+})
+
+describe('ensureCardSet', () => {
+  it('fills missing categories with defaults', () => {
+    const result = ensureCardSet(['Do it', 'quickly'])
+    expect(result).toHaveLength(4)
+    expect(result[0].type).toBe('Action')
+    expect(result[0].text).toBe('Do it')
+    expect(result[1].type).toBe('Context')
+    expect(result[1].text).toBe('quickly')
+    expect(result[2].type).toBe('Format')
+    expect(typeof result[2].text).toBe('string')
+    expect(result[3].type).toBe('Constraints')
+    expect(typeof result[3].text).toBe('string')
   })
 })
