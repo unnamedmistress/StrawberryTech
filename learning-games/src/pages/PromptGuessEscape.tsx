@@ -93,7 +93,7 @@ function scoreGuess(expected: string, guess: string): number {
 
 export default function PromptGuessEscape() {
   const navigate = useNavigate()
-  const { setScore, user } = useContext(UserContext)
+  const { setScore } = useContext(UserContext)
   const [doors] = useState(() => shuffle(CLUES))
   const [index, setIndex] = useState(0)
   const [input, setInput] = useState('')
