@@ -1,5 +1,4 @@
 import { useState, useEffect, useContext } from 'react'
-import { Link } from 'react-router-dom'
 import CompletionModal from '../components/ui/CompletionModal'
 import { motion } from 'framer-motion'
 import confetti from 'canvas-confetti'
