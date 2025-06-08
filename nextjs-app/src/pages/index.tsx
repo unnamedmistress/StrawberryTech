@@ -85,12 +85,12 @@ export default function Home() {
           Play Now
         </button>
         <button
-          onClick={() => router.push('/testimonials')}
+          onClick={() => router.push('/community')}
           className="btn-primary"
           style={{ marginLeft: '1rem' }}
-          aria-label="Read testimonials"
+          aria-label="View community feedback"
         >
-          Testimonials
+          Community
         </button>
         <button
           onClick={() => router.push('/playlist')}
