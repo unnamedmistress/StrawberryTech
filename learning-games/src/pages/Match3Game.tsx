@@ -327,8 +327,8 @@ export default function Match3Game() {
         </aside>
         <div className="match3-container">
           <img
-            src="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_16_34%20PM.png"
-            alt="Earlier prompt recipe builder with similar strawberry chef and cards."
+            src="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_47_46%20PM.png"
+            alt="Strawberry calling out sick wrapped in blanket, holding phone with polite sick day message bubble."
             className="hero-img"
             style={{ width: '200px' }}
           />
