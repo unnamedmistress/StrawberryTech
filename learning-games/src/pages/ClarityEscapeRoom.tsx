@@ -9,7 +9,6 @@ import { UserContext } from '../context/UserContext'
 import shuffle from '../utils/shuffle'
 import './ClarityEscapeRoom.css'
 import { scorePrompt } from '../utils/scorePrompt'
-import { generateRoomDescription } from '../utils/generateRoomDescription'
 
 interface Clue {
   aiResponse: string
@@ -288,9 +287,6 @@ export default function ClarityEscapeRoom() {
               )}
               {message && (
                 <p className={`feedback ${status}`}>{status === 'success' ? '✔️' : '⚠️'} {message}</p>
-              )}
-              {roomDescription && (
-                <p className="room-desc" aria-live="polite">{roomDescription}</p>
               )}
               {showNext && (
                 <div className="next-area">
