@@ -277,7 +277,11 @@ export default function PromptDartsGame() {
   const [streak, setStreak] = useState(0)
   const [penaltyMsg, setPenaltyMsg] = useState('')
 
+  const [hint, setHint] = useState<string | null>(null)
+  const [hintUsed, setHintUsed] = useState(false)
+
   const PENALTY = 2
+  const HINT_PENALTY = 2
 
 
   const TOTAL_TIME =
@@ -322,10 +326,11 @@ export default function PromptDartsGame() {
     setTimeLeft(TOTAL_TIME)
     setPointsLeft(MAX_POINTS)
 
+
     setChoices(shuffle([...rounds[round].options]))
 
 
-  }, [round, TOTAL_TIME, MAX_POINTS])
+  }, [round, TOTAL_TIME, MAX_POINTS, rounds])
 
 
 
@@ -359,6 +364,14 @@ export default function PromptDartsGame() {
     }
   }
 
+  function revealHint() {
+    if (hintUsed) return
+    const clue = current.why.split(' ').slice(0, 6).join(' ')
+    setHint(clue + (current.why.split(' ').length > 6 ? '...' : ''))
+    setHintUsed(true)
+    setPointsLeft(p => Math.max(0, p - HINT_PENALTY))
+  }
+
 
   function next() {
     if (round + 1 < rounds.length) {
@@ -367,6 +380,8 @@ export default function PromptDartsGame() {
       setChoices(shuffle([...rounds[round + 1].options]))
       setTimeLeft(TOTAL_TIME)
       setPointsLeft(MAX_POINTS)
+      setHint(null)
+      setHintUsed(false)
     } else {
       setScore('darts', score)
       setRound(r => r + 1)
@@ -435,6 +450,14 @@ export default function PromptDartsGame() {
             ))}
 
           </div>
+          <button
+            className="btn-primary"
+            onClick={revealHint}
+            disabled={hintUsed || choice !== null}
+          >
+            Hint
+          </button>
+          {hint && <p className="hint-text">{hint}</p>}
           {choice !== null && (
 
             <>
