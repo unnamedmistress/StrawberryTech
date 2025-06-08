@@ -6,6 +6,31 @@ import { UserContext } from '../context/UserContext'
 import shuffle from '../utils/shuffle'
 import './PromptDartsGame.css'
 
+const KEYWORDS = [
+  'list',
+  'draft',
+  'summarize',
+  'provide',
+  'translate',
+  'compose',
+  'give',
+  'write',
+  'explain',
+  'rewrite',
+  'create',
+  'share'
+]
+
+function highlightPrompt(text: string) {
+  return text.split(' ').map((word, i) => {
+    const clean = word.toLowerCase().replace(/[^a-z0-9]/g, '')
+    const highlight = KEYWORDS.includes(clean) || /\d/.test(word)
+    return (
+      <span key={i} className={highlight ? 'hint-highlight' : undefined}>{word} </span>
+    )
+  })
+}
+
 export interface DartRound {
   /** List of prompt options */
   options: string[]
@@ -258,6 +283,7 @@ export default function PromptDartsGame() {
 
   const [timeLeft, setTimeLeft] = useState(TOTAL_TIME)
   const [pointsLeft, setPointsLeft] = useState(MAX_POINTS)
+
   const current = rounds[round]
 
 
@@ -266,7 +292,9 @@ export default function PromptDartsGame() {
     setTimeLeft(TOTAL_TIME)
     setPointsLeft(MAX_POINTS)
 
+
   }, [round, TOTAL_TIME, MAX_POINTS])
+
 
 
   useEffect(() => {
@@ -296,6 +324,13 @@ export default function PromptDartsGame() {
       setPenaltyMsg(`Incorrect! -${PENALTY} points`)
 
     }
+  }
+
+  function handleHint() {
+    if (hintUsed) return
+    setHintUsed(true)
+    setShowHint(true)
+    setPointsLeft(p => Math.max(0, p - 2))
   }
 
   function next() {
@@ -359,6 +394,7 @@ export default function PromptDartsGame() {
           <p>Which prompt is clearer?</p>
           <div className="options">
 
+
             {order.map(opt => (
               <button
                 key={opt}
@@ -370,6 +406,7 @@ export default function PromptDartsGame() {
 
               </button>
             ))}
+
           </div>
           {choice !== null && (
 
