@@ -332,11 +332,9 @@ export default function PromptDartsGame() {
 
 
   useEffect(() => {
-    if (!rounds.length) return
+    if (!rounds.length || round >= rounds.length) return
     setTimeLeft(TOTAL_TIME)
     setPointsLeft(MAX_POINTS)
-
-
     setChoices(shuffle([...rounds[round].options]))
 
 
@@ -414,6 +412,7 @@ export default function PromptDartsGame() {
           <div className="congrats-modal" role="dialog" aria-modal="true">
             <h3>Congratulations!</h3>
             <p className="final-score">Your score: {score}</p>
+            <p>Would you like to play the next game or support us?</p>
             <iframe
               className="congrats-video"
               src={CONGRATS_VIDEO_URL}
