@@ -1,7 +1,8 @@
 {
-  "buildCommand": "npm --prefix learning-games run build",
-  "installCommand": "npm --prefix learning-games install",
-  "outputDirectory": "learning-games/dist",
+  "rootDirectory": "learning-games",
+  "buildCommand": "npm run build",
+  "installCommand": "npm install",
+  "outputDirectory": "dist",
   "framework": "vite"
 }
 
