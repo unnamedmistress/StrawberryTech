@@ -1,4 +1,5 @@
 import type { AppProps } from 'next/app'
+import Head from 'next/head'
 import { UserProvider } from '../context/UserProvider'
 import NavBar from '../components/layout/NavBar'
 import Footer from '../components/layout/Footer'
@@ -10,14 +11,21 @@ import '../styles/App.css'
 import '../app/globals.css'
 
 export default function MyApp({ Component, pageProps }: AppProps) {
+  const description =
+    'Play StrawberryTech mini games to practice AI communication skills.'
   return (
-    <UserProvider>
-      <ScrollToTop />
-      <NavBar />
-      <AnalyticsTracker />
-      <Component {...pageProps} />
-      <Toaster toastOptions={{ ariaProps: { role: 'status', 'aria-live': 'polite' } }} />
-      <Footer />
-    </UserProvider>
+    <>
+      <Head>
+        <meta name="description" content={description} />
+      </Head>
+      <UserProvider>
+        <ScrollToTop />
+        <NavBar />
+        <AnalyticsTracker />
+        <Component {...pageProps} />
+        <Toaster toastOptions={{ ariaProps: { role: 'status', 'aria-live': 'polite' } }} />
+        <Footer />
+      </UserProvider>
+    </>
   )
 }

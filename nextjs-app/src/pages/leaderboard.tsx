@@ -145,3 +145,12 @@ export default function LeaderboardPage() {
     </div>
   )
 }
+
+export function Head() {
+  return (
+    <>
+      <title>Leaderboard | StrawberryTech</title>
+      <meta name="description" content="See top scores across all games." />
+    </>
+  )
+}

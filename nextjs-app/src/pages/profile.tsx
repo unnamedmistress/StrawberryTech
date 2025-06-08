@@ -63,3 +63,12 @@ export default function ProfilePage() {
     </div>
   )
 }
+
+export function Head() {
+  return (
+    <>
+      <title>Your Profile | StrawberryTech</title>
+      <meta name="description" content="Edit your name, age and difficulty level." />
+    </>
+  )
+}

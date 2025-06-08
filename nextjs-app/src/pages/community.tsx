@@ -113,3 +113,15 @@ export default function CommunityPage() {
     </div>
   )
 }
+
+export function Head() {
+  return (
+    <>
+      <title>Community Board | StrawberryTech</title>
+      <meta
+        name="description"
+        content="Read and share posts with other players."
+      />
+    </>
+  )
+}

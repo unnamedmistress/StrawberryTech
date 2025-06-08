@@ -17,3 +17,12 @@ export default function TermsPage() {
     </div>
   )
 }
+
+export function Head() {
+  return (
+    <>
+      <title>Terms of Service | StrawberryTech</title>
+      <meta name="description" content="Review the rules for using the site." />
+    </>
+  )
+}

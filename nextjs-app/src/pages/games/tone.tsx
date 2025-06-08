@@ -346,3 +346,15 @@ export default function Match3Game() {
     </div>
   );
 }
+
+export function Head() {
+  return (
+    <>
+      <title>Tone Match Game | StrawberryTech</title>
+      <meta
+        name="description"
+        content="Match adjectives to explore how tone changes a message."
+      />
+    </>
+  )
+}
