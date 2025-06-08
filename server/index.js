@@ -4,6 +4,8 @@ const cookieParser = require('cookie-parser');
 const fs = require('fs');
 const path = require('path');
 
+const OPENAI_API_KEY = process.env.OPENAI_API_KEY || '';
+
 const app = express();
 const PORT = process.env.PORT || 3001;
 
@@ -20,7 +22,16 @@ function loadData() {
   } catch {
     return {
       user: { name: null, age: null, badges: [], scores: { darts: 0 } },
-      posts: [],
+      posts: [
+        {
+          id: 1,
+          author: 'Admin',
+          content: 'Welcome to the new message board!',
+          date: '2025-01-01T00:00:00Z',
+          sentiment: 1,
+          status: 'approved',
+        },
+      ],
       views: [],
       scores: { darts: [] },
       sessions: [],
@@ -46,6 +57,45 @@ function loadDartRounds() {
   }
 }
 
+async function analyzeSentiment(text) {
+  if (!OPENAI_API_KEY) return 0;
+  try {
+    const resp = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${OPENAI_API_KEY}`,
+      },
+      body: JSON.stringify({
+        model: 'gpt-3.5-turbo',
+        messages: [
+          {
+            role: 'system',
+            content:
+              'Return only a number between -1 and 1 indicating how positive the sentiment is.',
+          },
+          { role: 'user', content: text.slice(0, 200) },
+        ],
+        max_tokens: 1,
+      }),
+    });
+    const data = await resp.json();
+    const val = parseFloat(
+      data?.choices?.[0]?.message?.content?.trim().split(/\s+/)[0] || '0'
+    );
+    return Number.isNaN(val) ? 0 : val;
+  } catch (err) {
+    console.error('Sentiment request failed', err);
+    return 0;
+  }
+}
+
+app.post('/api/sentiment', async (req, res) => {
+  const text = req.body.text || '';
+  const score = await analyzeSentiment(text);
+  res.json({ score });
+});
+
 let data = loadData();
 if (!data.views) data.views = [];
 if (!data.scores) data.scores = { darts: [] };
@@ -68,24 +118,34 @@ app.post('/api/user', (req, res) => {
 });
 
 app.get('/api/posts', (req, res) => {
-  res.json(data.posts);
+  const approved = data.posts.filter(p => p.status === 'approved');
+  res.json(approved);
 });
 
-app.post('/api/posts', (req, res) => {
+app.post('/api/posts', async (req, res) => {
   const author = req.body.author || 'Anonymous';
   if (data.posts.some((p) => p.author === author)) {
     res.status(400).json({ error: 'Limit reached: only one post per user' });
     return;
   }
+  const content = req.body.content || '';
+  const score = await analyzeSentiment(content);
+  if (score < -0.1) {
+    res.status(400).json({ error: 'Only positive testimonials are allowed.' });
+    return;
+  }
+  const status = score <= 0.2 ? 'pending' : 'approved';
   const post = {
     id: Date.now(),
     author,
-    content: req.body.content || '',
+    content,
     date: new Date().toISOString(),
+    sentiment: score,
+    status,
   };
   data.posts.push(post);
   saveData(data);
-  res.status(201).json(post);
+  res.status(status === 'approved' ? 201 : 202).json(post);
 });
 
 app.post('/api/posts/:id/flag', (req, res) => {
