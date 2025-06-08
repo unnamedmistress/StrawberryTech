@@ -3,6 +3,7 @@ import ProgressSidebar from '../../components/layout/ProgressSidebar'
 import { motion } from 'framer-motion'
 import { toast } from 'react-hot-toast'
 import Link from 'next/link'; import { useRouter } from 'next/router'
+import Head from 'next/head'
 import { UserContext } from '../../context/UserContext'
 import '../../styles/QuizGame.css'
 import InstructionBanner from '../../components/ui/InstructionBanner'
@@ -190,7 +191,38 @@ export default function QuizGame() {
   }, [])
 
   return (
-    <div className="quiz-page">
+    <>
+      <Head>
+        <title>Hallucinations Quiz - StrawberryTech</title>
+        <meta property="og:title" content="Hallucinations Quiz - StrawberryTech" />
+        <meta
+          property="og:description"
+          content="Spot the single AI hallucination hidden among truthful statements."
+        />
+        <meta
+          property="og:image"
+          content="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_51_28%20PM.png"
+        />
+        <meta
+          property="og:url"
+          content="https://strawberry-tech.vercel.app/games/quiz"
+        />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Hallucinations Quiz - StrawberryTech" />
+        <meta
+          name="twitter:description"
+          content="Spot the single AI hallucination hidden among truthful statements."
+        />
+        <meta
+          name="twitter:image"
+          content="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_51_28%20PM.png"
+        />
+        <meta
+          name="twitter:url"
+          content="https://strawberry-tech.vercel.app/games/quiz"
+        />
+      </Head>
+      <div className="quiz-page">
       <ChallengeBanner />
       <InstructionBanner>
         Find the one false statement—the AI hallucination. Tap the refresh icon
@@ -268,5 +300,18 @@ export default function QuizGame() {
         </div>
       </div>
     </div>
+    </>
+  )
+}
+
+export function Head() {
+  return (
+    <>
+      <title>Hallucination Quiz | StrawberryTech</title>
+      <meta
+        name="description"
+        content="Spot the AI's false statement among the truths."
+      />
+    </>
   )
 }

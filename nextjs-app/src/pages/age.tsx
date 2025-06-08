@@ -83,3 +83,15 @@ export default function AgeInputForm({
     </div>
   )
 }
+
+export function Head() {
+  return (
+    <>
+      <title>Enter Your Age | StrawberryTech</title>
+      <meta
+        name="description"
+        content="Provide your age and name to personalize the games."
+      />
+    </>
+  )
+}
