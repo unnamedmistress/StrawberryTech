@@ -3,7 +3,7 @@ import confetti from 'canvas-confetti'
 import Link from 'next/link'
 import { UserContext } from '../../context/UserContext'
 import Tooltip from '../ui/Tooltip'
-import type { ScoreEntry } from '../../pages/LeaderboardPage'
+import type { ScoreEntry } from '../../pages/leaderboard'
 
 export default function ProgressSidebar() {
   const { user } = useContext(UserContext)
