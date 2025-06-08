@@ -52,16 +52,16 @@ Node **18+** is recommended. Major dependencies include React 19, React Router 7
 
 ### Running Tests
 
-Before executing the test suite make sure dependencies are installed:
+Before executing the test suite, install dependencies from the repository
+root using the `--prefix` flag:
 
 ```bash
-cd learning-games
-npm install
-npm test
+npm --prefix learning-games install
+npm --prefix learning-games test
 ```
 
-Without installing the packages first the `vitest` command used by
-`npm test` will not be available and the tests will fail.
+Running the commands from the project root ensures `vitest` is available
+and prevents path errors during automated builds.
 
 ### Visitor Statistics
 
