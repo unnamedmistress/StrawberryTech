@@ -3,6 +3,7 @@ import { toast } from "react-hot-toast";
 import confetti from "canvas-confetti";
 
 import Link from "next/link"; import { useRouter } from "next/router";
+import Head from "next/head";
 
 import { UserContext } from "../../context/UserContext";
 import RobotChat from "../../components/RobotChat";
@@ -314,7 +315,38 @@ export default function Match3Game() {
   }
 
   return (
-    <div className="match3-page">
+    <>
+      <Head>
+        <title>Tone Puzzle - StrawberryTech</title>
+        <meta property="og:title" content="Tone Puzzle - StrawberryTech" />
+        <meta
+          property="og:description"
+          content="Swap adjectives to see how wording changes the mood and earn points."
+        />
+        <meta
+          property="og:image"
+          content="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_47_46%20PM.png"
+        />
+        <meta
+          property="og:url"
+          content="https://strawberry-tech.vercel.app/games/tone"
+        />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Tone Puzzle - StrawberryTech" />
+        <meta
+          name="twitter:description"
+          content="Swap adjectives to see how wording changes the mood and earn points."
+        />
+        <meta
+          name="twitter:image"
+          content="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_47_46%20PM.png"
+        />
+        <meta
+          name="twitter:url"
+          content="https://strawberry-tech.vercel.app/games/tone"
+        />
+      </Head>
+      <div className="match3-page">
       <InstructionBanner>
         Match adjectives to explore how tone changes the meaning of a message.
       </InstructionBanner>
@@ -344,6 +376,7 @@ export default function Match3Game() {
         <Link href="/leaderboard">Return to Progress</Link>
       </p>
     </div>
+    </>
   );
 }
 
