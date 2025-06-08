@@ -1,6 +1,7 @@
 import { useState, useEffect, useContext } from 'react'
 import Link from 'next/link'
 import Head from 'next/head'
+import { useRouter } from 'next/router'
 import { motion } from 'framer-motion'
 import confetti from 'canvas-confetti'
 import { toast } from 'react-hot-toast'
@@ -175,6 +176,7 @@ async function generateCards(): Promise<Card[]> {
 
 export default function PromptRecipeGame() {
   const { setScore, addBadge, user } = useContext(UserContext)
+  const router = useRouter()
   const TOTAL_ROUNDS = 5
   const TOTAL_TIME = getTimeLimit(user, {
     easy: 45,
@@ -568,6 +570,19 @@ export default function PromptRecipeGame() {
             <button className="btn-primary" onClick={nextRound}>Next Recipe</button>
           </div>
         )}
+        <div className="next-area">
+          <p style={{ marginTop: '1rem', textAlign: 'center' }}>
+            <button
+              className="btn-primary"
+              onClick={() => router.push('/games/darts')}
+            >
+              Next
+            </button>
+          </p>
+          <p style={{ marginTop: '1rem', textAlign: 'center' }}>
+            <Link href="/games/darts">Skip to Prompt Darts</Link>
+          </p>
+        </div>
       </div>
     </div>
     </>
