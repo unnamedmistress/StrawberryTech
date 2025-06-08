@@ -1,5 +1,5 @@
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useContext } from 'react'
 
 import { scorePrompt } from '../utils/scorePrompt'
 
@@ -22,6 +22,15 @@ const PROMPT_TIPS = [
 
 ]
 
+interface PromptPair {
+  prompt: string
+  response: string
+}
+
+const pairs: PromptPair[] = [
+  { prompt: CORRECT_PROMPT, response: SAMPLE_RESPONSE },
+]
+
 export default function ComposeTweetGame() {
   const { setScore, addBadge, user } = useContext(UserContext)
   const [guess, setGuess] = useState('')
@@ -29,6 +38,10 @@ export default function ComposeTweetGame() {
   const [doorUnlocked, setDoorUnlocked] = useState(false)
   const [tipIndex, setTipIndex] = useState(0)
   const [timeLeft, setTimeLeft] = useState(30)
+
+  const [round, setRound] = useState(0)
+  const [showNext, setShowNext] = useState(false)
+  const [points, setPoints] = useState(0)
 
   const [score, setScoreState] = useState<number | null>(null)
 
@@ -51,24 +64,30 @@ export default function ComposeTweetGame() {
     return () => clearInterval(timerRef.current!)
   }, [round])
 
+  useEffect(() => {
+    if (!doorUnlocked) return
+    const id = setInterval(() => {
+      setTipIndex(i => (i + 1) % PROMPT_TIPS.length)
+    }, 3000)
+    return () => clearInterval(id)
+  }, [doorUnlocked])
+
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
 
-    const { score, tips } = scorePrompt(CORRECT_PROMPT, guess)
-    if (score >= SCORE_THRESHOLD) {
-
+    const { score: guessScore, tips } = scorePrompt(CORRECT_PROMPT, guess)
+    if (guessScore >= SCORE_THRESHOLD) {
       setFeedback('Correct! The door is unlocked.')
-
       setDoorUnlocked(true)
-
-
-      setScoreState(points)
-
+      const earned = guessScore + timeLeft
+      setPoints(earned)
+      setScoreState(earned)
       clearInterval(timerRef.current!)
-      setScore('compose', points)
-      if (points >= 20 && !user.badges.includes('speedy-composer')) {
+      setScore('compose', earned)
+      if (timeLeft >= 20 && !user.badges.includes('speedy-composer')) {
         addBadge('speedy-composer')
       }
+      setShowNext(true)
     } else {
       setFeedback(tips.join(' '))
     }
