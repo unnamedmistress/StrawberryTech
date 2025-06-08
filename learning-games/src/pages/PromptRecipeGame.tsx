@@ -82,28 +82,32 @@ export function parseCardLines(text: string): string[] {
 }
 
 const ACTIONS = [
-  'Write a short poem',
-  'Draft an email',
-  'Summarize the text',
-  'Explain the concept',
+  'Writing a love letter',
+  'Crafting a thank-you note',
+  'Apologizing to a friend',
+  'Congratulating a colleague',
+  'Inviting someone to lunch',
 ]
 const CONTEXTS = [
-  'about renewable energy',
-  'for a job interview',
-  'for kids',
-  'with comedic tone',
+  "for Valentine's Day",
+  'after a successful project',
+  'on their birthday',
+  'before a big exam',
+  'for a wedding anniversary',
 ]
 const FORMATS = [
-  'as bullet points',
-  'in a single paragraph',
-  'in rhyme',
-  'as a numbered list',
+  'handwritten on fancy stationery',
+  'as a short text message',
+  'in a playful poem',
+  'in a formal email',
+  'as a social media post',
 ]
 const CONSTRAINTS = [
-  'under 50 words',
-  'using simple language',
-  'avoid technical terms',
-  'no more than 3 sentences',
+  'must be under 200 words',
+  'include one emoji',
+  'avoid mentioning work',
+  'use a friendly tone',
+  'limit to three sentences',
 ]
 
 function randomItem<T>(arr: T[]): T {
@@ -175,6 +179,7 @@ export default function PromptRecipeGame() {
   const [score, setScoreState] = useState(0)
   const [perfectRounds, setPerfectRounds] = useState(0)
   const [showPrompt, setShowPrompt] = useState(false)
+  const [submitted, setSubmitted] = useState(false)
   const [hoverSlot, setHoverSlot] = useState<Slot | null>(null)
   const [timeLeft, setTimeLeft] = useState(TOTAL_TIME)
   const [hintSlot, setHintSlot] = useState<Slot | null>(null)
@@ -195,6 +200,7 @@ export default function PromptRecipeGame() {
     setCards(shuffle([...newCards]))
     setDropped({ Action: null, Context: null, Format: null, Constraints: null })
     setShowPrompt(false)
+    setSubmitted(false)
     setExample(null)
     setTimeLeft(TOTAL_TIME)
     setSelectedCard(null)
@@ -233,32 +239,16 @@ export default function PromptRecipeGame() {
     }
   }, [showPrompt])
 
-  useEffect(() => {
-    if (Object.values(dropped).every(Boolean)) {
-      const { score: gained, perfect } = evaluateRecipe(dropped, roundCards)
-      const baseScore = gained + Math.floor(timeLeft / 5)
-      const finalScore = Math.round(baseScore * SCORE_MULT)
-      setScoreState(s => s + finalScore)
-      if (perfect) {
-        confetti({ particleCount: 70, spread: 60, origin: { y: 0.7 } })
-        setPerfectRounds(p => p + 1)
-        if (perfectRounds + 1 >= 10 && !user.badges.includes('prompt-chef')) {
-          addBadge('prompt-chef')
-        }
-      }
-      setShowPrompt(true)
-    }
-  }, [dropped])
 
   function dropSelected(slot: Slot) {
     if (!selectedCard) return
-    const correctText = roundCards.find(c => c.type === slot)?.text
-    const correct = selectedCard.text === correctText
-    setDropped(prev => ({ ...prev, [slot]: selectedCard.text }))
-    if (correct) {
-      setCards(cs => cs.filter(c => c.text !== selectedCard.text))
+    if (selectedCard.type !== slot) {
+      toast.error('Try a different category.')
+      setSelectedCard(null)
+      return
     }
-    setFeedback(f => ({ ...f, [slot]: correct ? 'correct' : 'wrong' }))
+    setDropped(prev => ({ ...prev, [slot]: selectedCard.text }))
+    setCards(cs => cs.filter(c => c.text !== selectedCard.text))
     setSelectedCard(null)
   }
 
@@ -332,6 +322,7 @@ export default function PromptRecipeGame() {
       Constraints: null,
     })
     setHintSlot(null)
+    setSubmitted(false)
   }
 
   function showHint() {
@@ -340,6 +331,47 @@ export default function PromptRecipeGame() {
     const card = remaining[Math.floor(Math.random() * remaining.length)]
     setHintSlot(card.type)
     setScoreState(s => Math.max(0, s - 1))
+  }
+
+  function checkAnswer() {
+    const { score: gained, perfect } = evaluateRecipe(dropped, roundCards)
+    const baseScore = gained + Math.floor(timeLeft / 5)
+    const finalScore = Math.round(baseScore * SCORE_MULT)
+
+    setFeedback({
+      Action:
+        dropped.Action ===
+        roundCards.find(c => c.type === 'Action')?.text
+          ? 'correct'
+          : 'wrong',
+      Context:
+        dropped.Context ===
+        roundCards.find(c => c.type === 'Context')?.text
+          ? 'correct'
+          : 'wrong',
+      Format:
+        dropped.Format ===
+        roundCards.find(c => c.type === 'Format')?.text
+          ? 'correct'
+          : 'wrong',
+      Constraints:
+        dropped.Constraints ===
+        roundCards.find(c => c.type === 'Constraints')?.text
+          ? 'correct'
+          : 'wrong',
+    })
+
+    setScoreState(s => s + finalScore)
+    if (perfect) {
+      confetti({ particleCount: 70, spread: 60, origin: { y: 0.7 } })
+      setPerfectRounds(p => p + 1)
+      if (perfectRounds + 1 >= 10 && !user.badges.includes('prompt-chef')) {
+        addBadge('prompt-chef')
+      }
+    }
+    toast.success(`+${finalScore} points`)
+    setSubmitted(true)
+    setShowPrompt(true)
   }
 
   async function generateExampleOutput(prompt: string) {
@@ -384,12 +416,12 @@ export default function PromptRecipeGame() {
   }
 
   const promptText = `${dropped.Action ?? ''} ${dropped.Context ?? ''} ${dropped.Format ?? ''} ${dropped.Constraints ?? ''}`
+  const allFilled = Object.values(dropped).every(Boolean)
 
   return (
     <div className="recipe-page">
       <InstructionBanner>
-        Drag each ingredient card into the correct bowl to build the prompt recipe.
-        You can also press Enter on a card then Enter on a bowl to place it.
+        Drag each card to the category it best fits to build a clear AI prompt.
       </InstructionBanner>
       <div className="recipe-wrapper">
         <aside className="recipe-sidebar">
@@ -448,7 +480,14 @@ export default function PromptRecipeGame() {
           </div>
           <div className="game-actions">
             <button className="btn-primary" onClick={showHint}>Hint</button>
-            <button className="btn-primary" onClick={clearRound}>Clear</button>
+            <button
+              className="btn-primary"
+              onClick={checkAnswer}
+              disabled={!allFilled || submitted}
+            >
+              Check Answer
+            </button>
+            <button className="btn-primary" onClick={clearRound}>Reset</button>
           </div>
           {showPrompt && (
             <div className="plate">
