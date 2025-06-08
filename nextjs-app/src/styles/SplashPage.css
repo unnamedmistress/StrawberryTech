@@ -1,0 +1,61 @@
+.splash-container {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  color: #fff;
+  text-align: center;
+  background: linear-gradient(to bottom right, var(--color-brand), var(--color-secondary));
+}
+
+.overlay {
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.start-form input {
+  margin: 0.5rem;
+  padding: 0.5rem;
+}
+
+.start-form button {
+  margin-top: 1rem;
+}
+
+.start-btn {
+  font-family: 'Roboto', sans-serif;
+  font-weight: bold;
+  font-size: 1rem;
+  background: var(--color-accent);
+  min-width: 44px;
+  min-height: 44px;
+  transition: background-color 0.3s ease;
+}
+
+.start-btn:hover {
+  background: var(--color-mint);
+}
+
+.start-btn:active {
+  animation: bounce 0.3s;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@media (max-width: 480px) {
+  .overlay {
+    padding: 0 1rem;
+  }
+  .start-form input {
+    width: 100%;
+    max-width: none;
+  }
+}

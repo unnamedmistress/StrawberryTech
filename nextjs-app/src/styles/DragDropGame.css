@@ -1,0 +1,121 @@
+.dragdrop-page {
+  padding: 1rem;
+}
+
+.dragdrop-wrapper {
+  width: 100%;
+  display: grid;
+  gap: 1rem;
+  justify-content: center;
+  align-items: start;
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    "sidebar"
+    "game"
+    "progress"
+    "next";
+}
+
+.dragdrop-game {
+  padding: 1rem;
+  grid-area: game;
+}
+
+.progress-sidebar {
+  grid-area: progress;
+}
+
+.next-area {
+  grid-area: next;
+}
+
+.sentence {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+.drop-area {
+  display: inline-block;
+  min-width: 80px;
+  margin: 0 4px;
+  padding: 0.25rem 0.5rem;
+  border: 2px dashed var(--color-purple);
+  border-radius: 4px;
+  text-align: center;
+}
+
+.word-bank {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.word {
+  padding: 0.4rem 0.6rem;
+  background: var(--color-orange);
+  color: #fff;
+  border-radius: 6px;
+  cursor: grab;
+  user-select: none;
+}
+
+.response {
+  margin-top: 1rem;
+  background: var(--color-background);
+  color: var(--color-text-dark);
+  padding: 1rem;
+  border-radius: 6px;
+}
+
+.quiz {
+  margin-top: 2rem;
+}
+
+.options button {
+  margin: 0.25rem;
+}
+
+.feedback {
+  margin-top: 1rem;
+  font-weight: bold;
+}
+
+.message-input {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.message-input textarea {
+  width: 100%;
+  min-height: 60px;
+}
+
+.user-message {
+  margin-top: 1rem;
+  font-style: italic;
+}
+
+@media (max-width: 480px) {
+  .dragdrop-game {
+    padding: 0.5rem;
+  }
+  .sentence {
+    font-size: 1rem;
+  }
+}
+
+@media (min-width: 600px) {
+  .dragdrop-wrapper {
+    grid-template-columns: 1fr 260px;
+    grid-template-areas:
+      "sidebar progress"
+      "game progress"
+      "next progress";
+  }
+  .progress-sidebar {
+    max-width: 260px;
+  }
+}

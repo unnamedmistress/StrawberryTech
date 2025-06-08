@@ -1,12 +1,12 @@
 import { useState, useContext, useEffect } from 'react'
-import { Link } from 'react-router-dom'
-import ProgressSidebar from '../components/layout/ProgressSidebar'
-import InstructionBanner from '../components/ui/InstructionBanner'
-import TimerBar from '../components/ui/TimerBar'
-import { UserContext } from '../context/UserContext'
-import shuffle from '../utils/shuffle'
-import { getTimeLimit } from '../utils/time'
-import './PromptDartsGame.css'
+import Link from 'next/link'
+import ProgressSidebar from '../../components/layout/ProgressSidebar'
+import InstructionBanner from '../../components/ui/InstructionBanner'
+import TimerBar from '../../components/ui/TimerBar'
+import { UserContext } from '../../context/UserContext'
+import shuffle from '../../utils/shuffle'
+import { getTimeLimit } from '../../utils/time'
+import '../../styles/PromptDartsGame.css'
 
 const CONGRATS_VIDEO_URL = 'https://www.youtube.com/embed/dQw4w9WgXcQ'
 
@@ -417,7 +417,7 @@ export default function PromptDartsGame() {
               title="Celebration video"
               allowFullScreen
             />
-            <Link to="/games/compose" className="btn-primary" style={{ display: 'block', marginTop: '0.5rem' }}>
+            <Link href="/games/compose" className="btn-primary" style={{ display: 'block', marginTop: '0.5rem' }}>
               Play Compose Tweet
             </Link>
             <a

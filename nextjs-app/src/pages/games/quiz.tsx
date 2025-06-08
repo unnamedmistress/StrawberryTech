@@ -1,13 +1,13 @@
 import { useState, useEffect, useContext, useMemo } from 'react'
-import ProgressSidebar from '../components/layout/ProgressSidebar'
+import ProgressSidebar from '../../components/layout/ProgressSidebar'
 import { motion } from 'framer-motion'
 import { toast } from 'react-hot-toast'
-import { Link, useNavigate } from 'react-router-dom'
-import { UserContext } from '../context/UserContext'
-import './QuizGame.css'
-import InstructionBanner from '../components/ui/InstructionBanner'
-import { HALLUCINATION_EXAMPLES } from '../data/hallucinationExamples'
-import { H_ROUNDS } from '../data/hallucinationRounds'
+import Link from 'next/link'; import { useRouter } from 'next/router'
+import { UserContext } from '../../context/UserContext'
+import '../../styles/QuizGame.css'
+import InstructionBanner from '../../components/ui/InstructionBanner'
+import { HALLUCINATION_EXAMPLES } from '../../data/hallucinationExamples'
+import { H_ROUNDS } from '../../data/hallucinationRounds'
 
 interface StatementSet {
   statements: string[]
@@ -121,7 +121,7 @@ function ChatBox() {
 
 export default function QuizGame() {
   const { user, setScore, addBadge } = useContext(UserContext)
-  const navigate = useNavigate()
+  const navigate = useRouter()
   const [round, setRound] = useState(0)
   const [choice, setChoice] = useState<number | null>(null)
   const [score, setScoreState] = useState(0)
@@ -172,6 +172,7 @@ export default function QuizGame() {
   }
 
   useEffect(() => {
+
     const observer = new IntersectionObserver((entries, obs) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
@@ -183,6 +184,7 @@ export default function QuizGame() {
 
     document.querySelectorAll('.reveal').forEach((el) => observer.observe(el))
     refreshRound()
+
 
     return () => observer.disconnect()
   }, [])
@@ -203,10 +205,10 @@ export default function QuizGame() {
             <button
               className="refresh-btn btn-primary"
               onClick={refreshRound}
-              aria-label="New statements"
-            >
-              🔄
-            </button>
+            aria-label="New statements"
+          >
+            🔄
+          </button>
           </div>
           <img
             src="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_51_28%20PM.png"
@@ -258,10 +260,10 @@ export default function QuizGame() {
         <ProgressSidebar />
         <div className="next-area">
           <p style={{ marginTop: '1rem', textAlign: 'center' }}>
-            <button className="btn-primary" onClick={() => navigate('/leaderboard')}>Next</button>
+            <button className="btn-primary" onClick={() => router.push('/leaderboard')}>Next</button>
           </p>
           <p style={{ marginTop: '1rem', textAlign: 'center' }}>
-            <Link to="/leaderboard">Return to Progress</Link>
+            <Link href="/leaderboard">Return to Progress</Link>
           </p>
         </div>
       </div>
