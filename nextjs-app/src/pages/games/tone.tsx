@@ -4,6 +4,7 @@ import confetti from "canvas-confetti";
 
 import Link from "next/link"; import { useRouter } from "next/router";
 import Head from "next/head";
+import JsonLd from "../../components/seo/JsonLd";
 
 import { UserContext } from "../../context/UserContext";
 import RobotChat from "../../components/RobotChat";
@@ -316,6 +317,16 @@ export default function Match3Game() {
 
   return (
     <>
+      <JsonLd
+        data={{
+          '@context': 'https://schema.org',
+          '@type': 'Game',
+          name: 'Tone Puzzle',
+          description: 'Swap adjectives to see how wording changes the mood and earn points.',
+          image:
+            'https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_47_46%20PM.png',
+        }}
+      />
       <Head>
         <title>Tone Puzzle - StrawberryTech</title>
         <meta property="og:title" content="Tone Puzzle - StrawberryTech" />

@@ -9,6 +9,7 @@ import '../../styles/QuizGame.css'
 import InstructionBanner from '../../components/ui/InstructionBanner'
 import { HALLUCINATION_EXAMPLES } from '../../data/hallucinationExamples'
 import { H_ROUNDS } from '../../data/hallucinationRounds'
+import JsonLd from '../../components/seo/JsonLd'
 
 interface StatementSet {
   statements: string[]
@@ -192,6 +193,16 @@ export default function QuizGame() {
 
   return (
     <>
+      <JsonLd
+        data={{
+          '@context': 'https://schema.org',
+          '@type': 'Game',
+          name: 'Hallucination Quiz',
+          description: "Spot the AI's false statement among the truths.",
+          image:
+            'https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_51_28%20PM.png',
+        }}
+      />
       <Head>
         <title>Hallucinations Quiz - StrawberryTech</title>
         <meta property="og:title" content="Hallucinations Quiz - StrawberryTech" />

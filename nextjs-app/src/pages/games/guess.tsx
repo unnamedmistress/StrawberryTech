@@ -9,6 +9,7 @@ import { UserContext } from '../../context/UserContext'
 import shuffle from '../../utils/shuffle'
 import '../../styles/PromptGuessEscape.css'
 import { scorePrompt } from '../../utils/scorePrompt'
+import JsonLd from '../../components/seo/JsonLd'
 
 interface Clue {
   aiResponse: string
@@ -224,7 +225,18 @@ export default function PromptGuessEscape() {
   }
 
   return (
-    <div className="guess-page">
+    <>
+      <JsonLd
+        data={{
+          '@context': 'https://schema.org',
+          '@type': 'Game',
+          name: 'Guess the Prompt Game',
+          description: "Deduce the prompt from the AI's reply before time runs out.",
+          image:
+            'https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_12_36%20PM.png',
+        }}
+      />
+      <div className="guess-page">
       <InstructionBanner>Escape Room: Guess the Prompt</InstructionBanner>
       <div className="guess-wrapper">
         <aside className="guess-sidebar">
@@ -290,7 +302,8 @@ export default function PromptGuessEscape() {
           </div>
         </div>
       )}
-    </div>
+      </div>
+    </>
   )
 }
 
