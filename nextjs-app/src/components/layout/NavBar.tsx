@@ -76,7 +76,7 @@ export default function NavBar() {
         </li>
         <li>
           <Tooltip message="Hover here for a surprise!">
-            <Link href="/testimonials">Testimonials</Link>
+            <Link href="/community">Community</Link>
           </Tooltip>
         </li>
         <li>
