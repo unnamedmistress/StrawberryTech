@@ -47,10 +47,15 @@
 }
 
 .options {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
   margin-bottom: 1rem;
+}
+
+.options button {
+  width: 100%;
+  padding-block: 1rem;
 }
 
 .feedback {
@@ -102,5 +107,8 @@
   }
   .progress-sidebar {
     max-width: none;
+  }
+  .options {
+    grid-template-columns: 1fr 1fr;
   }
 }
