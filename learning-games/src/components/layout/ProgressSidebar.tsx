@@ -32,7 +32,7 @@ export default function ProgressSidebar() {
   }, [])
 
   const leaderboard = scores
-    .concat({ name: user.name ?? 'You', score: user.scores['tone'] ?? 0 })
+    .concat({ name: user.name ?? 'You', score: user.scores['darts'] ?? 0 })
     .sort((a, b) => b.score - a.score)
     .slice(0, 3)
 
