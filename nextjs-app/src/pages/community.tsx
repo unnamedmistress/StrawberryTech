@@ -126,3 +126,5 @@ export function Head() {
     </>
   )
 }
+
+export const getStaticProps = async () => ({ props: {} });
