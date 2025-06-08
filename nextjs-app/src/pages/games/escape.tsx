@@ -10,6 +10,7 @@ import shuffle from '../../utils/shuffle'
 import '../../styles/ClarityEscapeRoom.css'
 import { scorePrompt } from '../../utils/scorePrompt'
 import Head from 'next/head'
+import JsonLd from '../../components/seo/JsonLd'
 
 interface Clue {
   aiResponse: string
@@ -247,6 +248,16 @@ export default function ClarityEscapeRoom() {
 
   return (
     <>
+      <JsonLd
+        data={{
+          '@context': 'https://schema.org',
+          '@type': 'Game',
+          name: 'Clarity Escape Room',
+          description: 'Enter the right prompt to unlock the door.',
+          image:
+            'https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_12_36%20PM.png',
+        }}
+      />
       <Head>
         <title>Clarity Escape Room - StrawberryTech</title>
         <meta property="og:title" content="Clarity Escape Room - StrawberryTech" />
@@ -366,6 +377,9 @@ export function Head() {
         name="description"
         content="Enter the right prompt to unlock the door."
       />
+      <link rel="canonical" href="https://strawberrytech.com/games/escape" />
     </>
   )
 }
+
+export const getStaticProps = async () => ({ props: {} });

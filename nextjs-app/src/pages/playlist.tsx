@@ -106,6 +106,9 @@ export function Head() {
         name="description"
         content="Share good and bad prompt pairs with the community."
       />
+      <link rel="canonical" href="https://strawberrytech.com/playlist" />
     </>
   )
 }
+
+export const getStaticProps = async () => ({ props: {} });

@@ -92,6 +92,9 @@ export function Head() {
         name="description"
         content="Provide your age and name to personalize the games."
       />
+      <link rel="canonical" href="https://strawberrytech.com/age" />
     </>
   )
 }
+
+export const getStaticProps = async () => ({ props: {} });

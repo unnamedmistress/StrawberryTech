@@ -4,6 +4,7 @@ import ProgressSidebarSimple from '../../components/layout/ProgressSidebarSimple
 import GamePageLayout from '../../components/layout/GamePageLayout'
 import { UserContext } from '../../context/UserContext'
 import '../../styles/DragDropGame.css'
+import JsonLd from '../../components/seo/JsonLd'
 
 const tones = [
   'Polite',
@@ -67,7 +68,18 @@ export default function DragDropGame() {
   }
 
   return (
-    <div className="dragdrop-page">
+    <>
+      <JsonLd
+        data={{
+          '@context': 'https://schema.org',
+          '@type': 'Game',
+          name: 'Drag & Drop Tone Game',
+          description: 'Drag adjectives to explore how tone changes a message.',
+          image:
+            'https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_19_23%20PM.png',
+        }}
+      />
+      <div className="dragdrop-page">
       <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'flex-start' }}>
         <GamePageLayout
           imageSrc="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_19_23%20PM.png"
@@ -183,6 +195,7 @@ export default function DragDropGame() {
         </p>
       </div>
     </div>
+    </>
   )
 }
 
@@ -194,6 +207,9 @@ export function Head() {
         name="description"
         content="Drag adjectives to explore how tone changes a message."
       />
+      <link rel="canonical" href="https://strawberrytech.com/games/dragdrop" />
     </>
   )
 }
+
+export const getStaticProps = async () => ({ props: {} });
