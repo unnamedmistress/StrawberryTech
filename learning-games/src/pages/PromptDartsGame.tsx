@@ -286,6 +286,7 @@ export default function PromptDartsGame() {
   const HINT_PENALTY = 2
 
 
+
   const TOTAL_TIME = getTimeLimit(user, {
     easy: 20,
     medium: 15,
