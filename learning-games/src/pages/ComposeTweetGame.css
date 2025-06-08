@@ -62,6 +62,11 @@
   color: var(--color-orange);
 }
 
+.final-score {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
 @media (max-width: 600px) {
   .compose-wrapper {
     grid-template-columns: 1fr;
