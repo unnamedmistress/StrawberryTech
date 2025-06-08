@@ -4,8 +4,8 @@ import { checkChoice, ROUNDS, streakBonus } from '../PromptDartsGame'
 describe('checkChoice', () => {
   it('returns true only for the clear option', () => {
     const round = ROUNDS[0]
-    expect(checkChoice(round, 'good')).toBe(true)
-    expect(checkChoice(round, 'bad')).toBe(false)
+    expect(checkChoice(round, round.correct)).toBe(true)
+    expect(checkChoice(round, (round.correct + 1) % round.options.length)).toBe(false)
   })
 
   it('each round provides a canned response', () => {
