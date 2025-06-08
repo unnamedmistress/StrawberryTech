@@ -1,5 +1,4 @@
 import { useState, useContext, useEffect } from 'react'
-import { Link } from 'react-router-dom'
 import CompletionModal from '../components/ui/CompletionModal'
 import ProgressSidebar from '../components/layout/ProgressSidebar'
 import InstructionBanner from '../components/ui/InstructionBanner'
@@ -8,8 +7,6 @@ import { UserContext } from '../context/UserContext'
 import shuffle from '../utils/shuffle'
 import { getTimeLimit } from '../utils/time'
 import './PromptDartsGame.css'
-
-const CONGRATS_VIDEO_URL = 'https://www.youtube.com/embed/dQw4w9WgXcQ'
 
 const KEYWORDS = [
   'list',

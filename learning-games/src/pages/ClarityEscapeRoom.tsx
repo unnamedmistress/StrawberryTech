@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef, useContext, useCallback } from 'react'
-import { useNavigate } from 'react-router-dom'
 import CompletionModal from '../components/ui/CompletionModal'
 import InstructionBanner from '../components/ui/InstructionBanner'
 import ProgressBar from '../components/ui/ProgressBar'
@@ -104,7 +103,6 @@ const TOTAL_STEPS = 4
 
 
 export default function ClarityEscapeRoom() {
-  const navigate = useNavigate()
   const { setScore } = useContext(UserContext)
   const [doors] = useState(() => shuffle(CLUES).slice(0, TOTAL_STEPS))
   const [index, setIndex] = useState(0)
@@ -120,7 +118,6 @@ export default function ClarityEscapeRoom() {
 
   const [aiHint, setAiHint] = useState('')
   const startRef = useRef(Date.now())
-  const [rounds, setRounds] = useState<{ prompt: string; expected: string; tip: string }[]>([])
   const [showSummary, setShowSummary] = useState(false)
 
   const clue = doors[index]
@@ -225,9 +222,8 @@ export default function ClarityEscapeRoom() {
   }
 
   function nextChallenge() {
-    const { tips } = scorePrompt(clue.expectedPrompt, input.trim())
-    const tip = tips[0] || 'Aim for a clearer prompt next time.'
-    setRounds(r => [...r, { prompt: input.trim(), expected: clue.expectedPrompt, tip }])
+    // Previously we recorded each prompt and tip for a summary modal. The new
+    // completion modal omits that detail, so we simply advance the round.
     if (index + 1 < TOTAL_STEPS) {
       setIndex(i => i + 1)
       setInput('')
