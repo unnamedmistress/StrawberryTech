@@ -1,0 +1,64 @@
+.age-form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+}
+
+.age-form form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+  background: linear-gradient(135deg, var(--color-brand), var(--color-orange), var(--color-lime));
+  background-size: 150% 150%;
+  animation: ageGradient 8s ease infinite;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  color: #fff;
+}
+
+@media (max-width: 480px) {
+  .age-form {
+    padding: 1rem;
+  }
+  .age-form form {
+    width: 100%;
+    margin: 0 1rem;
+    padding: 1rem;
+  }
+  .age-form input {
+    max-width: none;
+  }
+}
+
+@keyframes ageGradient {
+  0% {
+    background-position: 0 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0 50%;
+  }
+}
+
+.age-form label {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.age-form input {
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  width: 100%;
+  max-width: 200px;
+}
+
+.age-form button {
+  margin-top: 0.5rem;
+}

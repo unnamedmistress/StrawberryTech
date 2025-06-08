@@ -1,0 +1,207 @@
+.escape-wrapper {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 260px 1fr 260px;
+  grid-template-areas:
+    'sidebar room progress'
+    'sidebar next progress';
+  gap: 1rem;
+  justify-content: center;
+  align-items: start;
+}
+
+.room {
+  grid-area: room;
+  background: var(--color-deep-red);
+  color: #fff;
+  padding: 1.25rem;
+  border-radius: 10px;
+}
+
+.room-grid {
+  display: grid;
+  grid-template-columns: 1fr 160px;
+  gap: 1rem;
+  align-items: start;
+}
+
+.room-main {
+  display: flex;
+  flex-direction: column;
+}
+
+.info-btn-container {
+  align-self: flex-end;
+  margin-bottom: 0.5rem;
+}
+
+.door-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.1);
+  padding: 0.5rem;
+  border-radius: 8px;
+}
+
+.hint {
+  font-style: italic;
+  margin-bottom: 0.5rem;
+}
+
+.prompt-form {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.prompt-form input {
+  flex: 1;
+  padding: 0.75rem;
+  font-size: 1rem;
+  height: 2.5rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background: var(--color-background);
+  color: var(--color-text-dark);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.2s ease;
+}
+.prompt-form input:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(238, 58, 87, 0.3);
+}
+
+.feedback {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+.room-desc {
+  font-style: italic;
+  margin-bottom: 0.5rem;
+}
+
+.escape-sidebar {
+  grid-area: sidebar;
+  max-width: 240px;
+  background: var(--color-background);
+  color: var(--color-text-dark);
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.prompt-form button {
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  transition: background-color 0.3s;
+}
+.prompt-form button:hover {
+  background-color: var(--color-orange);
+}
+
+.timer {
+  font-weight: bold;
+  color: var(--color-orange);
+  margin-bottom: 0.5rem;
+}
+
+.hint-keywords {
+  font-style: italic;
+  color: var(--color-lime);
+  margin-bottom: 0.5rem;
+}
+
+.door-progress {
+  min-height: 4rem;
+  margin-bottom: 0.5rem;
+}
+
+.progress-sidebar {
+  grid-area: progress;
+}
+
+.next-area {
+  grid-area: next;
+  text-align: center;
+}
+
+@media (max-width: 600px) {
+  .escape-wrapper {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      'sidebar'
+      'room'
+      'progress'
+      'next';
+  }
+  .room-grid {
+    grid-template-columns: 1fr;
+  }
+  .progress-sidebar {
+    max-width: none;
+  }
+}
+.prompt-form input::placeholder { color: #999; }
+.score { font-weight: bold; color: var(--color-brand); margin-top: 0.5rem; }
+.escape-img {
+  width: 100%;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+}
+
+@media (max-width: 360px) {
+  .prompt-form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .prompt-form input {
+    width: 100%;
+  }
+
+  .prompt-form button {
+    width: 100%;
+  }
+
+  .escape-sidebar {
+    max-width: none;
+  }
+}
+
+.summary-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.summary-modal {
+  background: var(--color-background);
+  color: var(--color-text-dark);
+  padding: 1rem;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 400px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+.summary-modal ul {
+  list-style: none;
+  padding: 0;
+}
+.summary-modal li {
+  margin-bottom: 1rem;
+}
+.summary-modal .tip {
+  font-style: italic;
+}
