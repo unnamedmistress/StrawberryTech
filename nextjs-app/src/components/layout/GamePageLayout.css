@@ -1,0 +1,100 @@
+.game-page-container {
+  display: flex;
+  gap: 2rem;
+  padding: 1rem;
+  background-color: #f7d4d9;
+  min-height: 80vh;
+  box-sizing: border-box;
+}
+
+.left-column {
+  flex: 0 0 28%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.game-image {
+  width: 150px;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.info-card {
+  background-color: #ffe5d9;
+  border-radius: 8px;
+  padding: 1rem;
+  font-weight: 600;
+  font-size: 1rem;
+  color: #3a3a3a;
+  text-align: center;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+  user-select: none;
+}
+
+.right-column {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.instructions-box {
+  background-color: #ffe5d9;
+  padding: 1rem 1.25rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1.15rem;
+  color: #2e2e2e;
+  margin-bottom: 1.5rem;
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.05);
+  user-select: none;
+}
+
+.game-interaction {
+  flex-grow: 1;
+  margin-bottom: 2rem;
+}
+
+.cta-button {
+  background-color: #d81e39;
+  color: white;
+  border: none;
+  padding: 0.85rem 1.75rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  border-radius: 6px;
+  cursor: pointer;
+  align-self: flex-start;
+  transition: background-color 0.3s ease;
+}
+
+.cta-button:hover,
+.cta-button:focus {
+  background-color: #b7182d;
+  outline: none;
+}
+
+@media (max-width: 768px) {
+  .game-page-container {
+    flex-direction: column;
+    padding: 1rem 0.5rem;
+  }
+
+  .left-column {
+    flex: none;
+    width: 100%;
+    margin-bottom: 1.5rem;
+    align-items: center;
+  }
+
+  .right-column {
+    width: 100%;
+  }
+
+  .cta-button {
+    width: 100%;
+    text-align: center;
+  }
+}

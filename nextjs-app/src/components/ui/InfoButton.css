@@ -1,0 +1,12 @@
+.info-button {
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #fff;
+  line-height: 1;
+}
+
+.info-button:hover {
+  color: var(--color-lime);
+}
