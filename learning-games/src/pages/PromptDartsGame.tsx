@@ -160,13 +160,16 @@ export default function PromptDartsGame() {
   )
   const [score, setScoreState] = useState(0)
   const [streak, setStreak] = useState(0)
+  const [penaltyMsg, setPenaltyMsg] = useState('')
+
+  const PENALTY = 2
 
 
   const TOTAL_TIME =
     user.difficulty === 'easy' ? 20 : user.difficulty === 'hard' ? 10 : 15
   const MAX_POINTS =
     user.difficulty === 'easy' ? 8 : user.difficulty === 'hard' ? 12 : 10
-n
+
   const [timeLeft, setTimeLeft] = useState(TOTAL_TIME)
   const [pointsLeft, setPointsLeft] = useState(MAX_POINTS)
   const current = ROUNDS[round]
@@ -197,11 +200,12 @@ n
   function handleSelect(option: 'bad' | 'good') {
     setChoice(option)
     if (checkChoice(current, option)) {
-
-      setScoreState(s => s + pointsLeft)
+      setScoreState(s => s + pointsLeft + streakBonus(streak + 1))
+      setStreak(s => s + 1)
       setPenaltyMsg('')
     } else {
       setScoreState(s => Math.max(0, s - PENALTY))
+      setStreak(0)
       setPenaltyMsg(`Incorrect! -${PENALTY} points`)
 
     }
@@ -211,6 +215,7 @@ n
     if (round + 1 < rounds.length) {
       setRound(r => r + 1)
       setChoice(null)
+      setOrder(Math.random() < 0.5 ? ['bad', 'good'] : ['good', 'bad'])
       setTimeLeft(TOTAL_TIME)
       setPointsLeft(MAX_POINTS)
     } else {
