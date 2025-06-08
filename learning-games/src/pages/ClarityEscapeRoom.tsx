@@ -289,9 +289,6 @@ export default function ClarityEscapeRoom() {
               {message && (
                 <p className={`feedback ${status}`}>{status === 'success' ? '✔️' : '⚠️'} {message}</p>
               )}
-              {roomDescription && (
-                <p className="room-desc" aria-live="polite">{roomDescription}</p>
-              )}
               {showNext && (
                 <div className="next-area">
                   <button className="btn-primary" onClick={nextChallenge}>Next Challenge</button>
