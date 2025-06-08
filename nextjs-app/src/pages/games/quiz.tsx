@@ -270,3 +270,15 @@ export default function QuizGame() {
     </div>
   )
 }
+
+export function Head() {
+  return (
+    <>
+      <title>Hallucination Quiz | StrawberryTech</title>
+      <meta
+        name="description"
+        content="Spot the AI's false statement among the truths."
+      />
+    </>
+  )
+}

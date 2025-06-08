@@ -324,3 +324,15 @@ export default function ClarityEscapeRoom() {
     </div>
   )
 }
+
+export function Head() {
+  return (
+    <>
+      <title>Clarity Escape Room | StrawberryTech</title>
+      <meta
+        name="description"
+        content="Enter the right prompt to unlock the door."
+      />
+    </>
+  )
+}

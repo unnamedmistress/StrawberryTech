@@ -516,3 +516,15 @@ export default function PromptDartsGame() {
     </div>
   )
 }
+
+export function Head() {
+  return (
+    <>
+      <title>Prompt Darts | StrawberryTech</title>
+      <meta
+        name="description"
+        content="Choose the clearest prompt to hit the bullseye."
+      />
+    </>
+  )
+}

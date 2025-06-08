@@ -146,3 +146,15 @@ export default function Home() {
     </div>
   )
 }
+
+export function Head() {
+  return (
+    <>
+      <title>StrawberryTech Games</title>
+      <meta
+        name="description"
+        content="Explore mini games that teach AI prompting techniques."
+      />
+    </>
+  )
+}

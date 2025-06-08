@@ -59,3 +59,12 @@ export default function SplashPage() {
     </div>
   )
 }
+
+export function Head() {
+  return (
+    <>
+      <title>Welcome | StrawberryTech</title>
+      <meta name="description" content="Introduce yourself and start playing." />
+    </>
+  )
+}
