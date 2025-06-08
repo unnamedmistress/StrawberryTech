@@ -263,14 +263,15 @@ export function streakBonus(streak: number) {
 export default function PromptDartsGame() {
 
   const { setScore, user } = useContext(UserContext)
-  const [rounds] = useState<DartRound[]>(() => shuffle(ROUNDS))
-
+  const [rounds, setRounds] = useState<DartRound[]>([])
   const [round, setRound] = useState(0)
 
   const [choice, setChoice] = useState<number | null>(null)
-  const [order, setOrder] = useState<number[]>(() =>
-    rounds.length ? shuffle(rounds[0].options.map((_, i) => i)) : []
+
+  const [choices, setChoices] = useState<string[]>(() =>
+    rounds.length ? shuffle([...rounds[0].options]) : []
   )
+
 
   const [score, setScoreState] = useState(0)
   const [streak, setStreak] = useState(0)
@@ -293,14 +294,41 @@ export default function PromptDartsGame() {
 
   const current = rounds[round]
 
+  // Load rounds from the server on mount
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      setRounds(shuffle(ROUNDS))
+      return
+    }
+    const base = window.location.origin
+    fetch(`${base}/api/darts`)
+      .then(res => (res.ok ? res.json() : null))
+      .then(data => {
+        if (Array.isArray(data) && data.length) {
+          const fetched = data.map((r: any) => ({
+            options: r.options ?? [r.bad, r.good].filter(Boolean),
+            correct: typeof r.correct === 'number' ? r.correct : 1,
+            why: r.why ?? '',
+            response: r.response ?? ''
+          })) as DartRound[]
+          setRounds(shuffle(fetched))
+        } else {
+          setRounds(shuffle(ROUNDS))
+        }
+      })
+      .catch(() => setRounds(shuffle(ROUNDS)))
+  }, [])
+
 
 
   useEffect(() => {
+    if (!rounds.length) return
     setTimeLeft(TOTAL_TIME)
     setPointsLeft(MAX_POINTS)
-    setOrder(shuffle(rounds[round].options.map((_, i) => i)))
-    setHint(null)
-    setHintUsed(false)
+
+
+    setChoices(shuffle([...rounds[round].options]))
+
 
   }, [round, TOTAL_TIME, MAX_POINTS, rounds])
 
@@ -322,8 +350,9 @@ export default function PromptDartsGame() {
   }, [timeLeft, choice])
 
   function handleSelect(index: number) {
-    setChoice(index)
-    if (checkChoice(current, index)) {
+    const originalIndex = current.options.indexOf(choices[index])
+    setChoice(originalIndex)
+    if (checkChoice(current, originalIndex)) {
       setScoreState(s => s + pointsLeft + streakBonus(streak + 1))
       setStreak(s => s + 1)
       setPenaltyMsg('')
@@ -348,7 +377,7 @@ export default function PromptDartsGame() {
     if (round + 1 < rounds.length) {
       setRound(r => r + 1)
       setChoice(null)
-      setOrder(shuffle(rounds[round + 1].options.map((_, i) => i)))
+      setChoices(shuffle([...rounds[round + 1].options]))
       setTimeLeft(TOTAL_TIME)
       setPointsLeft(MAX_POINTS)
       setHint(null)
@@ -408,14 +437,14 @@ export default function PromptDartsGame() {
           <div className="options">
 
 
-            {order.map(i => (
+            {choices.map((text, i) => (
               <button
                 key={i}
                 className="btn-primary"
                 onClick={() => handleSelect(i)}
                 disabled={choice !== null}
               >
-                {highlightPrompt(current.options[i])}
+                {highlightPrompt(text)}
 
               </button>
             ))}
