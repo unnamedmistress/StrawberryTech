@@ -527,3 +527,15 @@ export default function PromptRecipeGame() {
     </div>
   )
 }
+
+export function Head() {
+  return (
+    <>
+      <title>Prompt Builder Game | StrawberryTech</title>
+      <meta
+        name="description"
+        content="Drag cards to craft the perfect AI prompt."
+      />
+    </>
+  )
+}

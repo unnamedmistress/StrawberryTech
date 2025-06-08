@@ -17,3 +17,12 @@ export default function PrivacyPage() {
     </div>
   )
 }
+
+export function Head() {
+  return (
+    <>
+      <title>Privacy Policy | StrawberryTech</title>
+      <meta name="description" content="Learn how StrawberryTech handles your data." />
+    </>
+  )
+}

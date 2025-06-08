@@ -185,3 +185,15 @@ export default function DragDropGame() {
     </div>
   )
 }
+
+export function Head() {
+  return (
+    <>
+      <title>Drag &amp; Drop Tone Game | StrawberryTech</title>
+      <meta
+        name="description"
+        content="Drag adjectives to explore how tone changes a message."
+      />
+    </>
+  )
+}

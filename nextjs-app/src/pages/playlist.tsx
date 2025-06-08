@@ -97,3 +97,15 @@ export default function CommunityPlaylistPage() {
     </div>
   )
 }
+
+export function Head() {
+  return (
+    <>
+      <title>Community Playlist | StrawberryTech</title>
+      <meta
+        name="description"
+        content="Share good and bad prompt pairs with the community."
+      />
+    </>
+  )
+}
