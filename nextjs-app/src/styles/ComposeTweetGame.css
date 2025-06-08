@@ -3,7 +3,8 @@
   display: grid;
   grid-template-columns: 200px 1fr 200px;
   grid-template-areas:
-    'sidebar game progress';
+    'sidebar game progress'
+    'next    next  next';
   gap: 1rem;
   align-items: start;
 }
@@ -73,12 +74,18 @@
   font-weight: bold;
 }
 
+.next-area {
+  grid-area: next;
+  text-align: center;
+}
+
 @media (max-width: 600px) {
   .compose-wrapper {
     grid-template-columns: 1fr;
     grid-template-areas:
       'game'
       'sidebar'
-      'progress';
+      'progress'
+      'next';
   }
 }

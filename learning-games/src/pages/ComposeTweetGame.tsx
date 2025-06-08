@@ -1,5 +1,6 @@
 
 import { useState, useEffect, useRef, useContext } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 
 import { scorePrompt } from '../utils/scorePrompt'
 
@@ -34,6 +35,7 @@ const pairs: PromptPair[] = [
 
 export default function ComposeTweetGame() {
   const { setScore, addBadge, user } = useContext(UserContext)
+  const navigate = useNavigate()
   const [guess, setGuess] = useState('')
   const [feedback, setFeedback] = useState('')
   const [doorUnlocked, setDoorUnlocked] = useState(false)
@@ -184,6 +186,19 @@ export default function ComposeTweetGame() {
           )}
         </div>
         <ProgressSidebar />
+        <div className="next-area">
+          <p style={{ marginTop: '1rem', textAlign: 'center' }}>
+            <button
+              className="btn-primary"
+              onClick={() => navigate('/leaderboard')}
+            >
+              Next
+            </button>
+          </p>
+          <p style={{ marginTop: '1rem', textAlign: 'center' }}>
+            <Link to="/leaderboard">Return to Progress</Link>
+          </p>
+        </div>
       </div>
     </div>
     {showNext && round + 1 >= pairs.length && (
