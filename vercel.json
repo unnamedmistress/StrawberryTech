@@ -1,5 +1,5 @@
 {
-  "rootDirectory": "learning-games",
+
   "buildCommand": "npm run build",
   "installCommand": "npm install",
   "outputDirectory": "dist",
