@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import { getApiBase } from '../utils/api'
 
 export interface PromptPair {
   id: number
@@ -26,7 +27,7 @@ export default function CommunityPlaylistPage() {
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      const base = window.location.origin
+      const base = getApiBase()
       fetch(`${base}/api/pairs`)
         .then(res => (res.ok ? res.json() : []))
         .then((data: PromptPair[]) => data.length && setPairs(data))
@@ -44,7 +45,7 @@ export default function CommunityPlaylistPage() {
     const pair: PromptPair = { id: Date.now(), bad: bad.trim(), good: good.trim() }
     setPairs(prev => [...prev, pair])
     if (typeof window !== 'undefined') {
-      const base = window.location.origin
+      const base = getApiBase()
       fetch(`${base}/api/pairs`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

@@ -4,6 +4,7 @@ import { toast } from 'react-hot-toast'
 import { UserContext } from '../context/UserContext'
 import ProgressSidebar from '../components/layout/ProgressSidebar'
 import '../styles/LeaderboardPage.css'
+import { getApiBase } from '../utils/api'
 
 export interface PointsEntry {
   name: string
@@ -28,7 +29,7 @@ export default function LeaderboardPage() {
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      const base = window.location.origin
+      const base = getApiBase()
       fetch(`${base}/api/scores`)
         .then(res => (res.ok ? res.json() : {}))
         .then(data => setPointsData(data))
