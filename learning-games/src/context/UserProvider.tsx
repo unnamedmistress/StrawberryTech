@@ -52,19 +52,19 @@ export function UserProvider({ children }: { children: ReactNode }) {
     setUser(prev => ({ ...prev, difficulty: level }))
   }, [])
 
-  // Record the best score for a specific game
-  const setScore = useCallback(
-    (game: string, score: number) => {
+  // Record the best points for a specific game
+  const setPoints = useCallback(
+    (game: string, points: number) => {
       setUser(prev => {
-        const prevBest = prev.scores[game] ?? 0
-        const nextBest = Math.max(score, prevBest)
+        const prevBest = prev.points[game] ?? 0
+        const nextBest = Math.max(points, prevBest)
         if (nextBest > prevBest) {
-          toast.success(`New high score in ${game}: ${nextBest}`)
+          toast.success(`New high points in ${game}: ${nextBest}`)
         }
         return {
           ...prev,
-          scores: {
-            ...prev.scores,
+          points: {
+            ...prev.points,
             [game]: nextBest,
           },
         }
@@ -74,7 +74,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
         fetch(`${base}/api/scores/${game}`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name: user.name ?? 'Anonymous', score }),
+          body: JSON.stringify({ name: user.name ?? 'Anonymous', score: points }),
         }).catch(err => console.error('Failed to save score', err))
       }
     },
@@ -106,7 +106,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
             name: user.name,
             age: user.age,
             badges: user.badges,
-            scores: user.scores,
+            scores: user.points,
             difficulty: user.difficulty,
           }),
         }).catch((err) => console.error('Failed to save user', err))
@@ -122,7 +122,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
         setUser,
         setAge,
         setName,
-        setScore,
+        setPoints,
         addBadge,
         setDifficulty,
       }}

@@ -4,19 +4,20 @@ import { Link, useLocation } from 'react-router-dom'
 import { UserContext } from '../../context/UserContext'
 import Tooltip from '../ui/Tooltip'
 import { getTotalPoints } from '../../utils/user'
-import type { ScoreEntry } from '../../pages/LeaderboardPage'
+import type { PointsEntry } from '../../pages/LeaderboardPage'
 import { GOAL_POINTS } from '../../constants/progress'
 
 export interface ProgressSidebarProps {
-  scores?: Record<string, number>
+  points?: Record<string, number>
   badges?: string[]
 }
 
-export default function ProgressSidebar({ scores, badges }: ProgressSidebarProps = {}) {
+export default function ProgressSidebar({ points, badges }: ProgressSidebarProps = {}) {
   const { user } = useContext(UserContext)
 
   const userScores = scores ?? user.scores
   const userBadges = badges ?? user.badges
+
 
 
 
@@ -37,12 +38,15 @@ export default function ProgressSidebar({ scores, badges }: ProgressSidebarProps
       const base = window.location.origin
       fetch(`${base}/api/scores`)
         .then((res) => (res.ok ? res.json() : {}))
+
         .then((data: Record<string, ScoreEntry[]>) => {
           setLeaderboards(data)
+
         })
         .catch(() => {})
     }
   }, [])
+
 
   const location = useLocation()
   const slug = location.pathname.split('/')[2]
@@ -81,13 +85,13 @@ export default function ProgressSidebar({ scores, badges }: ProgressSidebarProps
         ))}
         {userBadges.length === 0 && <span>No badges yet.</span>}
       </div>
-      <h4 className="top-scores-title">Top Scores</h4>
-      <div className="top-scores-card">
-        <ol className="top-scores-list">
+      <h4 className="top-points-title">Top Points</h4>
+      <div className="top-points-card">
+        <ol className="top-points-list">
           {leaderboard.map((entry, idx) => (
             <li key={entry.name} className={idx === 0 ? 'top' : undefined}>
               {idx === 0 && <span aria-hidden="true">🏆 </span>}
-              {entry.name}: {entry.score}
+              {entry.name}: {entry.points}
             </li>
           ))}
         </ol>

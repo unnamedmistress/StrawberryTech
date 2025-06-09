@@ -18,9 +18,9 @@ Drag cards to assemble a prompt. Each round now fetches fresh card text from the
 - Games read the stored age to tweak difficulty and show tailored tips.
 - On easy difficulty, older players automatically receive extra time for tasks
   (5s at 40+, 10s at 50+, 15s at 60+).
-- Scores and badges now sync to a small server so progress follows you across devices.
+- Points and badges now sync to a small server so progress follows you across devices.
 - High contrast theme preference persists via `ThemeToggle`.
-- A unified leaderboard with tabs displays top scores for every game.
+- A unified leaderboard with tabs displays top points for every game.
 - A dedicated Badges page lets you track all achievements.
 - A hidden `/stats` page displays live visitor analytics collected on the server.
 - A community playlist page lets everyone share bad and good prompt pairs.
@@ -34,7 +34,7 @@ Drag cards to assemble a prompt. Each round now fetches fresh card text from the
    npm run dev
    ```
 2. In a separate terminal start the API server to persist user info,
-  community posts and shared high scores:
+  community posts and shared high points:
    ```bash
    cd server
    npm install

@@ -171,7 +171,7 @@ function ToneMatchGame({ onComplete }: { onComplete: (score: number) => void }) 
   const [selected, setSelected] = useState<Tone | null>(null)
   const [used, setUsed] = useState<Set<Tone>>(new Set())
   const [quizAnswer, setQuizAnswer] = useState<Tone | null>(null)
-  const [score, setScore] = useState(0)
+  const [points, setPoints] = useState(0)
 
   function handleDragStart(e: React.DragEvent<HTMLDivElement>, tone: Tone) {
     e.dataTransfer.setData("text/plain", tone);
@@ -183,7 +183,7 @@ function ToneMatchGame({ onComplete }: { onComplete: (score: number) => void }) 
     if (tones.includes(tone) && !used.has(tone)) {
       setSelected(tone);
       setUsed(new Set(used).add(tone));
-      setScore((s) => s + 20);
+      setPoints((s) => s + 20);
     }
   }
 
@@ -194,10 +194,10 @@ function ToneMatchGame({ onComplete }: { onComplete: (score: number) => void }) 
 
   useEffect(() => {
     if (used.size >= 3) {
-      recordScore('tone', score)
-      onComplete(score)
+      recordScore('tone', points)
+      onComplete(points)
     }
-  }, [used, onComplete, score, recordScore])
+  }, [used, onComplete, points, recordScore])
 
   return (
     <div className="dragdrop-game">

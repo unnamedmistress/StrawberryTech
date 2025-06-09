@@ -1,2 +1,2 @@
-export const getTotalPoints = (scores: Record<string, number>) =>
-  Object.values(scores).reduce((a, b) => a + b, 0);
+export const getTotalPoints = (pointsMap: Record<string, number>) =>
+  Object.values(pointsMap).reduce((a, b) => a + b, 0);
