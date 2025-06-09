@@ -5,6 +5,11 @@ import type { PostData } from '../components/Post'
 import { UserContext } from '../context/UserContext'
 
 const STORAGE_KEY = 'community_posts'
+const MAX_POSTS = 20
+
+function prunePosts(list: PostData[]): PostData[] {
+  return list.slice(-MAX_POSTS)
+}
 
 const initialPosts: PostData[] = [
   {
@@ -36,13 +41,16 @@ export default function CommunityPage() {
       const base = window.location.origin
       fetch(`${base}/api/posts`)
         .then((res) => (res.ok ? res.json() : []))
-        .then((data: PostData[]) => setPosts(data.length ? data : initialPosts))
+        .then((data: PostData[]) =>
+          setPosts(data.length ? prunePosts(data) : initialPosts)
+        )
         .catch(() => {})
     }
   }, [])
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(posts))
+    // Persist only the most recent MAX_POSTS so localStorage doesn't grow without bound
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(prunePosts(posts)))
   }, [posts])
 
   function flagPost(id: number) {
@@ -66,7 +74,7 @@ export default function CommunityPage() {
         setError('Limit reached: only one post per user')
         return
       }
-      setPosts((prev) => [...prev, newPost])
+      setPosts((prev) => prunePosts([...prev, newPost]))
       if (typeof window !== 'undefined') {
         const base = window.location.origin
         fetch(`${base}/api/posts`, {
