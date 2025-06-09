@@ -1,6 +1,6 @@
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
-import { UserProvider } from '../context/UserProvider'
+import { UserProvider } from '../../../shared/UserProvider'
 import NavBar from '../components/layout/NavBar'
 import Footer from '../components/layout/Footer'
 import AnalyticsTracker from '../components/AnalyticsTracker'
