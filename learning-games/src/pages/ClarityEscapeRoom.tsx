@@ -130,7 +130,7 @@ export default function ClarityEscapeRoom() {
 
   useEffect(() => {
     generateRoomDescription().then(text => setRoomDescription(text))
-  }, [])
+  }, [index])
 
   const clue = doors[index]
 
@@ -255,8 +255,6 @@ export default function ClarityEscapeRoom() {
       setStatus('')
       setHintIndex(0)
       setHintCount(0)
-
-      generateRoomDescription().then(text => setRoomDescription(text))
 
       setAiHint('')
 
