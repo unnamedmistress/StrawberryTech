@@ -5,7 +5,7 @@ import {
   ensureCardSet,
   type Dropped,
   type Card,
-} from '../PromptRecipeGame'
+} from '../promptRecipeHelpers'
 
 describe('evaluateRecipe', () => {
   it('scores 4 and is perfect when all placements correct', () => {
