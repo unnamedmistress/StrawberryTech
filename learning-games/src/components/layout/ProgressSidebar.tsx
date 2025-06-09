@@ -16,12 +16,12 @@ export default function ProgressSidebar({ badges }: ProgressSidebarProps = {}) {
   const { user } = useContext(UserContext)
 
   const userScores = user.points
-  const userBadges = badges ?? user.badges
-
-
-
-
-  const totalPoints = getTotalPoints(userScores)
+  const [progress, setProgress] = useState({
+    totalPoints: getTotalPoints(userScores),
+    badges: badges ?? user.badges,
+  })
+  const userBadges = progress.badges
+  const totalPoints = progress.totalPoints
 
   const celebrated = useRef(false)
   const { data: leaderboards = {} } = useLeaderboards()
@@ -32,6 +32,7 @@ export default function ProgressSidebar({ badges }: ProgressSidebarProps = {}) {
       celebrated.current = true
     }
   }, [totalPoints])
+
 
 
 
