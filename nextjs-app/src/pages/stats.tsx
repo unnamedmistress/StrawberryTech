@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import useSWR from 'swr'
 import Link from 'next/link'
 
 interface ViewData {
@@ -14,17 +14,13 @@ interface ViewData {
 }
 
 export default function StatsPage() {
-  const [views, setViews] = useState<ViewData[]>([])
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const base = window.location.origin
-      fetch(`${base}/api/views`)
-        .then(res => (res.ok ? res.json() : []))
-        .then(data => setViews(Array.isArray(data) ? data : []))
-        .catch(() => {})
-    }
-  }, [])
+  const base = typeof window !== 'undefined' ? window.location.origin : ''
+  const fetcher = (url: string) => fetch(url).then(res => res.json())
+  const { data: views = [] } = useSWR<ViewData[]>(
+    base ? `${base}/api/views` : null,
+    fetcher,
+    { refreshInterval: 60000 }
+  )
 
   const now = Date.now()
   const lastHour = now - 60 * 60 * 1000
