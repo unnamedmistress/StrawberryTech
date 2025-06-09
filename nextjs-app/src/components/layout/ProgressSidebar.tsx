@@ -1,4 +1,5 @@
 import { useContext, useEffect, useRef, useState } from 'react'
+import { getApiBase } from '../../utils/api'
 import confetti from 'canvas-confetti'
 import Link from 'next/link'
 import { UserContext } from '../../context/UserContext'
@@ -32,7 +33,7 @@ export default function ProgressSidebar({ points, badges }: ProgressSidebarProps
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      const base = window.location.origin
+      const base = getApiBase()
       fetch(`${base}/api/scores`)
         .then((res) => (res.ok ? res.json() : {}))
 

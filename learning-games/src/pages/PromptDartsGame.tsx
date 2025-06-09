@@ -8,6 +8,7 @@ import TimerBar from '../components/ui/TimerBar'
 import { UserContext } from '../context/UserContext'
 import shuffle from '../utils/shuffle'
 import { getTimeLimit } from '../utils/time'
+import { getApiBase } from '../utils/api'
 import './PromptDartsGame.css'
 import {
   type DartRound,
@@ -86,7 +87,7 @@ export default function PromptDartsGame() {
       setRounds(shuffle(ROUNDS))
       return
     }
-    const base = window.location.origin
+    const base = getApiBase()
     fetch(`${base}/api/darts`)
       .then(res => (res.ok ? res.json() : null))
       .then(data => {

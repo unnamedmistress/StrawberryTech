@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import Post from '../components/Post'
 import type { PostData } from '../components/Post'
 import { UserContext } from '../context/UserContext'
+import { getApiBase } from '../utils/api'
 
 const STORAGE_KEY = 'community_posts'
 const MAX_POSTS = 20
@@ -39,7 +40,7 @@ export default function CommunityPage() {
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      const base = window.location.origin
+      const base = getApiBase()
       fetch(`${base}/api/posts`)
         .then((res) => (res.ok ? res.json() : []))
         .then((data: PostData[]) =>
@@ -60,7 +61,7 @@ export default function CommunityPage() {
   function flagPost(id: number) {
     setPosts((prev) => prev.map((p) => (p.id === id ? { ...p, flagged: true } : p)))
     if (typeof window !== 'undefined') {
-      const base = window.location.origin
+      const base = getApiBase()
       fetch(`${base}/api/posts/${id}/flag`, { method: 'POST' })
         .catch(() => {
           setError('Failed to flag post')
@@ -84,7 +85,7 @@ export default function CommunityPage() {
       }
       setPosts((prev) => prunePosts([...prev, newPost]))
       if (typeof window !== 'undefined') {
-        const base = window.location.origin
+        const base = getApiBase()
         fetch(`${base}/api/posts`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
