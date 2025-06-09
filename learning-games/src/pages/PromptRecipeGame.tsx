@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from 'react'
+import { useState, useEffect, useContext, useCallback } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import CompletionModal from '../components/ui/CompletionModal'
 import { motion } from 'framer-motion'
@@ -59,7 +59,7 @@ export default function PromptRecipeGame() {
   })
   const [example, setExample] = useState<string | null>(null)
 
-  async function startRound() {
+  const startRound = useCallback(async () => {
     const newCards = await generateCards()
     setRoundCards(newCards)
     setCards(shuffle([...newCards]))
@@ -76,7 +76,7 @@ export default function PromptRecipeGame() {
       Format: null,
       Constraints: null,
     })
-  }
+  }, [TOTAL_TIME])
 
   useEffect(() => {
     startRound()
