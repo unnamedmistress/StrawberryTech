@@ -1,10 +1,13 @@
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import ProgressSidebar from '../components/layout/ProgressSidebar'
 import GamePageLayout from '../components/layout/GamePageLayout'
-
-import './DragDropGame.css'
 import WhyCard from '../components/layout/WhyCard'
+import { UserContext } from '../context/UserContext'
+
+
+import { getTotalPoints } from '../utils/user'
+import './DragDropGame.css'
 
 const tones = [
   'Polite',
@@ -38,6 +41,7 @@ export default function DragDropGame() {
   const [quizAnswer, setQuizAnswer] = useState<Tone | null>(null)
   const [userMessage, setUserMessage] = useState('')
   const [submitted, setSubmitted] = useState(false)
+  const { user } = useContext(UserContext)
 
   function handleDragStart(e: React.DragEvent<HTMLDivElement>, tone: Tone) {
     e.dataTransfer.setData('text/plain', tone)
@@ -72,8 +76,8 @@ export default function DragDropGame() {
           imageAlt="Tone game illustration"
           infoCardContent={
             <WhyCard
-              heading="Why Tone Matters"
-              text="Drag the adjectives into the blank to try different tones. Swap words wisely and watch your message sparkle!"
+              title="Why Tone Matters"
+              explanation="Drag the adjectives into the blank to try different tones. Swap words wisely and watch your message sparkle!"
             />
           }
           instructions="Match adjectives to explore how tone changes the meaning of a message."
@@ -168,7 +172,7 @@ export default function DragDropGame() {
         <ProgressSidebar />
       </div>
       <div className="next-area">
-        <p style={{ marginTop: '1rem', textAlign: 'center' }}>
+        <p>
           <Link to="/leaderboard">Return to Progress</Link>
         </p>
       </div>

@@ -51,14 +51,16 @@ function WhyItMatters() {
   return (
     <WhyCard
       className="quiz-sidebar reveal"
-      heading="Why It Matters"
-      text="AI hallucinations occur when the system confidently states something untrue."
+      title="Why It Matters"
+      explanation="AI hallucinations occur when the system confidently states something untrue."
       quote={QUOTE}
       tip={TIP}
     >
       <p className="sidebar-example">
-        Example: {example.statement}{' '}
-        <a href={example.source} target="_blank" rel="noopener noreferrer">Source</a>
+        Example: {example.statement}{" "}
+        <a href={example.source} target="_blank" rel="noopener noreferrer">
+          Source
+        </a>
       </p>
     </WhyCard>
   )

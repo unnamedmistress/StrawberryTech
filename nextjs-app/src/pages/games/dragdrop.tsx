@@ -2,9 +2,9 @@ import { useState, useContext } from 'react'
 import Link from 'next/link'
 import ProgressSidebar from '../../components/layout/ProgressSidebar'
 import GamePageLayout from '../../components/layout/GamePageLayout'
+import WhyCard from '../../components/layout/WhyCard'
 import { UserContext } from '../../context/UserContext'
 import '../../styles/DragDropGame.css'
-import WhyCard from '../../components/layout/WhyCard'
 import JsonLd from '../../components/seo/JsonLd'
 
 const tones = [
@@ -85,8 +85,8 @@ export default function DragDropGame() {
           imageAlt="Tone game illustration"
           infoCardContent={
             <WhyCard
-              heading="Why Tone Matters"
-              text="Drag the adjectives into the blank to try different tones. Swap words wisely and watch your message sparkle!"
+              title="Why Tone Matters"
+              explanation="Drag the adjectives into the blank to try different tones. Swap words wisely and watch your message sparkle!"
             />
           }
           instructions="Match adjectives to explore how tone changes the meaning of a message."
@@ -181,7 +181,7 @@ export default function DragDropGame() {
         <ProgressSidebar />
       </div>
       <div className="next-area">
-        <p style={{ marginTop: '1rem', textAlign: 'center' }}>
+        <p>
           <Link href="/leaderboard">Return to Progress</Link>
         </p>
       </div>

@@ -230,8 +230,8 @@ export default function PromptGuessEscape() {
       <div className="guess-wrapper">
         <WhyCard
           className="guess-sidebar"
-          heading="Why Clarity Matters"
-          text="Vague inputs lock AI in confusion loops; precise prompts open doors."
+          title="Why Clarity Matters"
+          explanation="Vague inputs lock AI in confusion loops; precise prompts open doors."
         />
         <div className="guess-game">
           <p className="ai-response"><strong>AI Response:</strong> "{clue.aiResponse}"</p>

@@ -1,5 +1,6 @@
 import { useState, useEffect, useContext, useMemo } from 'react'
 import ProgressSidebar from '../../components/layout/ProgressSidebar'
+import WhyCard from '../../components/layout/WhyCard'
 import { motion } from 'framer-motion'
 import { toast } from 'react-hot-toast'
 import Link from 'next/link'; import { useRouter } from 'next/router'
@@ -11,7 +12,6 @@ import InstructionBanner from '../../components/ui/InstructionBanner'
 import { HALLUCINATION_EXAMPLES } from '../../data/hallucinationExamples'
 import { H_ROUNDS } from '../../data/hallucinationRounds'
 import JsonLd from '../../components/seo/JsonLd'
-import WhyCard from '../../components/layout/WhyCard'
 
 interface StatementSet {
   statements: string[]
@@ -53,14 +53,16 @@ function WhyItMatters() {
   return (
     <WhyCard
       className="quiz-sidebar reveal"
-      heading="Why It Matters"
-      text="AI hallucinations occur when the system confidently states something untrue."
+      title="Why It Matters"
+      explanation="AI hallucinations occur when the system confidently states something untrue."
       quote={QUOTE}
       tip={TIP}
     >
       <p className="sidebar-example">
-        Example: {example.statement}{' '}
-        <a href={example.source} target="_blank" rel="noopener noreferrer">Source</a>
+        Example: {example.statement}{" "}
+        <a href={example.source} target="_blank" rel="noopener noreferrer">
+          Source
+        </a>
       </p>
     </WhyCard>
   )

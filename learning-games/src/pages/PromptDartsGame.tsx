@@ -435,8 +435,8 @@ export default function PromptDartsGame() {
       <div className="darts-wrapper">
         <WhyCard
           className="darts-sidebar"
-          heading="Why Clarity Matters"
-          text="The clearer your target, the better your aim. Clear prompts act like aiming sights for AI."
+          title="Why Clarity Matters"
+          explanation="The clearer your target, the better your aim. Clear prompts act like aiming sights for AI."
           quote="Why Card: Why Clarity Matters"
           tip="Align prompt language with output types (teaching specificity and clarity)."
         />
