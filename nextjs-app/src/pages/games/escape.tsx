@@ -32,6 +32,7 @@ const CLUES: Clue[] = [
     hints: [
       'The subject is humor suitable for children.',
       "The verb asks to 'tell' something funny.",
+      'The correct prompt is "Tell me a kid-friendly joke".',
     ],
   },
   {
