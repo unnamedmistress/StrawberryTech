@@ -226,6 +226,17 @@ app.post('/api/user', async (req, res) => {
   res.json(user);
 });
 
+app.get('/api/progress', async (req, res) => {
+  if (!ensureFirestore(res)) return;
+  const snap = await userDoc.get();
+  const data = snap.exists ? snap.data() : { points: {}, badges: [] };
+  const totalPoints = Object.values(data.points || {}).reduce(
+    (a, b) => a + b,
+    0,
+  );
+  res.json({ totalPoints, badges: data.badges || [] });
+});
+
 app.get('/api/posts', async (req, res) => {
   if (!ensureFirestore(res)) return;
   const snap = await posts.where('status', '==', 'approved').get();
