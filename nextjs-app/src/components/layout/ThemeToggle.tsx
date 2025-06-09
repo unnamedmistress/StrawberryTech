@@ -4,7 +4,7 @@ const STORAGE_KEY = 'strawberrytech_contrast'
 
 export default function ThemeToggle() {
   const [enabled, setEnabled] = useState(() => {
-    return localStorage.getItem(STORAGE_KEY) === 'true'
+    return typeof window !== 'undefined' && localStorage.getItem(STORAGE_KEY) === 'true'
   })
 
   useEffect(() => {

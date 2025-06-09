@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from 'react'
 import Link from 'next/link'
-import Head from 'next/head'
+import HeadTag from 'next/head'
 import { useRouter } from 'next/router'
 import { motion } from 'framer-motion'
 import confetti from 'canvas-confetti'
@@ -143,7 +143,7 @@ async function generateCards(): Promise<Card[]> {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${import.meta.env.VITE_OPENAI_API_KEY}`,
+        Authorization: `Bearer ${process.env.NEXT_PUBLIC_OPENAI_API_KEY}`,
       },
       body: JSON.stringify({
         model: 'gpt-3.5-turbo',
@@ -397,7 +397,7 @@ export default function PromptRecipeGame() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${import.meta.env.VITE_OPENAI_API_KEY}`,
+          Authorization: `Bearer ${process.env.NEXT_PUBLIC_OPENAI_API_KEY}`,
         },
         body: JSON.stringify({
           model: 'gpt-3.5-turbo',
@@ -448,7 +448,7 @@ export default function PromptRecipeGame() {
             'https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_19_23%20PM.png',
         }}
       />
-      <Head>
+      <HeadTag>
         <title>Prompt Recipe Builder - StrawberryTech</title>
         <meta property="og:title" content="Prompt Recipe Builder - StrawberryTech" />
         <meta
@@ -473,11 +473,11 @@ export default function PromptRecipeGame() {
           name="twitter:image"
           content="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_19_23%20PM.png"
         />
-        <meta
-          name="twitter:url"
-          content="https://strawberry-tech.vercel.app/games/recipe"
-        />
-      </Head>
+          <meta
+            name="twitter:url"
+            content="https://strawberry-tech.vercel.app/games/recipe"
+          />
+        </HeadTag>
       <div className="recipe-page">
       <InstructionBanner>
         Drag each card to the category it best fits to build a clear AI prompt.
