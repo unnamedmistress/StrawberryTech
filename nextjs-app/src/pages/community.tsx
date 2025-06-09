@@ -5,6 +5,7 @@ import Post from '../components/Post'
 import type { PostData } from '../components/Post'
 import { UserContext } from '../context/UserContext'
 import styles from '../styles/CommunityPage.module.css'
+import { getApiBase } from '../utils/api'
 
 const STORAGE_KEY = 'community_posts'
 
@@ -36,15 +37,6 @@ export default function CommunityPage() {
   const [error, setError] = useState('')
   const [notice, setNotice] = useState('')
 
-  function getApiBase() {
-    if (process.env.NEXT_PUBLIC_API_BASE) {
-      return process.env.NEXT_PUBLIC_API_BASE
-    }
-    if (typeof window !== 'undefined') {
-      return window.location.origin
-    }
-    return ''
-  }
 
   useEffect(() => {
     if (typeof window !== 'undefined') {

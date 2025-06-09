@@ -81,12 +81,14 @@ The community feedback page uses the same API for sentiment filtering. Set
 `OPENAI_API_KEY` in the server environment so posts can be screened before
 publishing.
 
+
 To point either frontend at a custom server URL set `NEXT_PUBLIC_API_BASE`
 in `nextjs-app/.env` or `VITE_API_BASE` in `learning-games/.env`. These must
 be the backend URL when the frontend and API run on different hosts. If these
 variables are omitted each app falls back to `window.location.origin`, which only
 works when the API is served from the same host.
 Sample `.env.example` files in each app illustrate this configuration.
+
 
 The API server now persists data in Firebase. Provide service account credentials
 by setting `FIREBASE_SERVICE_ACCOUNT` to a JSON string or path, or use

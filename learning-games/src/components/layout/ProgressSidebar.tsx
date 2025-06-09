@@ -6,6 +6,7 @@ import Tooltip from '../ui/Tooltip'
 import { getTotalPoints } from '../../utils/user'
 import { GOAL_POINTS } from '../../constants/progress'
 import type { PointsEntry } from '../../pages/LeaderboardPage'
+import { getApiBase } from '../../utils/api'
 
 export interface ProgressSidebarProps {
   points?: Record<string, number>
@@ -35,7 +36,7 @@ export default function ProgressSidebar({ badges }: ProgressSidebarProps = {}) {
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      const base = window.location.origin
+      const base = getApiBase()
       fetch(`${base}/api/scores`)
         .then((res) => (res.ok ? res.json() : {}))
 

@@ -5,6 +5,7 @@ import { UserContext } from '../context/UserContext'
 import ThemeToggle from '../components/layout/ThemeToggle'
 import type { PointsEntry } from './leaderboard'
 import { getTotalPoints } from '../utils/user'
+import { getApiBase } from '../utils/api'
 
 
 import '../styles/ProfilePage.css'
@@ -18,7 +19,7 @@ export default function ProfilePage() {
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      const base = window.location.origin
+      const base = getApiBase()
       fetch(`${base}/api/scores`)
         .then(res => (res.ok ? res.json() : {}))
         .then(data => setScores(data))

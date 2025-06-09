@@ -1,6 +1,7 @@
 import { useEffect, useContext } from 'react'
 import { useRouter } from 'next/router'
 import { UserContext } from '../context/UserContext'
+import { getApiBase } from '../utils/api'
 
 function getCookie(name: string) {
   if (typeof document === 'undefined') return null
@@ -21,7 +22,7 @@ export default function AnalyticsTrackerNext() {
 
   useEffect(() => {
     if (typeof window === 'undefined') return
-    const base = window.location.origin
+    const base = getApiBase()
     let visitorId = getCookie('uid')
     if (!visitorId) {
       visitorId = Math.random().toString(36).slice(2)

@@ -1,6 +1,7 @@
 import useSWR from 'swr'
 import Link from 'next/link'
 import Spinner from '../components/ui/Spinner'
+import { getApiBase } from '../utils/api'
 
 interface ViewData {
   id: number
@@ -16,7 +17,7 @@ interface ViewData {
 
 export default function StatsPage() {
 
-  const base = typeof window !== 'undefined' ? window.location.origin : ''
+  const base = getApiBase()
   const fetcher = (url: string) => fetch(url).then(res => res.json())
   const { data: views = [] } = useSWR<ViewData[]>(
     base ? `${base}/api/views` : null,
