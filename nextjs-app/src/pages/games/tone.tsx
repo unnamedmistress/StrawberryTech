@@ -3,7 +3,7 @@ import { toast } from "react-hot-toast";
 import confetti from "canvas-confetti";
 
 import Link from "next/link"; import { useRouter } from "next/router";
-import Head from "next/head";
+import HeadTag from "next/head";
 import JsonLd from "../../components/seo/JsonLd";
 
 import { UserContext } from "../../context/UserContext";
@@ -361,7 +361,7 @@ export default function Match3Game() {
             'https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_47_46%20PM.png',
         }}
       />
-      <Head>
+        <HeadTag>
         <title>Tone Puzzle - StrawberryTech</title>
         <meta property="og:title" content="Tone Puzzle - StrawberryTech" />
         <meta
@@ -386,11 +386,11 @@ export default function Match3Game() {
           name="twitter:image"
           content="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_47_46%20PM.png"
         />
-        <meta
-          name="twitter:url"
-          content="https://strawberry-tech.vercel.app/games/tone"
-        />
-      </Head>
+          <meta
+            name="twitter:url"
+            content="https://strawberry-tech.vercel.app/games/tone"
+          />
+        </HeadTag>
       <div className="match3-page">
       <InstructionBanner>
         Match adjectives to explore how tone changes the meaning of a message.

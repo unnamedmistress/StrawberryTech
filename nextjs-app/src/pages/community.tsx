@@ -22,7 +22,7 @@ const initialPosts: PostData[] = [
 export default function CommunityPage() {
   const { user } = useContext(UserContext)
   const [posts, setPosts] = useState<PostData[]>(() => {
-    const saved = localStorage.getItem(STORAGE_KEY)
+    const saved = typeof window !== 'undefined' ? localStorage.getItem(STORAGE_KEY) : null
     if (saved) {
       try {
         return JSON.parse(saved) as PostData[]
