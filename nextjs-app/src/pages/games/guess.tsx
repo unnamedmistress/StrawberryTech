@@ -267,9 +267,11 @@ export default function PromptGuessEscape() {
               placeholder="Type the prompt that caused this reply"
             />
             <button type="submit" className="btn-primary">Submit</button>
-            <button type="button" className="btn-primary" onClick={revealHint}>
-              Hint (H)
-            </button>
+            <Tooltip message="Reveal a hint (press H). Each hint reduces your points.">
+              <button type="button" className="btn-primary" onClick={revealHint}>
+                Hint (H)
+              </button>
+            </Tooltip>
           </form>
           <ProgressBar percent={openPercent} />
           {hintIndex > 0 && (
