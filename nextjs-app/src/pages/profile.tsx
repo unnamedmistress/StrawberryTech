@@ -1,11 +1,10 @@
-import { useContext, useState, useEffect, useMemo } from 'react'
+import { useContext, useState, useMemo } from 'react'
 import Link from 'next/link'
 import { toast } from 'react-hot-toast'
 import { UserContext } from '../../../shared/UserContext'
 import ThemeToggle from '../components/layout/ThemeToggle'
-import type { PointsEntry } from './leaderboard'
+import { useLeaderboards, type PointsEntry } from '../../../shared/useLeaderboards'
 import { getTotalPoints } from '../utils/user'
-import { getApiBase } from '../utils/api'
 
 
 import '../styles/ProfilePage.css'
@@ -15,17 +14,7 @@ export default function ProfilePage() {
   const [name, setNameState] = useState(user.name ?? '')
   const [age, setAgeState] = useState<string>(user.age ? String(user.age) : '')
   const [difficulty, setDifficultyState] = useState(user.difficulty)
-  const [scores, setScores] = useState<Record<string, PointsEntry[]>>({})
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const base = getApiBase()
-      fetch(`${base}/api/scores`)
-        .then(res => (res.ok ? res.json() : {}))
-        .then(data => setScores(data))
-        .catch(() => {})
-    }
-  }, [])
+  const { data: scores = {} } = useLeaderboards()
 
   const totalPoints = useMemo(() => getTotalPoints(user.points), [user.points])
 
