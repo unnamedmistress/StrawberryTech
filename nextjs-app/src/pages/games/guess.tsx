@@ -115,7 +115,7 @@ const EXTRA_TIME = 10
 
 export default function PromptGuessEscape() {
   const navigate = useRouter()
-  const { setScore } = useContext(UserContext)
+  const { setPoints: recordScore } = useContext(UserContext)
   const [doors] = useState(() => shuffle(CLUES).slice(0, TOTAL_STEPS))
   const [index, setIndex] = useState(0)
   const [input, setInput] = useState('')
@@ -238,7 +238,7 @@ export default function PromptGuessEscape() {
       setHintCount(0)
       setShowNext(false)
     } else {
-      setPoints('escape', points)
+      recordScore('escape', points)
       setShowSummary(true)
     }
   }

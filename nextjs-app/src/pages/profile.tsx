@@ -26,7 +26,7 @@ export default function ProfilePage() {
     }
   }, [])
 
-  const totalPoints = useMemo(() => getTotalPoints(user.scores), [user.scores])
+  const totalPoints = useMemo(() => getTotalPoints(user.points), [user.points])
 
   const topScores = useMemo(() => {
     const result: Record<string, number> = {}
@@ -39,8 +39,8 @@ export default function ProfilePage() {
   }, [scores])
 
   const games = useMemo(
-    () => Array.from(new Set([...Object.keys(user.scores), ...Object.keys(topScores)])),
-    [user.scores, topScores]
+    () => Array.from(new Set([...Object.keys(user.points), ...Object.keys(topScores)])),
+    [user.points, topScores]
   )
 
   function handleSubmit(e: React.FormEvent) {
@@ -122,7 +122,7 @@ export default function ProfilePage() {
               {games.map((g) => (
                 <tr key={g}>
                   <td>{g}</td>
-                  <td>{user.scores[g] ?? 0}</td>
+                  <td>{user.points[g] ?? 0}</td>
                   <td>{topScores[g] ?? '-'}</td>
                 </tr>
               ))}
