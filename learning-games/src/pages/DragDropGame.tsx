@@ -4,6 +4,8 @@ import ProgressSidebar from '../components/layout/ProgressSidebar'
 import GamePageLayout from '../components/layout/GamePageLayout'
 import { UserContext } from '../context/UserContext'
 
+
+import { getTotalPoints } from '../utils/user'
 import './DragDropGame.css'
 
 const tones = [
