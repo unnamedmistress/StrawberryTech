@@ -4,6 +4,7 @@ import ProgressSidebarSimple from '../../components/layout/ProgressSidebarSimple
 import { GOAL_POINTS } from '../../constants/progress'
 import GamePageLayout from '../../components/layout/GamePageLayout'
 import { UserContext } from '../../context/UserContext'
+import { getTotalPoints } from '../../utils/user'
 import '../../styles/DragDropGame.css'
 import JsonLd from '../../components/seo/JsonLd'
 
@@ -40,7 +41,7 @@ export default function DragDropGame() {
   const [userMessage, setUserMessage] = useState('')
   const [submitted, setSubmitted] = useState(false)
   const { user } = useContext(UserContext)
-  const totalPoints = Object.values(user.scores).reduce((a, b) => a + b, 0)
+  const totalPoints = getTotalPoints(user.scores)
   const badgesEarned = user.badges.length
 
   function handleDragStart(e: React.DragEvent<HTMLDivElement>, tone: Tone) {
