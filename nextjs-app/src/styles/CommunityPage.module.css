@@ -1,0 +1,14 @@
+.form {
+  margin-bottom: 1rem;
+}
+
+.textarea {
+  display: block;
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+.list {
+  list-style: none;
+  padding-left: 0;
+}
