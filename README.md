@@ -23,7 +23,7 @@ Drag cards to assemble a prompt. Each round now fetches fresh card text from the
 - A unified leaderboard with tabs displays top points for every game.
 - A dedicated Badges page lets you track all achievements.
 - A hidden `/stats` page displays live visitor analytics collected on the server.
-- A community playlist page lets everyone share bad and good prompt pairs.
+- A prompt library lets everyone browse shared prompts by category.
 - A community feedback page highlights positive comments from players.
 
 ## Getting Started
