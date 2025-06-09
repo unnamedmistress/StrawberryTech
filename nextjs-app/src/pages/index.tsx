@@ -3,6 +3,7 @@ import HeadTag from 'next/head'
 import Link from 'next/link'; import { useRouter } from 'next/router'
 import { UserContext } from '../context/UserContext'
 import '../styles/Home.css'
+import { GOAL_POINTS } from '../constants/progress'
 
 /**
  * Home page listing available games.
@@ -172,7 +173,7 @@ export default function Home() {
       {totalPoints > 0 && (
         <div className="progress-summary reveal">
           <p>Total Points: {totalPoints}</p>
-          <progress value={totalPoints} max={100} />
+          <progress value={totalPoints} max={GOAL_POINTS} />
           <p>Badges Earned: {user.badges.length}</p>
           <div className="badge-icons">
             {user.badges.map((b) => (
