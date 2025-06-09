@@ -181,7 +181,7 @@ export default function DragDropGame() {
         <ProgressSidebar />
       </div>
       <div className="next-area">
-        <p style={{ marginTop: '1rem', textAlign: 'center' }}>
+        <p>
           <Link href="/leaderboard">Return to Progress</Link>
         </p>
       </div>

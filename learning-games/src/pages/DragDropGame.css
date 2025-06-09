@@ -27,6 +27,7 @@
 
 .next-area {
   grid-area: next;
+  text-align: center;
 }
 
 .sentence {
