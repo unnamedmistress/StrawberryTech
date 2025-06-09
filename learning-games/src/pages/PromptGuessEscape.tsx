@@ -117,7 +117,7 @@ export default function PromptGuessEscape() {
   const [doors] = useState(() => shuffle(CLUES).slice(0, TOTAL_STEPS))
   const [index, setIndex] = useState(0)
   const [input, setInput] = useState('')
-  const [points, setPoints] = useState(0)
+  const [points, setPointsState] = useState(0)
   const [message, setMessage] = useState('')
   const [status, setStatus] = useState<'success' | 'error' | ''>('')
   const [hintIndex, setHintIndex] = useState(0)
@@ -193,7 +193,7 @@ export default function PromptGuessEscape() {
       const timeBonus = Date.now() - startRef.current < 10000 ? 5 : 0
       const penalty = hintCount * 2
       const total = Math.max(0, score + 10 + timeBonus - penalty)
-      setPoints(p => p + total)
+      setPointsState((p: number) => p + total)
       setMessage(`Door unlocked! +${total} points`)
       setStatus('success')
       setOpenPercent(((index + 1) / TOTAL_STEPS) * 100)
