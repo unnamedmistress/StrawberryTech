@@ -1,4 +1,10 @@
 {
-  "installCommand": "npm --prefix nextjs-app install",
-  "buildCommand": "npm --prefix nextjs-app run build"
+  "version": 2,
+  "builds": [
+    {
+      "src": "learning-games/nextjs-app/package.json",
+      "use": "@vercel/next"
+    }
+  ],
+  "routes": []
 }

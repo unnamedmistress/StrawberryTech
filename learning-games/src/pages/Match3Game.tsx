@@ -59,7 +59,7 @@ const examples: Record<Tone, string> = {
 
 
 function ToneMatchGame({ onComplete }: { onComplete: (score: number) => void }) {
-  const { setScore: recordScore } = useContext(UserContext)
+  const { setPoints: recordScore } = useContext(UserContext)
   const [selected, setSelected] = useState<Tone | null>(null)
   const [used, setUsed] = useState<Set<Tone>>(new Set())
   const [quizAnswer, setQuizAnswer] = useState<Tone | null>(null)
