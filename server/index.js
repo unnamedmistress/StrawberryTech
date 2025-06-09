@@ -18,6 +18,7 @@ const DARTS_FILE = path.join(__dirname, 'darts.json');
 
 // Collection references
 const posts = firestore.collection('posts');
+const prompts = firestore.collection('prompts');
 const pairs = firestore.collection('pairs');
 const views = firestore.collection('views');
 const scores = firestore.collection('scores');
@@ -130,6 +131,44 @@ async function sanitizeComment(text) {
   }
 }
 
+async function moderatePrompt(text) {
+  if (!OPENAI_API_KEY) {
+    return { flagged: false, category: 'general' };
+  }
+  try {
+    const resp = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${OPENAI_API_KEY}`,
+      },
+      body: JSON.stringify({
+        model: 'gpt-3.5-turbo',
+        messages: [
+          {
+            role: 'system',
+            content:
+              'Classify the text into a short category and indicate if it violates content policies. Respond only in JSON with keys "flagged" and "category".',
+          },
+          { role: 'user', content: text.slice(0, 300) },
+        ],
+        max_tokens: 20,
+        temperature: 0,
+      }),
+    });
+    const data = await resp.json();
+    let result = { flagged: false, category: 'general' };
+    try {
+      result = JSON.parse(data?.choices?.[0]?.message?.content || '');
+    } catch {}
+    if (!result.category) result.category = 'general';
+    return result;
+  } catch (err) {
+    console.error('Moderation request failed', err);
+    return { flagged: false, category: 'general' };
+  }
+}
+
 app.post('/api/sentiment', async (req, res) => {
   const text = req.body.text || '';
   const score = await analyzeSentiment(text);
@@ -188,6 +227,26 @@ app.post('/api/posts/:id/flag', async (req, res) => {
   } else {
     res.status(404).end();
   }
+});
+
+app.get('/api/prompts', async (req, res) => {
+  const snap = await prompts.where('flagged', '==', false).get();
+  const list = [];
+  snap.forEach(doc => list.push({ id: doc.id, ...doc.data() }));
+  res.json(list);
+});
+
+app.post('/api/prompts', async (req, res) => {
+  const text = req.body.text || '';
+  const { sanitized } = await sanitizeComment(text);
+  const { flagged, category } = await moderatePrompt(sanitized);
+  if (flagged) {
+    res.status(400).json({ error: 'Prompt rejected due to policy violation.' });
+    return;
+  }
+  const created = new Date().toISOString();
+  const ref = await prompts.add({ text: sanitized, category, created, flagged });
+  res.status(201).json({ id: ref.id, text: sanitized, category, created, flagged });
 });
 
 app.get('/api/pairs', async (req, res) => {
