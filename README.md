@@ -81,6 +81,10 @@ The community feedback page uses the same API for sentiment filtering. Set
 `OPENAI_API_KEY` in the server environment so posts can be screened before
 publishing.
 
+To point the Next.js frontend at a custom server URL set `NEXT_PUBLIC_API_BASE`
+in `nextjs-app/.env`. When omitted, the app defaults to `window.location.origin`
+so the API can be served from the same host in production.
+
 The API server now persists data in Firebase. Provide service account credentials
 by setting `FIREBASE_SERVICE_ACCOUNT` to a JSON string or path, or use
 `GOOGLE_APPLICATION_CREDENTIALS` to point to a credentials file.
