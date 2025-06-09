@@ -247,6 +247,11 @@ app.get('/api/scores', async (req, res) => {
   const snap = await scores.get();
   const data = {};
   snap.forEach(doc => (data[doc.id] = doc.data().entries || []));
+  // Ensure all known games exist in the response
+  const allGames = ['tone', 'quiz', 'darts', 'recipe', 'escape', 'compose'];
+  allGames.forEach(g => {
+    if (!data[g]) data[g] = [];
+  });
   res.json(data);
 });
 

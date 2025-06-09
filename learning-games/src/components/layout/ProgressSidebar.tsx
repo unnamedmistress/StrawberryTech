@@ -1,6 +1,6 @@
 import { useContext, useEffect, useRef, useState } from 'react'
 import confetti from 'canvas-confetti'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { UserContext } from '../../context/UserContext'
 import Tooltip from '../ui/Tooltip'
 import { getTotalPoints } from '../../utils/user'
@@ -15,13 +15,16 @@ export interface ProgressSidebarProps {
 export default function ProgressSidebar({ points, badges }: ProgressSidebarProps = {}) {
   const { user } = useContext(UserContext)
 
+  const userScores = scores ?? user.scores
+  const userBadges = badges ?? user.badges
 
 
-  const totalPoints = getTotalPoints(user.points)
-  const GOAL_POINTS = 300
+
+
+  const totalPoints = getTotalPoints(userScores)
 
   const celebrated = useRef(false)
-  const [pointsEntries, setPointsEntries] = useState<PointsEntry[]>([])
+  const [leaderboards, setLeaderboards] = useState<Record<string, ScoreEntry[]>>({})
 
   useEffect(() => {
     if (totalPoints >= GOAL_POINTS && !celebrated.current) {
@@ -35,17 +38,35 @@ export default function ProgressSidebar({ points, badges }: ProgressSidebarProps
       const base = window.location.origin
       fetch(`${base}/api/scores`)
         .then((res) => (res.ok ? res.json() : {}))
-        .then((data: Record<string, PointsEntry[]>) => {
-          setPointsEntries(Array.isArray(data.darts) ? data.darts : [])
+
+        .then((data: Record<string, ScoreEntry[]>) => {
+          setLeaderboards(data)
+
         })
         .catch(() => {})
     }
   }, [])
 
-  const leaderboard = pointsEntries
-    .concat({ name: user.name ?? 'You', points: (points ?? user.points)['darts'] ?? 0 })
-    .sort((a, b) => b.points - a.points)
-    .slice(0, 3)
+
+  const location = useLocation()
+  const slug = location.pathname.split('/')[2]
+  const gameMap: Record<string, string> = {
+    darts: 'darts',
+    recipe: 'recipe',
+    escape: 'escape',
+    guess: 'escape',
+    compose: 'compose',
+    quiz: 'quiz',
+    tone: 'tone',
+  }
+  const game = gameMap[slug] || 'darts'
+
+  const entries = (leaderboards[game] ?? [])
+    .concat({ name: user.name ?? 'You', score: userScores[game] ?? 0 })
+    .sort((a, b) => b.score - a.score)
+
+  const rank = entries.findIndex(e => e.name === (user.name ?? 'You')) + 1
+  const leaderboard = entries.slice(0, 3)
 
   return (
     <aside className="progress-sidebar">
@@ -74,6 +95,9 @@ export default function ProgressSidebar({ points, badges }: ProgressSidebarProps
             </li>
           ))}
         </ol>
+        <p className="your-rank" aria-live="polite" aria-atomic="true">
+          Your rank: #{rank}
+        </p>
       </div>
       <p className="view-leaderboard">
         <Link to="/leaderboard">View full leaderboard</Link>
