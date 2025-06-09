@@ -243,7 +243,7 @@ export default function ClarityEscapeRoom() {
 
       setShowNext(false)
     } else {
-      setScore('escape', points)
+      setPoints('escape', points)
       setShowSummary(true)
     }
   }
@@ -367,7 +367,7 @@ export default function ClarityEscapeRoom() {
           buttonLabel="Play Prompt Builder"
         >
           <h3>Escape Complete!</h3>
-          <p className="final-score">Score: {points}</p>
+          <p className="final-score">Points: {points}</p>
         </CompletionModal>
       )}
     </div>

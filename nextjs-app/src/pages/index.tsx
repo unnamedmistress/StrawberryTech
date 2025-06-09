@@ -38,7 +38,7 @@ export default function Home() {
     return () => observer.disconnect()
   }, [])
 
-  const totalPoints = getTotalPoints(user.scores)
+  const totalPoints = getTotalPoints(user.points)
 
   return (
     <>

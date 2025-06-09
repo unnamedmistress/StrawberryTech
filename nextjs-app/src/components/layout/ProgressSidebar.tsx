@@ -4,23 +4,23 @@ import Link from 'next/link'
 import { UserContext } from '../../context/UserContext'
 import { getTotalPoints } from '../../utils/user'
 import Tooltip from '../ui/Tooltip'
-import type { ScoreEntry } from '../../pages/leaderboard'
+import type { PointsEntry } from '../../pages/leaderboard'
 import { GOAL_POINTS } from '../../constants/progress'
 
 export interface ProgressSidebarProps {
-  scores?: Record<string, number>
+  points?: Record<string, number>
   badges?: string[]
 }
 
-export default function ProgressSidebar({ scores, badges }: ProgressSidebarProps = {}) {
+export default function ProgressSidebar({ points, badges }: ProgressSidebarProps = {}) {
   const { user } = useContext(UserContext)
 
-  const userScores = scores ?? user.scores
+  const userScores = points ?? user.points
   const userBadges = badges ?? user.badges
 
   const totalPoints = getTotalPoints(userScores)
   const celebrated = useRef(false)
-  const [scoreEntries, setScoreEntries] = useState<ScoreEntry[]>([])
+  const [scoreEntries, setScoreEntries] = useState<PointsEntry[]>([])
 
   useEffect(() => {
     if (totalPoints >= GOAL_POINTS && !celebrated.current) {
@@ -34,7 +34,7 @@ export default function ProgressSidebar({ scores, badges }: ProgressSidebarProps
       const base = window.location.origin
       fetch(`${base}/api/scores`)
         .then((res) => (res.ok ? res.json() : {}))
-        .then((data: Record<string, ScoreEntry[]>) => {
+        .then((data: Record<string, PointsEntry[]>) => {
           setScoreEntries(Array.isArray(data.darts) ? data.darts : [])
         })
         .catch(() => {})
@@ -63,13 +63,13 @@ export default function ProgressSidebar({ scores, badges }: ProgressSidebarProps
         ))}
         {userBadges.length === 0 && <span>No badges yet.</span>}
       </div>
-      <h4 className="top-scores-title">Top Scores</h4>
+      <h4 className="top-scores-title">Top Points</h4>
       <div className="top-scores-card">
         <ol className="top-scores-list">
           {leaderboard.map((entry, idx) => (
             <li key={entry.name} className={idx === 0 ? 'top' : undefined}>
               {idx === 0 && <span aria-hidden="true">🏆 </span>}
-              {entry.name}: {entry.score}
+              {entry.name}: {entry.points}
             </li>
           ))}
         </ol>
