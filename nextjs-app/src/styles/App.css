@@ -400,6 +400,33 @@
   padding: 0.5rem 0.5rem;
 }
 
+.submenu-toggle {
+  background: transparent;
+  border: none;
+  color: inherit;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.submenu-toggle:hover {
+  color: var(--color-lime);
+}
+
+.submenu ul {
+  display: none;
+  flex-direction: column;
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0 1rem;
+  gap: 0.25rem;
+  background: var(--color-brand);
+}
+
+.submenu ul.open {
+  display: flex;
+}
+
 .navbar a {
   color: #fff;
   font-weight: 600;
