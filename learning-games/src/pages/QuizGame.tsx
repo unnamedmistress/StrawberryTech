@@ -1,5 +1,6 @@
 import { useState, useEffect, useContext, useMemo } from 'react'
 import ProgressSidebar from '../components/layout/ProgressSidebar'
+import WhyCard from '../components/layout/WhyCard'
 import { motion } from 'framer-motion'
 import { toast } from 'react-hot-toast'
 import { Link, useNavigate } from 'react-router-dom'
@@ -48,16 +49,20 @@ function WhyItMatters() {
     [],
   )
   return (
-    <aside className="quiz-sidebar reveal">
-      <h3>Why It Matters</h3>
-      <p>AI hallucinations occur when the system confidently states something untrue.</p>
-      <blockquote className="sidebar-quote">{QUOTE}</blockquote>
-      <p className="sidebar-tip">{TIP}</p>
+    <WhyCard
+      className="quiz-sidebar reveal"
+      title="Why It Matters"
+      explanation="AI hallucinations occur when the system confidently states something untrue."
+      quote={QUOTE}
+      tip={TIP}
+    >
       <p className="sidebar-example">
-        Example: {example.statement}{' '}
-        <a href={example.source} target="_blank" rel="noopener noreferrer">Source</a>
+        Example: {example.statement}{" "}
+        <a href={example.source} target="_blank" rel="noopener noreferrer">
+          Source
+        </a>
       </p>
-    </aside>
+    </WhyCard>
   )
 }
 
