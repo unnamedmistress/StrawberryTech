@@ -113,7 +113,7 @@ const TOTAL_STEPS = 4
 
 export default function ClarityEscapeRoom() {
   const navigate = useRouter()
-  const { setScore } = useContext(UserContext)
+  const { setPoints: recordScore } = useContext(UserContext)
   const [doors] = useState(() => shuffle(CLUES).slice(0, TOTAL_STEPS))
   const [index, setIndex] = useState(0)
   const [input, setInput] = useState('')
@@ -271,7 +271,7 @@ export default function ClarityEscapeRoom() {
       
       setShowNext(false)
     } else {
-      setPoints('escape', points)
+      recordScore('escape', points)
       setShowSummary(true)
     }
   }
