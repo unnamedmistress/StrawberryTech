@@ -17,12 +17,12 @@ export default function ProgressSidebar({ badges }: ProgressSidebarProps = {}) {
   const { user } = useContext(UserContext)
 
   const userScores = user.points
-  const userBadges = badges ?? user.badges
-
-
-
-
-  const totalPoints = getTotalPoints(userScores)
+  const [progress, setProgress] = useState({
+    totalPoints: getTotalPoints(userScores),
+    badges: badges ?? user.badges,
+  })
+  const userBadges = progress.badges
+  const totalPoints = progress.totalPoints
 
   const celebrated = useRef(false)
   const [leaderboards, setLeaderboards] = useState<Record<string, PointsEntry[]>>({})
@@ -33,6 +33,18 @@ export default function ProgressSidebar({ badges }: ProgressSidebarProps = {}) {
       celebrated.current = true
     }
   }, [totalPoints])
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const base = getApiBase()
+      fetch(`${base}/api/progress`)
+        .then(res => (res.ok ? res.json() : null))
+        .then(data => {
+          if (data) setProgress(data)
+        })
+        .catch(() => {})
+    }
+  }, [])
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
