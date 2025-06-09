@@ -5,7 +5,7 @@ export const defaultUser: UserData = {
   name: null,
   age: null,
   difficulty: 'medium',
-  scores: {},
+  points: {},
   badges: [],
 }
 
@@ -14,7 +14,7 @@ export const UserContext = createContext<UserContextType>({
   setUser: () => {},
   setAge: () => {},
   setName: () => {},
-  setScore: () => {},
+  setPoints: () => {},
   addBadge: () => {},
   setDifficulty: () => {},
 })

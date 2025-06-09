@@ -219,7 +219,7 @@ export default function PromptGuessEscape() {
       setHintCount(0)
       setShowNext(false)
     } else {
-      setScore('escape', points)
+      setPoints('escape', points)
       setShowSummary(true)
     }
   }

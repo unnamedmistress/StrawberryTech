@@ -298,27 +298,27 @@
   }
 }
 
-.top-scores-title {
+.top-points-title {
   margin-top: 1rem;
 }
-.top-scores-card {
+.top-points-card {
   background: var(--color-background);
   padding: 0.5rem;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
-.top-scores-list {
+.top-points-list {
   list-style: none;
   padding-left: 0;
   margin: 0;
 }
-.top-scores-list li {
+.top-points-list li {
   display: flex;
   justify-content: space-between;
   padding: 0.25rem 0;
   font-size: 0.9rem;
 }
-.top-scores-list li.top {
+.top-points-list li.top {
   color: var(--color-brand);
   font-weight: bold;
 }

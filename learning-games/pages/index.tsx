@@ -27,7 +27,7 @@ export default function HomePage() {
     return () => observer.disconnect()
   }, [])
 
-  const totalPoints = getTotalPoints(user.scores)
+  const totalPoints = getTotalPoints(user.points)
 
   return (
     <div className="home">

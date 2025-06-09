@@ -4,7 +4,7 @@ export interface UserData {
   age: number | null
   /** Player selected difficulty level */
   difficulty: 'easy' | 'medium' | 'hard'
-  scores: Record<string, number>
+  points: Record<string, number>
   badges: string[]
 }
 
@@ -21,10 +21,10 @@ export interface UserContextType {
    */
   setName: (name: string) => void
   /**
-   * Set the score for a specific game. Implementations typically
-   * store the best/highest score seen so far.
+   * Record points for a specific game. Implementations typically
+   * store the best/highest points seen so far.
    */
-  setScore: (game: string, score: number) => void
+  setPoints: (game: string, points: number) => void
   /**
    * Award a badge when the player reaches a milestone.
    */

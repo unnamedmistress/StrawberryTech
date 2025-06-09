@@ -4,22 +4,23 @@ import Link from 'next/link'
 import { UserContext } from '../../context/UserContext'
 import { getTotalPoints } from '../../utils/user'
 import Tooltip from '../ui/Tooltip'
-import type { ScoreEntry } from '../../pages/leaderboard'
+import type { PointsEntry } from '../../pages/leaderboard'
 import { GOAL_POINTS } from '../../constants/progress'
 
 export interface ProgressSidebarProps {
-  scores?: Record<string, number>
+  points?: Record<string, number>
   badges?: string[]
 }
 
-export default function ProgressSidebar({ scores, badges }: ProgressSidebarProps = {}) {
+export default function ProgressSidebar({ points, badges }: ProgressSidebarProps = {}) {
   const { user } = useContext(UserContext)
 
-  const userScores = scores ?? user.scores
+  const userPoints = points ?? user.points
   const userBadges = badges ?? user.badges
 
-  const totalPoints = getTotalPoints(userScores)
+  const totalPoints = getTotalPoints(userPoints)
   const celebrated = useRef(false)
+
   const [leaderboards, setLeaderboards] = useState<Record<string, ScoreEntry[]>>({})
 
   useEffect(() => {
@@ -34,12 +35,15 @@ export default function ProgressSidebar({ scores, badges }: ProgressSidebarProps
       const base = window.location.origin
       fetch(`${base}/api/scores`)
         .then((res) => (res.ok ? res.json() : {}))
+
         .then((data: Record<string, ScoreEntry[]>) => {
           setLeaderboards(data)
+
         })
         .catch(() => {})
     }
   }, [])
+
 
   const path = typeof window !== 'undefined' ? window.location.pathname : ''
   const slug = path.split('/')[2]
@@ -61,6 +65,7 @@ export default function ProgressSidebar({ scores, badges }: ProgressSidebarProps
   const rank = entries.findIndex(e => e.name === (user.name ?? 'You')) + 1
   const leaderboard = entries.slice(0, 3)
 
+
   return (
     <aside className="progress-sidebar">
       <h3>Your Progress</h3>
@@ -78,13 +83,13 @@ export default function ProgressSidebar({ scores, badges }: ProgressSidebarProps
         ))}
         {userBadges.length === 0 && <span>No badges yet.</span>}
       </div>
-      <h4 className="top-scores-title">Top Scores</h4>
-      <div className="top-scores-card">
-        <ol className="top-scores-list">
+      <h4 className="top-points-title">Top Points</h4>
+      <div className="top-points-card">
+        <ol className="top-points-list">
           {leaderboard.map((entry, idx) => (
             <li key={entry.name} className={idx === 0 ? 'top' : undefined}>
               {idx === 0 && <span aria-hidden="true">🏆 </span>}
-              {entry.name}: {entry.score}
+              {entry.name}: {entry.points}
             </li>
           ))}
         </ol>

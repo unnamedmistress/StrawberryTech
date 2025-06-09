@@ -5,7 +5,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (req.method === 'GET') {
     const snap = await userDoc.get()
     res.status(200).json(
-      snap.exists ? snap.data() : { name: null, age: null, badges: [], scores: { darts: 0 } }
+      snap.exists ? snap.data() : { name: null, age: null, badges: [], points: { darts: 0 } }
     )
     return
   }

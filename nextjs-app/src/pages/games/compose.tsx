@@ -36,7 +36,7 @@ const pairs: PromptPair[] = [
 ]
 
 export default function ComposeTweetGame() {
-  const { setScore, addBadge, user } = useContext(UserContext)
+  const { setPoints, addBadge, user } = useContext(UserContext)
   const router = useRouter()
   const [guess, setGuess] = useState('')
   const [feedback, setFeedback] = useState('')
@@ -48,7 +48,7 @@ export default function ComposeTweetGame() {
   const [showNext, setShowNext] = useState(false)
   const [finished, setFinished] = useState(false)
 
-  const [score, setScoreState] = useState<number | null>(null)
+  const [points, setPointsState] = useState<number | null>(null)
 
   const timerRef = useRef<number | null>(null)
   const pair = pairs[round]
@@ -85,9 +85,9 @@ export default function ComposeTweetGame() {
       setFeedback('Correct! The door is unlocked.')
       setDoorUnlocked(true)
       const earned = guessScore + timeLeft
-      setScoreState(earned)
+      setPointsState(earned)
       clearInterval(timerRef.current!)
-      setScore('compose', earned)
+      setPoints('compose', earned)
       if (timeLeft >= 20 && !user.badges.includes('speedy-composer')) {
         addBadge('speedy-composer')
       }
@@ -166,9 +166,9 @@ export default function ComposeTweetGame() {
             </button>
           </form>
           {feedback && <p className="feedback">{feedback}</p>}
-          {score !== null && (
+          {points !== null && (
             <p className="final-score" aria-live="polite">
-              Your score: {score}
+              Your points: {points}
             </p>
           )}
           <div className="door-area">
@@ -221,8 +221,8 @@ export default function ComposeTweetGame() {
         buttonLabel="View Leaderboard"
       >
         <h3>All prompts complete!</h3>
-        {score !== null && (
-          <p className="final-score" aria-live="polite">Your score: {score}</p>
+        {points !== null && (
+          <p className="final-score" aria-live="polite">Your points: {points}</p>
         )}
       </CompletionModal>
     )}
