@@ -82,8 +82,10 @@ The community feedback page uses the same API for sentiment filtering. Set
 publishing.
 
 To point the Next.js frontend at a custom server URL set `NEXT_PUBLIC_API_BASE`
-in `nextjs-app/.env`. When omitted, the app defaults to `window.location.origin`
-so the API can be served from the same host in production.
+in `nextjs-app/.env`.
+For the Vite version use `VITE_API_BASE` inside `learning-games/.env`.
+When omitted, the apps default to `window.location.origin` so the API can be
+served from the same host in production.
 
 The API server now persists data in Firebase. Provide service account credentials
 by setting `FIREBASE_SERVICE_ACCOUNT` to a JSON string or path, or use

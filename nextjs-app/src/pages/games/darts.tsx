@@ -12,6 +12,7 @@ import '../../styles/PromptDartsGame.css'
 import HeadTag from 'next/head'
 import JsonLd from '../../components/seo/JsonLd'
 import CompletionModal from '../../components/ui/CompletionModal'
+import { getApiBase } from '../../utils/api'
 
 const CONGRATS_VIDEO_URL = 'https://www.youtube.com/embed/dQw4w9WgXcQ'
 
@@ -314,7 +315,7 @@ export default function PromptDartsGame() {
       setRounds(shuffle(ROUNDS))
       return
     }
-    const base = window.location.origin
+    const base = getApiBase()
     fetch(`${base}/api/darts`)
       .then(res => (res.ok ? res.json() : null))
       .then(data => {
