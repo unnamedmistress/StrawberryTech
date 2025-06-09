@@ -8,16 +8,6 @@ import { UserContext } from "../context/UserContext";
 import RobotChat from "../components/RobotChat";
 import InstructionBanner from "../components/ui/InstructionBanner";
 import WhyCard from "../components/layout/WhyCard";
-import {
-  type Tile,
-  type Flavor,
-  flavors,
-  colors,
-  createTile,
-  createGrid,
-  type MatchResult,
-  checkMatches,
-} from "./match3Helpers";
 
 const quotes = [
   "Prompting is like seasoning \u2013 a single word changes the flavor.",

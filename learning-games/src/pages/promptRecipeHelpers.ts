@@ -1,3 +1,5 @@
+import { toast } from 'react-hot-toast'
+
 export type Slot = 'Action' | 'Context' | 'Format' | 'Constraints'
 
 export interface Card {

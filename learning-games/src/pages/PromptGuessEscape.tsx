@@ -193,7 +193,8 @@ export default function PromptGuessEscape() {
       const timeBonus = Date.now() - startRef.current < 10000 ? 5 : 0
       const penalty = hintCount * 2
       const total = Math.max(0, score + 10 + timeBonus - penalty)
-      setPointsState(p => p + total)
+
+      setPointsState((p: number) => p + total)
       setMessage(`Door unlocked! +${total} points`)
       setStatus('success')
       setOpenPercent(((index + 1) / TOTAL_STEPS) * 100)
