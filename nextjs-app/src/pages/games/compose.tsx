@@ -7,7 +7,7 @@ import { scorePrompt } from '../../utils/scorePrompt'
 
 import InstructionBanner from '../../components/ui/InstructionBanner'
 import ProgressSidebar from '../../components/layout/ProgressSidebar'
-import { UserContext } from '../../context/UserContext'
+import { UserContext } from '../../../../shared/UserContext'
 import JsonLd from '../../components/seo/JsonLd'
 import '../../styles/ComposeTweetGame.css'
 import CompletionModal from '../../components/ui/CompletionModal'

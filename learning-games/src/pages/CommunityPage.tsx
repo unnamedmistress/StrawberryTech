@@ -3,7 +3,7 @@ import { toast } from 'react-hot-toast'
 import { Link } from 'react-router-dom'
 import Post from '../components/Post'
 import type { PostData } from '../components/Post'
-import { UserContext } from '../context/UserContext'
+import { UserContext } from '../../../shared/UserContext'
 import { getApiBase } from '../utils/api'
 
 const STORAGE_KEY = 'community_posts'

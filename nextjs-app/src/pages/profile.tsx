@@ -1,7 +1,7 @@
 import { useContext, useState, useEffect, useMemo } from 'react'
 import Link from 'next/link'
 import { toast } from 'react-hot-toast'
-import { UserContext } from '../context/UserContext'
+import { UserContext } from '../../../shared/UserContext'
 import ThemeToggle from '../components/layout/ThemeToggle'
 import type { PointsEntry } from './leaderboard'
 import { getTotalPoints } from '../utils/user'

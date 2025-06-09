@@ -1,7 +1,7 @@
 import { useContext, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { UserContext } from '../src/context/UserContext'
+import { UserContext } from '../../shared/UserContext'
 import { getTotalPoints } from '../src/utils/user'
 import { GOAL_POINTS } from '../src/constants/progress'
 import ProgressSummary from '../src/components/ProgressSummary'

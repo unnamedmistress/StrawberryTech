@@ -3,7 +3,7 @@ import { toast } from 'react-hot-toast'
 import Link from 'next/link'
 import Post from '../components/Post'
 import type { PostData } from '../components/Post'
-import { UserContext } from '../context/UserContext'
+import { UserContext } from '../../../shared/UserContext'
 import styles from '../styles/CommunityPage.module.css'
 import { getApiBase } from '../utils/api'
 
