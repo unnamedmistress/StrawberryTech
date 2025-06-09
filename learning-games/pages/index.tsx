@@ -2,6 +2,7 @@ import { useContext, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { UserContext } from '../src/context/UserContext'
+import { getTotalPoints } from '../src/utils/user'
 
 export default function HomePage() {
   const { user } = useContext(UserContext)
@@ -24,7 +25,7 @@ export default function HomePage() {
     return () => observer.disconnect()
   }, [])
 
-  const totalPoints = Object.values(user.scores).reduce((a, b) => a + b, 0)
+  const totalPoints = getTotalPoints(user.scores)
 
   return (
     <div className="home">
