@@ -14,11 +14,9 @@ const quotes = [
   "Swap words wisely and watch your message sparkle!",
 ];
 
-
 const tips = [
   "Tip: Swap one adjective to completely change the vibe.",
   "Use synonyms to experiment with different tones!",
-
 ];
 
 const tones = [
@@ -72,7 +70,6 @@ function ToneMatchGame({ onComplete }: { onComplete: (score: number) => void }) 
   function handleDragOver(e: React.DragEvent<HTMLSpanElement>) {
     e.preventDefault();
   }
-
 
   useEffect(() => {
     if (used.size >= 3) {
