@@ -3,6 +3,7 @@ import Link from 'next/link'
 import Post from '../components/Post'
 import type { PostData } from '../components/Post'
 import { UserContext } from '../context/UserContext'
+import styles from '../styles/CommunityPage.module.css'
 
 const STORAGE_KEY = 'community_posts'
 
@@ -98,14 +99,14 @@ export default function CommunityPage() {
   return (
     <div className="community-page">
       <h2>Community Feedback</h2>
-      <form onSubmit={addPost} style={{ marginBottom: '1rem' }}>
+      <form onSubmit={addPost} className={styles.form}>
         <label htmlFor="message">Add your feedback here:</label>
         <textarea
           id="message"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           required
-          style={{ display: 'block', width: '100%', marginTop: '0.5rem' }}
+          className={styles.textarea}
         />
         <p style={{ fontSize: '0.9rem', marginTop: '0.25rem' }}>
           Posts are anonymized and reviewed for positivity.
@@ -124,12 +125,16 @@ export default function CommunityPage() {
           {notice}
         </p>
       )}
-      {posts
-        .slice()
-        .reverse()
-        .map((p) => (
-          <Post key={p.id} post={p} onFlag={flagPost} />
-        ))}
+      <ul className={styles.list}>
+        {posts
+          .slice()
+          .reverse()
+          .map((p) => (
+            <li key={p.id}>
+              <Post post={p} onFlag={flagPost} />
+            </li>
+          ))}
+      </ul>
       <p style={{ marginTop: '2rem' }}>
         <Link href="/">Return Home</Link>
       </p>
