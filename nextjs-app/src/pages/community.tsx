@@ -34,9 +34,19 @@ export default function CommunityPage() {
   const [error, setError] = useState('')
   const [notice, setNotice] = useState('')
 
+  function getApiBase() {
+    if (process.env.NEXT_PUBLIC_API_BASE) {
+      return process.env.NEXT_PUBLIC_API_BASE
+    }
+    if (typeof window !== 'undefined') {
+      return window.location.origin
+    }
+    return ''
+  }
+
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      const base = window.location.origin
+      const base = getApiBase()
       fetch(`${base}/api/posts`)
         .then((res) => (res.ok ? res.json() : []))
         .then((data: PostData[]) => setPosts(data.length ? data : initialPosts))
@@ -51,7 +61,7 @@ export default function CommunityPage() {
   function flagPost(id: number) {
     setPosts((prev) => prev.map((p) => (p.id === id ? { ...p, flagged: true } : p)))
     if (typeof window !== 'undefined') {
-      const base = window.location.origin
+      const base = getApiBase()
       fetch(`${base}/api/posts/${id}/flag`, { method: 'POST' }).catch(() => {})
     }
   }
@@ -60,7 +70,7 @@ export default function CommunityPage() {
     e.preventDefault()
     if (message.trim()) {
       try {
-        const base = window.location.origin
+        const base = getApiBase()
         const resp = await fetch(`${base}/api/posts`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },

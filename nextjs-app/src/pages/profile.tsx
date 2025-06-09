@@ -3,7 +3,8 @@ import Link from 'next/link'
 import { toast } from 'react-hot-toast'
 import { UserContext } from '../context/UserContext'
 import ThemeToggle from '../components/layout/ThemeToggle'
-import Tooltip from '../components/ui/Tooltip'
+
+
 import '../styles/ProfilePage.css'
 
 export default function ProfilePage() {
@@ -57,9 +58,9 @@ export default function ProfilePage() {
           <option value="medium">Medium</option>
           <option value="hard">Hard</option>
         </select>
-        <Tooltip message="Improve readability">
-          <ThemeToggle />
-        </Tooltip>
+
+        <ThemeToggle />
+
         <button type="submit">Save</button>
         <Link href="/leaderboard" className="return-link">
           Return to Progress

@@ -366,7 +366,6 @@
   top: 0;
   z-index: 100;
   display: flex;
-  justify-content: space-between;
   align-items: center;
   gap: 1rem;
   background: var(--color-brand);
@@ -394,6 +393,7 @@
   display: flex;
   gap: 1.25rem;
   margin: 0;
+  margin-left: auto;
   padding: 0;
   font-size: 1.1rem;
 }
