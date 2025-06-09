@@ -1,7 +1,9 @@
 import { useContext, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { UserContext } from '../context/UserContext'
+import { getTotalPoints } from '../utils/user'
 import './Home.css'
+import { GOAL_POINTS } from '../constants/progress'
 
 /**
  * Home page listing available games.
@@ -34,7 +36,7 @@ export default function Home() {
     return () => observer.disconnect()
   }, [])
 
-  const totalPoints = Object.values(user.scores).reduce((a, b) => a + b, 0)
+  const totalPoints = getTotalPoints(user.scores)
 
   return (
     <div className="home">
@@ -134,7 +136,7 @@ export default function Home() {
       {totalPoints > 0 && (
         <div className="progress-summary reveal">
           <p>Total Points: {totalPoints}</p>
-          <progress value={totalPoints} max={100} />
+          <progress value={totalPoints} max={GOAL_POINTS} />
           <p>Badges Earned: {user.badges.length}</p>
           <div className="badge-icons">
             {user.badges.map((b) => (
