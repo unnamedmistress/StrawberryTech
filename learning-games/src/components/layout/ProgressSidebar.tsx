@@ -4,7 +4,6 @@ import { Link, useLocation } from 'react-router-dom'
 import { UserContext } from '../../context/UserContext'
 import Tooltip from '../ui/Tooltip'
 import { getTotalPoints } from '../../utils/user'
-import type { PointsEntry } from '../../pages/LeaderboardPage'
 import { GOAL_POINTS } from '../../constants/progress'
 
 export interface ProgressSidebarProps {
@@ -12,10 +11,10 @@ export interface ProgressSidebarProps {
   badges?: string[]
 }
 
-export default function ProgressSidebar({ points, badges }: ProgressSidebarProps = {}) {
+export default function ProgressSidebar({ badges }: ProgressSidebarProps = {}) {
   const { user } = useContext(UserContext)
 
-  const userScores = scores ?? user.scores
+  const userScores = user.scores
   const userBadges = badges ?? user.badges
 
 
