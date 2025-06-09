@@ -4,6 +4,7 @@ import ProgressSidebarSimple from '../components/layout/ProgressSidebarSimple'
 import GamePageLayout from '../components/layout/GamePageLayout'
 import { UserContext } from '../context/UserContext'
 
+
 import { getTotalPoints } from '../utils/user'
 import './DragDropGame.css'
 
