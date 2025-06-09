@@ -1,10 +1,16 @@
 import { useContext, useEffect, useState } from 'react'
+import { toast } from 'react-hot-toast'
 import { Link } from 'react-router-dom'
 import Post from '../components/Post'
 import type { PostData } from '../components/Post'
 import { UserContext } from '../context/UserContext'
 
 const STORAGE_KEY = 'community_posts'
+const MAX_POSTS = 20
+
+function prunePosts(list: PostData[]): PostData[] {
+  return list.slice(-MAX_POSTS)
+}
 
 const initialPosts: PostData[] = [
   {
@@ -36,20 +42,30 @@ export default function CommunityPage() {
       const base = window.location.origin
       fetch(`${base}/api/posts`)
         .then((res) => (res.ok ? res.json() : []))
-        .then((data: PostData[]) => setPosts(data.length ? data : initialPosts))
-        .catch(() => {})
+        .then((data: PostData[]) =>
+          setPosts(data.length ? prunePosts(data) : initialPosts)
+        )
+        .catch(() => {
+          setError('Failed to load posts')
+          toast.error('Failed to load posts')
+        })
     }
   }, [])
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(posts))
+    // Persist only the most recent MAX_POSTS so localStorage doesn't grow without bound
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(prunePosts(posts)))
   }, [posts])
 
   function flagPost(id: number) {
     setPosts((prev) => prev.map((p) => (p.id === id ? { ...p, flagged: true } : p)))
     if (typeof window !== 'undefined') {
       const base = window.location.origin
-      fetch(`${base}/api/posts/${id}/flag`, { method: 'POST' }).catch(() => {})
+      fetch(`${base}/api/posts/${id}/flag`, { method: 'POST' })
+        .catch(() => {
+          setError('Failed to flag post')
+          toast.error('Failed to flag post')
+        })
     }
   }
 
@@ -66,14 +82,17 @@ export default function CommunityPage() {
         setError('Limit reached: only one post per user')
         return
       }
-      setPosts((prev) => [...prev, newPost])
+      setPosts((prev) => prunePosts([...prev, newPost]))
       if (typeof window !== 'undefined') {
         const base = window.location.origin
         fetch(`${base}/api/posts`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(newPost),
-        }).catch(() => {})
+        }).catch(() => {
+          setError('Failed to post')
+          toast.error('Failed to post')
+        })
       }
       setError('')
       setMessage('')

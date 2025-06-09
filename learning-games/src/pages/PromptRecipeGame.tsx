@@ -1,5 +1,6 @@
 import { useState, useEffect, useContext } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import CompletionModal from '../components/ui/CompletionModal'
 import { motion } from 'framer-motion'
 import confetti from 'canvas-confetti'
 import { toast } from 'react-hot-toast'
@@ -172,6 +173,7 @@ async function generateCards(): Promise<Card[]> {
 
 export default function PromptRecipeGame() {
   const { setScore, addBadge, user } = useContext(UserContext)
+  const navigate = useNavigate()
   const TOTAL_ROUNDS = 5
   const TOTAL_TIME = getTimeLimit(user, {
     easy: 45,
@@ -417,13 +419,14 @@ export default function PromptRecipeGame() {
 
   if (finished) {
     return (
-      <div className="recipe-page">
-        <InstructionBanner>You finished Prompt Builder!</InstructionBanner>
+      <CompletionModal
+        imageSrc="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_19_23%20PM.png"
+        buttonHref="/games/darts"
+        buttonLabel="Play Prompt Darts"
+      >
+        <h3>You finished Prompt Builder!</h3>
         <p className="final-score">Your score: {score}</p>
-        <p style={{ marginTop: '1rem' }}>
-          <Link to="/leaderboard">Return to Progress</Link>
-        </p>
-      </div>
+      </CompletionModal>
     )
   }
 
@@ -523,6 +526,19 @@ export default function PromptRecipeGame() {
             <button className="btn-primary" onClick={nextRound}>Next Recipe</button>
           </div>
         )}
+        <div className="next-area">
+          <p style={{ marginTop: '1rem', textAlign: 'center' }}>
+            <button
+              className="btn-primary"
+              onClick={() => navigate('/games/darts')}
+            >
+              Next
+            </button>
+          </p>
+          <p style={{ marginTop: '1rem', textAlign: 'center' }}>
+            <Link to="/games/darts">Skip to Prompt Darts</Link>
+          </p>
+        </div>
       </div>
     </div>
   )

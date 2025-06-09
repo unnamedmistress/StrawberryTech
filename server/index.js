@@ -3,6 +3,7 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const fs = require('fs');
 const path = require('path');
+const firestore = require('./firebase');
 
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY || '';
 
@@ -13,35 +14,37 @@ app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
 
-const DB_FILE = path.join(__dirname, 'db.json');
 const DARTS_FILE = path.join(__dirname, 'darts.json');
 
-function loadData() {
-  try {
-    return JSON.parse(fs.readFileSync(DB_FILE, 'utf8'));
-  } catch {
-    return {
-      user: { name: null, age: null, badges: [], scores: { darts: 0 } },
-      posts: [
-        {
-          id: 1,
-          author: 'Admin',
-          content: 'Welcome to the new message board!',
-          date: '2025-01-01T00:00:00Z',
-          sentiment: 1,
-          status: 'approved',
-        },
-      ],
-      views: [],
-      scores: { darts: [] },
-      sessions: [],
-      promptPairs: [],
-    };
-  }
+// Collection references
+const posts = firestore.collection('posts');
+const pairs = firestore.collection('pairs');
+const views = firestore.collection('views');
+const scores = firestore.collection('scores');
+const userDoc = firestore.collection('config').doc('user');
+
+async function loadData() {
+  const userSnap = await userDoc.get();
+  const user = userSnap.exists
+    ? userSnap.data()
+    : { name: null, age: null, badges: [], scores: { darts: 0 } };
+  const scoresSnap = await scores.get();
+  const scoreData = {};
+  scoresSnap.forEach(doc => (scoreData[doc.id] = doc.data().entries || []));
+  const postsSnap = await posts.get();
+  const postData = postsSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+  const viewsSnap = await views.get();
+  const viewData = viewsSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+  const pairsSnap = await pairs.get();
+  const pairData = pairsSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+  return { user, scores: scoreData, posts: postData, views: viewData, promptPairs: pairData };
 }
 
-function saveData(data) {
-  fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2));
+async function saveData(data) {
+  await userDoc.set(data.user);
+  for (const [game, entries] of Object.entries(data.scores || {})) {
+    await scores.doc(game).set({ entries });
+  }
 }
 
 function loadDartRounds() {
@@ -71,8 +74,7 @@ async function analyzeSentiment(text) {
         messages: [
           {
             role: 'system',
-            content:
-              'Return only a number between -1 and 1 indicating how positive the sentiment is.',
+            content: 'Return only a number between -1 and 1 indicating how positive the sentiment is.',
           },
           { role: 'user', content: text.slice(0, 200) },
         ],
@@ -80,13 +82,51 @@ async function analyzeSentiment(text) {
       }),
     });
     const data = await resp.json();
-    const val = parseFloat(
-      data?.choices?.[0]?.message?.content?.trim().split(/\s+/)[0] || '0'
-    );
+    const val = parseFloat(data?.choices?.[0]?.message?.content?.trim().split(/\s+/)[0] || '0');
     return Number.isNaN(val) ? 0 : val;
   } catch (err) {
     console.error('Sentiment request failed', err);
     return 0;
+  }
+}
+
+// Remove personal details and generate an alias for anonymous posting
+async function sanitizeComment(text) {
+  if (!OPENAI_API_KEY) {
+    const withoutAge = text.replace(/\b\d{1,3}\b/g, '');
+    return { sanitized: withoutAge.trim(), alias: 'Guest' };
+  }
+  try {
+    const resp = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${OPENAI_API_KEY}`,
+      },
+      body: JSON.stringify({
+        model: 'gpt-3.5-turbo',
+        messages: [
+          {
+            role: 'system',
+            content: 'Remove names, ages and personal identifiers from the text. Provide a short friendly alias summarizing the tone. Respond only in JSON with keys "sanitized" and "alias".',
+          },
+          { role: 'user', content: text.slice(0, 300) },
+        ],
+        max_tokens: 60,
+        temperature: 0.4,
+      }),
+    });
+    const data = await resp.json();
+    let result = { sanitized: text, alias: 'Guest' };
+    try {
+      result = JSON.parse(data?.choices?.[0]?.message?.content || '');
+    } catch {}
+    if (!result.sanitized) result.sanitized = text;
+    if (!result.alias) result.alias = 'Guest';
+    return result;
+  } catch (err) {
+    console.error('Sanitize request failed', err);
+    return { sanitized: text, alias: 'Guest' };
   }
 }
 
@@ -96,83 +136,71 @@ app.post('/api/sentiment', async (req, res) => {
   res.json({ score });
 });
 
-let data = loadData();
-if (!data.views) data.views = [];
-if (!data.scores) data.scores = { darts: [] };
-if (!data.scores.darts) data.scores.darts = [];
-if (!data.user) data.user = { name: null, age: null, badges: [], scores: { darts: 0 } };
-if (!data.user.badges) data.user.badges = [];
-if (!data.user.scores) data.user.scores = { darts: 0 };
-if (data.user.scores.darts === undefined) data.user.scores.darts = 0;
-if (!data.sessions) data.sessions = [];
-if (!data.promptPairs) data.promptPairs = [];
-
-app.get('/api/user', (req, res) => {
-  res.json(data.user);
+app.get('/api/user', async (req, res) => {
+  const snap = await userDoc.get();
+  res.json(
+    snap.exists ? snap.data() : { name: null, age: null, badges: [], scores: { darts: 0 } }
+  );
 });
 
-app.post('/api/user', (req, res) => {
-  data.user = { ...data.user, ...req.body };
-  saveData(data);
-  res.json(data.user);
+app.post('/api/user', async (req, res) => {
+  const snap = await userDoc.get();
+  const user = { ...(snap.exists ? snap.data() : {}), ...req.body };
+  await userDoc.set(user);
+  res.json(user);
 });
 
-app.get('/api/posts', (req, res) => {
-  const approved = data.posts.filter(p => p.status === 'approved');
-  res.json(approved);
+app.get('/api/posts', async (req, res) => {
+  const snap = await posts.where('status', '==', 'approved').get();
+  const list = [];
+  snap.forEach(doc => list.push({ id: doc.id, ...doc.data() }));
+  res.json(list);
 });
 
 app.post('/api/posts', async (req, res) => {
-  const author = req.body.author || 'Anonymous';
-  if (data.posts.some((p) => p.author === author)) {
-    res.status(400).json({ error: 'Limit reached: only one post per user' });
-    return;
-  }
   const content = req.body.content || '';
   const score = await analyzeSentiment(content);
   if (score < -0.1) {
-    res.status(400).json({ error: 'Only positive testimonials are allowed.' });
+    res.status(400).json({ error: 'Only positive feedback is allowed.' });
     return;
   }
+  const { sanitized, alias } = await sanitizeComment(content);
   const status = score <= 0.2 ? 'pending' : 'approved';
-  const post = {
-    id: Date.now(),
-    author,
-    content,
-    date: new Date().toISOString(),
+  const now = new Date().toISOString();
+  const docRef = await posts.add({
+    author: alias,
+    content: sanitized,
+    date: now,
     sentiment: score,
     status,
-  };
-  data.posts.push(post);
-  saveData(data);
+  });
+  const post = { id: docRef.id, author: alias, content: sanitized, date: now, sentiment: score, status };
   res.status(status === 'approved' ? 201 : 202).json(post);
 });
 
-app.post('/api/posts/:id/flag', (req, res) => {
-  const id = Number(req.params.id);
-  const post = data.posts.find((p) => p.id === id);
-  if (post) {
-    post.flagged = true;
-    saveData(data);
-    res.json(post);
+app.post('/api/posts/:id/flag', async (req, res) => {
+  const id = req.params.id;
+  const ref = posts.doc(id);
+  const snap = await ref.get();
+  if (snap.exists) {
+    await ref.update({ flagged: true });
+    res.json({ id, ...snap.data(), flagged: true });
   } else {
     res.status(404).end();
   }
 });
 
-app.get('/api/pairs', (req, res) => {
-  res.json(data.promptPairs);
+app.get('/api/pairs', async (req, res) => {
+  const snap = await pairs.get();
+  const list = [];
+  snap.forEach(doc => list.push({ id: doc.id, ...doc.data() }));
+  res.json(list);
 });
 
-app.post('/api/pairs', (req, res) => {
-  const pair = {
-    id: Date.now(),
-    bad: req.body.bad || '',
-    good: req.body.good || '',
-  };
-  data.promptPairs.push(pair);
-  saveData(data);
-  res.status(201).json(pair);
+app.post('/api/pairs', async (req, res) => {
+  const pair = { bad: req.body.bad || '', good: req.body.good || '' };
+  const ref = await pairs.add(pair);
+  res.status(201).json({ id: ref.id, ...pair });
 });
 
 app.get('/api/darts', (req, res) => {
@@ -180,13 +208,15 @@ app.get('/api/darts', (req, res) => {
   res.json(rounds);
 });
 
-app.get('/api/views', (req, res) => {
-  res.json(data.views);
+app.get('/api/views', async (req, res) => {
+  const snap = await views.get();
+  const list = [];
+  snap.forEach(doc => list.push({ id: doc.id, ...doc.data() }));
+  res.json(list);
 });
 
-app.post('/api/views', (req, res) => {
+app.post('/api/views', async (req, res) => {
   const view = {
-    id: Date.now(),
     visitorId: req.body.visitorId || null,
     user: req.body.user || null,
     path: req.body.path || '',
@@ -195,37 +225,42 @@ app.post('/api/views', (req, res) => {
     ip: req.ip,
     start: new Date().toISOString(),
   };
-  data.views.push(view);
-  saveData(data);
-  res.status(201).json(view);
+  const ref = await views.add(view);
+  res.status(201).json({ id: ref.id, ...view });
 });
 
-app.post('/api/views/:id/end', (req, res) => {
-  const id = Number(req.params.id);
-  const view = data.views.find((v) => v.id === id);
-  if (!view) {
+app.post('/api/views/:id/end', async (req, res) => {
+  const ref = views.doc(req.params.id);
+  const snap = await ref.get();
+  if (!snap.exists) {
     res.status(404).end();
     return;
   }
-  view.end = new Date().toISOString();
-  view.duration = Number(view.duration || Date.now() - new Date(view.start).getTime());
-  saveData(data);
-  res.json(view);
+  const view = snap.data();
+  const end = new Date().toISOString();
+  const duration = Number(view.duration || Date.now() - new Date(view.start).getTime());
+  await ref.update({ end, duration });
+  res.json({ id: ref.id, ...view, end, duration });
 });
 
-app.get('/api/scores', (req, res) => {
-  res.json(data.scores);
+app.get('/api/scores', async (req, res) => {
+  const snap = await scores.get();
+  const data = {};
+  snap.forEach(doc => (data[doc.id] = doc.data().entries || []));
+  res.json(data);
 });
 
-app.post('/api/scores/:game', (req, res) => {
+app.post('/api/scores/:game', async (req, res) => {
   const game = req.params.game;
+  const docRef = scores.doc(game);
+  const snap = await docRef.get();
+  let entries = snap.exists ? snap.data().entries || [] : [];
   const entry = { name: req.body.name || 'Anonymous', score: Number(req.body.score) || 0 };
-  if (!data.scores[game]) data.scores[game] = [];
-  data.scores[game].push(entry);
-  data.scores[game].sort((a, b) => b.score - a.score);
-  data.scores[game] = data.scores[game].slice(0, 10);
-  saveData(data);
-  res.json(data.scores[game]);
+  entries.push(entry);
+  entries.sort((a, b) => b.score - a.score);
+  entries = entries.slice(0, 10);
+  await docRef.set({ entries });
+  res.json(entries);
 });
 
 // Serve a friendly 404 page for any unknown route

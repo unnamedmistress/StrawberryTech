@@ -1,5 +1,6 @@
 import { useState, useContext, useEffect } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import ProgressSidebar from '../../components/layout/ProgressSidebar'
 import InstructionBanner from '../../components/ui/InstructionBanner'
 import TimerBar from '../../components/ui/TimerBar'
@@ -7,8 +8,9 @@ import { UserContext } from '../../context/UserContext'
 import shuffle from '../../utils/shuffle'
 import { getTimeLimit } from '../../utils/time'
 import '../../styles/PromptDartsGame.css'
-import Head from 'next/head'
+import HeadTag from 'next/head'
 import JsonLd from '../../components/seo/JsonLd'
+import CompletionModal from '../../components/ui/CompletionModal'
 
 const CONGRATS_VIDEO_URL = 'https://www.youtube.com/embed/dQw4w9WgXcQ'
 
@@ -269,6 +271,7 @@ export function streakBonus(streak: number) {
 export default function PromptDartsGame() {
 
   const { setScore, user } = useContext(UserContext)
+  const router = useRouter()
   const [rounds, setRounds] = useState<DartRound[]>([])
   const [round, setRound] = useState(0)
 
@@ -401,37 +404,20 @@ export default function PromptDartsGame() {
       <div className="darts-page">
         <InstructionBanner>Loading rounds...</InstructionBanner>
       </div>
-    </>
-  )
-}
+    )
+  }
 
   if (round >= rounds.length) {
     return (
       <div className="darts-page">
-        <div className="congrats-overlay">
-          <div className="congrats-modal" role="dialog" aria-modal="true">
-            <h3>Congratulations!</h3>
-            <p className="final-score">Your score: {score}</p>
-            <p>Would you like to play the next game or support us?</p>
-            <iframe
-              className="congrats-video"
-              src={CONGRATS_VIDEO_URL}
-              title="Celebration video"
-              allowFullScreen
-            />
-            <Link href="/games/compose" className="btn-primary" style={{ display: 'block', marginTop: '0.5rem' }}>
-              Play Compose Tweet
-            </Link>
-            <a
-              className="coffee-link"
-              href="https://coff.ee/strawberrytech"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              ☕️ Buy me a coffee
-            </a>
-          </div>
-        </div>
+        <CompletionModal
+          imageSrc="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_24_00%20PM.png"
+          buttonHref="/games/compose"
+          buttonLabel="Play Compose Tweet"
+        >
+          <h3>Congratulations!</h3>
+          <p className="final-score">Your score: {score}</p>
+        </CompletionModal>
       </div>
     )
   }
@@ -448,7 +434,7 @@ export default function PromptDartsGame() {
             'https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_24_00%20PM.png',
         }}
       />
-      <Head>
+      <HeadTag>
         <title>Prompt Darts - StrawberryTech</title>
         <meta property="og:title" content="Prompt Darts - StrawberryTech" />
         <meta
@@ -477,7 +463,7 @@ export default function PromptDartsGame() {
           name="twitter:url"
           content="https://strawberry-tech.vercel.app/games/darts"
         />
-      </Head>
+      </HeadTag>
       <div className="darts-page">
       <InstructionBanner>
         Choose the clearer prompt that best targets the requested format.
@@ -552,8 +538,21 @@ export default function PromptDartsGame() {
         <ProgressSidebar />
         <div className="next-area">
           {choice !== null && (
-            <button className="btn-primary" onClick={next}>{round + 1 < rounds.length ? 'Next Round' : 'Finish'}</button>
+            <button className="btn-primary" onClick={next}>
+              {round + 1 < rounds.length ? 'Next Round' : 'Finish'}
+            </button>
           )}
+          <p style={{ marginTop: '1rem', textAlign: 'center' }}>
+            <button
+              className="btn-primary"
+              onClick={() => router.push('/games/compose')}
+            >
+              Next
+            </button>
+          </p>
+          <p style={{ marginTop: '1rem', textAlign: 'center' }}>
+            <Link href="/games/compose">Skip to Compose</Link>
+          </p>
         </div>
       </div>
     </div>

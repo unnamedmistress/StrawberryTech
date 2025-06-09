@@ -24,7 +24,7 @@ Drag cards to assemble a prompt. Each round now fetches fresh card text from the
 - A dedicated Badges page lets you track all achievements.
 - A hidden `/stats` page displays live visitor analytics collected on the server.
 - A community playlist page lets everyone share bad and good prompt pairs.
-- A testimonials page highlights positive feedback from players.
+- A community feedback page highlights positive comments from players.
 
 ## Getting Started
 1. Install dependencies and start the dev server:
@@ -34,7 +34,7 @@ Drag cards to assemble a prompt. Each round now fetches fresh card text from the
    npm run dev
    ```
 2. In a separate terminal start the API server to persist user info,
-  testimonial posts and shared high scores:
+  community posts and shared high scores:
    ```bash
    cd server
    npm install
@@ -66,7 +66,7 @@ Without installing the packages first the `vitest` command used by
 
 ### Visitor Statistics
 
-Analytics data is stored by the server in `server/db.json`. Open the hidden
+Analytics data is now stored by the server in **Firebase Firestore**. Open the hidden
 `/stats` page while the server is running to see live counts of page views,
 unique visitors, and average session length.
 
@@ -77,9 +77,17 @@ RobotChat and the Prompt Recipe Builder use the OpenAI API. Create a `.env` file
 VITE_OPENAI_API_KEY=your-key
 ```
 
-The community testimonial page uses the same API for sentiment filtering. Set
+The community feedback page uses the same API for sentiment filtering. Set
 `OPENAI_API_KEY` in the server environment so posts can be screened before
 publishing.
+
+To point the Next.js frontend at a custom server URL set `NEXT_PUBLIC_API_BASE`
+in `nextjs-app/.env`. When omitted, the app defaults to `window.location.origin`
+so the API can be served from the same host in production.
+
+The API server now persists data in Firebase. Provide service account credentials
+by setting `FIREBASE_SERVICE_ACCOUNT` to a JSON string or path, or use
+`GOOGLE_APPLICATION_CREDENTIALS` to point to a credentials file.
 
 Without this key, the RobotChat and recipe features will not work.
 

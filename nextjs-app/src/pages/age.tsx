@@ -24,7 +24,7 @@ export default function AgeInputForm({
   // If age already exists and editing isn't allowed, redirect away
   useEffect(() => {
     if (user.age && !allowEdit) router.push('/leaderboard')
-  }, [user.age, navigate, allowEdit])
+  }, [user.age, router, allowEdit])
 
   function handleSubmit(e: FormEvent) {
     e.preventDefault()

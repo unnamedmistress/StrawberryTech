@@ -1,13 +1,26 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import Tooltip from '../ui/Tooltip'
-import ThemeToggle from './ThemeToggle'
 
 export default function NavBar() {
   const [open, setOpen] = useState(false)
+  const [gamesOpen, setGamesOpen] = useState(false)
+  const [progressOpen, setProgressOpen] = useState(false)
+  const [accountOpen, setAccountOpen] = useState(false)
+  const [communityOpen, setCommunityOpen] = useState(false)
+
+  // Close submenus when hamburger menu closes
+  useEffect(() => {
+    if (!open) {
+      setGamesOpen(false)
+      setProgressOpen(false)
+      setAccountOpen(false)
+      setCommunityOpen(false)
+    }
+  }, [open])
 
   return (
-    <nav className="navbar" style={{ position: 'sticky', top: 0 }} aria-label="Main navigation">
+    <nav className="navbar" aria-label="Main navigation">
       <div className="brand">
         <img
           src="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_12_36%20PM.png"
@@ -16,9 +29,6 @@ export default function NavBar() {
         />
         StrawberryTech
       </div>
-      <Tooltip message="Improve readability">
-        <ThemeToggle />
-      </Tooltip>
       <button
         className="menu-toggle"
         aria-label="Toggle navigation"
@@ -26,73 +36,157 @@ export default function NavBar() {
       >
         ☰
       </button>
-      <ul className={open ? 'open' : undefined} onClick={() => setOpen(false)}>
+      <ul className={open ? 'open' : undefined}>
         <li>
           <Tooltip message="Hover here for a surprise!">
-            <Link to="/">Home</Link>
+            <Link to="/" onClick={() => setOpen(false)}>
+              Home
+            </Link>
           </Tooltip>
         </li>
-        <li>
-          <Tooltip message="Hover here for a surprise!">
-            <Link to="/games/tone">Tone</Link>
-          </Tooltip>
+        <li className="submenu">
+          <button
+            className="submenu-toggle"
+            aria-expanded={gamesOpen}
+            aria-controls="games-submenu"
+            onClick={e => {
+              e.stopPropagation()
+              setGamesOpen(o => !o)
+            }}
+          >
+            Games
+          </button>
+          <ul id="games-submenu" className={gamesOpen ? 'open' : undefined}>
+            <li>
+              <Tooltip message="Hover here for a surprise!">
+                <Link to="/games/tone" onClick={() => setOpen(false)}>
+                  Tone
+                </Link>
+              </Tooltip>
+            </li>
+            <li>
+              <Tooltip message="Hover here for a surprise!">
+                <Link to="/games/quiz" onClick={() => setOpen(false)}>
+                  Hallucinations
+                </Link>
+              </Tooltip>
+            </li>
+            <li>
+              <Tooltip message="Hover here for a surprise!">
+                <Link to="/games/escape" onClick={() => setOpen(false)}>
+                  Escape Room
+                </Link>
+              </Tooltip>
+            </li>
+            <li>
+              <Tooltip message="Hover here for a surprise!">
+                <Link to="/games/recipe" onClick={() => setOpen(false)}>
+                  Prompt Builder
+                </Link>
+              </Tooltip>
+            </li>
+            <li>
+              <Tooltip message="Hover here for a surprise!">
+                <Link to="/games/darts" onClick={() => setOpen(false)}>
+                  Prompt Darts
+                </Link>
+              </Tooltip>
+            </li>
+            <li>
+              <Tooltip message="Hover here for a surprise!">
+                <Link to="/games/compose" onClick={() => setOpen(false)}>
+                  Compose Tweet
+                </Link>
+              </Tooltip>
+            </li>
+          </ul>
         </li>
-        <li>
-          <Tooltip message="Hover here for a surprise!">
-            <Link to="/games/quiz">Hallucinations</Link>
-          </Tooltip>
+        <li className="submenu">
+          <button
+            className="submenu-toggle"
+            aria-expanded={progressOpen}
+            aria-controls="progress-submenu"
+            onClick={e => {
+              e.stopPropagation()
+              setProgressOpen(o => !o)
+            }}
+          >
+            Progress
+          </button>
+          <ul id="progress-submenu" className={progressOpen ? 'open' : undefined}>
+            <li>
+              <Tooltip message="Hover here for a surprise!">
+                <Link to="/leaderboard" onClick={() => setOpen(false)}>
+                  Leaderboard
+                </Link>
+              </Tooltip>
+            </li>
+            <li>
+              <Tooltip message="Hover here for a surprise!">
+                <Link to="/badges" onClick={() => setOpen(false)}>
+                  Badges
+                </Link>
+              </Tooltip>
+            </li>
+          </ul>
         </li>
-        <li>
-          <Tooltip message="Hover here for a surprise!">
-
-            <Link to="/games/escape">Escape Room</Link>
-          </Tooltip>
+        <li className="submenu">
+          <button
+            className="submenu-toggle"
+            aria-expanded={accountOpen}
+            aria-controls="account-submenu"
+            onClick={e => {
+              e.stopPropagation()
+              setAccountOpen(o => !o)
+            }}
+          >
+            Account &amp; Help
+          </button>
+          <ul id="account-submenu" className={accountOpen ? 'open' : undefined}>
+            <li>
+              <Tooltip message="Hover here for a surprise!">
+                <Link to="/profile" onClick={() => setOpen(false)}>
+                  Profile
+                </Link>
+              </Tooltip>
+            </li>
+            <li>
+              <Tooltip message="Hover here for a surprise!">
+                <Link to="/help" onClick={() => setOpen(false)}>
+                  Help
+                </Link>
+              </Tooltip>
+            </li>
+          </ul>
         </li>
-        <li>
-          <Tooltip message="Hover here for a surprise!">
-
-            <Link to="/games/recipe">Prompt Builder</Link>
-          </Tooltip>
-        </li>
-        <li>
-          <Tooltip message="Hover here for a surprise!">
-            <Link to="/games/darts">Prompt Darts</Link>
-          </Tooltip>
-        </li>
-        <li>
-          <Tooltip message="Hover here for a surprise!">
-            <Link to="/games/compose">Compose Tweet</Link>
-          </Tooltip>
-        </li>
-        <li>
-          <Tooltip message="Hover here for a surprise!">
-            <Link to="/leaderboard">Progress</Link>
-          </Tooltip>
-        </li>
-        <li>
-          <Tooltip message="Hover here for a surprise!">
-            <Link to="/badges">Badges</Link>
-          </Tooltip>
-        </li>
-        <li>
-          <Tooltip message="Hover here for a surprise!">
-            <Link to="/community">Community</Link>
-          </Tooltip>
-        </li>
-        <li>
-          <Tooltip message="Hover here for a surprise!">
-            <Link to="/playlist">Playlist</Link>
-          </Tooltip>
-        </li>
-        <li>
-          <Tooltip message="Hover here for a surprise!">
-            <Link to="/help">Help</Link>
-          </Tooltip>
-        </li>
-        <li>
-          <Tooltip message="Hover here for a surprise!">
-            <Link to="/profile">Profile</Link>
-          </Tooltip>
+        <li className="submenu">
+          <button
+            className="submenu-toggle"
+            aria-expanded={communityOpen}
+            aria-controls="community-submenu"
+            onClick={e => {
+              e.stopPropagation()
+              setCommunityOpen(o => !o)
+            }}
+          >
+            Community
+          </button>
+          <ul id="community-submenu" className={communityOpen ? 'open' : undefined}>
+            <li>
+              <Tooltip message="Hover here for a surprise!">
+                <Link to="/community" onClick={() => setOpen(false)}>
+                  Community Home
+                </Link>
+              </Tooltip>
+            </li>
+            <li>
+              <Tooltip message="Hover here for a surprise!">
+                <Link to="/playlist" onClick={() => setOpen(false)}>
+                  Playlist
+                </Link>
+              </Tooltip>
+            </li>
+          </ul>
         </li>
       </ul>
     </nav>

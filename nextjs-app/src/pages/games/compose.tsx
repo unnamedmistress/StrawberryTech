@@ -1,5 +1,7 @@
 
 import { useState, useEffect, useRef, useContext } from 'react'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
 
 import { scorePrompt } from '../../utils/scorePrompt'
 
@@ -8,6 +10,7 @@ import ProgressSidebar from '../../components/layout/ProgressSidebar'
 import { UserContext } from '../../context/UserContext'
 import JsonLd from '../../components/seo/JsonLd'
 import '../../styles/ComposeTweetGame.css'
+import CompletionModal from '../../components/ui/CompletionModal'
 
 const SAMPLE_RESPONSE =
   'Just finished reading an amazing book on technology! Highly recommend it to everyone. #BookLovers'
@@ -34,6 +37,7 @@ const pairs: PromptPair[] = [
 
 export default function ComposeTweetGame() {
   const { setScore, addBadge, user } = useContext(UserContext)
+  const router = useRouter()
   const [guess, setGuess] = useState('')
   const [feedback, setFeedback] = useState('')
   const [doorUnlocked, setDoorUnlocked] = useState(false)
@@ -42,6 +46,7 @@ export default function ComposeTweetGame() {
 
   const [round, setRound] = useState(0)
   const [showNext, setShowNext] = useState(false)
+  const [finished, setFinished] = useState(false)
 
   const [score, setScoreState] = useState<number | null>(null)
 
@@ -87,6 +92,9 @@ export default function ComposeTweetGame() {
         addBadge('speedy-composer')
       }
       setShowNext(true)
+      if (round + 1 >= pairs.length) {
+        setFinished(true)
+      }
     } else {
       setFeedback(tips.join(' '))
     }
@@ -189,13 +197,35 @@ export default function ComposeTweetGame() {
               Next Prompt
             </button>
           )}
-          {showNext && round + 1 >= pairs.length && (
-            <p className="feedback">All prompts complete!</p>
-          )}
         </div>
         <ProgressSidebar />
+        <div className="next-area">
+          <p style={{ marginTop: '1rem', textAlign: 'center' }}>
+            <button
+              className="btn-primary"
+              onClick={() => router.push('/leaderboard')}
+            >
+              Next
+            </button>
+          </p>
+          <p style={{ marginTop: '1rem', textAlign: 'center' }}>
+            <Link href="/leaderboard">Return to Progress</Link>
+          </p>
+        </div>
       </div>
     </div>
+    {finished && (
+      <CompletionModal
+        imageSrc="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_47_29%20PM.png"
+        buttonHref="/leaderboard"
+        buttonLabel="View Leaderboard"
+      >
+        <h3>All prompts complete!</h3>
+        {score !== null && (
+          <p className="final-score" aria-live="polite">Your score: {score}</p>
+        )}
+      </CompletionModal>
+    )}
     </>
   )
 }

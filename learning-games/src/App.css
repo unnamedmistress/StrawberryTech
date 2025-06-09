@@ -366,8 +366,9 @@
   top: 0;
   z-index: 100;
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
   background: var(--color-brand);
   padding: 1rem 2rem;
   color: #fff;
@@ -390,14 +391,45 @@
 
 .navbar ul {
   list-style: none;
-  display: flex;
-  gap: 1.25rem;
+  display: none;
+  width: 100%;
+  flex-direction: column;
+  gap: 0.5rem;
   margin: 0;
-  padding: 0;
+  margin-top: 0.5rem;
+  background: var(--color-brand);
+  padding: 0.5rem 0;
   font-size: 1.1rem;
 }
 .navbar li {
   padding: 0.5rem 0.5rem;
+}
+
+.submenu-toggle {
+  background: transparent;
+  border: none;
+  color: inherit;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.submenu-toggle:hover {
+  color: var(--color-lime);
+}
+
+.submenu ul {
+  display: none;
+  flex-direction: column;
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0 1rem;
+  gap: 0.25rem;
+  background: var(--color-brand);
+}
+
+.submenu ul.open {
+  display: flex;
 }
 
 .navbar a {
@@ -422,8 +454,9 @@
   height: 48px;
 }
 
+/* show hamburger toggle on all viewports */
 .menu-toggle {
-  display: none;
+  display: block;
   background: transparent;
   border: none;
   color: #fff;
@@ -431,27 +464,22 @@
   cursor: pointer;
 }
 
-@media (max-width: 1000px) {
-  .navbar {
+
+
+@media (max-width: 480px) {
+  .navbar ul {
+    font-size: 0.9rem;
+    padding: 0.25rem 0;
     flex-wrap: wrap;
   }
 
   .menu-toggle {
-    display: block;
+    font-size: 1.25rem;
   }
 
-  .navbar ul {
-    display: none;
-    width: 100%;
-    flex-direction: column;
-    gap: 0.5rem;
-    margin-top: 0.5rem;
-    background: var(--color-brand);
-    padding: 0.5rem 0;
-  }
-
-  .navbar ul.open {
-    display: flex;
+  .brand-logo {
+    width: 36px;
+    height: 36px;
   }
 }
 
@@ -765,5 +793,30 @@
   background: var(--color-background);
   color: var(--color-text-dark);
   border-color: var(--color-mint);
+}
+
+.congrats-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.congrats-modal {
+  background: var(--color-background);
+  color: var(--color-text-dark);
+  padding: 1rem;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 400px;
+  max-height: 80vh;
+  overflow-y: auto;
+  text-align: center;
 }
 

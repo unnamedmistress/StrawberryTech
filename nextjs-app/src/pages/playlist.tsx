@@ -11,7 +11,7 @@ const STORAGE_KEY = 'prompt_pairs'
 
 export default function CommunityPlaylistPage() {
   const [pairs, setPairs] = useState<PromptPair[]>(() => {
-    const saved = localStorage.getItem(STORAGE_KEY)
+    const saved = typeof window !== 'undefined' ? localStorage.getItem(STORAGE_KEY) : null
     if (saved) {
       try {
         return JSON.parse(saved) as PromptPair[]

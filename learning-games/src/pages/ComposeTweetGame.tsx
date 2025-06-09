@@ -1,10 +1,12 @@
 
 import { useState, useEffect, useRef, useContext } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 
 import { scorePrompt } from '../utils/scorePrompt'
 
 import InstructionBanner from '../components/ui/InstructionBanner'
 import ProgressSidebar from '../components/layout/ProgressSidebar'
+import CompletionModal from '../components/ui/CompletionModal'
 import { UserContext } from '../context/UserContext'
 import './ComposeTweetGame.css'
 
@@ -33,6 +35,7 @@ const pairs: PromptPair[] = [
 
 export default function ComposeTweetGame() {
   const { setScore, addBadge, user } = useContext(UserContext)
+  const navigate = useNavigate()
   const [guess, setGuess] = useState('')
   const [feedback, setFeedback] = useState('')
   const [doorUnlocked, setDoorUnlocked] = useState(false)
@@ -109,6 +112,7 @@ export default function ComposeTweetGame() {
   }
 
   return (
+    <>
     <div className="compose-page clearfix">
       <InstructionBanner>Guess the Prompt</InstructionBanner>
       <div className="compose-wrapper">
@@ -182,7 +186,33 @@ export default function ComposeTweetGame() {
           )}
         </div>
         <ProgressSidebar />
+        <div className="next-area">
+          <p style={{ marginTop: '1rem', textAlign: 'center' }}>
+            <button
+              className="btn-primary"
+              onClick={() => navigate('/leaderboard')}
+            >
+              Next
+            </button>
+          </p>
+          <p style={{ marginTop: '1rem', textAlign: 'center' }}>
+            <Link to="/leaderboard">Return to Progress</Link>
+          </p>
+        </div>
       </div>
     </div>
+    {showNext && round + 1 >= pairs.length && (
+      <CompletionModal
+        imageSrc="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_47_29%20PM.png"
+        buttonHref="/leaderboard"
+        buttonLabel="View Leaderboard"
+      >
+        <h3>All prompts complete!</h3>
+        {score !== null && (
+          <p className="final-score" aria-live="polite">Your score: {score}</p>
+        )}
+      </CompletionModal>
+    )}
+  </>
   )
 }

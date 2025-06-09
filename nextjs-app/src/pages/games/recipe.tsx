@@ -1,6 +1,7 @@
 import { useState, useEffect, useContext } from 'react'
 import Link from 'next/link'
-import Head from 'next/head'
+import HeadTag from 'next/head'
+import { useRouter } from 'next/router'
 import { motion } from 'framer-motion'
 import confetti from 'canvas-confetti'
 import { toast } from 'react-hot-toast'
@@ -10,6 +11,7 @@ import ProgressSidebar from '../../components/layout/ProgressSidebar'
 import InstructionBanner from '../../components/ui/InstructionBanner'
 import Tooltip from '../../components/ui/Tooltip'
 import TimerBar from '../../components/ui/TimerBar'
+import CompletionModal from '../../components/ui/CompletionModal'
 import { UserContext } from '../../context/UserContext'
 import { getTimeLimit } from '../../utils/time'
 import '../../styles/PromptRecipeGame.css'
@@ -141,7 +143,7 @@ async function generateCards(): Promise<Card[]> {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${import.meta.env.VITE_OPENAI_API_KEY}`,
+        Authorization: `Bearer ${process.env.NEXT_PUBLIC_OPENAI_API_KEY}`,
       },
       body: JSON.stringify({
         model: 'gpt-3.5-turbo',
@@ -174,6 +176,7 @@ async function generateCards(): Promise<Card[]> {
 
 export default function PromptRecipeGame() {
   const { setScore, addBadge, user } = useContext(UserContext)
+  const router = useRouter()
   const TOTAL_ROUNDS = 5
   const TOTAL_TIME = getTimeLimit(user, {
     easy: 45,
@@ -394,7 +397,7 @@ export default function PromptRecipeGame() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${import.meta.env.VITE_OPENAI_API_KEY}`,
+          Authorization: `Bearer ${process.env.NEXT_PUBLIC_OPENAI_API_KEY}`,
         },
         body: JSON.stringify({
           model: 'gpt-3.5-turbo',
@@ -419,13 +422,14 @@ export default function PromptRecipeGame() {
 
   if (finished) {
     return (
-      <div className="recipe-page">
-        <InstructionBanner>You finished Prompt Builder!</InstructionBanner>
+      <CompletionModal
+        imageSrc="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_19_23%20PM.png"
+        buttonHref="/games/darts"
+        buttonLabel="Play Prompt Darts"
+      >
+        <h3>You finished Prompt Builder!</h3>
         <p className="final-score">Your score: {score}</p>
-        <p style={{ marginTop: '1rem' }}>
-          <Link href="/leaderboard">Return to Progress</Link>
-        </p>
-      </div>
+      </CompletionModal>
     )
   }
 
@@ -444,7 +448,7 @@ export default function PromptRecipeGame() {
             'https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_19_23%20PM.png',
         }}
       />
-      <Head>
+      <HeadTag>
         <title>Prompt Recipe Builder - StrawberryTech</title>
         <meta property="og:title" content="Prompt Recipe Builder - StrawberryTech" />
         <meta
@@ -469,11 +473,11 @@ export default function PromptRecipeGame() {
           name="twitter:image"
           content="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_19_23%20PM.png"
         />
-        <meta
-          name="twitter:url"
-          content="https://strawberry-tech.vercel.app/games/recipe"
-        />
-      </Head>
+          <meta
+            name="twitter:url"
+            content="https://strawberry-tech.vercel.app/games/recipe"
+          />
+        </HeadTag>
       <div className="recipe-page">
       <InstructionBanner>
         Drag each card to the category it best fits to build a clear AI prompt.
@@ -566,6 +570,19 @@ export default function PromptRecipeGame() {
             <button className="btn-primary" onClick={nextRound}>Next Recipe</button>
           </div>
         )}
+        <div className="next-area">
+          <p style={{ marginTop: '1rem', textAlign: 'center' }}>
+            <button
+              className="btn-primary"
+              onClick={() => router.push('/games/darts')}
+            >
+              Next
+            </button>
+          </p>
+          <p style={{ marginTop: '1rem', textAlign: 'center' }}>
+            <Link href="/games/darts">Skip to Prompt Darts</Link>
+          </p>
+        </div>
       </div>
     </div>
     </>

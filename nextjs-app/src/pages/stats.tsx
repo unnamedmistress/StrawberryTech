@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react'
+import useSWR from 'swr'
 import Link from 'next/link'
+import Spinner from '../components/ui/Spinner'
 
 interface ViewData {
   id: number
@@ -14,17 +15,17 @@ interface ViewData {
 }
 
 export default function StatsPage() {
-  const [views, setViews] = useState<ViewData[]>([])
 
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const base = window.location.origin
-      fetch(`${base}/api/views`)
-        .then(res => (res.ok ? res.json() : []))
-        .then(data => setViews(Array.isArray(data) ? data : []))
-        .catch(() => {})
-    }
-  }, [])
+  const base = typeof window !== 'undefined' ? window.location.origin : ''
+  const fetcher = (url: string) => fetch(url).then(res => res.json())
+  const { data: views = [] } = useSWR<ViewData[]>(
+    base ? `${base}/api/views` : null,
+    fetcher,
+    { refreshInterval: 60000 }
+  )
+
+  const loading = views.length === 0
+
 
   const now = Date.now()
   const lastHour = now - 60 * 60 * 1000
@@ -72,22 +73,28 @@ export default function StatsPage() {
   return (
     <div className="stats-page">
       <h2>Site Statistics</h2>
-      <img
-        src="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_12_36%20PM.png"
-        alt="Home page strawberry mascot welcomes players at entrance of learning arcade with pastel tones."
-        className="brand-logo"
-        style={{ width: '48px' }}
-      />
-      <p>Total Views: {views.length}</p>
-      <p>Unique Visitors: {uniqueVisitors}</p>
-      <p>Average Session (s): {avgDuration}</p>
-      <p>Views last hour: {viewsLastHour}</p>
-      <p>Views last day: {viewsLastDay}</p>
-      <p>Views last week: {viewsLastWeek}</p>
-      <p>Views last month: {viewsLastMonth}</p>
-      <svg width={chartWidth + 20} height={chartHeight + 20} aria-label="Views line chart">
-        <polyline points={points} fill="none" stroke="blue" strokeWidth="2" />
-      </svg>
+      {loading ? (
+        <Spinner />
+      ) : (
+        <>
+          <img
+            src="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_12_36%20PM.png"
+            alt="Home page strawberry mascot welcomes players at entrance of learning arcade with pastel tones."
+            className="brand-logo"
+            style={{ width: '48px' }}
+          />
+          <p>Total Views: {views.length}</p>
+          <p>Unique Visitors: {uniqueVisitors}</p>
+          <p>Average Session (s): {avgDuration}</p>
+          <p>Views last hour: {viewsLastHour}</p>
+          <p>Views last day: {viewsLastDay}</p>
+          <p>Views last week: {viewsLastWeek}</p>
+          <p>Views last month: {viewsLastMonth}</p>
+          <svg width={chartWidth + 20} height={chartHeight + 20} aria-label="Views line chart">
+            <polyline points={points} fill="none" stroke="blue" strokeWidth="2" />
+          </svg>
+        </>
+      )}
       <p style={{ marginTop: '2rem' }}>
         <Link href="/">Return Home</Link>
       </p>

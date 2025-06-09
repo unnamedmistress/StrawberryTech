@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useContext, useCallback } from 'react'
 import { useRouter } from 'next/router'
+import Link from 'next/link'
 import InstructionBanner from '../../components/ui/InstructionBanner'
 import ProgressBar from '../../components/ui/ProgressBar'
 import DoorAnimation from '../../components/DoorAnimation'
@@ -8,8 +9,9 @@ import Tooltip from '../../components/ui/Tooltip'
 import { UserContext } from '../../context/UserContext'
 import shuffle from '../../utils/shuffle'
 import '../../styles/ClarityEscapeRoom.css'
+import CompletionModal from '../../components/ui/CompletionModal'
 import { scorePrompt } from '../../utils/scorePrompt'
-import Head from 'next/head'
+import HeadTag from 'next/head'
 import JsonLd from '../../components/seo/JsonLd'
 
 interface Clue {
@@ -172,7 +174,7 @@ export default function ClarityEscapeRoom() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${import.meta.env.VITE_OPENAI_API_KEY}`,
+          Authorization: `Bearer ${process.env.NEXT_PUBLIC_OPENAI_API_KEY}`,
         },
         body: JSON.stringify({
           model: 'gpt-3.5-turbo',
@@ -258,7 +260,7 @@ export default function ClarityEscapeRoom() {
             'https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_12_36%20PM.png',
         }}
       />
-      <Head>
+        <HeadTag>
         <title>Clarity Escape Room - StrawberryTech</title>
         <meta property="og:title" content="Clarity Escape Room - StrawberryTech" />
         <meta
@@ -283,11 +285,11 @@ export default function ClarityEscapeRoom() {
           name="twitter:image"
           content="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_12_36%20PM.png"
         />
-        <meta
-          name="twitter:url"
-          content="https://strawberry-tech.vercel.app/games/escape"
-        />
-      </Head>
+          <meta
+            name="twitter:url"
+            content="https://strawberry-tech.vercel.app/games/escape"
+          />
+        </HeadTag>
       <div className="escape-page">
       <InstructionBanner>Escape Room: Guess the Prompt</InstructionBanner>
       <div className="escape-wrapper">
@@ -344,25 +346,29 @@ export default function ClarityEscapeRoom() {
           </div>
         </div>
         <ProgressSidebar />
+        <div className="next-area">
+          <p style={{ marginTop: '1rem', textAlign: 'center' }}>
+            <button
+              className="btn-primary"
+              onClick={() => navigate.push('/games/recipe')}
+            >
+              Next
+            </button>
+          </p>
+          <p style={{ marginTop: '1rem', textAlign: 'center' }}>
+            <Link href="/games/recipe">Skip to Prompt Builder</Link>
+          </p>
+        </div>
       </div>
       {showSummary && (
-        <div className="summary-overlay" onClick={() => setShowSummary(false)}>
-          <div className="summary-modal" onClick={e => e.stopPropagation()}>
-            <h3>Round Summary</h3>
-            <ul>
-              {rounds.map((r, i) => (
-                <li key={i}>
-                  <p><strong>Your Prompt:</strong> {r.prompt || '(none)'}</p>
-                  <p><strong>Expected:</strong> {r.expected}</p>
-                  <p className="tip"><strong>Tip:</strong> {r.tip}</p>
-                </li>
-              ))}
-            </ul>
-            <button className="btn-primary" onClick={() => router.push('/leaderboard')}>
-              View Leaderboard
-            </button>
-          </div>
-        </div>
+        <CompletionModal
+          imageSrc="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_12_36%20PM.png"
+          buttonHref="/games/recipe"
+          buttonLabel="Play Prompt Builder"
+        >
+          <h3>Escape Complete!</h3>
+          <p className="final-score">Score: {points}</p>
+        </CompletionModal>
       )}
     </div>
     </>
