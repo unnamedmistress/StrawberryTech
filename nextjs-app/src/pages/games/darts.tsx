@@ -270,7 +270,7 @@ export function streakBonus(streak: number) {
 
 export default function PromptDartsGame() {
 
-  const { setScore, user } = useContext(UserContext)
+  const { setPoints, user } = useContext(UserContext)
   const router = useRouter()
   const [rounds, setRounds] = useState<DartRound[]>([])
   const [round, setRound] = useState(0)
@@ -394,7 +394,7 @@ export default function PromptDartsGame() {
       setHint(null)
       setHintUsed(false)
     } else {
-      setScore('darts', score)
+      setPoints('darts', score)
       setRound(r => r + 1)
     }
   }
@@ -416,7 +416,7 @@ export default function PromptDartsGame() {
           buttonLabel="Play Compose Tweet"
         >
           <h3>Congratulations!</h3>
-          <p className="final-score">Your score: {score}</p>
+          <p className="final-score">Your points: {score}</p>
         </CompletionModal>
       </div>
     )

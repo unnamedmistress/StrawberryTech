@@ -175,7 +175,7 @@ async function generateCards(): Promise<Card[]> {
 }
 
 export default function PromptRecipeGame() {
-  const { setScore, addBadge, user } = useContext(UserContext)
+  const { setPoints, addBadge, user } = useContext(UserContext)
   const router = useRouter()
   const TOTAL_ROUNDS = 5
   const TOTAL_TIME = getTimeLimit(user, {
@@ -193,7 +193,7 @@ export default function PromptRecipeGame() {
     Format: null,
     Constraints: null,
   })
-  const [score, setScoreState] = useState(0)
+  const [points, setPointsState] = useState(0)
   const [perfectRounds, setPerfectRounds] = useState(0)
   const [showPrompt, setShowPrompt] = useState(false)
   const [submitted, setSubmitted] = useState(false)
@@ -325,7 +325,7 @@ export default function PromptRecipeGame() {
       startRound()
     } else {
       setFinished(true)
-      setScore('recipe', score)
+      setPoints('recipe', points)
     }
   }
 
@@ -347,7 +347,7 @@ export default function PromptRecipeGame() {
     if (remaining.length === 0) return
     const card = remaining[Math.floor(Math.random() * remaining.length)]
     setHintSlot(card.type)
-    setScoreState(s => Math.max(0, s - 1))
+    setPointsState(s => Math.max(0, s - 1))
   }
 
   function checkAnswer() {
@@ -378,7 +378,7 @@ export default function PromptRecipeGame() {
           : 'wrong',
     })
 
-    setScoreState(s => s + finalScore)
+    setPointsState(s => s + finalScore)
     if (perfect) {
       confetti({ particleCount: 70, spread: 60, origin: { y: 0.7 } })
       setPerfectRounds(p => p + 1)
@@ -428,7 +428,7 @@ export default function PromptRecipeGame() {
         buttonLabel="Play Prompt Darts"
       >
         <h3>You finished Prompt Builder!</h3>
-        <p className="final-score">Your score: {score}</p>
+        <p className="final-score">Your points: {points}</p>
       </CompletionModal>
     )
   }
@@ -492,7 +492,7 @@ export default function PromptRecipeGame() {
         <div className="recipe-game">
           <div className="status-bar">
             <span className="round-info">Round {round + 1} / {TOTAL_ROUNDS}</span>
-            <span className="score">Score: {score}</span>
+            <span className="score">Points: {points}</span>
             <span className="timer">Time: {timeLeft}s</span>
           </div>
           <TimerBar timeLeft={timeLeft} TOTAL_TIME={TOTAL_TIME} />

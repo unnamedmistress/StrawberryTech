@@ -9,7 +9,7 @@ export default function CourseOverview() {
   return (
     <div className="course-grid">
       {COURSES.map((course) => {
-        const progress = Math.min(user.scores[course.id] ?? 0, 100)
+        const progress = Math.min(user.points[course.id] ?? 0, 100)
         const content = (
           <Card className="course-card" style={{ padding: '0.75rem' }}>
             {course.meme && (
