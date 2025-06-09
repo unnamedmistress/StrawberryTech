@@ -91,8 +91,8 @@ publishing.
 To point either frontend at a custom server URL set `NEXT_PUBLIC_API_BASE`
 in `nextjs-app/.env` or `VITE_API_BASE` in `learning-games/.env`. These must
 be the backend URL when the frontend and API run on different hosts. If these
-variables are omitted each app falls back to `window.location.origin`, which only
-works when the API is served from the same host.
+variables are omitted each app makes relative requests to `/api/...`, which only
+works when the API is served from the same host or proxied.
 Sample `.env.example` files in each app illustrate this configuration.
 
 

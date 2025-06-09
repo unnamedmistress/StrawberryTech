@@ -15,9 +15,6 @@ function getApiBase(): string {
   if (typeof import.meta !== 'undefined' && (import.meta as any).env?.VITE_API_BASE) {
     return (import.meta as any).env.VITE_API_BASE as string
   }
-  if (typeof window !== 'undefined') {
-    return window.location.origin
-  }
   return ''
 }
 
