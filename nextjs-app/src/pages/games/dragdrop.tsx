@@ -3,7 +3,7 @@ import Link from 'next/link'
 import ProgressSidebar from '../../components/layout/ProgressSidebar'
 import GamePageLayout from '../../components/layout/GamePageLayout'
 import WhyCard from '../../components/layout/WhyCard'
-import { UserContext } from '../../context/UserContext'
+import { UserContext } from '../../../../shared/UserContext'
 import '../../styles/DragDropGame.css'
 import JsonLd from '../../components/seo/JsonLd'
 

@@ -6,7 +6,7 @@ import Link from "next/link"; import { useRouter } from "next/router";
 import HeadTag from "next/head";
 import JsonLd from "../../components/seo/JsonLd";
 
-import { UserContext } from "../../context/UserContext";
+import { UserContext } from "../../../../shared/UserContext";
 import RobotChat from "../../components/RobotChat";
 import InstructionBanner from "../../components/ui/InstructionBanner";
 import WhyCard from "../../components/layout/WhyCard";
