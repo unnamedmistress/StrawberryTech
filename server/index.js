@@ -5,6 +5,14 @@ const fs = require('fs');
 const path = require('path');
 const firestore = require('./firebase');
 
+function ensureFirestore(res) {
+  if (!firestore) {
+    res.status(503).json({ error: 'Firestore unavailable. Firebase credentials missing.' });
+    return false;
+  }
+  return true;
+}
+
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY || '';
 
 const app = express();
@@ -17,12 +25,12 @@ app.use(cookieParser());
 const DARTS_FILE = path.join(__dirname, 'darts.json');
 
 // Collection references
-const posts = firestore.collection('posts');
-const prompts = firestore.collection('prompts');
-const pairs = firestore.collection('pairs');
-const views = firestore.collection('views');
-const scores = firestore.collection('scores');
-const userDoc = firestore.collection('config').doc('user');
+const posts = firestore ? firestore.collection('posts') : null;
+const prompts = firestore ? firestore.collection('prompts') : null;
+const pairs = firestore ? firestore.collection('pairs') : null;
+const views = firestore ? firestore.collection('views') : null;
+const scores = firestore ? firestore.collection('scores') : null;
+const userDoc = firestore ? firestore.collection('config').doc('user') : null;
 
 async function loadData() {
   const userSnap = await userDoc.get();
@@ -176,6 +184,7 @@ app.post('/api/sentiment', async (req, res) => {
 });
 
 app.get('/api/user', async (req, res) => {
+  if (!ensureFirestore(res)) return;
   const snap = await userDoc.get();
   res.json(
     snap.exists ? snap.data() : { name: null, age: null, badges: [], points: { darts: 0 } }
@@ -183,6 +192,7 @@ app.get('/api/user', async (req, res) => {
 });
 
 app.post('/api/user', async (req, res) => {
+  if (!ensureFirestore(res)) return;
   const snap = await userDoc.get();
   const user = { ...(snap.exists ? snap.data() : {}), ...req.body };
   await userDoc.set(user);
@@ -190,6 +200,7 @@ app.post('/api/user', async (req, res) => {
 });
 
 app.get('/api/posts', async (req, res) => {
+  if (!ensureFirestore(res)) return;
   const snap = await posts.where('status', '==', 'approved').get();
   const list = [];
   snap.forEach(doc => list.push({ id: doc.id, ...doc.data() }));
@@ -197,6 +208,7 @@ app.get('/api/posts', async (req, res) => {
 });
 
 app.post('/api/posts', async (req, res) => {
+  if (!ensureFirestore(res)) return;
   const content = req.body.content || '';
   const score = await analyzeSentiment(content);
   if (score < -0.1) {
@@ -218,6 +230,7 @@ app.post('/api/posts', async (req, res) => {
 });
 
 app.post('/api/posts/:id/flag', async (req, res) => {
+  if (!ensureFirestore(res)) return;
   const id = req.params.id;
   const ref = posts.doc(id);
   const snap = await ref.get();
@@ -230,6 +243,7 @@ app.post('/api/posts/:id/flag', async (req, res) => {
 });
 
 app.get('/api/prompts', async (req, res) => {
+  if (!ensureFirestore(res)) return;
   const snap = await prompts.where('flagged', '==', false).get();
   const list = [];
   snap.forEach(doc => list.push({ id: doc.id, ...doc.data() }));
@@ -237,6 +251,7 @@ app.get('/api/prompts', async (req, res) => {
 });
 
 app.post('/api/prompts', async (req, res) => {
+  if (!ensureFirestore(res)) return;
   const text = req.body.text || '';
   const { sanitized } = await sanitizeComment(text);
   const { flagged, category } = await moderatePrompt(sanitized);
@@ -250,6 +265,7 @@ app.post('/api/prompts', async (req, res) => {
 });
 
 app.get('/api/pairs', async (req, res) => {
+  if (!ensureFirestore(res)) return;
   const snap = await pairs.get();
   const list = [];
   snap.forEach(doc => list.push({ id: doc.id, ...doc.data() }));
@@ -257,6 +273,7 @@ app.get('/api/pairs', async (req, res) => {
 });
 
 app.post('/api/pairs', async (req, res) => {
+  if (!ensureFirestore(res)) return;
   const pair = { bad: req.body.bad || '', good: req.body.good || '' };
   const ref = await pairs.add(pair);
   res.status(201).json({ id: ref.id, ...pair });
@@ -268,6 +285,7 @@ app.get('/api/darts', (req, res) => {
 });
 
 app.get('/api/views', async (req, res) => {
+  if (!ensureFirestore(res)) return;
   const snap = await views.get();
   const list = [];
   snap.forEach(doc => list.push({ id: doc.id, ...doc.data() }));
@@ -275,6 +293,7 @@ app.get('/api/views', async (req, res) => {
 });
 
 app.post('/api/views', async (req, res) => {
+  if (!ensureFirestore(res)) return;
   const view = {
     visitorId: req.body.visitorId || null,
     user: req.body.user || null,
@@ -289,6 +308,7 @@ app.post('/api/views', async (req, res) => {
 });
 
 app.post('/api/views/:id/end', async (req, res) => {
+  if (!ensureFirestore(res)) return;
   const ref = views.doc(req.params.id);
   const snap = await ref.get();
   if (!snap.exists) {
@@ -303,6 +323,7 @@ app.post('/api/views/:id/end', async (req, res) => {
 });
 
 app.get('/api/scores', async (req, res) => {
+  if (!ensureFirestore(res)) return;
   const snap = await scores.get();
   const data = {};
   snap.forEach(doc => (data[doc.id] = doc.data().entries || []));
@@ -315,6 +336,7 @@ app.get('/api/scores', async (req, res) => {
 });
 
 app.post('/api/scores/:game', async (req, res) => {
+  if (!ensureFirestore(res)) return;
   const game = req.params.game;
   const docRef = scores.doc(game);
   const snap = await docRef.get();
