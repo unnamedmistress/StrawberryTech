@@ -1,6 +1,7 @@
 import { useContext, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { UserContext } from '../context/UserContext'
+import { getTotalPoints } from '../utils/user'
 import './Home.css'
 
 /**
@@ -34,7 +35,7 @@ export default function Home() {
     return () => observer.disconnect()
   }, [])
 
-  const totalPoints = Object.values(user.scores).reduce((a, b) => a + b, 0)
+  const totalPoints = getTotalPoints(user.scores)
 
   return (
     <div className="home">
