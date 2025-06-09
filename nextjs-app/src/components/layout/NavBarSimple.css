@@ -1,7 +1,7 @@
 .navbar-simple {
   display: flex;
   align-items: center;
-  background-color: #d81e39;
+  background-color: var(--color-brand);
   padding: 0.5rem 1rem;
   user-select: none;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
@@ -25,7 +25,7 @@
 }
 
 .navbar-links li a {
-  color: white;
+  color: var(--color-text-dark);
   font-weight: 700;
   text-decoration: none;
   font-size: 1rem;
@@ -36,7 +36,7 @@
 
 .navbar-links li a:hover,
 .navbar-links li a:focus {
-  background-color: #b7182d;
+  background-color: var(--color-deep-red);
   outline: none;
   cursor: pointer;
 }
