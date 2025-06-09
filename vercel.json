@@ -2,7 +2,7 @@
   "version": 2,
   "builds": [
     {
-      "src": "learning-games/nextjs-app/package.json",
+      "src": "nextjs-app/package.json",
       "use": "@vercel/next"
     }
   ],
