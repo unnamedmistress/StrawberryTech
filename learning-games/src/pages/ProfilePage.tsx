@@ -1,7 +1,7 @@
 import { useContext, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { toast } from 'react-hot-toast'
-import { UserContext } from '../context/UserContext'
+import { UserContext } from '../../../shared/UserContext'
 import ThemeToggle from '../components/layout/ThemeToggle'
 import './ProfilePage.css'
 

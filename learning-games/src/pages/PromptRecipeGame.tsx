@@ -10,7 +10,7 @@ import WhyCard from '../components/layout/WhyCard'
 import InstructionBanner from '../components/ui/InstructionBanner'
 import Tooltip from '../components/ui/Tooltip'
 import TimerBar from '../components/ui/TimerBar'
-import { UserContext } from '../context/UserContext'
+import { UserContext } from '../../../shared/UserContext'
 import { getTimeLimit } from '../utils/time'
 import './PromptRecipeGame.css'
 import {

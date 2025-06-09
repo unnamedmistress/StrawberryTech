@@ -1,6 +1,6 @@
 import { useEffect, useContext } from 'react'
 import { useLocation } from 'react-router-dom'
-import { UserContext } from '../context/UserContext'
+import { UserContext } from '../../../shared/UserContext'
 import { getApiBase } from '../utils/api'
 
 function getCookie(name: string) {

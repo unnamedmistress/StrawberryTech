@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react'
 import type { FormEvent } from 'react'
 import { useRouter } from 'next/router'
-import { UserContext } from '../context/UserContext'
+import { UserContext } from '../../../shared/UserContext'
 import '../styles/SplashPage.css'
 
 export default function SplashPage() {

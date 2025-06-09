@@ -1,7 +1,7 @@
 import { useContext, useEffect, useRef, useState } from 'react'
 import confetti from 'canvas-confetti'
 import { Link, useLocation } from 'react-router-dom'
-import { UserContext } from '../../context/UserContext'
+import { UserContext } from '../../../../shared/UserContext'
 import Tooltip from '../ui/Tooltip'
 import { getTotalPoints } from '../../utils/user'
 import { GOAL_POINTS } from '../../constants/progress'

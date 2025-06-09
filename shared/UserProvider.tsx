@@ -1,17 +1,25 @@
 import { useState, useCallback, useEffect } from 'react'
 import { toast } from 'react-hot-toast'
 import type { ReactNode } from 'react'
-import type { UserData } from '../types/user'
+import type { UserData } from './types/user'
 import { UserContext, defaultUser } from './UserContext'
-import { getApiBase } from '../utils/api'
 
-// All progress is stored under this key in localStorage so it persists across
-// sessions. Whenever the user object changes we throttle a save to this key.
+function getApiBase() {
+  if (typeof process !== 'undefined' && process.env.NEXT_PUBLIC_API_BASE) {
+    return process.env.NEXT_PUBLIC_API_BASE
+  }
+  if (typeof import.meta !== 'undefined' && (import.meta as any).env?.VITE_API_BASE) {
+    return (import.meta as any).env.VITE_API_BASE as string
+  }
+  if (typeof window !== 'undefined') {
+    return window.location.origin
+  }
+  return ''
+}
+
 const STORAGE_KEY = 'strawberrytech_user'
 
-
 export function UserProvider({ children }: { children: ReactNode }) {
-  // Load any saved user progress from localStorage on first render
   const [user, setUser] = useState<UserData>(() => {
     const saved = typeof window !== 'undefined' ? localStorage.getItem(STORAGE_KEY) : null
     if (saved) {
@@ -25,7 +33,6 @@ export function UserProvider({ children }: { children: ReactNode }) {
     return defaultUser
   })
 
-  // Load any saved data from the server and merge it with local storage
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const base = getApiBase()
@@ -38,8 +45,6 @@ export function UserProvider({ children }: { children: ReactNode }) {
     }
   }, [])
 
-
-  // Helper to set only the age field without overwriting other user data.
   const setAge = useCallback((age: number) => {
     setUser((prev) => ({ ...prev, age }))
   }, [])
@@ -52,7 +57,6 @@ export function UserProvider({ children }: { children: ReactNode }) {
     setUser(prev => ({ ...prev, difficulty: level }))
   }, [])
 
-  // Record the best points for a specific game
   const setPoints = useCallback(
     (game: string, points: number) => {
       setUser(prev => {
@@ -81,7 +85,6 @@ export function UserProvider({ children }: { children: ReactNode }) {
     [user.name],
   )
 
-  // Award a badge for achievements or milestones
   const addBadge = useCallback((badge: string) => {
     setUser(prev => {
       if (!prev.badges.includes(badge)) {
@@ -92,8 +95,6 @@ export function UserProvider({ children }: { children: ReactNode }) {
     })
   }, [])
 
-  // Persist user progress to localStorage whenever it changes. The timeout acts
-  // like a simple debounce so rapid state updates don't spam localStorage.
   useEffect(() => {
     const handle = setTimeout(() => {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(user))
