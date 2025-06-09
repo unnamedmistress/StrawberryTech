@@ -2,6 +2,7 @@ import { useContext, useEffect } from 'react'
 import HeadTag from 'next/head'
 import Link from 'next/link'; import { useRouter } from 'next/router'
 import { UserContext } from '../context/UserContext'
+import { getTotalPoints } from '../utils/user'
 import '../styles/Home.css'
 import { GOAL_POINTS } from '../constants/progress'
 
@@ -36,7 +37,7 @@ export default function Home() {
     return () => observer.disconnect()
   }, [])
 
-  const totalPoints = Object.values(user.scores).reduce((a, b) => a + b, 0)
+  const totalPoints = getTotalPoints(user.scores)
 
   return (
     <>
