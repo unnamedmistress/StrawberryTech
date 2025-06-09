@@ -82,7 +82,7 @@ export default function PromptRecipeGame() {
 
   useEffect(() => {
     startRound()
-  }, [])
+  }, [startRound])
 
   useEffect(() => {
     if (showPrompt) return
@@ -104,7 +104,13 @@ export default function PromptRecipeGame() {
       const text = `${dropped.Action ?? ''} ${dropped.Context ?? ''} ${dropped.Format ?? ''} ${dropped.Constraints ?? ''}`.trim()
       if (text) generateExampleOutput(text)
     }
-  }, [showPrompt])
+  }, [
+    showPrompt,
+    dropped.Action,
+    dropped.Context,
+    dropped.Format,
+    dropped.Constraints,
+  ])
 
 
   function dropSelected(slot: Slot) {
