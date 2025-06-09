@@ -21,7 +21,7 @@ export default function ProgressSidebar({ points, badges }: ProgressSidebarProps
   const GOAL_POINTS = 300
 
   const celebrated = useRef(false)
-  const [scoreEntries, setScoreEntries] = useState<PointsEntry[]>([])
+  const [pointsEntries, setPointsEntries] = useState<PointsEntry[]>([])
 
   useEffect(() => {
     if (totalPoints >= GOAL_POINTS && !celebrated.current) {
@@ -36,13 +36,13 @@ export default function ProgressSidebar({ points, badges }: ProgressSidebarProps
       fetch(`${base}/api/scores`)
         .then((res) => (res.ok ? res.json() : {}))
         .then((data: Record<string, PointsEntry[]>) => {
-          setScoreEntries(Array.isArray(data.darts) ? data.darts : [])
+          setPointsEntries(Array.isArray(data.darts) ? data.darts : [])
         })
         .catch(() => {})
     }
   }, [])
 
-  const leaderboard = scoreEntries
+  const leaderboard = pointsEntries
     .concat({ name: user.name ?? 'You', points: (points ?? user.points)['darts'] ?? 0 })
     .sort((a, b) => b.points - a.points)
     .slice(0, 3)
@@ -64,9 +64,9 @@ export default function ProgressSidebar({ points, badges }: ProgressSidebarProps
         ))}
         {userBadges.length === 0 && <span>No badges yet.</span>}
       </div>
-      <h4 className="top-scores-title">Top Points</h4>
-      <div className="top-scores-card">
-        <ol className="top-scores-list">
+      <h4 className="top-points-title">Top Points</h4>
+      <div className="top-points-card">
+        <ol className="top-points-list">
           {leaderboard.map((entry, idx) => (
             <li key={entry.name} className={idx === 0 ? 'top' : undefined}>
               {idx === 0 && <span aria-hidden="true">🏆 </span>}
