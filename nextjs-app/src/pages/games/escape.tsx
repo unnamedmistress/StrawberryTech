@@ -7,6 +7,7 @@ import DoorAnimation from '../../components/DoorAnimation'
 import ProgressSidebar from '../../components/layout/ProgressSidebar'
 import WhyCard from '../../components/layout/WhyCard'
 import Tooltip from '../../components/ui/Tooltip'
+import IntroOverlay from '../../components/ui/IntroOverlay'
 import { UserContext } from '../../context/UserContext'
 import shuffle from '../../utils/shuffle'
 import '../../styles/ClarityEscapeRoom.css'
@@ -124,6 +125,7 @@ export default function ClarityEscapeRoom() {
 
   const [aiHint, setAiHint] = useState('')
   const startRef = useRef(Date.now())
+  const [showIntro, setShowIntro] = useState(true)
   const [rounds, setRounds] = useState<{ prompt: string; expected: string; tip: string }[]>([])
   const [showSummary, setShowSummary] = useState(false)
 
@@ -168,6 +170,18 @@ export default function ClarityEscapeRoom() {
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
   }, [revealHint])
+
+  useEffect(() => {
+    function handleEsc(e: KeyboardEvent) {
+      if (e.key === 'Escape') {
+        setShowIntro(false)
+      }
+    }
+    if (showIntro) {
+      window.addEventListener('keydown', handleEsc)
+      return () => window.removeEventListener('keydown', handleEsc)
+    }
+  }, [showIntro])
 
   async function fetchAiHint(guess: string) {
     try {
@@ -251,6 +265,7 @@ export default function ClarityEscapeRoom() {
 
   return (
     <>
+      {showIntro && <IntroOverlay onClose={() => setShowIntro(false)} />}
       <JsonLd
         data={{
           '@context': 'https://schema.org',
