@@ -7,15 +7,21 @@ import { getTotalPoints } from '../../utils/user'
 import type { ScoreEntry } from '../../pages/LeaderboardPage'
 import { GOAL_POINTS } from '../../constants/progress'
 
-export default function ProgressSidebar() {
+export interface ProgressSidebarProps {
+  scores?: Record<string, number>
+  badges?: string[]
+}
+
+export default function ProgressSidebar({ scores, badges }: ProgressSidebarProps = {}) {
   const { user } = useContext(UserContext)
+
 
 
   const totalPoints = getTotalPoints(user.scores)
   const GOAL_POINTS = 300
 
   const celebrated = useRef(false)
-  const [scores, setScores] = useState<ScoreEntry[]>([])
+  const [scoreEntries, setScoreEntries] = useState<ScoreEntry[]>([])
 
   useEffect(() => {
     if (totalPoints >= GOAL_POINTS && !celebrated.current) {
@@ -30,14 +36,14 @@ export default function ProgressSidebar() {
       fetch(`${base}/api/scores`)
         .then((res) => (res.ok ? res.json() : {}))
         .then((data: Record<string, ScoreEntry[]>) => {
-          setScores(Array.isArray(data.darts) ? data.darts : [])
+          setScoreEntries(Array.isArray(data.darts) ? data.darts : [])
         })
         .catch(() => {})
     }
   }, [])
 
-  const leaderboard = scores
-    .concat({ name: user.name ?? 'You', score: user.scores['darts'] ?? 0 })
+  const leaderboard = scoreEntries
+    .concat({ name: user.name ?? 'You', score: userScores['darts'] ?? 0 })
     .sort((a, b) => b.score - a.score)
     .slice(0, 3)
 
@@ -49,14 +55,14 @@ export default function ProgressSidebar() {
       <p className="goal-message" aria-live="polite" aria-atomic="true">
         Goal: Reach {GOAL_POINTS} points to unlock a new badge!
       </p>
-      <p aria-live="polite" aria-atomic="true">Badges Earned: {user.badges.length}</p>
+      <p aria-live="polite" aria-atomic="true">Badges Earned: {userBadges.length}</p>
       <div className="badge-icons">
-        {user.badges.map((b) => (
+        {userBadges.map((b) => (
           <Tooltip key={b} message={b}>
             <span role="img" aria-label={b}>🏅</span>
           </Tooltip>
         ))}
-        {user.badges.length === 0 && <span>No badges yet.</span>}
+        {userBadges.length === 0 && <span>No badges yet.</span>}
       </div>
       <h4 className="top-scores-title">Top Scores</h4>
       <div className="top-scores-card">
