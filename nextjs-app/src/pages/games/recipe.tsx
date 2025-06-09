@@ -8,6 +8,7 @@ import { toast } from 'react-hot-toast'
 import JsonLd from '../../components/seo/JsonLd'
 
 import ProgressSidebar from '../../components/layout/ProgressSidebar'
+import WhyCard from '../../components/layout/WhyCard'
 import InstructionBanner from '../../components/ui/InstructionBanner'
 import Tooltip from '../../components/ui/Tooltip'
 import TimerBar from '../../components/ui/TimerBar'
@@ -483,12 +484,13 @@ export default function PromptRecipeGame() {
         Drag each card to the category it best fits to build a clear AI prompt.
       </InstructionBanner>
       <div className="recipe-wrapper">
-        <aside className="recipe-sidebar">
-          <h3>Why Build Prompts?</h3>
-          <p>Combining action, context, format and constraints clarifies intent.</p>
-          <blockquote className="sidebar-quote">Why Card: This page has potential but needs some polish to make it intuitive, clean, and engaging.</blockquote>
-          <p className="sidebar-tip">Arrange each ingredient to craft a clear request.</p>
-        </aside>
+        <WhyCard
+          className="recipe-sidebar"
+          title="Why Build Prompts?"
+          explanation="Combining action, context, format and constraints clarifies intent."
+          quote="Why Card: This page has potential but needs some polish to make it intuitive, clean, and engaging."
+          tip="Arrange each ingredient to craft a clear request."
+        />
         <div className="recipe-game">
           <div className="status-bar">
             <span className="round-info">Round {round + 1} / {TOTAL_ROUNDS}</span>

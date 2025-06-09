@@ -9,6 +9,7 @@ import JsonLd from "../../components/seo/JsonLd";
 import { UserContext } from "../../context/UserContext";
 import RobotChat from "../../components/RobotChat";
 import InstructionBanner from "../../components/ui/InstructionBanner";
+import WhyCard from "../../components/layout/WhyCard";
 
 /** Tile element used in the grid */
 export interface Tile {
@@ -396,12 +397,13 @@ export default function Match3Game() {
         Match adjectives to explore how tone changes the meaning of a message.
       </InstructionBanner>
       <div className="match3-wrapper">
-        <aside className="match3-sidebar">
-          <h3>Why Tone Matters</h3>
-          <p>Drag the adjectives into the blank to try different tones.</p>
-          <blockquote className="sidebar-quote">{sidebarQuote}</blockquote>
-          <p className="sidebar-tip">{sidebarTip}</p>
-        </aside>
+        <WhyCard
+          className="match3-sidebar"
+          title="Why Tone Matters"
+          explanation="Drag the adjectives into the blank to try different tones."
+          quote={sidebarQuote}
+          tip={sidebarTip}
+        />
         <div className="match3-container">
           <img
             src="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_47_46%20PM.png"
