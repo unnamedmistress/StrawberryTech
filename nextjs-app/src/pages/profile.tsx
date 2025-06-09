@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { toast } from 'react-hot-toast'
 import { UserContext } from '../context/UserContext'
 import ThemeToggle from '../components/layout/ThemeToggle'
-import type { ScoreEntry } from './leaderboard'
+import type { PointsEntry } from './leaderboard'
 import { getTotalPoints } from '../utils/user'
 
 
@@ -14,7 +14,7 @@ export default function ProfilePage() {
   const [name, setNameState] = useState(user.name ?? '')
   const [age, setAgeState] = useState<string>(user.age ? String(user.age) : '')
   const [difficulty, setDifficultyState] = useState(user.difficulty)
-  const [scores, setScores] = useState<Record<string, ScoreEntry[]>>({})
+  const [scores, setScores] = useState<Record<string, PointsEntry[]>>({})
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -26,21 +26,21 @@ export default function ProfilePage() {
     }
   }, [])
 
-  const totalPoints = useMemo(() => getTotalPoints(user.scores), [user.scores])
+  const totalPoints = useMemo(() => getTotalPoints(user.points), [user.points])
 
   const topScores = useMemo(() => {
     const result: Record<string, number> = {}
     Object.entries(scores).forEach(([game, entries]) => {
       if (Array.isArray(entries) && entries.length > 0) {
-        result[game] = Math.max(...entries.map(e => e.score))
+        result[game] = Math.max(...entries.map(e => e.points))
       }
     })
     return result
   }, [scores])
 
   const games = useMemo(
-    () => Array.from(new Set([...Object.keys(user.scores), ...Object.keys(topScores)])),
-    [user.scores, topScores]
+    () => Array.from(new Set([...Object.keys(user.points), ...Object.keys(topScores)])),
+    [user.points, topScores]
   )
 
   function handleSubmit(e: React.FormEvent) {
@@ -122,7 +122,7 @@ export default function ProfilePage() {
               {games.map((g) => (
                 <tr key={g}>
                   <td>{g}</td>
-                  <td>{user.scores[g] ?? 0}</td>
+                  <td>{user.points[g] ?? 0}</td>
                   <td>{topScores[g] ?? '-'}</td>
                 </tr>
               ))}

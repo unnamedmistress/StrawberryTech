@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'react'
+import { useState, useEffect, useRef, useCallback, useContext } from 'react'
 import { toast } from 'react-hot-toast'
 import { Link, useNavigate } from 'react-router-dom'
 import CompletionModal from '../components/ui/CompletionModal'
@@ -13,6 +13,7 @@ import shuffle from '../utils/shuffle'
 import './ClarityEscapeRoom.css'
 import { scorePrompt } from '../utils/scorePrompt'
 import { generateRoomDescription } from '../utils/generateRoomDescription'
+import { UserContext } from '../context/UserContext'
 
 interface Clue {
   aiResponse: string
@@ -115,10 +116,11 @@ const EXTRA_TIME = 10
 
 export default function ClarityEscapeRoom() {
   const navigate = useNavigate()
+  const { setPoints: recordScore } = useContext(UserContext)
   const [doors] = useState(() => shuffle(CLUES).slice(0, TOTAL_STEPS))
   const [index, setIndex] = useState(0)
   const [input, setInput] = useState('')
-  const [points, setPoints] = useState(0)
+  const [points, setPointsState] = useState(0)
   const [message, setMessage] = useState('')
   const [status, setStatus] = useState<'success' | 'error' | ''>('')
   const [hintIndex, setHintIndex] = useState(0)
@@ -246,7 +248,7 @@ export default function ClarityEscapeRoom() {
       const timeBonus = Date.now() - startRef.current < 10000 ? 5 : 0
       const penalty = hintCount * 2
       const total = Math.max(0, score + 10 + timeBonus - penalty)
-      setPoints(p => p + total)
+      setPointsState(p => p + total)
       setMessage(`Door unlocked! +${total} points`)
       setStatus('success')
       setOpenPercent(((index + 1) / TOTAL_STEPS) * 100)
@@ -288,7 +290,7 @@ export default function ClarityEscapeRoom() {
 
       setShowNext(false)
     } else {
-      setPoints('escape', points)
+      recordScore('escape', points)
       setShowSummary(true)
     }
   }
