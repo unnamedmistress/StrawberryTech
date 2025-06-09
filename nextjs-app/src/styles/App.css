@@ -407,6 +407,9 @@
   padding: 0.5rem 0;
   font-size: 1.1rem;
 }
+.navbar ul.open {
+  display: flex;
+}
 .navbar li {
   padding: 0.25rem 0.5rem;
 }
