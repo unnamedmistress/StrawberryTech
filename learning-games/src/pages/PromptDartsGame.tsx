@@ -91,11 +91,11 @@ export default function PromptDartsGame() {
       .then(res => (res.ok ? res.json() : null))
       .then(data => {
         if (Array.isArray(data) && data.length) {
-          const fetched = data.map((r: DartRoundApi) => ({
-            options: r.options ?? [r.bad, r.good].filter(Boolean),
-            correct: typeof r.correct === 'number' ? r.correct : 1,
-            why: r.why ?? '',
-            response: r.response ?? ''
+          const fetched = data.map((r: DartRound) => ({
+            options: r.options ?? [(r as any).bad, (r as any).good].filter(Boolean),
+            correct: typeof (r as any).correct === 'number' ? (r as any).correct : 1,
+            why: (r as any).why ?? '',
+            response: (r as any).response ?? ''
           })) as DartRound[]
           setRounds(shuffle(fetched))
         } else {
