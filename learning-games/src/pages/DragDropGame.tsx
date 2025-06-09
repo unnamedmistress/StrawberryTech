@@ -69,7 +69,7 @@ export default function DragDropGame() {
 
   return (
     <div className="dragdrop-page">
-      <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'flex-start' }}>
+      <div className="dragdrop-wrapper">
         <GamePageLayout
           imageSrc="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_19_23%20PM.png"
           imageAlt="Tone game illustration"
