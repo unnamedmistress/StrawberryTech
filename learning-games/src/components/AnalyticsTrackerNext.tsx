@@ -68,7 +68,7 @@ export default function AnalyticsTrackerNext() {
       window.removeEventListener('beforeunload', endSession)
       router.events?.off('routeChangeStart', endSession)
     }
-  }, [router.asPath, user.name])
+  }, [router.asPath, router.events, user.name])
 
   return null
 }

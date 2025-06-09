@@ -1,11 +1,8 @@
-import { useState, useContext } from 'react'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import ProgressSidebar from '../components/layout/ProgressSidebar'
 import GamePageLayout from '../components/layout/GamePageLayout'
-import { UserContext } from '../context/UserContext'
 
-
-import { getTotalPoints } from '../utils/user'
 import './DragDropGame.css'
 import WhyCard from '../components/layout/WhyCard'
 
@@ -41,7 +38,6 @@ export default function DragDropGame() {
   const [quizAnswer, setQuizAnswer] = useState<Tone | null>(null)
   const [userMessage, setUserMessage] = useState('')
   const [submitted, setSubmitted] = useState(false)
-  const { user } = useContext(UserContext)
 
   function handleDragStart(e: React.DragEvent<HTMLDivElement>, tone: Tone) {
     e.dataTransfer.setData('text/plain', tone)
