@@ -27,6 +27,7 @@
 
 .next-area {
   grid-area: next;
+  text-align: center;
 }
 
 .sentence {
@@ -109,13 +110,13 @@
 
 @media (min-width: 600px) {
   .dragdrop-wrapper {
-    grid-template-columns: 1fr 260px;
+    grid-template-columns: 1fr 250px;
     grid-template-areas:
       "sidebar progress"
       "game progress"
       "next progress";
   }
   .progress-sidebar {
-    max-width: 260px;
+    max-width: 250px;
   }
 }

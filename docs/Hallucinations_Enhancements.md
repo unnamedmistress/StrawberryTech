@@ -7,7 +7,7 @@ The existing "Hallucinations" quiz challenges players to spot a single AI-genera
 1. **Adaptive Difficulty** – Adjust the number of statements or complexity of facts based on the player's score or age.
 2. **Timed Rounds** – Introduce a countdown to increase pressure and urgency.
 3. **Streak Bonuses** – Reward consecutive correct answers with multiplier points.
-4. **Leaderboards** – Display global rankings so players can compare scores.
+4. **Leaderboards** – Display global rankings so players can compare points.
 5. **Hint System** – Offer limited hints that narrow down options but reduce potential points.
 6. **Daily Challenges** – Provide a new set of questions every day to encourage repeat visits.
 7. **Score Sharing** – Allow users to share results on social media.

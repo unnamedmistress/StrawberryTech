@@ -1,5 +1,6 @@
 import { useState, useEffect, useContext, useMemo } from 'react'
 import ProgressSidebar from '../components/layout/ProgressSidebar'
+import WhyCard from '../components/layout/WhyCard'
 import { motion } from 'framer-motion'
 import { toast } from 'react-hot-toast'
 import { Link, useNavigate } from 'react-router-dom'
@@ -48,16 +49,20 @@ function WhyItMatters() {
     [],
   )
   return (
-    <aside className="quiz-sidebar reveal">
-      <h3>Why It Matters</h3>
-      <p>AI hallucinations occur when the system confidently states something untrue.</p>
-      <blockquote className="sidebar-quote">{QUOTE}</blockquote>
-      <p className="sidebar-tip">{TIP}</p>
+    <WhyCard
+      className="quiz-sidebar reveal"
+      title="Why It Matters"
+      explanation="AI hallucinations occur when the system confidently states something untrue."
+      quote={QUOTE}
+      tip={TIP}
+    >
       <p className="sidebar-example">
-        Example: {example.statement}{' '}
-        <a href={example.source} target="_blank" rel="noopener noreferrer">Source</a>
+        Example: {example.statement}{" "}
+        <a href={example.source} target="_blank" rel="noopener noreferrer">
+          Source
+        </a>
       </p>
-    </aside>
+    </WhyCard>
   )
 }
 
@@ -121,11 +126,11 @@ function ChatBox() {
 }
 
 export default function QuizGame() {
-  const { user, setScore, addBadge } = useContext(UserContext)
+  const { user, setPoints, addBadge } = useContext(UserContext)
   const navigate = useNavigate()
   const [round, setRound] = useState(0)
   const [choice, setChoice] = useState<number | null>(null)
-  const [score, setScoreState] = useState(0)
+  const [points, setPointsState] = useState(0)
   const [played, setPlayed] = useState(0)
   const [streak, setStreak] = useState(0)
   const [finished, setFinished] = useState(false)
@@ -147,8 +152,8 @@ export default function QuizGame() {
 
   function nextRound() {
     const wasCorrect = correct
-    const newScore = wasCorrect ? score + 1 : score
-    setScoreState(newScore)
+    const newScore = wasCorrect ? points + 1 : points
+    setPointsState(newScore)
     setPlayed(p => p + 1)
     setStreak(wasCorrect ? streak + 1 : 0)
 
@@ -158,7 +163,7 @@ export default function QuizGame() {
 
 
     if (played + 1 === ROUNDS.length) {
-      setScore('quiz', newScore)
+      setPoints('quiz', newScore)
       if (newScore === ROUNDS.length && !user.badges.includes('quiz-whiz')) {
         addBadge('quiz-whiz')
       }
@@ -278,7 +283,7 @@ export default function QuizGame() {
         buttonLabel="Play Escape Room"
       >
         <h3>You finished the quiz!</h3>
-        <p className="final-score">Your score: {score}</p>
+        <p className="final-score">Your points: {points}</p>
       </CompletionModal>
     )}
     </>

@@ -23,7 +23,7 @@
 .recipe-wrapper {
   width: 100%;
   display: grid;
-  grid-template-columns: 260px 1fr 260px;
+  grid-template-columns: 250px 1fr 250px;
   grid-template-areas:
     'sidebar game progress'
     'next    next next';
@@ -49,10 +49,11 @@
 
 .recipe-sidebar {
   grid-area: sidebar;
-  max-width: 240px;
+  max-width: 250px;
   background: var(--color-background);
   color: var(--color-text-dark);
   padding: 1rem;
+  font-size: 0.9rem;
   border-radius: 8px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
   margin-bottom: 1rem;

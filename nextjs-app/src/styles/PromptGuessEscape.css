@@ -1,7 +1,7 @@
 .guess-wrapper {
   width: 100%;
   display: grid;
-  grid-template-columns: 220px 1fr 160px 260px;
+  grid-template-columns: 250px 1fr 160px 250px;
   grid-template-areas:
     'sidebar game door progress'
     'sidebar game door progress';
@@ -12,10 +12,11 @@
 
 .guess-sidebar {
   grid-area: sidebar;
-  max-width: 240px;
+  max-width: 250px;
   background: var(--color-background);
   color: var(--color-text-dark);
   padding: 1rem;
+  font-size: 0.9rem;
   border-radius: 8px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }

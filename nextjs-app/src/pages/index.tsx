@@ -5,6 +5,7 @@ import { UserContext } from '../context/UserContext'
 import { getTotalPoints } from '../utils/user'
 import '../styles/Home.css'
 import { GOAL_POINTS } from '../constants/progress'
+import ProgressSummary from '../components/ProgressSummary'
 
 /**
  * Home page listing available games.
@@ -37,7 +38,7 @@ export default function Home() {
     return () => observer.disconnect()
   }, [])
 
-  const totalPoints = getTotalPoints(user.scores)
+  const totalPoints = getTotalPoints(user.points)
 
   return (
     <>
@@ -172,15 +173,12 @@ export default function Home() {
 
       {/* progress summary */}
       {totalPoints > 0 && (
-        <div className="progress-summary reveal">
-          <p>Total Points: {totalPoints}</p>
-          <progress value={totalPoints} max={GOAL_POINTS} />
-          <p>Badges Earned: {user.badges.length}</p>
-          <div className="badge-icons">
-            {user.badges.map((b) => (
-              <span key={b}>🏅</span>
-            ))}
-          </div>
+        <div className="reveal">
+          <ProgressSummary
+            totalPoints={totalPoints}
+            badges={user.badges}
+            goalPoints={GOAL_POINTS}
+          />
         </div>
       )}
     </div>

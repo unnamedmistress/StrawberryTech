@@ -27,7 +27,7 @@ async function loadData() {
   const userSnap = await userDoc.get();
   const user = userSnap.exists
     ? userSnap.data()
-    : { name: null, age: null, badges: [], scores: { darts: 0 } };
+    : { name: null, age: null, badges: [], points: { darts: 0 } };
   const scoresSnap = await scores.get();
   const scoreData = {};
   scoresSnap.forEach(doc => (scoreData[doc.id] = doc.data().entries || []));
@@ -139,7 +139,7 @@ app.post('/api/sentiment', async (req, res) => {
 app.get('/api/user', async (req, res) => {
   const snap = await userDoc.get();
   res.json(
-    snap.exists ? snap.data() : { name: null, age: null, badges: [], scores: { darts: 0 } }
+    snap.exists ? snap.data() : { name: null, age: null, badges: [], points: { darts: 0 } }
   );
 });
 
@@ -247,6 +247,11 @@ app.get('/api/scores', async (req, res) => {
   const snap = await scores.get();
   const data = {};
   snap.forEach(doc => (data[doc.id] = doc.data().entries || []));
+  // Ensure all known games exist in the response
+  const allGames = ['tone', 'quiz', 'darts', 'recipe', 'escape', 'compose'];
+  allGames.forEach(g => {
+    if (!data[g]) data[g] = [];
+  });
   res.json(data);
 });
 

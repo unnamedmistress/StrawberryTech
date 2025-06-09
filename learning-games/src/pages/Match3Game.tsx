@@ -7,6 +7,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 import RobotChat from "../components/RobotChat";
 import InstructionBanner from "../components/ui/InstructionBanner";
+import WhyCard from "../components/layout/WhyCard";
 
 /** Tile element used in the grid */
 export interface Tile {
@@ -171,7 +172,7 @@ function ToneMatchGame({ onComplete }: { onComplete: (score: number) => void }) 
   const [selected, setSelected] = useState<Tone | null>(null)
   const [used, setUsed] = useState<Set<Tone>>(new Set())
   const [quizAnswer, setQuizAnswer] = useState<Tone | null>(null)
-  const [score, setScore] = useState(0)
+  const [points, setPoints] = useState(0)
 
   function handleDragStart(e: React.DragEvent<HTMLDivElement>, tone: Tone) {
     e.dataTransfer.setData("text/plain", tone);
@@ -183,7 +184,7 @@ function ToneMatchGame({ onComplete }: { onComplete: (score: number) => void }) 
     if (tones.includes(tone) && !used.has(tone)) {
       setSelected(tone);
       setUsed(new Set(used).add(tone));
-      setScore((s) => s + 20);
+      setPoints((s) => s + 20);
     }
   }
 
@@ -193,10 +194,10 @@ function ToneMatchGame({ onComplete }: { onComplete: (score: number) => void }) 
 
   useEffect(() => {
     if (used.size >= 3) {
-      recordScore('tone', score)
-      onComplete(score)
+      recordScore('tone', points)
+      onComplete(points)
     }
-  }, [used, onComplete, score, recordScore])
+  }, [used, onComplete, points, recordScore])
 
   return (
     <div className="dragdrop-game">
@@ -352,12 +353,13 @@ export default function Match3Game() {
         Match adjectives to explore how tone changes the meaning of a message.
       </InstructionBanner>
       <div className="match3-wrapper">
-        <aside className="match3-sidebar">
-          <h3>Why Tone Matters</h3>
-          <p>Drag the adjectives into the blank to try different tones.</p>
-          <blockquote className="sidebar-quote">{sidebarQuote}</blockquote>
-          <p className="sidebar-tip">{sidebarTip}</p>
-        </aside>
+        <WhyCard
+          className="match3-sidebar"
+          title="Why Tone Matters"
+          explanation="Drag the adjectives into the blank to try different tones."
+          quote={sidebarQuote}
+          tip={sidebarTip}
+        />
         <div className="match3-container">
           <img
             src="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_47_46%20PM.png"

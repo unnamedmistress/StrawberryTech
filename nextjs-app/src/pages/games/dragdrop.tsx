@@ -1,10 +1,9 @@
 import { useState, useContext } from 'react'
 import Link from 'next/link'
-import ProgressSidebarSimple from '../../components/layout/ProgressSidebarSimple'
-import { GOAL_POINTS } from '../../constants/progress'
+import ProgressSidebar from '../../components/layout/ProgressSidebar'
 import GamePageLayout from '../../components/layout/GamePageLayout'
+import WhyCard from '../../components/layout/WhyCard'
 import { UserContext } from '../../context/UserContext'
-import { getTotalPoints } from '../../utils/user'
 import '../../styles/DragDropGame.css'
 import JsonLd from '../../components/seo/JsonLd'
 
@@ -41,8 +40,6 @@ export default function DragDropGame() {
   const [userMessage, setUserMessage] = useState('')
   const [submitted, setSubmitted] = useState(false)
   const { user } = useContext(UserContext)
-  const totalPoints = getTotalPoints(user.scores)
-  const badgesEarned = user.badges.length
 
   function handleDragStart(e: React.DragEvent<HTMLDivElement>, tone: Tone) {
     e.dataTransfer.setData('text/plain', tone)
@@ -82,18 +79,15 @@ export default function DragDropGame() {
         }}
       />
       <div className="dragdrop-page">
-      <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'flex-start' }}>
+      <div className="dragdrop-wrapper">
         <GamePageLayout
           imageSrc="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_19_23%20PM.png"
           imageAlt="Tone game illustration"
           infoCardContent={
-            <>
-              <h3>Why Tone Matters</h3>
-              <p>
-                Drag the adjectives into the blank to try different tones. Swap
-                words wisely and watch your message sparkle!
-              </p>
-            </>
+            <WhyCard
+              title="Why Tone Matters"
+              explanation="Drag the adjectives into the blank to try different tones. Swap words wisely and watch your message sparkle!"
+            />
           }
           instructions="Match adjectives to explore how tone changes the meaning of a message."
           onCTAClick={() => {}}
@@ -184,15 +178,10 @@ export default function DragDropGame() {
             )}
           </div>
         </GamePageLayout>
-        <ProgressSidebarSimple
-          totalPoints={totalPoints}
-          badgesEarned={badgesEarned}
-          goalPoints={GOAL_POINTS}
-          topScores={[{ name: 'You', points: user.scores['darts'] ?? 0 }]}
-        />
+        <ProgressSidebar />
       </div>
       <div className="next-area">
-        <p style={{ marginTop: '1rem', textAlign: 'center' }}>
+        <p>
           <Link href="/leaderboard">Return to Progress</Link>
         </p>
       </div>

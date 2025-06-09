@@ -1,14 +1,18 @@
 import { useState, useEffect, useRef, useContext, useCallback } from 'react'
+import { toast } from 'react-hot-toast'
 import { useRouter } from 'next/router'
 import InstructionBanner from '../../components/ui/InstructionBanner'
 import Tooltip from '../../components/ui/Tooltip'
 import ProgressBar from '../../components/ui/ProgressBar'
 import DoorAnimation from '../../components/DoorAnimation'
+import DoorUnlockedModal from '../../components/ui/DoorUnlockedModal'
 import ProgressSidebar from '../../components/layout/ProgressSidebar'
+import WhyCard from '../../components/layout/WhyCard'
 import { UserContext } from '../../context/UserContext'
 import shuffle from '../../utils/shuffle'
 import '../../styles/PromptGuessEscape.css'
 import { scorePrompt } from '../../utils/scorePrompt'
+import { generateRoomDescription } from '../../utils/generateRoomDescription'
 import JsonLd from '../../components/seo/JsonLd'
 
 interface Clue {
@@ -121,13 +125,22 @@ export default function PromptGuessEscape() {
   const [hintIndex, setHintIndex] = useState(0)
   const [hintCount, setHintCount] = useState(0)
   const [showNext, setShowNext] = useState(false)
+  const [roundPoints, setRoundPoints] = useState(0)
   const [timeLeft, setTimeLeft] = useState(BASE_TIME)
   const [openPercent, setOpenPercent] = useState(0)
   const [failStreak, setFailStreak] = useState(0)
   const [scoreThreshold, setScoreThreshold] = useState(BASE_SCORE)
+  const [roomDescription, setRoomDescription] = useState('')
   const startRef = useRef(Date.now())
   const [rounds, setRounds] = useState<{ prompt: string; expected: string; tip: string }[]>([])
   const [showSummary, setShowSummary] = useState(false)
+  const [showTip, setShowTip] = useState(false)
+  const [currentTip, setCurrentTip] = useState('')
+  const [earned, setEarned] = useState(0)
+
+  useEffect(() => {
+    generateRoomDescription().then(text => setRoomDescription(text))
+  }, [index])
 
   const clue = doors[index]
 
@@ -141,6 +154,7 @@ export default function PromptGuessEscape() {
           clearInterval(id)
           setMessage("Time's up! The door remains closed.")
           setStatus('error')
+          setRoundPoints(0)
           setShowNext(true)
           setFailStreak(fs => {
             const next = fs + 1
@@ -160,6 +174,7 @@ export default function PromptGuessEscape() {
   const revealHint = useCallback(() => {
     setHintIndex(i => {
       if (i < clue.hints.length) {
+        toast('Hint revealed \u2013 \u22122 points')
         setHintCount(c => c + 1)
         return i + 1
       }
@@ -186,10 +201,14 @@ export default function PromptGuessEscape() {
       const penalty = hintCount * 2
       const total = Math.max(0, score + 10 + timeBonus - penalty)
       setPoints(p => p + total)
+
       setMessage(`Door unlocked! +${total} points`)
+      setRoundPoints(total)
       setStatus('success')
       setOpenPercent(((index + 1) / TOTAL_STEPS) * 100)
-      setShowNext(true)
+      setShowTip(true)
+      setShowNext(false)
+      setMessage('')
       setFailStreak(0)
       setScoreThreshold(BASE_SCORE)
     } else {
@@ -219,7 +238,7 @@ export default function PromptGuessEscape() {
       setHintCount(0)
       setShowNext(false)
     } else {
-      setScore('escape', points)
+      setPoints('escape', points)
       setShowSummary(true)
     }
   }
@@ -239,11 +258,15 @@ export default function PromptGuessEscape() {
       <div className="guess-page">
       <InstructionBanner>Escape Room: Guess the Prompt</InstructionBanner>
       <div className="guess-wrapper">
-        <aside className="guess-sidebar">
-          <h3>Why Clarity Matters</h3>
-          <p>Vague inputs lock AI in confusion loops; precise prompts open doors.</p>
-        </aside>
+        <WhyCard
+          className="guess-sidebar"
+          title="Why Clarity Matters"
+          explanation="Vague inputs lock AI in confusion loops; precise prompts open doors."
+        />
         <div className="guess-game">
+          {roomDescription && (
+            <p className="room-description">{roomDescription}</p>
+          )}
           <p className="ai-response"><strong>AI Response:</strong> "{clue.aiResponse}"</p>
           <p className="timer">Time left: {timeLeft}s</p>
           <form onSubmit={handleSubmit} className="prompt-form">
@@ -255,9 +278,11 @@ export default function PromptGuessEscape() {
               placeholder="Type the prompt that caused this reply"
             />
             <button type="submit" className="btn-primary">Submit</button>
-            <button type="button" className="btn-primary" onClick={revealHint}>
-              Hint (H)
-            </button>
+            <Tooltip message="Reveal a hint (press H). Each hint reduces your points.">
+              <button type="button" className="btn-primary" onClick={revealHint}>
+                Hint (H)
+              </button>
+            </Tooltip>
           </form>
           <ProgressBar percent={openPercent} />
           {hintIndex > 0 && (
@@ -273,9 +298,11 @@ export default function PromptGuessEscape() {
             <p className={`feedback ${status}`}>{status === 'success' ? '✔️' : '⚠️'} {message}</p>
           )}
           {showNext && (
-            <div className="next-area">
-              <button className="btn-primary" onClick={nextChallenge}>Next Challenge</button>
-            </div>
+            <DoorUnlockedModal
+              points={roundPoints}
+              remaining={TOTAL_STEPS - (index + 1)}
+              onNext={nextChallenge}
+            />
           )}
         </div>
         <div className="door-area">
@@ -283,6 +310,17 @@ export default function PromptGuessEscape() {
         </div>
         <ProgressSidebar />
       </div>
+      {showTip && (
+        <div className="summary-overlay" onClick={() => {}}>
+          <div className="summary-modal" onClick={e => e.stopPropagation()}>
+            <p>You earned {earned} points!</p>
+            <p className="tip"><strong>Tip:</strong> {currentTip}</p>
+            <button className="btn-primary" onClick={() => { setShowTip(false); nextChallenge(); }}>
+              Continue
+            </button>
+          </div>
+        </div>
+      )}
       {showSummary && (
         <div className="summary-overlay" onClick={() => setShowSummary(false)}>
           <div className="summary-modal" onClick={e => e.stopPropagation()}>

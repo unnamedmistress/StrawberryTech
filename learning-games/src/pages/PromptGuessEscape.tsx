@@ -1,14 +1,17 @@
 import { useState, useEffect, useRef, useContext, useCallback } from 'react'
+import { toast } from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
 import InstructionBanner from '../components/ui/InstructionBanner'
 import Tooltip from '../components/ui/Tooltip'
 import ProgressBar from '../components/ui/ProgressBar'
 import DoorAnimation from '../components/DoorAnimation'
 import ProgressSidebar from '../components/layout/ProgressSidebar'
+import WhyCard from '../components/layout/WhyCard'
 import { UserContext } from '../context/UserContext'
 import shuffle from '../utils/shuffle'
 import './PromptGuessEscape.css'
 import { scorePrompt } from '../utils/scorePrompt'
+import { generateRoomDescription } from '../utils/generateRoomDescription'
 
 interface Clue {
   aiResponse: string
@@ -110,7 +113,7 @@ const EXTRA_TIME = 10
 
 export default function PromptGuessEscape() {
   const navigate = useNavigate()
-  const { setScore } = useContext(UserContext)
+  const { setPoints } = useContext(UserContext)
   const [doors] = useState(() => shuffle(CLUES).slice(0, TOTAL_STEPS))
   const [index, setIndex] = useState(0)
   const [input, setInput] = useState('')
@@ -124,9 +127,14 @@ export default function PromptGuessEscape() {
   const [openPercent, setOpenPercent] = useState(0)
   const [failStreak, setFailStreak] = useState(0)
   const [scoreThreshold, setScoreThreshold] = useState(BASE_SCORE)
+  const [roomDescription, setRoomDescription] = useState('')
   const startRef = useRef(Date.now())
   const [rounds, setRounds] = useState<{ prompt: string; expected: string; tip: string }[]>([])
   const [showSummary, setShowSummary] = useState(false)
+
+  useEffect(() => {
+    generateRoomDescription().then(text => setRoomDescription(text))
+  }, [index])
 
   const clue = doors[index]
 
@@ -159,6 +167,7 @@ export default function PromptGuessEscape() {
   const revealHint = useCallback(() => {
     setHintIndex(i => {
       if (i < clue.hints.length) {
+        toast('Hint revealed \u2013 \u22122 points')
         setHintCount(c => c + 1)
         return i + 1
       }
@@ -218,7 +227,7 @@ export default function PromptGuessEscape() {
       setHintCount(0)
       setShowNext(false)
     } else {
-      setScore('escape', points)
+      setPoints('escape', points)
       setShowSummary(true)
     }
   }
@@ -227,11 +236,15 @@ export default function PromptGuessEscape() {
     <div className="guess-page">
       <InstructionBanner>Escape Room: Guess the Prompt</InstructionBanner>
       <div className="guess-wrapper">
-        <aside className="guess-sidebar">
-          <h3>Why Clarity Matters</h3>
-          <p>Vague inputs lock AI in confusion loops; precise prompts open doors.</p>
-        </aside>
+        <WhyCard
+          className="guess-sidebar"
+          title="Why Clarity Matters"
+          explanation="Vague inputs lock AI in confusion loops; precise prompts open doors."
+        />
         <div className="guess-game">
+          {roomDescription && (
+            <p className="room-description">{roomDescription}</p>
+          )}
           <p className="ai-response"><strong>AI Response:</strong> "{clue.aiResponse}"</p>
           <p className="timer">Time left: {timeLeft}s</p>
           <form onSubmit={handleSubmit} className="prompt-form">

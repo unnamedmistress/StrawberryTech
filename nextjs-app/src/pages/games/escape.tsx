@@ -1,16 +1,21 @@
 import { useState, useEffect, useRef, useContext, useCallback } from 'react'
+import { toast } from 'react-hot-toast'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import InstructionBanner from '../../components/ui/InstructionBanner'
 import ProgressBar from '../../components/ui/ProgressBar'
 import DoorAnimation from '../../components/DoorAnimation'
+import DoorUnlockedModal from '../../components/ui/DoorUnlockedModal'
 import ProgressSidebar from '../../components/layout/ProgressSidebar'
+import WhyCard from '../../components/layout/WhyCard'
 import Tooltip from '../../components/ui/Tooltip'
+import IntroOverlay from '../../components/ui/IntroOverlay'
 import { UserContext } from '../../context/UserContext'
 import shuffle from '../../utils/shuffle'
 import '../../styles/ClarityEscapeRoom.css'
 import CompletionModal from '../../components/ui/CompletionModal'
 import { scorePrompt } from '../../utils/scorePrompt'
+import { generateRoomDescription } from '../../utils/generateRoomDescription'
 import HeadTag from 'next/head'
 import JsonLd from '../../components/seo/JsonLd'
 
@@ -118,13 +123,21 @@ export default function ClarityEscapeRoom() {
   const [hintIndex, setHintIndex] = useState(0)
   const [hintCount, setHintCount] = useState(0)
   const [showNext, setShowNext] = useState(false)
+  const [roundPoints, setRoundPoints] = useState(0)
   const [timeLeft, setTimeLeft] = useState(30)
   const [openPercent, setOpenPercent] = useState(0)
 
+  const [roomDescription, setRoomDescription] = useState('')
+
   const [aiHint, setAiHint] = useState('')
   const startRef = useRef(Date.now())
+  const [showIntro, setShowIntro] = useState(true)
   const [rounds, setRounds] = useState<{ prompt: string; expected: string; tip: string }[]>([])
   const [showSummary, setShowSummary] = useState(false)
+
+  useEffect(() => {
+    generateRoomDescription().then(text => setRoomDescription(text))
+  }, [index])
 
   const clue = doors[index]
 
@@ -138,6 +151,7 @@ export default function ClarityEscapeRoom() {
           clearInterval(id)
           setMessage("Time's up! The door remains closed.")
           setStatus('error')
+          setRoundPoints(0)
           setShowNext(true)
           return 0
         }
@@ -150,6 +164,7 @@ export default function ClarityEscapeRoom() {
   const revealHint = useCallback(() => {
     setHintIndex(i => {
       if (i < clue.hints.length) {
+        toast('Hint revealed \u2013 \u22122 points')
         setHintCount(c => c + 1)
         return i + 1
       }
@@ -167,6 +182,18 @@ export default function ClarityEscapeRoom() {
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
   }, [revealHint])
+
+  useEffect(() => {
+    function handleEsc(e: KeyboardEvent) {
+      if (e.key === 'Escape') {
+        setShowIntro(false)
+      }
+    }
+    if (showIntro) {
+      window.addEventListener('keydown', handleEsc)
+      return () => window.removeEventListener('keydown', handleEsc)
+    }
+  }, [showIntro])
 
   async function fetchAiHint(guess: string) {
     try {
@@ -212,6 +239,7 @@ export default function ClarityEscapeRoom() {
       const total = Math.max(0, score + 10 + timeBonus - penalty)
       setPoints(p => p + total)
       setMessage(`Door unlocked! +${total} points`)
+      setRoundPoints(total)
       setStatus('success')
       setOpenPercent(((index + 1) / TOTAL_STEPS) * 100)
       setShowNext(true)
@@ -240,16 +268,17 @@ export default function ClarityEscapeRoom() {
       setHintCount(0)
 
       setAiHint('')
-
+      
       setShowNext(false)
     } else {
-      setScore('escape', points)
+      setPoints('escape', points)
       setShowSummary(true)
     }
   }
 
   return (
     <>
+      {showIntro && <IntroOverlay onClose={() => setShowIntro(false)} />}
       <JsonLd
         data={{
           '@context': 'https://schema.org',
@@ -293,13 +322,17 @@ export default function ClarityEscapeRoom() {
       <div className="escape-page">
       <InstructionBanner>Escape Room: Guess the Prompt</InstructionBanner>
       <div className="escape-wrapper">
-        <aside className="escape-sidebar">
-          <h3>Why Clarity Matters</h3>
-          <p>Vague inputs lock AI in confusion loops; precise prompts open doors.</p>
-        </aside>
+        <WhyCard
+          className="escape-sidebar"
+          title="Why Clarity Matters"
+          explanation="Vague inputs lock AI in confusion loops; precise prompts open doors."
+        />
         <div className="room">
           <div className="room-grid">
             <div className="room-main">
+              {roomDescription && (
+                <p className="room-description">{roomDescription}</p>
+              )}
               <p className="ai-response"><strong>AI Response:</strong> "{clue.aiResponse}"</p>
               <p className="timer">Time left: {timeLeft}s</p>
               <form onSubmit={handleSubmit} className="prompt-form">
@@ -311,9 +344,11 @@ export default function ClarityEscapeRoom() {
                   placeholder="Type the prompt that caused this reply"
                 />
                 <button type="submit" className="btn-primary">Submit</button>
-                <button type="button" className="btn-primary" onClick={revealHint}>
-                  Hint (H)
-                </button>
+                <Tooltip message="Reveal a hint (press H). Each hint reduces your points.">
+                  <button type="button" className="btn-primary" onClick={revealHint}>
+                    Hint (H)
+                  </button>
+                </Tooltip>
               </form>
               <ProgressBar percent={openPercent} />
               {hintIndex > 0 && (
@@ -334,9 +369,11 @@ export default function ClarityEscapeRoom() {
                 <p className={`feedback ${status}`}>{status === 'success' ? '✔️' : '⚠️'} {message}</p>
               )}
               {showNext && (
-                <div className="next-area">
-                  <button className="btn-primary" onClick={nextChallenge}>Next Challenge</button>
-                </div>
+                <DoorUnlockedModal
+                  points={roundPoints}
+                  remaining={TOTAL_STEPS - (index + 1)}
+                  onNext={nextChallenge}
+                />
               )}
               <p className="score">Score: {points}</p>
             </div>
@@ -367,7 +404,7 @@ export default function ClarityEscapeRoom() {
           buttonLabel="Play Prompt Builder"
         >
           <h3>Escape Complete!</h3>
-          <p className="final-score">Score: {points}</p>
+          <p className="final-score">Points: {points}</p>
         </CompletionModal>
       )}
     </div>

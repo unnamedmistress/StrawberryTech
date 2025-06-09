@@ -5,9 +5,9 @@ import { UserContext } from '../context/UserContext'
 import ProgressSidebar from '../components/layout/ProgressSidebar'
 import '../styles/LeaderboardPage.css'
 
-export interface ScoreEntry {
+export interface PointsEntry {
   name: string
-  score: number
+  points: number
 }
 
 
@@ -15,32 +15,32 @@ export default function LeaderboardPage() {
   const { user } = useContext(UserContext)
 
   const [filter, setFilter] = useState('')
-  const [sortField, setSortField] = useState<'name' | 'score'>('score')
+  const [sortField, setSortField] = useState<'name' | 'points'>('points')
   const [ascending, setAscending] = useState(false)
 
-  const [scores, setScores] = useState<Record<string, ScoreEntry[]>>({})
+  const [pointsData, setPointsData] = useState<Record<string, PointsEntry[]>>({})
   const [game, setGame] = useState('tone')
   const tabs = useMemo(() => {
     const base = ['tone', 'quiz', 'darts', 'recipe', 'escape', 'compose']
-    const dynamic = Object.keys(scores)
+    const dynamic = Object.keys(pointsData)
     return Array.from(new Set([...base, ...dynamic]))
-  }, [scores])
+  }, [pointsData])
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const base = window.location.origin
       fetch(`${base}/api/scores`)
         .then(res => (res.ok ? res.json() : {}))
-        .then(data => setScores(data))
+        .then(data => setPointsData(data))
         .catch(() => {})
     }
   }, [])
 
   const entries = useMemo(() => {
-    const list = (scores[game] ?? []).slice()
+    const list = (pointsData[game] ?? []).slice()
     const playerName = user.name ?? 'You'
     const existing = list.find(e => e.name === playerName)
-    if (!existing) list.push({ name: playerName, score: user.scores[game] ?? 0 })
+    if (!existing) list.push({ name: playerName, points: user.points[game] ?? 0 })
     return list
       .filter((e) => e.name.toLowerCase().includes(filter.toLowerCase()))
       .sort((a, b) => {
@@ -48,12 +48,12 @@ export default function LeaderboardPage() {
           const cmp = a.name.localeCompare(b.name)
           return ascending ? cmp : -cmp
         }
-        const cmp = a.score - b.score
+        const cmp = a.points - b.points
         return ascending ? cmp : -cmp
       })
-  }, [filter, sortField, ascending, user.name, user.scores, scores, game])
+  }, [filter, sortField, ascending, user.name, user.points, pointsData, game])
 
-  function handleSort(field: 'name' | 'score') {
+  function handleSort(field: 'name' | 'points') {
     if (sortField === field) {
       setAscending(!ascending)
     } else {
@@ -87,7 +87,7 @@ export default function LeaderboardPage() {
               onChange={(e) => setFilter(e.target.value)}
             />
           </div>
-          <h3>{game} High Scores</h3>
+          <h3>{game} High Points</h3>
           <table className="leaderboard-table">
             <thead>
               <tr>
@@ -97,8 +97,8 @@ export default function LeaderboardPage() {
                   </button>
                 </th>
                 <th>
-                  <button type="button" onClick={() => handleSort('score')}>
-                    Score {sortField === 'score' ? (ascending ? '▲' : '▼') : ''}
+                  <button type="button" onClick={() => handleSort('points')}>
+                    Points {sortField === 'points' ? (ascending ? '▲' : '▼') : ''}
                   </button>
                 </th>
               </tr>
@@ -114,7 +114,7 @@ export default function LeaderboardPage() {
                   }}
                 >
                   <td>{entry.name}</td>
-                  <td>{entry.score}</td>
+                  <td>{entry.points}</td>
                 </tr>
               ))}
             </tbody>
@@ -123,16 +123,16 @@ export default function LeaderboardPage() {
             <button
               type="button"
               onClick={() => {
-                const text = `My top score in ${game} is ${user.scores[game] ?? 0}!`
+                const text = `My top points in ${game} is ${user.points[game] ?? 0}!`
                 if (navigator.share) {
                   navigator.share({ text }).catch(() => {})
                 } else {
                   navigator.clipboard.writeText(text).catch(() => {})
-                  toast.success('Score copied to clipboard')
+                  toast.success('Points copied to clipboard')
                 }
               }}
             >
-              Share My Score
+              Share My Points
             </button>
           </p>
         </section>
@@ -150,7 +150,7 @@ export function Head() {
   return (
     <>
       <title>Leaderboard | StrawberryTech</title>
-      <meta name="description" content="See top scores across all games." />
+      <meta name="description" content="See top points across all games." />
       <link rel="canonical" href="https://strawberrytech.com/leaderboard" />
     </>
   )

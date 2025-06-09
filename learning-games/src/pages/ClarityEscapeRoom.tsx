@@ -1,15 +1,18 @@
-import { useState, useEffect, useRef, useContext, useCallback } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
+import { toast } from 'react-hot-toast'
 import { Link, useNavigate } from 'react-router-dom'
 import CompletionModal from '../components/ui/CompletionModal'
 import InstructionBanner from '../components/ui/InstructionBanner'
 import ProgressBar from '../components/ui/ProgressBar'
 import DoorAnimation from '../components/DoorAnimation'
 import ProgressSidebar from '../components/layout/ProgressSidebar'
+import WhyCard from '../components/layout/WhyCard'
 import Tooltip from '../components/ui/Tooltip'
-import { UserContext } from '../context/UserContext'
+import IntroOverlay from '../components/ui/IntroOverlay'
 import shuffle from '../utils/shuffle'
 import './ClarityEscapeRoom.css'
 import { scorePrompt } from '../utils/scorePrompt'
+import { generateRoomDescription } from '../utils/generateRoomDescription'
 
 interface Clue {
   aiResponse: string
@@ -102,9 +105,15 @@ const CLUES: Clue[] = [
 
 const TOTAL_STEPS = 4
 
+// Difficulty tuning constants mirrored from PromptGuessEscape
+const BASE_SCORE = 20
+const BASE_TIME = 30
+const FAIL_THRESHOLD = 3
+const SCORE_DROP = 5
+const EXTRA_TIME = 10
+
 
 export default function ClarityEscapeRoom() {
-  const { setScore } = useContext(UserContext)
   const navigate = useNavigate()
   const [doors] = useState(() => shuffle(CLUES).slice(0, TOTAL_STEPS))
   const [index, setIndex] = useState(0)
@@ -115,17 +124,28 @@ export default function ClarityEscapeRoom() {
   const [hintIndex, setHintIndex] = useState(0)
   const [hintCount, setHintCount] = useState(0)
   const [showNext, setShowNext] = useState(false)
-  const [timeLeft, setTimeLeft] = useState(30)
+  const [timeLeft, setTimeLeft] = useState(BASE_TIME)
   const [openPercent, setOpenPercent] = useState(0)
+
+  const [failStreak, setFailStreak] = useState(0)
+  const [scoreThreshold, setScoreThreshold] = useState(BASE_SCORE)
+
+  const [roomDescription, setRoomDescription] = useState('')
 
   const [aiHint, setAiHint] = useState('')
   const startRef = useRef(Date.now())
+  const [showIntro, setShowIntro] = useState(true)
   const [showSummary, setShowSummary] = useState(false)
+
+  useEffect(() => {
+    generateRoomDescription().then(text => setRoomDescription(text))
+  }, [index])
 
   const clue = doors[index]
 
   useEffect(() => {
-    setTimeLeft(30)
+    const extra = failStreak >= FAIL_THRESHOLD ? EXTRA_TIME : 0
+    setTimeLeft(BASE_TIME + extra)
     startRef.current = Date.now()
     setAiHint('')
     const id = setInterval(() => {
@@ -135,17 +155,25 @@ export default function ClarityEscapeRoom() {
           setMessage("Time's up! The door remains closed.")
           setStatus('error')
           setShowNext(true)
+          setFailStreak(fs => {
+            const next = fs + 1
+            if (next >= FAIL_THRESHOLD) {
+              setScoreThreshold(s => Math.max(1, s - SCORE_DROP))
+            }
+            return next
+          })
           return 0
         }
         return t - 1
       })
     }, 1000)
     return () => clearInterval(id)
-  }, [index])
+  }, [index, failStreak])
 
   const revealHint = useCallback(() => {
     setHintIndex(i => {
       if (i < clue.hints.length) {
+        toast('Hint revealed \u2013 \u22122 points')
         setHintCount(c => c + 1)
         return i + 1
       }
@@ -163,6 +191,18 @@ export default function ClarityEscapeRoom() {
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
   }, [revealHint])
+
+  useEffect(() => {
+    function handleEsc(e: KeyboardEvent) {
+      if (e.key === 'Escape') {
+        setShowIntro(false)
+      }
+    }
+    if (showIntro) {
+      window.addEventListener('keydown', handleEsc)
+      return () => window.removeEventListener('keydown', handleEsc)
+    }
+  }, [showIntro])
 
   async function fetchAiHint(guess: string) {
     try {
@@ -202,7 +242,7 @@ export default function ClarityEscapeRoom() {
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     const { score, tips } = scorePrompt(clue.expectedPrompt, input.trim())
-    if (score >= 20) {
+    if (score >= scoreThreshold) {
       const timeBonus = Date.now() - startRef.current < 10000 ? 5 : 0
       const penalty = hintCount * 2
       const total = Math.max(0, score + 10 + timeBonus - penalty)
@@ -212,12 +252,22 @@ export default function ClarityEscapeRoom() {
       setOpenPercent(((index + 1) / TOTAL_STEPS) * 100)
       setShowNext(true)
 
+      setFailStreak(0)
+      setScoreThreshold(BASE_SCORE)
+
       setAiHint('')
 
     } else {
       const tipText = tips.join(' ')
       setMessage(`Too vague. ${tipText}`)
       setStatus('error')
+      setFailStreak(fs => {
+        const next = fs + 1
+        if (next >= FAIL_THRESHOLD) {
+          setScoreThreshold(s => Math.max(1, s - SCORE_DROP))
+        }
+        return next
+      })
       setAiHint('')
       fetchAiHint(input.trim())
     }
@@ -238,22 +288,28 @@ export default function ClarityEscapeRoom() {
 
       setShowNext(false)
     } else {
-      setScore('escape', points)
+      setPoints('escape', points)
       setShowSummary(true)
     }
   }
 
   return (
-    <div className="escape-page">
+    <>
+      {showIntro && <IntroOverlay onClose={() => setShowIntro(false)} />}
+      <div className="escape-page">
       <InstructionBanner>Escape Room: Guess the Prompt</InstructionBanner>
       <div className="escape-wrapper">
-        <aside className="escape-sidebar">
-          <h3>Why Clarity Matters</h3>
-          <p>Vague inputs lock AI in confusion loops; precise prompts open doors.</p>
-        </aside>
+        <WhyCard
+          className="escape-sidebar"
+          title="Why Clarity Matters"
+          explanation="Vague inputs lock AI in confusion loops; precise prompts open doors."
+        />
         <div className="room">
           <div className="room-grid">
             <div className="room-main">
+              {roomDescription && (
+                <p className="room-description">{roomDescription}</p>
+              )}
               <p className="ai-response"><strong>AI Response:</strong> "{clue.aiResponse}"</p>
               <p className="timer">Time left: {timeLeft}s</p>
               <form onSubmit={handleSubmit} className="prompt-form">
@@ -265,9 +321,11 @@ export default function ClarityEscapeRoom() {
                   placeholder="Type the prompt that caused this reply"
                 />
                 <button type="submit" className="btn-primary">Submit</button>
-                <button type="button" className="btn-primary" onClick={revealHint}>
-                  Hint (H)
-                </button>
+                <Tooltip message="Reveal a hint (press H). Each hint reduces your points.">
+                  <button type="button" className="btn-primary" onClick={revealHint}>
+                    Hint (H)
+                  </button>
+                </Tooltip>
               </form>
               <ProgressBar percent={openPercent} />
               {hintIndex > 0 && (
@@ -321,9 +379,10 @@ export default function ClarityEscapeRoom() {
           buttonLabel="Play Prompt Builder"
         >
           <h3>Escape Complete!</h3>
-          <p className="final-score">Score: {points}</p>
+          <p className="final-score">Points: {points}</p>
         </CompletionModal>
       )}
     </div>
+    </>
   )
 }

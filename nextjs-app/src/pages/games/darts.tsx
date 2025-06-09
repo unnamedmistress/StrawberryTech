@@ -2,6 +2,7 @@ import { useState, useContext, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import ProgressSidebar from '../../components/layout/ProgressSidebar'
+import WhyCard from '../../components/layout/WhyCard'
 import InstructionBanner from '../../components/ui/InstructionBanner'
 import TimerBar from '../../components/ui/TimerBar'
 import { UserContext } from '../../context/UserContext'
@@ -270,7 +271,7 @@ export function streakBonus(streak: number) {
 
 export default function PromptDartsGame() {
 
-  const { setScore, user } = useContext(UserContext)
+  const { setPoints, user } = useContext(UserContext)
   const router = useRouter()
   const [rounds, setRounds] = useState<DartRound[]>([])
   const [round, setRound] = useState(0)
@@ -394,7 +395,7 @@ export default function PromptDartsGame() {
       setHint(null)
       setHintUsed(false)
     } else {
-      setScore('darts', score)
+      setPoints('darts', score)
       setRound(r => r + 1)
     }
   }
@@ -416,7 +417,7 @@ export default function PromptDartsGame() {
           buttonLabel="Play Compose Tweet"
         >
           <h3>Congratulations!</h3>
-          <p className="final-score">Your score: {score}</p>
+          <p className="final-score">Your points: {score}</p>
         </CompletionModal>
       </div>
     )
@@ -469,12 +470,13 @@ export default function PromptDartsGame() {
         Choose the clearer prompt that best targets the requested format.
       </InstructionBanner>
       <div className="darts-wrapper">
-        <aside className="darts-sidebar">
-          <h3>Why Clarity Matters</h3>
-          <p>The clearer your target, the better your aim. Clear prompts act like aiming sights for AI.</p>
-          <blockquote className="sidebar-quote">Why Card: Why Clarity Matters</blockquote>
-          <p className="sidebar-tip">Align prompt language with output types (teaching specificity and clarity).</p>
-        </aside>
+        <WhyCard
+          className="darts-sidebar"
+          title="Why Clarity Matters"
+          explanation="The clearer your target, the better your aim. Clear prompts act like aiming sights for AI."
+          quote="Why Card: Why Clarity Matters"
+          tip="Align prompt language with output types (teaching specificity and clarity)."
+        />
         <div className="darts-game">
           <img
             src="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_24_00%20PM.png"
