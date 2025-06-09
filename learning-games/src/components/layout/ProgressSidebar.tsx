@@ -3,11 +3,12 @@ import confetti from 'canvas-confetti'
 import { Link } from 'react-router-dom'
 import { UserContext } from '../../context/UserContext'
 import Tooltip from '../ui/Tooltip'
+import { getTotalPoints } from '../../utils/user'
 import type { ScoreEntry } from '../../pages/LeaderboardPage'
 
 export default function ProgressSidebar() {
   const { user } = useContext(UserContext)
-  const totalPoints = Object.values(user.scores).reduce((a, b) => a + b, 0)
+  const totalPoints = getTotalPoints(user.scores)
   const GOAL_POINTS = 300
   const celebrated = useRef(false)
   const [scores, setScores] = useState<ScoreEntry[]>([])
