@@ -113,7 +113,7 @@ const EXTRA_TIME = 10
 
 export default function PromptGuessEscape() {
   const navigate = useNavigate()
-  const { setPoints } = useContext(UserContext)
+  const { setPoints: recordScore } = useContext(UserContext)
   const [doors] = useState(() => shuffle(CLUES).slice(0, TOTAL_STEPS))
   const [index, setIndex] = useState(0)
   const [input, setInput] = useState('')
@@ -193,6 +193,7 @@ export default function PromptGuessEscape() {
       const timeBonus = Date.now() - startRef.current < 10000 ? 5 : 0
       const penalty = hintCount * 2
       const total = Math.max(0, score + 10 + timeBonus - penalty)
+
       setPointsState((p: number) => p + total)
       setMessage(`Door unlocked! +${total} points`)
       setStatus('success')
@@ -227,7 +228,7 @@ export default function PromptGuessEscape() {
       setHintCount(0)
       setShowNext(false)
     } else {
-      setPoints('escape', points)
+      recordScore('escape', points)
       setShowSummary(true)
     }
   }
