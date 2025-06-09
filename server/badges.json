@@ -1,0 +1,50 @@
+[
+  {
+    "id": "first-match3",
+    "name": "First Tone Game Complete",
+    "description": "Finish a Tone game once",
+    "emoji": "\ud83e\udd47"
+  },
+  {
+    "id": "match-master",
+    "name": "Tone Master",
+    "description": "Score at least 100 points in Tone",
+    "emoji": "\ud83c\udfc6"
+  },
+  {
+    "id": "quiz-whiz",
+    "name": "Quiz Whiz",
+    "description": "Get a perfect score on any quiz",
+    "emoji": "\ud83e\udd13"
+  },
+  {
+    "id": "tone-whiz",
+    "name": "Tone Tactician",
+    "description": "Matched every tone correctly in the mini-game",
+    "emoji": "\ud83c\udfaf"
+  },
+  {
+    "id": "escape-artist",
+    "name": "Escape Artist of Clarity",
+    "description": "Exit all 5 rooms under 3 minutes",
+    "emoji": "\ud83d\udeaa"
+  },
+  {
+    "id": "prompt-chef",
+    "name": "Master Chef of Prompts",
+    "description": "Create 10 flawless prompt recipes",
+    "emoji": "\ud83c\udf73"
+  },
+  {
+    "id": "hallucination-hunter",
+    "name": "Hallucination Hunter",
+    "description": "Spot five lies in a row in the Hallucinations quiz",
+    "emoji": "\ud83d\udd0e"
+  },
+  {
+    "id": "speedy-composer",
+    "name": "Speedy Composer",
+    "description": "Unlock the tweet door with 20 seconds left",
+    "emoji": "\ud83d\ude80"
+  }
+]
