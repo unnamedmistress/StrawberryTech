@@ -1,8 +1,10 @@
-import { useContext, useState } from 'react'
+import { useContext, useState, useEffect, useMemo } from 'react'
 import Link from 'next/link'
 import { toast } from 'react-hot-toast'
 import { UserContext } from '../context/UserContext'
 import ThemeToggle from '../components/layout/ThemeToggle'
+import type { ScoreEntry } from './leaderboard'
+import { getTotalPoints } from '../utils/user'
 
 
 import '../styles/ProfilePage.css'
@@ -12,6 +14,34 @@ export default function ProfilePage() {
   const [name, setNameState] = useState(user.name ?? '')
   const [age, setAgeState] = useState<string>(user.age ? String(user.age) : '')
   const [difficulty, setDifficultyState] = useState(user.difficulty)
+  const [scores, setScores] = useState<Record<string, ScoreEntry[]>>({})
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const base = window.location.origin
+      fetch(`${base}/api/scores`)
+        .then(res => (res.ok ? res.json() : {}))
+        .then(data => setScores(data))
+        .catch(() => {})
+    }
+  }, [])
+
+  const totalPoints = useMemo(() => getTotalPoints(user.scores), [user.scores])
+
+  const topScores = useMemo(() => {
+    const result: Record<string, number> = {}
+    Object.entries(scores).forEach(([game, entries]) => {
+      if (Array.isArray(entries) && entries.length > 0) {
+        result[game] = Math.max(...entries.map(e => e.score))
+      }
+    })
+    return result
+  }, [scores])
+
+  const games = useMemo(
+    () => Array.from(new Set([...Object.keys(user.scores), ...Object.keys(topScores)])),
+    [user.scores, topScores]
+  )
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -66,6 +96,40 @@ export default function ProfilePage() {
           Return to Progress
         </Link>
       </form>
+      <div className="stats-card">
+        <h3>Your Progress</h3>
+        <p>Total Points: {totalPoints}</p>
+        <p>Badges Earned: {user.badges.length}</p>
+        {user.badges.length > 0 && (
+          <div className="badge-icons">
+            {user.badges.map((b) => (
+              <span key={b} role="img" aria-label={b}>
+                🏅
+              </span>
+            ))}
+          </div>
+        )}
+        {games.length > 0 && (
+          <table className="score-table">
+            <thead>
+              <tr>
+                <th>Game</th>
+                <th>Your Best</th>
+                <th>Top Score</th>
+              </tr>
+            </thead>
+            <tbody>
+              {games.map((g) => (
+                <tr key={g}>
+                  <td>{g}</td>
+                  <td>{user.scores[g] ?? 0}</td>
+                  <td>{topScores[g] ?? '-'}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </div>
     </div>
   )
 }
