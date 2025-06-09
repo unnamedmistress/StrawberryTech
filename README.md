@@ -23,7 +23,7 @@ Drag cards to assemble a prompt. Each round now fetches fresh card text from the
 - A unified leaderboard with tabs displays top points for every game.
 - A dedicated Badges page lets you track all achievements.
 - A hidden `/stats` page displays live visitor analytics collected on the server.
-- A community playlist page lets everyone share bad and good prompt pairs.
+- A prompt library lets everyone browse shared prompts by category and submit their own ideas.
 - A community feedback page highlights positive comments from players.
 
 ## Getting Started
@@ -40,8 +40,10 @@ Drag cards to assemble a prompt. Each round now fetches fresh card text from the
    npm install
    npm start
    ```
-3. Copy `.env.example` to `.env` inside `learning-games` and fill in
-   `VITE_OPENAI_API_KEY=<your key>` for the Robot chat and recipe features.
+3. Copy `.env.example` to `.env` inside `learning-games` and fill in your
+  keys. `VITE_API_BASE` defaults to `http://localhost:3001` and the Vite dev
+  server proxies `/api` requests there automatically. Provide
+  `VITE_OPENAI_API_KEY=<your key>` for the Robot chat and recipe features.
 4. Open the printed URL in your browser.
 
 Node **18+** is recommended. Major dependencies include React 19, React Router 7, Vite 6 and TypeScript. Toast notifications are provided by `react-hot-toast` and unit tests use `vitest`.
@@ -81,12 +83,14 @@ The community feedback page uses the same API for sentiment filtering. Set
 `OPENAI_API_KEY` in the server environment so posts can be screened before
 publishing.
 
+
 To point either frontend at a custom server URL set `NEXT_PUBLIC_API_BASE`
 in `nextjs-app/.env` or `VITE_API_BASE` in `learning-games/.env`. These must
 be the backend URL when the frontend and API run on different hosts. If these
 variables are omitted each app falls back to `window.location.origin`, which only
 works when the API is served from the same host.
 Sample `.env.example` files in each app illustrate this configuration.
+
 
 The API server now persists data in Firebase. Provide service account credentials
 by setting `FIREBASE_SERVICE_ACCOUNT` to a JSON string or path, or use

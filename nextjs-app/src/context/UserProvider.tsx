@@ -3,6 +3,7 @@ import { toast } from 'react-hot-toast'
 import type { ReactNode } from 'react'
 import type { UserData } from '../types/user'
 import { UserContext, defaultUser } from './UserContext'
+import { getApiBase } from '../utils/api'
 
 // All progress is stored under this key in localStorage so it persists across
 // sessions. Whenever the user object changes we throttle a save to this key.
@@ -27,7 +28,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
   // Load any saved data from the server and merge it with local storage
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      const base = window.location.origin
+      const base = getApiBase()
       fetch(`${base}/api/user`)
         .then((res) => (res.ok ? res.json() : null))
         .then((data) => {
@@ -69,7 +70,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
         }
       })
       if (typeof window !== 'undefined') {
-        const base = window.location.origin
+        const base = getApiBase()
         fetch(`${base}/api/scores/${game}`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -97,7 +98,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
     const handle = setTimeout(() => {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(user))
       if (typeof window !== 'undefined') {
-        const base = window.location.origin
+        const base = getApiBase()
         fetch(`${base}/api/user`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },

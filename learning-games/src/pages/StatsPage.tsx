@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { getApiBase } from '../utils/api'
 
 interface ViewData {
   id: number
@@ -18,7 +19,7 @@ export default function StatsPage() {
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      const base = window.location.origin
+      const base = getApiBase()
       fetch(`${base}/api/views`)
         .then(res => (res.ok ? res.json() : []))
         .then(data => setViews(Array.isArray(data) ? data : []))
