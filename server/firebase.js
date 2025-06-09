@@ -1,6 +1,7 @@
 const admin = require('firebase-admin');
 const path = require('path');
 
+let firestore = null;
 let serviceAccount;
 const envCred = process.env.FIREBASE_SERVICE_ACCOUNT || process.env.GOOGLE_APPLICATION_CREDENTIALS;
 if (envCred) {
@@ -16,8 +17,20 @@ if (envCred) {
   }
 }
 
-if (!admin.apps.length) {
-  admin.initializeApp(serviceAccount ? { credential: admin.credential.cert(serviceAccount) } : {});
+try {
+  if (!admin.apps.length) {
+    if (serviceAccount) {
+      admin.initializeApp({ credential: admin.credential.cert(serviceAccount) });
+    } else {
+      console.warn('Firebase credentials not supplied; Firestore disabled.');
+      module.exports = null;
+      return;
+    }
+  }
+  firestore = admin.firestore();
+} catch (err) {
+  console.error('Failed to initialize Firebase', err);
+  firestore = null;
 }
 
-module.exports = admin.firestore();
+module.exports = firestore;
