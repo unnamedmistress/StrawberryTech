@@ -1,5 +1,5 @@
 import type { AppProps } from 'next/app'
-import { UserProvider } from '../src/context/UserProvider'
+import { UserProvider } from '../../shared/UserProvider'
 import dynamic from 'next/dynamic'
 import '../src/index.css'
 import '../src/App.css'

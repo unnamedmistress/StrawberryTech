@@ -4,7 +4,7 @@ import confetti from "canvas-confetti";
 
 import { useNavigate, Link } from "react-router-dom";
 
-import { UserContext } from "../context/UserContext";
+import { UserContext } from "../../../shared/UserContext";
 import RobotChat from "../components/RobotChat";
 import InstructionBanner from "../components/ui/InstructionBanner";
 import WhyCard from "../components/layout/WhyCard";

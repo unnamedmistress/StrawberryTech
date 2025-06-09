@@ -1,45 +1,59 @@
 import { useState, useCallback, useEffect } from 'react'
 import { toast } from 'react-hot-toast'
 import type { ReactNode } from 'react'
-import type { UserData } from '../types/user'
+import type { UserData } from './types/user'
 import { UserContext, defaultUser } from './UserContext'
-import { getApiBase } from '../utils/api'
 
-// All progress is stored under this key in localStorage so it persists across
-// sessions. Whenever the user object changes we throttle a save to this key.
+function getApiBase() {
+  if (typeof process !== 'undefined' && process.env.NEXT_PUBLIC_API_BASE) {
+    return process.env.NEXT_PUBLIC_API_BASE
+  }
+  if (typeof import.meta !== 'undefined' && (import.meta as any).env?.VITE_API_BASE) {
+    return (import.meta as any).env.VITE_API_BASE as string
+  }
+  if (typeof window !== 'undefined') {
+    return window.location.origin
+  }
+  return ''
+}
+
 const STORAGE_KEY = 'strawberrytech_user'
 
-
 export function UserProvider({ children }: { children: ReactNode }) {
-  // Load any saved user progress from localStorage on first render
   const [user, setUser] = useState<UserData>(() => {
     const saved = typeof window !== 'undefined' ? localStorage.getItem(STORAGE_KEY) : null
     if (saved) {
       try {
-        return { ...defaultUser, ...JSON.parse(saved) }
+        const parsed = { ...defaultUser, ...JSON.parse(saved) }
+        if (!parsed.id) {
+          parsed.id = (globalThis.crypto?.randomUUID?.() ?? Math.random().toString(36).slice(2))
+        }
+        return parsed
       } catch (err) {
         console.error('Failed to parse saved user data', err)
-        return defaultUser
+        return { ...defaultUser, id: globalThis.crypto?.randomUUID?.() ?? Math.random().toString(36).slice(2) }
       }
     }
-    return defaultUser
+    return { ...defaultUser, id: globalThis.crypto?.randomUUID?.() ?? Math.random().toString(36).slice(2) }
   })
 
-  // Load any saved data from the server and merge it with local storage
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const base = getApiBase()
       fetch(`${base}/api/user`)
         .then((res) => (res.ok ? res.json() : null))
         .then((data) => {
-          if (data) setUser((prev) => ({ ...prev, ...data }))
+          if (data)
+            setUser((prev) => ({
+              ...prev,
+              ...data,
+              id: prev.id || data.id || prev.id,
+            }))
         })
         .catch((err) => console.error('Failed to fetch user data', err))
     }
   }, [])
 
-
-  // Helper to set only the age field without overwriting other user data.
   const setAge = useCallback((age: number) => {
     setUser((prev) => ({ ...prev, age }))
   }, [])
@@ -52,7 +66,6 @@ export function UserProvider({ children }: { children: ReactNode }) {
     setUser(prev => ({ ...prev, difficulty: level }))
   }, [])
 
-  // Record the best points for a specific game
   const setPoints = useCallback(
     (game: string, points: number) => {
       setUser(prev => {
@@ -74,14 +87,17 @@ export function UserProvider({ children }: { children: ReactNode }) {
         fetch(`${base}/api/scores/${game}`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name: user.name ?? 'Anonymous', score: points }),
+          body: JSON.stringify({
+            id: user.id,
+            name: user.name ?? 'Anonymous',
+            score: points,
+          }),
         }).catch(err => console.error('Failed to save score', err))
       }
     },
     [user.name],
   )
 
-  // Award a badge for achievements or milestones
   const addBadge = useCallback((badge: string) => {
     setUser(prev => {
       if (!prev.badges.includes(badge)) {
@@ -92,8 +108,6 @@ export function UserProvider({ children }: { children: ReactNode }) {
     })
   }, [])
 
-  // Persist user progress to localStorage whenever it changes. The timeout acts
-  // like a simple debounce so rapid state updates don't spam localStorage.
   useEffect(() => {
     const handle = setTimeout(() => {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(user))
@@ -103,6 +117,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
+            id: user.id,
             name: user.name,
             age: user.age,
             badges: user.badges,

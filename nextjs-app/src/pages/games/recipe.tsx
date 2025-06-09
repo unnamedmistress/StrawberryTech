@@ -13,7 +13,7 @@ import InstructionBanner from '../../components/ui/InstructionBanner'
 import Tooltip from '../../components/ui/Tooltip'
 import TimerBar from '../../components/ui/TimerBar'
 import CompletionModal from '../../components/ui/CompletionModal'
-import { UserContext } from '../../context/UserContext'
+import { UserContext } from '../../../../shared/UserContext'
 import { getTimeLimit } from '../../utils/time'
 import '../../styles/PromptRecipeGame.css'
 
@@ -233,6 +233,10 @@ export default function PromptRecipeGame() {
 
   useEffect(() => {
     startRound()
+  }, [round])
+
+  useEffect(() => {
+    setRound(0)
   }, [])
 
   useEffect(() => {
@@ -323,7 +327,6 @@ export default function PromptRecipeGame() {
   function nextRound() {
     if (round + 1 < TOTAL_ROUNDS) {
       setRound(r => r + 1)
-      startRound()
     } else {
       setFinished(true)
       setPoints('recipe', points)

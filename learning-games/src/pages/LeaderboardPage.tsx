@@ -1,15 +1,11 @@
-import { useContext, useEffect, useMemo, useState } from 'react'
+import { useContext, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { toast } from 'react-hot-toast'
-import { UserContext } from '../context/UserContext'
+import { UserContext } from '../../../shared/UserContext'
+import { useLeaderboards, type PointsEntry } from '../../../shared/useLeaderboards'
 import ProgressSidebar from '../components/layout/ProgressSidebar'
 import './LeaderboardPage.css'
-import { getApiBase } from '../utils/api'
 
-export interface PointsEntry {
-  name: string
-  points: number
-}
 
 
 export default function LeaderboardPage() {
@@ -19,7 +15,7 @@ export default function LeaderboardPage() {
   const [sortField, setSortField] = useState<'name' | 'points'>('points')
   const [ascending, setAscending] = useState(false)
 
-  const [pointsData, setPointsData] = useState<Record<string, PointsEntry[]>>({})
+  const { data: pointsData = {} } = useLeaderboards()
   const [game, setGame] = useState('tone')
   const tabs = useMemo(() => {
     const base = ['tone', 'quiz', 'darts', 'recipe', 'escape', 'compose']
@@ -27,21 +23,12 @@ export default function LeaderboardPage() {
     return Array.from(new Set([...base, ...dynamic]))
   }, [pointsData])
 
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const base = getApiBase()
-      fetch(`${base}/api/scores`)
-        .then(res => (res.ok ? res.json() : {}))
-        .then(data => setPointsData(data))
-        .catch(() => {})
-    }
-  }, [])
 
   const entries = useMemo(() => {
     const list = (pointsData[game] ?? []).slice()
-    const playerName = user.name ?? 'You'
-    const existing = list.find(e => e.name === playerName)
-    if (!existing) list.push({ name: playerName, points: user.points[game] ?? 0 })
+    const playerId = user.id
+    const existing = list.find(e => e.id === playerId)
+    if (!existing) list.push({ id: playerId, name: user.name ?? 'You', points: user.points[game] ?? 0 })
     return list
       .filter((e) => e.name.toLowerCase().includes(filter.toLowerCase()))
       .sort((a, b) => {
@@ -52,7 +39,7 @@ export default function LeaderboardPage() {
         const cmp = a.points - b.points
         return ascending ? cmp : -cmp
       })
-  }, [filter, sortField, ascending, user.name, user.points, pointsData, game])
+  }, [filter, sortField, ascending, user.id, user.name, user.points, pointsData, game])
 
   function handleSort(field: 'name' | 'points') {
     if (sortField === field) {
@@ -107,11 +94,10 @@ export default function LeaderboardPage() {
             <tbody>
               {entries.map((entry, idx) => (
                 <tr
-                  key={entry.name}
+                  key={entry.id || entry.name}
                   className={idx === 0 ? 'top-row' : undefined}
                   style={{
-                    fontWeight:
-                      user.name && entry.name === user.name ? 'bold' : undefined,
+                    fontWeight: entry.id === user.id ? 'bold' : undefined,
                   }}
                 >
                   <td>{entry.name}</td>

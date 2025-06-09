@@ -13,7 +13,7 @@ import shuffle from '../utils/shuffle'
 import './ClarityEscapeRoom.css'
 import { scorePrompt } from '../utils/scorePrompt'
 import { generateRoomDescription } from '../utils/generateRoomDescription'
-import { UserContext } from '../context/UserContext'
+import { UserContext } from '../../../shared/UserContext'
 
 interface Clue {
   aiResponse: string
@@ -28,6 +28,7 @@ const CLUES: Clue[] = [
     hints: [
       'The subject is humor suitable for children.',
       "The verb asks to 'tell' something funny.",
+      'The correct prompt is "Tell me a kid-friendly joke".',
     ],
   },
   {

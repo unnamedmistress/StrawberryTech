@@ -7,7 +7,7 @@ import { scorePrompt } from '../utils/scorePrompt'
 import InstructionBanner from '../components/ui/InstructionBanner'
 import ProgressSidebar from '../components/layout/ProgressSidebar'
 import CompletionModal from '../components/ui/CompletionModal'
-import { UserContext } from '../context/UserContext'
+import { UserContext } from '../../../shared/UserContext'
 import './ComposeTweetGame.css'
 
 const SAMPLE_RESPONSE =

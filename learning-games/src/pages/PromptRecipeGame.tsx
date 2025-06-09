@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from 'react'
+import { useState, useEffect, useContext, useCallback } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import CompletionModal from '../components/ui/CompletionModal'
 import { motion } from 'framer-motion'
@@ -10,7 +10,7 @@ import WhyCard from '../components/layout/WhyCard'
 import InstructionBanner from '../components/ui/InstructionBanner'
 import Tooltip from '../components/ui/Tooltip'
 import TimerBar from '../components/ui/TimerBar'
-import { UserContext } from '../context/UserContext'
+import { UserContext } from '../../../shared/UserContext'
 import { getTimeLimit } from '../utils/time'
 import './PromptRecipeGame.css'
 import {
@@ -59,7 +59,7 @@ export default function PromptRecipeGame() {
   })
   const [example, setExample] = useState<string | null>(null)
 
-  async function startRound() {
+  const startRound = useCallback(async () => {
     const newCards = await generateCards()
     setRoundCards(newCards)
     setCards(shuffle([...newCards]))
@@ -76,11 +76,15 @@ export default function PromptRecipeGame() {
       Format: null,
       Constraints: null,
     })
-  }
+  }, [TOTAL_TIME])
 
   useEffect(() => {
     startRound()
-  }, [startRound])
+  }, [round])
+
+  useEffect(() => {
+    setRound(0)
+  }, [])
 
   useEffect(() => {
     if (showPrompt) return
@@ -176,7 +180,6 @@ export default function PromptRecipeGame() {
   function nextRound() {
     if (round + 1 < TOTAL_ROUNDS) {
       setRound(r => r + 1)
-      startRound()
     } else {
       setFinished(true)
       setPoints('recipe', points)

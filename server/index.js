@@ -5,6 +5,41 @@ const fs = require('fs');
 const path = require('path');
 const firestore = require('./firebase');
 
+const useLocalStore = !firestore;
+
+function ensureFirestore(res) {
+  if (!firestore && !useLocalStore) {
+    res.status(503).json({ error: 'Firestore unavailable. Firebase credentials missing.' });
+    return false;
+  }
+  return true;
+}
+
+function createLocalScoresStore() {
+  const store = {};
+  return {
+    doc(id) {
+      return {
+        async get() {
+          return { exists: !!store[id], data: () => store[id] || { entries: [] } };
+        },
+        async set(data) {
+          store[id] = data;
+        },
+      };
+    },
+    async get() {
+      return {
+        forEach(cb) {
+          for (const [id, val] of Object.entries(store)) {
+            cb({ id, data: () => val });
+          }
+        },
+      };
+    },
+  };
+}
+
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY || '';
 
 const app = express();
@@ -17,18 +52,19 @@ app.use(cookieParser());
 const DARTS_FILE = path.join(__dirname, 'darts.json');
 
 // Collection references
-const posts = firestore.collection('posts');
-const prompts = firestore.collection('prompts');
-const pairs = firestore.collection('pairs');
-const views = firestore.collection('views');
-const scores = firestore.collection('scores');
-const userDoc = firestore.collection('config').doc('user');
+const posts = firestore ? firestore.collection('posts') : null;
+const prompts = firestore ? firestore.collection('prompts') : null;
+const pairs = firestore ? firestore.collection('pairs') : null;
+const views = firestore ? firestore.collection('views') : null;
+const scores = firestore ? firestore.collection('scores') : createLocalScoresStore();
+const userDoc = firestore ? firestore.collection('config').doc('user') : null;
+const BADGES = require('./badges.json');
 
 async function loadData() {
   const userSnap = await userDoc.get();
   const user = userSnap.exists
     ? userSnap.data()
-    : { name: null, age: null, badges: [], points: { darts: 0 } };
+    : { id: '', name: null, age: null, badges: [], points: { darts: 0 } };
   const scoresSnap = await scores.get();
   const scoreData = {};
   scoresSnap.forEach(doc => (scoreData[doc.id] = doc.data().entries || []));
@@ -176,20 +212,34 @@ app.post('/api/sentiment', async (req, res) => {
 });
 
 app.get('/api/user', async (req, res) => {
+  if (!ensureFirestore(res)) return;
   const snap = await userDoc.get();
   res.json(
-    snap.exists ? snap.data() : { name: null, age: null, badges: [], points: { darts: 0 } }
+    snap.exists ? snap.data() : { id: '', name: null, age: null, badges: [], points: { darts: 0 } }
   );
 });
 
 app.post('/api/user', async (req, res) => {
+  if (!ensureFirestore(res)) return;
   const snap = await userDoc.get();
   const user = { ...(snap.exists ? snap.data() : {}), ...req.body };
   await userDoc.set(user);
   res.json(user);
 });
 
+app.get('/api/progress', async (req, res) => {
+  if (!ensureFirestore(res)) return;
+  const snap = await userDoc.get();
+  const data = snap.exists ? snap.data() : { points: {}, badges: [] };
+  const totalPoints = Object.values(data.points || {}).reduce(
+    (a, b) => a + b,
+    0,
+  );
+  res.json({ totalPoints, badges: data.badges || [] });
+});
+
 app.get('/api/posts', async (req, res) => {
+  if (!ensureFirestore(res)) return;
   const snap = await posts.where('status', '==', 'approved').get();
   const list = [];
   snap.forEach(doc => list.push({ id: doc.id, ...doc.data() }));
@@ -197,6 +247,7 @@ app.get('/api/posts', async (req, res) => {
 });
 
 app.post('/api/posts', async (req, res) => {
+  if (!ensureFirestore(res)) return;
   const content = req.body.content || '';
   const score = await analyzeSentiment(content);
   if (score < -0.1) {
@@ -218,6 +269,7 @@ app.post('/api/posts', async (req, res) => {
 });
 
 app.post('/api/posts/:id/flag', async (req, res) => {
+  if (!ensureFirestore(res)) return;
   const id = req.params.id;
   const ref = posts.doc(id);
   const snap = await ref.get();
@@ -230,6 +282,7 @@ app.post('/api/posts/:id/flag', async (req, res) => {
 });
 
 app.get('/api/prompts', async (req, res) => {
+  if (!ensureFirestore(res)) return;
   const snap = await prompts.where('flagged', '==', false).get();
   const list = [];
   snap.forEach(doc => list.push({ id: doc.id, ...doc.data() }));
@@ -237,6 +290,7 @@ app.get('/api/prompts', async (req, res) => {
 });
 
 app.post('/api/prompts', async (req, res) => {
+  if (!ensureFirestore(res)) return;
   const text = req.body.text || '';
   const { sanitized } = await sanitizeComment(text);
   const { flagged, category } = await moderatePrompt(sanitized);
@@ -250,6 +304,7 @@ app.post('/api/prompts', async (req, res) => {
 });
 
 app.get('/api/pairs', async (req, res) => {
+  if (!ensureFirestore(res)) return;
   const snap = await pairs.get();
   const list = [];
   snap.forEach(doc => list.push({ id: doc.id, ...doc.data() }));
@@ -257,6 +312,7 @@ app.get('/api/pairs', async (req, res) => {
 });
 
 app.post('/api/pairs', async (req, res) => {
+  if (!ensureFirestore(res)) return;
   const pair = { bad: req.body.bad || '', good: req.body.good || '' };
   const ref = await pairs.add(pair);
   res.status(201).json({ id: ref.id, ...pair });
@@ -267,7 +323,12 @@ app.get('/api/darts', (req, res) => {
   res.json(rounds);
 });
 
+app.get('/api/badges', (req, res) => {
+  res.json(BADGES);
+});
+
 app.get('/api/views', async (req, res) => {
+  if (!ensureFirestore(res)) return;
   const snap = await views.get();
   const list = [];
   snap.forEach(doc => list.push({ id: doc.id, ...doc.data() }));
@@ -275,6 +336,7 @@ app.get('/api/views', async (req, res) => {
 });
 
 app.post('/api/views', async (req, res) => {
+  if (!ensureFirestore(res)) return;
   const view = {
     visitorId: req.body.visitorId || null,
     user: req.body.user || null,
@@ -289,6 +351,7 @@ app.post('/api/views', async (req, res) => {
 });
 
 app.post('/api/views/:id/end', async (req, res) => {
+  if (!ensureFirestore(res)) return;
   const ref = views.doc(req.params.id);
   const snap = await ref.get();
   if (!snap.exists) {
@@ -303,6 +366,7 @@ app.post('/api/views/:id/end', async (req, res) => {
 });
 
 app.get('/api/scores', async (req, res) => {
+  if (!ensureFirestore(res)) return;
   const snap = await scores.get();
   const data = {};
   snap.forEach(doc => (data[doc.id] = doc.data().entries || []));
@@ -315,14 +379,29 @@ app.get('/api/scores', async (req, res) => {
 });
 
 app.post('/api/scores/:game', async (req, res) => {
+  if (!ensureFirestore(res)) return;
   const game = req.params.game;
+  const score = Number(req.body.score);
+  if (!Number.isFinite(score) || score < 0) {
+    res.status(400).json({ error: 'Invalid score' });
+    return;
+  }
   const docRef = scores.doc(game);
   const snap = await docRef.get();
   let entries = snap.exists ? snap.data().entries || [] : [];
-  const entry = { name: req.body.name || 'Anonymous', score: Number(req.body.score) || 0 };
-  entries.push(entry);
+  const name = req.body.name || 'Anonymous';
+  const id = req.body.id || '';
+  const existingIndex = entries.findIndex(e => e.id === id);
+
+  if (existingIndex === -1) {
+    entries.push({ id, name, score });
+  } else if (score > entries[existingIndex].score) {
+    entries[existingIndex].score = score;
+  }
+
   entries.sort((a, b) => b.score - a.score);
   entries = entries.slice(0, 10);
+
   await docRef.set({ entries });
   res.json(entries);
 });
@@ -332,6 +411,10 @@ app.use((req, res) => {
   res.status(404).sendFile(path.join(__dirname, '404.html'));
 });
 
-app.listen(PORT, () => {
-  console.log(`Server listening on port ${PORT}`);
-});
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`Server listening on port ${PORT}`);
+  });
+}
+
+module.exports = app;

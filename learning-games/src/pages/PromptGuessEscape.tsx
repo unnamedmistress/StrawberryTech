@@ -7,7 +7,7 @@ import ProgressBar from '../components/ui/ProgressBar'
 import DoorAnimation from '../components/DoorAnimation'
 import ProgressSidebar from '../components/layout/ProgressSidebar'
 import WhyCard from '../components/layout/WhyCard'
-import { UserContext } from '../context/UserContext'
+import { UserContext } from '../../../shared/UserContext'
 import shuffle from '../utils/shuffle'
 import './PromptGuessEscape.css'
 import { scorePrompt } from '../utils/scorePrompt'
@@ -26,6 +26,7 @@ const CLUES: Clue[] = [
     hints: [
       'The subject is humor suitable for children.',
       "The verb asks to 'tell' something funny.",
+      'The correct prompt is "Tell me a kid-friendly joke".',
     ],
   },
   {

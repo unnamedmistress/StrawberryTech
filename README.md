@@ -44,7 +44,11 @@ Drag cards to assemble a prompt. Each round now fetches fresh card text from the
   keys. `VITE_API_BASE` defaults to `http://localhost:3001` and the Vite dev
   server proxies `/api` requests there automatically. Provide
   `VITE_OPENAI_API_KEY=<your key>` for the Robot chat and recipe features.
-4. Open the printed URL in your browser.
+4. Copy `.env.example` to `.env` in `nextjs-app` and set `NEXT_PUBLIC_API_BASE`,
+  `NEXT_PUBLIC_OPENAI_API_KEY`, `OPENAI_API_KEY` and the Firebase credentials.
+  Leaving these blank causes 500 errors from the API routes. See
+  [`server/.env.example`](server/.env.example) for reference.
+5. Open the printed URL in your browser.
 
 Node **18+** is recommended. Major dependencies include React 19, React Router 7, Vite 6 and TypeScript. Toast notifications are provided by `react-hot-toast` and unit tests use `vitest`.
 

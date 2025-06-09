@@ -10,7 +10,7 @@ import ProgressSidebar from '../../components/layout/ProgressSidebar'
 import WhyCard from '../../components/layout/WhyCard'
 import Tooltip from '../../components/ui/Tooltip'
 import IntroOverlay from '../../components/ui/IntroOverlay'
-import { UserContext } from '../../context/UserContext'
+import { UserContext } from '../../../../shared/UserContext'
 import shuffle from '../../utils/shuffle'
 import '../../styles/ClarityEscapeRoom.css'
 import CompletionModal from '../../components/ui/CompletionModal'
@@ -32,6 +32,7 @@ const CLUES: Clue[] = [
     hints: [
       'The subject is humor suitable for children.',
       "The verb asks to 'tell' something funny.",
+      'The correct prompt is "Tell me a kid-friendly joke".',
     ],
   },
   {
