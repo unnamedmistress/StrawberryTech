@@ -3,6 +3,8 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { UserContext } from '../src/context/UserContext'
 import { getTotalPoints } from '../src/utils/user'
+import { GOAL_POINTS } from '../src/constants/progress'
+import ProgressSummary from '../src/components/ProgressSummary'
 
 export default function HomePage() {
   const { user } = useContext(UserContext)
@@ -106,15 +108,12 @@ export default function HomePage() {
       </p>
 
       {totalPoints > 0 && (
-        <div className="progress-summary reveal">
-          <p>Total Points: {totalPoints}</p>
-          <progress value={totalPoints} max={100} />
-          <p>Badges Earned: {user.badges.length}</p>
-          <div className="badge-icons">
-            {user.badges.map(b => (
-              <span key={b}>🏅</span>
-            ))}
-          </div>
+        <div className="reveal">
+          <ProgressSummary
+            totalPoints={totalPoints}
+            badges={user.badges}
+            goalPoints={GOAL_POINTS}
+          />
         </div>
       )}
     </div>
