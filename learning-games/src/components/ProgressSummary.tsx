@@ -1,5 +1,3 @@
-import React from 'react'
-
 interface ProgressSummaryProps {
   totalPoints: number
   badges: string[]
