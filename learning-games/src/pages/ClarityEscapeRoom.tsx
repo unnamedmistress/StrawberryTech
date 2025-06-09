@@ -13,7 +13,8 @@ import shuffle from '../utils/shuffle'
 import './ClarityEscapeRoom.css'
 import { scorePrompt } from '../utils/scorePrompt'
 import { generateRoomDescription } from '../utils/generateRoomDescription'
-import { UserContext } from '../../../shared/UserContext'
+import { UserContext } from '../shared/UserContext'
+import type { UserContextType } from '../shared/types/user'
 
 interface Clue {
   aiResponse: string
@@ -117,7 +118,7 @@ const EXTRA_TIME = 10
 
 export default function ClarityEscapeRoom() {
   const navigate = useNavigate()
-  const { setPoints: recordScore } = useContext(UserContext)
+  const { setPoints: recordScore } = useContext(UserContext) as UserContextType
   const [doors] = useState(() => shuffle(CLUES).slice(0, TOTAL_STEPS))
   const [index, setIndex] = useState(0)
   const [input, setInput] = useState('')

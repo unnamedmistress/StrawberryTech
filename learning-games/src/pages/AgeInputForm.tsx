@@ -1,7 +1,8 @@
 import { useContext, useEffect, useState } from 'react'
 import type { FormEvent } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
-import { UserContext } from '../../../shared/UserContext'
+import { UserContext } from '../shared/UserContext'
+import type { UserContextType } from '../shared/types/user'
 import './AgeInputForm.css'
 
 /**
@@ -15,7 +16,7 @@ export default function AgeInputForm({
   onSaved?: () => void
   allowEdit?: boolean
 }) {
-  const { user, setAge, setName, setDifficulty } = useContext(UserContext)
+  const { user, setAge, setName, setDifficulty } = useContext(UserContext) as UserContextType
   const [age, setAgeState] = useState<number | ''>(user.age ?? '')
   const [name, setNameState] = useState(user.name ?? '')
   const [difficulty, setDifficultyState] = useState(user.difficulty)

@@ -4,7 +4,8 @@ import confetti from "canvas-confetti";
 
 import { useNavigate, Link } from "react-router-dom";
 
-import { UserContext } from "../../../shared/UserContext";
+import { UserContext } from "../shared/UserContext";
+import type { UserContextType } from "../shared/types/user";
 import RobotChat from "../components/RobotChat";
 import InstructionBanner from "../components/ui/InstructionBanner";
 import WhyCard from "../components/layout/WhyCard";
@@ -47,7 +48,7 @@ const examples: Record<Tone, string> = {
 
 
 function ToneMatchGame({ onComplete }: { onComplete: (score: number) => void }) {
-  const { setPoints: recordScore } = useContext(UserContext)
+  const { setPoints: recordScore } = useContext(UserContext) as UserContextType
   const [selected, setSelected] = useState<Tone | null>(null)
   const [used, setUsed] = useState<Set<Tone>>(new Set())
   const [quizAnswer, setQuizAnswer] = useState<Tone | null>(null)
@@ -158,7 +159,7 @@ function ToneMatchGame({ onComplete }: { onComplete: (score: number) => void }) 
  * show an age-based leadership tip.
  */
 export default function Match3Game() {
-  const { user, addBadge } = useContext(UserContext)
+  const { user, addBadge } = useContext(UserContext) as UserContextType
   const navigate = useNavigate()
   const [sidebarQuote] = useState(
     () => quotes[Math.floor(Math.random() * quotes.length)],

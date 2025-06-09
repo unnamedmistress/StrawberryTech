@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { render, fireEvent } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import ClarityEscapeRoom from '../ClarityEscapeRoom'
-import { UserProvider } from '../../../../shared/UserProvider'
+import { UserProvider } from '../../shared/UserProvider'
 
 function setup() {
   return render(

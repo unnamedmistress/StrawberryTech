@@ -5,7 +5,8 @@ import { motion } from 'framer-motion'
 import { toast } from 'react-hot-toast'
 import { Link, useNavigate } from 'react-router-dom'
 import CompletionModal from '../components/ui/CompletionModal'
-import { UserContext } from '../../../shared/UserContext'
+import { UserContext } from '../shared/UserContext'
+import type { UserContextType } from '../shared/types/user'
 import './QuizGame.css'
 import InstructionBanner from '../components/ui/InstructionBanner'
 import { HALLUCINATION_EXAMPLES } from '../data/hallucinationExamples'
@@ -126,7 +127,7 @@ function ChatBox() {
 }
 
 export default function QuizGame() {
-  const { user, setPoints, addBadge } = useContext(UserContext)
+  const { user, setPoints, addBadge } = useContext(UserContext) as UserContextType
   const navigate = useNavigate()
   const [round, setRound] = useState(0)
   const [choice, setChoice] = useState<number | null>(null)

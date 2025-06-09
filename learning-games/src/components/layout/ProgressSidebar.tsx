@@ -1,11 +1,12 @@
-import { useContext, useEffect, useRef } from 'react'
+import { useContext, useEffect, useRef, useState } from 'react'
 import confetti from 'canvas-confetti'
 import { Link, useLocation } from 'react-router-dom'
-import { UserContext } from '../../../../shared/UserContext'
+import { UserContext } from '../../shared/UserContext'
+import type { UserContextType } from '../../shared/types/user'
 import Tooltip from '../ui/Tooltip'
 import { getTotalPoints } from '../../utils/user'
 import { GOAL_POINTS } from '../../constants/progress'
-import { useLeaderboards, type PointsEntry } from '../../../../shared/useLeaderboards'
+import { useLeaderboards } from '../../shared/useLeaderboards'
 
 export interface ProgressSidebarProps {
   points?: Record<string, number>
@@ -13,10 +14,10 @@ export interface ProgressSidebarProps {
 }
 
 export default function ProgressSidebar({ badges }: ProgressSidebarProps = {}) {
-  const { user } = useContext(UserContext)
+  const { user } = useContext(UserContext) as UserContextType
 
   const userScores = user.points
-  const [progress, setProgress] = useState({
+  const [progress] = useState({
     totalPoints: getTotalPoints(userScores),
     badges: badges ?? user.badges,
   })
@@ -49,12 +50,11 @@ export default function ProgressSidebar({ badges }: ProgressSidebarProps = {}) {
     tone: 'tone',
   }
   const game = gameMap[slug] || 'darts'
-
-  const entries = (leaderboards[game] ?? [])
+  const entries = ((leaderboards && leaderboards[game]) ?? [])
     .concat({ id: user.id, name: user.name ?? 'You', points: userScores[game] ?? 0 })
-    .sort((a, b) => b.points - a.points)
+    .sort((a: any, b: any) => b.points - a.points)
 
-  const rank = entries.findIndex(e => e.id === user.id) + 1
+  const rank = entries.findIndex((e: any) => e.id === user.id) + 1
   const leaderboard = entries.slice(0, 3)
 
   return (
@@ -65,9 +65,8 @@ export default function ProgressSidebar({ badges }: ProgressSidebarProps = {}) {
       <p className="goal-message" aria-live="polite" aria-atomic="true">
         Goal: Reach {GOAL_POINTS} points to unlock a new badge!
       </p>
-      <p aria-live="polite" aria-atomic="true">Badges Earned: {userBadges.length}</p>
-      <div className="badge-icons">
-        {userBadges.map((b) => (
+      <p aria-live="polite" aria-atomic="true">Badges Earned: {userBadges.length}</p>      <div className="badge-icons">
+        {userBadges.map((b: any) => (
           <Tooltip key={b} message={b}>
             <span role="img" aria-label={b}>🏅</span>
           </Tooltip>
@@ -77,7 +76,7 @@ export default function ProgressSidebar({ badges }: ProgressSidebarProps = {}) {
       <h4 className="top-points-title">Top Points</h4>
       <div className="top-points-card">
         <ol className="top-points-list">
-          {leaderboard.map((entry, idx) => (
+          {leaderboard.map((entry: any, idx: any) => (
             <li key={entry.name} className={idx === 0 ? 'top' : undefined}>
               {idx === 0 && <span aria-hidden="true">🏆 </span>}
               {entry.name}: {entry.points}

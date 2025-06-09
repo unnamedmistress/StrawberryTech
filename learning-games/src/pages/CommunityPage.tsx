@@ -3,7 +3,8 @@ import { toast } from 'react-hot-toast'
 import { Link } from 'react-router-dom'
 import Post from '../components/Post'
 import type { PostData } from '../components/Post'
-import { UserContext } from '../../../shared/UserContext'
+import { UserContext } from '../shared/UserContext'
+import type { UserContextType } from '../shared/types/user'
 import { getApiBase } from '../utils/api'
 
 const STORAGE_KEY = 'community_posts'
@@ -23,7 +24,7 @@ const initialPosts: PostData[] = [
 ]
 
 export default function CommunityPage() {
-  const { user } = useContext(UserContext)
+  const { user } = useContext(UserContext) as UserContextType
   const [posts, setPosts] = useState<PostData[]>(() => {
     const saved = localStorage.getItem(STORAGE_KEY)
     if (saved) {

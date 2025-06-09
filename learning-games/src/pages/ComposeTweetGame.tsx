@@ -7,7 +7,8 @@ import { scorePrompt } from '../utils/scorePrompt'
 import InstructionBanner from '../components/ui/InstructionBanner'
 import ProgressSidebar from '../components/layout/ProgressSidebar'
 import CompletionModal from '../components/ui/CompletionModal'
-import { UserContext } from '../../../shared/UserContext'
+import { UserContext } from '../shared/UserContext'
+import type { UserContextType } from '../shared/types/user'
 import './ComposeTweetGame.css'
 
 const SAMPLE_RESPONSE =
@@ -34,7 +35,7 @@ const pairs: PromptPair[] = [
 ]
 
 export default function ComposeTweetGame() {
-  const { setPoints, addBadge, user } = useContext(UserContext)
+  const { setPoints, addBadge, user } = useContext(UserContext) as UserContextType
   const navigate = useNavigate()
   const [guess, setGuess] = useState('')
   const [feedback, setFeedback] = useState('')

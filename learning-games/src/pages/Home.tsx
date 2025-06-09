@@ -1,6 +1,7 @@
 import { useContext, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { UserContext } from '../../../shared/UserContext'
+import { UserContext } from '../shared/UserContext'
+import type { UserContextType } from '../shared/types/user'
 import { getTotalPoints } from '../utils/user'
 import './Home.css'
 import { GOAL_POINTS } from '../constants/progress'
@@ -11,7 +12,7 @@ import ProgressSummary from '../components/ProgressSummary'
  * If the user's age isn't known we send them to the age input form first.
  */
 export default function Home() {
-  const { user } = useContext(UserContext)
+  const { user } = useContext(UserContext) as UserContextType
   const navigate = useNavigate()
 
   // Redirect to the age form if age hasn't been provided yet

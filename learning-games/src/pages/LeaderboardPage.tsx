@@ -1,15 +1,16 @@
 import { useContext, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { toast } from 'react-hot-toast'
-import { UserContext } from '../../../shared/UserContext'
-import { useLeaderboards, type PointsEntry } from '../../../shared/useLeaderboards'
+import { UserContext } from '../shared/UserContext'
+import type { UserContextType } from '../shared/types/user'
+import { useLeaderboards } from '../shared/useLeaderboards'
 import ProgressSidebar from '../components/layout/ProgressSidebar'
 import './LeaderboardPage.css'
 
 
 
 export default function LeaderboardPage() {
-  const { user } = useContext(UserContext)
+  const { user } = useContext(UserContext) as UserContextType
 
   const [filter, setFilter] = useState('')
   const [sortField, setSortField] = useState<'name' | 'points'>('points')
@@ -19,19 +20,18 @@ export default function LeaderboardPage() {
   const [game, setGame] = useState('tone')
   const tabs = useMemo(() => {
     const base = ['tone', 'quiz', 'darts', 'recipe', 'escape', 'compose']
-    const dynamic = Object.keys(pointsData)
+    const dynamic = Object.keys(pointsData || {})
     return Array.from(new Set([...base, ...dynamic]))
   }, [pointsData])
 
-
   const entries = useMemo(() => {
-    const list = (pointsData[game] ?? []).slice()
+    const list = ((pointsData && pointsData[game]) ?? []).slice()
     const playerId = user.id
-    const existing = list.find(e => e.id === playerId)
+    const existing = list.find((e: any) => e.id === playerId)
     if (!existing) list.push({ id: playerId, name: user.name ?? 'You', points: user.points[game] ?? 0 })
     return list
-      .filter((e) => e.name.toLowerCase().includes(filter.toLowerCase()))
-      .sort((a, b) => {
+      .filter((e: any) => e.name.toLowerCase().includes(filter.toLowerCase()))
+      .sort((a: any, b: any) => {
         if (sortField === 'name') {
           const cmp = a.name.localeCompare(b.name)
           return ascending ? cmp : -cmp
@@ -90,9 +90,8 @@ export default function LeaderboardPage() {
                   </button>
                 </th>
               </tr>
-            </thead>
-            <tbody>
-              {entries.map((entry, idx) => (
+            </thead>            <tbody>
+              {entries.map((entry: any, idx: any) => (
                 <tr
                   key={entry.id || entry.name}
                   className={idx === 0 ? 'top-row' : undefined}

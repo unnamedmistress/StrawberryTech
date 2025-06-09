@@ -4,7 +4,7 @@ import { render, fireEvent, cleanup } from '@testing-library/react'
 
 import { MemoryRouter } from 'react-router-dom'
 import ComposeTweetGame from '../ComposeTweetGame'
-import { UserProvider } from '../../../../shared/UserProvider'
+import { UserProvider } from '../../shared/UserProvider'
 
 function setup() {
   return render(

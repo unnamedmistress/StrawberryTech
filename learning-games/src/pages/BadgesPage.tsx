@@ -1,11 +1,12 @@
 import { useContext, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { UserContext } from '../../../shared/UserContext'
+import { UserContext } from '../shared/UserContext'
+import type { UserContextType } from '../shared/types/user'
 import { getApiBase } from '../utils/api'
 import './BadgesPage.css'
 
 export default function BadgesPage() {
-  const { user } = useContext(UserContext)
+  const { user } = useContext(UserContext) as UserContextType
   interface BadgeDefinition {
     id: string
     name: string
@@ -46,10 +47,9 @@ export default function BadgesPage() {
       <p style={{ textAlign: 'center', marginTop: '1rem' }}>
         <button
           type="button"
-          onClick={() => {
-            const earnedList = user.badges
-              .map(id => {
-                const badge = badges.find(b => b.id === id)
+          onClick={() => {            const earnedList = user.badges
+              .map((id: any) => {
+                const badge = badges.find((b: any) => b.id === id)
                 return badge ? `${badge.emoji} ${badge.name}` : id
               })
               .join(', ')
