@@ -1,5 +1,11 @@
 import { describe, it, expect } from 'vitest'
-import { createTile, createGrid, checkMatches, colors, type Tile } from '../Match3Game'
+import {
+  createTile,
+  createGrid,
+  checkMatches,
+  colors,
+  type Tile,
+} from '../match3Helpers'
 
 function stubTileFactory() {
   let id = 1000

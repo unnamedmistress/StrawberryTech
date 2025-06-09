@@ -1,6 +1,11 @@
 import { describe, it, expect } from 'vitest'
 
-import { checkChoice, ROUNDS, FALLBACK_ROUNDS, streakBonus } from '../PromptDartsGame'
+import {
+  checkChoice,
+  ROUNDS,
+  FALLBACK_ROUNDS,
+  streakBonus,
+} from '../promptDartsHelpers'
 
 describe('checkChoice', () => {
   it('returns true only for the clear option', () => {
