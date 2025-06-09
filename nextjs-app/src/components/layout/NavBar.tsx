@@ -21,7 +21,7 @@ export default function NavBar() {
   }, [open])
 
   return (
-    <nav className="navbar" style={{ position: 'sticky', top: 0 }} aria-label="Main navigation">
+    <nav className="navbar" aria-label="Main navigation">
       <div className="brand">
         <img
           src="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_12_36%20PM.png"
