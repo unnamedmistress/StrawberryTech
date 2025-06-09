@@ -1,16 +1,11 @@
-import { useContext, useEffect, useMemo, useState } from 'react'
+import { useContext, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { toast } from 'react-hot-toast'
 import { UserContext } from '../../../shared/UserContext'
+import { useLeaderboards, type PointsEntry } from '../../../shared/useLeaderboards'
 import ProgressSidebar from '../components/layout/ProgressSidebar'
 import './LeaderboardPage.css'
-import { getApiBase } from '../utils/api'
 
-export interface PointsEntry {
-  id: string
-  name: string
-  points: number
-}
 
 
 export default function LeaderboardPage() {
@@ -20,7 +15,7 @@ export default function LeaderboardPage() {
   const [sortField, setSortField] = useState<'name' | 'points'>('points')
   const [ascending, setAscending] = useState(false)
 
-  const [pointsData, setPointsData] = useState<Record<string, PointsEntry[]>>({})
+  const { data: pointsData = {} } = useLeaderboards()
   const [game, setGame] = useState('tone')
   const tabs = useMemo(() => {
     const base = ['tone', 'quiz', 'darts', 'recipe', 'escape', 'compose']
@@ -28,15 +23,6 @@ export default function LeaderboardPage() {
     return Array.from(new Set([...base, ...dynamic]))
   }, [pointsData])
 
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const base = getApiBase()
-      fetch(`${base}/api/scores`)
-        .then(res => (res.ok ? res.json() : {}))
-        .then(data => setPointsData(data))
-        .catch(() => {})
-    }
-  }, [])
 
   const entries = useMemo(() => {
     const list = (pointsData[game] ?? []).slice()
