@@ -7,6 +7,7 @@ import { UserContext } from '../context/UserContext'
 
 import { getTotalPoints } from '../utils/user'
 import './DragDropGame.css'
+import WhyCard from '../components/layout/WhyCard'
 
 const tones = [
   'Polite',
@@ -74,13 +75,10 @@ export default function DragDropGame() {
           imageSrc="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_19_23%20PM.png"
           imageAlt="Tone game illustration"
           infoCardContent={
-            <>
-              <h3>Why Tone Matters</h3>
-              <p>
-                Drag the adjectives into the blank to try different tones. Swap
-                words wisely and watch your message sparkle!
-              </p>
-            </>
+            <WhyCard
+              heading="Why Tone Matters"
+              text="Drag the adjectives into the blank to try different tones. Swap words wisely and watch your message sparkle!"
+            />
           }
           instructions="Match adjectives to explore how tone changes the meaning of a message."
           onCTAClick={() => {}}
