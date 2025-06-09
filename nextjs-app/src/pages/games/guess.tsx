@@ -134,6 +134,9 @@ export default function PromptGuessEscape() {
   const startRef = useRef(Date.now())
   const [rounds, setRounds] = useState<{ prompt: string; expected: string; tip: string }[]>([])
   const [showSummary, setShowSummary] = useState(false)
+  const [showTip, setShowTip] = useState(false)
+  const [currentTip, setCurrentTip] = useState('')
+  const [earned, setEarned] = useState(0)
 
   useEffect(() => {
     generateRoomDescription().then(text => setRoomDescription(text))
@@ -198,11 +201,14 @@ export default function PromptGuessEscape() {
       const penalty = hintCount * 2
       const total = Math.max(0, score + 10 + timeBonus - penalty)
       setPoints(p => p + total)
+
       setMessage(`Door unlocked! +${total} points`)
       setRoundPoints(total)
       setStatus('success')
       setOpenPercent(((index + 1) / TOTAL_STEPS) * 100)
-      setShowNext(true)
+      setShowTip(true)
+      setShowNext(false)
+      setMessage('')
       setFailStreak(0)
       setScoreThreshold(BASE_SCORE)
     } else {
@@ -304,6 +310,17 @@ export default function PromptGuessEscape() {
         </div>
         <ProgressSidebar />
       </div>
+      {showTip && (
+        <div className="summary-overlay" onClick={() => {}}>
+          <div className="summary-modal" onClick={e => e.stopPropagation()}>
+            <p>You earned {earned} points!</p>
+            <p className="tip"><strong>Tip:</strong> {currentTip}</p>
+            <button className="btn-primary" onClick={() => { setShowTip(false); nextChallenge(); }}>
+              Continue
+            </button>
+          </div>
+        </div>
+      )}
       {showSummary && (
         <div className="summary-overlay" onClick={() => setShowSummary(false)}>
           <div className="summary-modal" onClick={e => e.stopPropagation()}>
