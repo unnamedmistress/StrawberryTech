@@ -14,7 +14,7 @@ export interface ProgressSidebarProps {
 export default function ProgressSidebar({ badges }: ProgressSidebarProps = {}) {
   const { user } = useContext(UserContext)
 
-  const userScores = user.scores
+  const userScores = user.points
   const userBadges = badges ?? user.badges
 
 
