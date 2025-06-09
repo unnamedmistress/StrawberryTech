@@ -10,6 +10,7 @@ import { UserContext } from '../../context/UserContext'
 import shuffle from '../../utils/shuffle'
 import '../../styles/PromptGuessEscape.css'
 import { scorePrompt } from '../../utils/scorePrompt'
+import { generateRoomDescription } from '../../utils/generateRoomDescription'
 import JsonLd from '../../components/seo/JsonLd'
 
 interface Clue {
@@ -126,9 +127,14 @@ export default function PromptGuessEscape() {
   const [openPercent, setOpenPercent] = useState(0)
   const [failStreak, setFailStreak] = useState(0)
   const [scoreThreshold, setScoreThreshold] = useState(BASE_SCORE)
+  const [roomDescription, setRoomDescription] = useState('')
   const startRef = useRef(Date.now())
   const [rounds, setRounds] = useState<{ prompt: string; expected: string; tip: string }[]>([])
   const [showSummary, setShowSummary] = useState(false)
+
+  useEffect(() => {
+    generateRoomDescription().then(text => setRoomDescription(text))
+  }, [])
 
   const clue = doors[index]
 
@@ -218,6 +224,7 @@ export default function PromptGuessEscape() {
       setStatus('')
       setHintIndex(0)
       setHintCount(0)
+      generateRoomDescription().then(text => setRoomDescription(text))
       setShowNext(false)
     } else {
       setPoints('escape', points)
@@ -246,6 +253,9 @@ export default function PromptGuessEscape() {
           explanation="Vague inputs lock AI in confusion loops; precise prompts open doors."
         />
         <div className="guess-game">
+          {roomDescription && (
+            <p className="room-description">{roomDescription}</p>
+          )}
           <p className="ai-response"><strong>AI Response:</strong> "{clue.aiResponse}"</p>
           <p className="timer">Time left: {timeLeft}s</p>
           <form onSubmit={handleSubmit} className="prompt-form">
