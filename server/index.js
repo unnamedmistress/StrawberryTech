@@ -373,10 +373,18 @@ app.post('/api/scores/:game', async (req, res) => {
   const docRef = scores.doc(game);
   const snap = await docRef.get();
   let entries = snap.exists ? snap.data().entries || [] : [];
-  const entry = { name: req.body.name || 'Anonymous', score };
-  entries.push(entry);
+  const name = req.body.name || 'Anonymous';
+  const existingIndex = entries.findIndex(e => e.name === name);
+
+  if (existingIndex === -1) {
+    entries.push({ name, score });
+  } else if (score > entries[existingIndex].score) {
+    entries[existingIndex].score = score;
+  }
+
   entries.sort((a, b) => b.score - a.score);
   entries = entries.slice(0, 10);
+
   await docRef.set({ entries });
   res.json(entries);
 });
