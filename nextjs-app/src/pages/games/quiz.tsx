@@ -11,6 +11,7 @@ import InstructionBanner from '../../components/ui/InstructionBanner'
 import { HALLUCINATION_EXAMPLES } from '../../data/hallucinationExamples'
 import { H_ROUNDS } from '../../data/hallucinationRounds'
 import JsonLd from '../../components/seo/JsonLd'
+import WhyCard from '../../components/layout/WhyCard'
 
 interface StatementSet {
   statements: string[]
@@ -50,16 +51,18 @@ function WhyItMatters() {
     [],
   )
   return (
-    <aside className="quiz-sidebar reveal">
-      <h3>Why It Matters</h3>
-      <p>AI hallucinations occur when the system confidently states something untrue.</p>
-      <blockquote className="sidebar-quote">{QUOTE}</blockquote>
-      <p className="sidebar-tip">{TIP}</p>
+    <WhyCard
+      className="quiz-sidebar reveal"
+      heading="Why It Matters"
+      text="AI hallucinations occur when the system confidently states something untrue."
+      quote={QUOTE}
+      tip={TIP}
+    >
       <p className="sidebar-example">
         Example: {example.statement}{' '}
         <a href={example.source} target="_blank" rel="noopener noreferrer">Source</a>
       </p>
-    </aside>
+    </WhyCard>
   )
 }
 

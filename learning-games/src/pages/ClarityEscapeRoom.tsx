@@ -5,6 +5,7 @@ import InstructionBanner from '../components/ui/InstructionBanner'
 import ProgressBar from '../components/ui/ProgressBar'
 import DoorAnimation from '../components/DoorAnimation'
 import ProgressSidebar from '../components/layout/ProgressSidebar'
+import WhyCard from '../components/layout/WhyCard'
 import Tooltip from '../components/ui/Tooltip'
 import { UserContext } from '../context/UserContext'
 import shuffle from '../utils/shuffle'
@@ -247,10 +248,11 @@ export default function ClarityEscapeRoom() {
     <div className="escape-page">
       <InstructionBanner>Escape Room: Guess the Prompt</InstructionBanner>
       <div className="escape-wrapper">
-        <aside className="escape-sidebar">
-          <h3>Why Clarity Matters</h3>
-          <p>Vague inputs lock AI in confusion loops; precise prompts open doors.</p>
-        </aside>
+        <WhyCard
+          className="escape-sidebar"
+          heading="Why Clarity Matters"
+          text="Vague inputs lock AI in confusion loops; precise prompts open doors."
+        />
         <div className="room">
           <div className="room-grid">
             <div className="room-main">
