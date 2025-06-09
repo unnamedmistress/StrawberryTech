@@ -5,12 +5,39 @@ const fs = require('fs');
 const path = require('path');
 const firestore = require('./firebase');
 
+const useLocalStore = !firestore;
+
 function ensureFirestore(res) {
-  if (!firestore) {
+  if (!firestore && !useLocalStore) {
     res.status(503).json({ error: 'Firestore unavailable. Firebase credentials missing.' });
     return false;
   }
   return true;
+}
+
+function createLocalScoresStore() {
+  const store = {};
+  return {
+    doc(id) {
+      return {
+        async get() {
+          return { exists: !!store[id], data: () => store[id] || { entries: [] } };
+        },
+        async set(data) {
+          store[id] = data;
+        },
+      };
+    },
+    async get() {
+      return {
+        forEach(cb) {
+          for (const [id, val] of Object.entries(store)) {
+            cb({ id, data: () => val });
+          }
+        },
+      };
+    },
+  };
 }
 
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY || '';
@@ -29,7 +56,7 @@ const posts = firestore ? firestore.collection('posts') : null;
 const prompts = firestore ? firestore.collection('prompts') : null;
 const pairs = firestore ? firestore.collection('pairs') : null;
 const views = firestore ? firestore.collection('views') : null;
-const scores = firestore ? firestore.collection('scores') : null;
+const scores = firestore ? firestore.collection('scores') : createLocalScoresStore();
 const userDoc = firestore ? firestore.collection('config').doc('user') : null;
 
 async function loadData() {
@@ -338,10 +365,15 @@ app.get('/api/scores', async (req, res) => {
 app.post('/api/scores/:game', async (req, res) => {
   if (!ensureFirestore(res)) return;
   const game = req.params.game;
+  const score = Number(req.body.score);
+  if (!Number.isFinite(score) || score < 0) {
+    res.status(400).json({ error: 'Invalid score' });
+    return;
+  }
   const docRef = scores.doc(game);
   const snap = await docRef.get();
   let entries = snap.exists ? snap.data().entries || [] : [];
-  const entry = { name: req.body.name || 'Anonymous', score: Number(req.body.score) || 0 };
+  const entry = { name: req.body.name || 'Anonymous', score };
   entries.push(entry);
   entries.sort((a, b) => b.score - a.score);
   entries = entries.slice(0, 10);
@@ -354,6 +386,10 @@ app.use((req, res) => {
   res.status(404).sendFile(path.join(__dirname, '404.html'));
 });
 
-app.listen(PORT, () => {
-  console.log(`Server listening on port ${PORT}`);
-});
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`Server listening on port ${PORT}`);
+  });
+}
+
+module.exports = app;
