@@ -20,7 +20,7 @@ export default function ProgressSidebar({ scores, badges }: ProgressSidebarProps
 
   const totalPoints = getTotalPoints(userScores)
   const celebrated = useRef(false)
-  const [scoreEntries, setScoreEntries] = useState<ScoreEntry[]>([])
+  const [leaderboards, setLeaderboards] = useState<Record<string, ScoreEntry[]>>({})
 
   useEffect(() => {
     if (totalPoints >= GOAL_POINTS && !celebrated.current) {
@@ -35,16 +35,31 @@ export default function ProgressSidebar({ scores, badges }: ProgressSidebarProps
       fetch(`${base}/api/scores`)
         .then((res) => (res.ok ? res.json() : {}))
         .then((data: Record<string, ScoreEntry[]>) => {
-          setScoreEntries(Array.isArray(data.darts) ? data.darts : [])
+          setLeaderboards(data)
         })
         .catch(() => {})
     }
   }, [])
 
-  const leaderboard = scoreEntries
-    .concat({ name: user.name ?? 'You', score: userScores['darts'] ?? 0 })
+  const path = typeof window !== 'undefined' ? window.location.pathname : ''
+  const slug = path.split('/')[2]
+  const gameMap: Record<string, string> = {
+    darts: 'darts',
+    recipe: 'recipe',
+    escape: 'escape',
+    guess: 'escape',
+    compose: 'compose',
+    quiz: 'quiz',
+    tone: 'tone',
+  }
+  const game = gameMap[slug] || 'darts'
+
+  const entries = (leaderboards[game] ?? [])
+    .concat({ name: user.name ?? 'You', score: userScores[game] ?? 0 })
     .sort((a, b) => b.score - a.score)
-    .slice(0, 3)
+
+  const rank = entries.findIndex(e => e.name === (user.name ?? 'You')) + 1
+  const leaderboard = entries.slice(0, 3)
 
   return (
     <aside className="progress-sidebar">
@@ -73,6 +88,9 @@ export default function ProgressSidebar({ scores, badges }: ProgressSidebarProps
             </li>
           ))}
         </ol>
+        <p className="your-rank" aria-live="polite" aria-atomic="true">
+          Your rank: #{rank}
+        </p>
       </div>
       <p className="view-leaderboard">
         <Link href="/leaderboard">View full leaderboard</Link>
