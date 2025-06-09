@@ -12,6 +12,11 @@ dist
 dist-ssr
 *.local
 
+# Environment files - IMPORTANT: Keep all .env files out of git
+.env
+.env.*
+!.env.example
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
@@ -24,5 +29,11 @@ dist-ssr
 *.sw?
 .next
 
-.env*
-!.env.example
+# Firebase service account keys
+*firebase*adminsdk*.json
+strawberrytech-*.json
+
+# Additional security patterns
+*.key
+*.pem
+config/secrets.*
