@@ -5,6 +5,7 @@ import InstructionBanner from '../../components/ui/InstructionBanner'
 import Tooltip from '../../components/ui/Tooltip'
 import ProgressBar from '../../components/ui/ProgressBar'
 import DoorAnimation from '../../components/DoorAnimation'
+import DoorUnlockedModal from '../../components/ui/DoorUnlockedModal'
 import ProgressSidebar from '../../components/layout/ProgressSidebar'
 import WhyCard from '../../components/layout/WhyCard'
 import { UserContext } from '../../context/UserContext'
@@ -124,6 +125,7 @@ export default function PromptGuessEscape() {
   const [hintIndex, setHintIndex] = useState(0)
   const [hintCount, setHintCount] = useState(0)
   const [showNext, setShowNext] = useState(false)
+  const [roundPoints, setRoundPoints] = useState(0)
   const [timeLeft, setTimeLeft] = useState(BASE_TIME)
   const [openPercent, setOpenPercent] = useState(0)
   const [failStreak, setFailStreak] = useState(0)
@@ -152,6 +154,7 @@ export default function PromptGuessEscape() {
           clearInterval(id)
           setMessage("Time's up! The door remains closed.")
           setStatus('error')
+          setRoundPoints(0)
           setShowNext(true)
           setFailStreak(fs => {
             const next = fs + 1
@@ -198,8 +201,9 @@ export default function PromptGuessEscape() {
       const penalty = hintCount * 2
       const total = Math.max(0, score + 10 + timeBonus - penalty)
       setPoints(p => p + total)
-      setEarned(total)
-      setCurrentTip(tips[0] || 'Keep prompts specific and action-oriented.')
+
+      setMessage(`Door unlocked! +${total} points`)
+      setRoundPoints(total)
       setStatus('success')
       setOpenPercent(((index + 1) / TOTAL_STEPS) * 100)
       setShowTip(true)
@@ -294,9 +298,11 @@ export default function PromptGuessEscape() {
             <p className={`feedback ${status}`}>{status === 'success' ? '✔️' : '⚠️'} {message}</p>
           )}
           {showNext && (
-            <div className="next-area">
-              <button className="btn-primary" onClick={nextChallenge}>Next Challenge</button>
-            </div>
+            <DoorUnlockedModal
+              points={roundPoints}
+              remaining={TOTAL_STEPS - (index + 1)}
+              onNext={nextChallenge}
+            />
           )}
         </div>
         <div className="door-area">

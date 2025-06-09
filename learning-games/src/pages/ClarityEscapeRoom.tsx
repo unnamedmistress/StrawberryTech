@@ -106,6 +106,13 @@ const CLUES: Clue[] = [
 
 const TOTAL_STEPS = 4
 
+// Difficulty tuning constants mirrored from PromptGuessEscape
+const BASE_SCORE = 20
+const BASE_TIME = 30
+const FAIL_THRESHOLD = 3
+const SCORE_DROP = 5
+const EXTRA_TIME = 10
+
 
 export default function ClarityEscapeRoom() {
   const { setScore } = useContext(UserContext)
@@ -119,8 +126,11 @@ export default function ClarityEscapeRoom() {
   const [hintIndex, setHintIndex] = useState(0)
   const [hintCount, setHintCount] = useState(0)
   const [showNext, setShowNext] = useState(false)
-  const [timeLeft, setTimeLeft] = useState(30)
+  const [timeLeft, setTimeLeft] = useState(BASE_TIME)
   const [openPercent, setOpenPercent] = useState(0)
+
+  const [failStreak, setFailStreak] = useState(0)
+  const [scoreThreshold, setScoreThreshold] = useState(BASE_SCORE)
 
   const [roomDescription, setRoomDescription] = useState('')
 
@@ -136,7 +146,8 @@ export default function ClarityEscapeRoom() {
   const clue = doors[index]
 
   useEffect(() => {
-    setTimeLeft(30)
+    const extra = failStreak >= FAIL_THRESHOLD ? EXTRA_TIME : 0
+    setTimeLeft(BASE_TIME + extra)
     startRef.current = Date.now()
     setAiHint('')
     const id = setInterval(() => {
@@ -146,13 +157,20 @@ export default function ClarityEscapeRoom() {
           setMessage("Time's up! The door remains closed.")
           setStatus('error')
           setShowNext(true)
+          setFailStreak(fs => {
+            const next = fs + 1
+            if (next >= FAIL_THRESHOLD) {
+              setScoreThreshold(s => Math.max(1, s - SCORE_DROP))
+            }
+            return next
+          })
           return 0
         }
         return t - 1
       })
     }, 1000)
     return () => clearInterval(id)
-  }, [index])
+  }, [index, failStreak])
 
   const revealHint = useCallback(() => {
     setHintIndex(i => {
@@ -226,7 +244,7 @@ export default function ClarityEscapeRoom() {
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     const { score, tips } = scorePrompt(clue.expectedPrompt, input.trim())
-    if (score >= 20) {
+    if (score >= scoreThreshold) {
       const timeBonus = Date.now() - startRef.current < 10000 ? 5 : 0
       const penalty = hintCount * 2
       const total = Math.max(0, score + 10 + timeBonus - penalty)
@@ -236,12 +254,22 @@ export default function ClarityEscapeRoom() {
       setOpenPercent(((index + 1) / TOTAL_STEPS) * 100)
       setShowNext(true)
 
+      setFailStreak(0)
+      setScoreThreshold(BASE_SCORE)
+
       setAiHint('')
 
     } else {
       const tipText = tips.join(' ')
       setMessage(`Too vague. ${tipText}`)
       setStatus('error')
+      setFailStreak(fs => {
+        const next = fs + 1
+        if (next >= FAIL_THRESHOLD) {
+          setScoreThreshold(s => Math.max(1, s - SCORE_DROP))
+        }
+        return next
+      })
       setAiHint('')
       fetchAiHint(input.trim())
     }
