@@ -367,6 +367,7 @@
   z-index: 100;
   display: flex;
   align-items: center;
+  gap: 1rem;
   background: var(--color-brand);
   padding: 1rem 2rem;
   color: #fff;
@@ -456,11 +457,13 @@
   color: #fff;
   font-size: 1.5rem;
   cursor: pointer;
+  margin-left: auto;
 }
 
 @media (max-width: 1000px) {
   .navbar {
     flex-wrap: wrap;
+    gap: 0.5rem;
   }
 
   .menu-toggle {

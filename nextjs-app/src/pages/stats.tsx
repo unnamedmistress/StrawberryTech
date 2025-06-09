@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import useSWR from 'swr'
 import Link from 'next/link'
 import Spinner from '../components/ui/Spinner'
 
@@ -15,20 +15,15 @@ interface ViewData {
 }
 
 export default function StatsPage() {
-  const [views, setViews] = useState<ViewData[]>([])
-  const [loading, setLoading] = useState(true)
 
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const base = window.location.origin
-      setLoading(true)
-      fetch(`${base}/api/views`)
-        .then(res => (res.ok ? res.json() : []))
-        .then(data => setViews(Array.isArray(data) ? data : []))
-        .catch(() => {})
-        .finally(() => setLoading(false))
-    }
-  }, [])
+  const base = typeof window !== 'undefined' ? window.location.origin : ''
+  const fetcher = (url: string) => fetch(url).then(res => res.json())
+  const { data: views = [] } = useSWR<ViewData[]>(
+    base ? `${base}/api/views` : null,
+    fetcher,
+    { refreshInterval: 60000 }
+  )
+
 
   const now = Date.now()
   const lastHour = now - 60 * 60 * 1000
