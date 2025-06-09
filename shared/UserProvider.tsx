@@ -24,13 +24,17 @@ export function UserProvider({ children }: { children: ReactNode }) {
     const saved = typeof window !== 'undefined' ? localStorage.getItem(STORAGE_KEY) : null
     if (saved) {
       try {
-        return { ...defaultUser, ...JSON.parse(saved) }
+        const parsed = { ...defaultUser, ...JSON.parse(saved) }
+        if (!parsed.id) {
+          parsed.id = (globalThis.crypto?.randomUUID?.() ?? Math.random().toString(36).slice(2))
+        }
+        return parsed
       } catch (err) {
         console.error('Failed to parse saved user data', err)
-        return defaultUser
+        return { ...defaultUser, id: globalThis.crypto?.randomUUID?.() ?? Math.random().toString(36).slice(2) }
       }
     }
-    return defaultUser
+    return { ...defaultUser, id: globalThis.crypto?.randomUUID?.() ?? Math.random().toString(36).slice(2) }
   })
 
   useEffect(() => {
@@ -39,7 +43,12 @@ export function UserProvider({ children }: { children: ReactNode }) {
       fetch(`${base}/api/user`)
         .then((res) => (res.ok ? res.json() : null))
         .then((data) => {
-          if (data) setUser((prev) => ({ ...prev, ...data }))
+          if (data)
+            setUser((prev) => ({
+              ...prev,
+              ...data,
+              id: prev.id || data.id || prev.id,
+            }))
         })
         .catch((err) => console.error('Failed to fetch user data', err))
     }
@@ -78,7 +87,11 @@ export function UserProvider({ children }: { children: ReactNode }) {
         fetch(`${base}/api/scores/${game}`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name: user.name ?? 'Anonymous', score: points }),
+          body: JSON.stringify({
+            id: user.id,
+            name: user.name ?? 'Anonymous',
+            score: points,
+          }),
         }).catch(err => console.error('Failed to save score', err))
       }
     },
@@ -104,6 +117,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
+            id: user.id,
             name: user.name,
             age: user.age,
             badges: user.badges,

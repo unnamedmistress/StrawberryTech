@@ -1,4 +1,6 @@
 export interface UserData {
+  /** Unique ID for server tracking */
+  id: string
   /** User's name for personalized greetings */
   name: string | null
   age: number | null

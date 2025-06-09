@@ -7,6 +7,7 @@ import './LeaderboardPage.css'
 import { getApiBase } from '../utils/api'
 
 export interface PointsEntry {
+  id: string
   name: string
   points: number
 }
@@ -39,9 +40,9 @@ export default function LeaderboardPage() {
 
   const entries = useMemo(() => {
     const list = (pointsData[game] ?? []).slice()
-    const playerName = user.name ?? 'You'
-    const existing = list.find(e => e.name === playerName)
-    if (!existing) list.push({ name: playerName, points: user.points[game] ?? 0 })
+    const playerId = user.id
+    const existing = list.find(e => e.id === playerId)
+    if (!existing) list.push({ id: playerId, name: user.name ?? 'You', points: user.points[game] ?? 0 })
     return list
       .filter((e) => e.name.toLowerCase().includes(filter.toLowerCase()))
       .sort((a, b) => {
@@ -52,7 +53,7 @@ export default function LeaderboardPage() {
         const cmp = a.points - b.points
         return ascending ? cmp : -cmp
       })
-  }, [filter, sortField, ascending, user.name, user.points, pointsData, game])
+  }, [filter, sortField, ascending, user.id, user.name, user.points, pointsData, game])
 
   function handleSort(field: 'name' | 'points') {
     if (sortField === field) {
@@ -107,11 +108,10 @@ export default function LeaderboardPage() {
             <tbody>
               {entries.map((entry, idx) => (
                 <tr
-                  key={entry.name}
+                  key={entry.id || entry.name}
                   className={idx === 0 ? 'top-row' : undefined}
                   style={{
-                    fontWeight:
-                      user.name && entry.name === user.name ? 'bold' : undefined,
+                    fontWeight: entry.id === user.id ? 'bold' : undefined,
                   }}
                 >
                   <td>{entry.name}</td>

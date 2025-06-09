@@ -63,7 +63,7 @@ async function loadData() {
   const userSnap = await userDoc.get();
   const user = userSnap.exists
     ? userSnap.data()
-    : { name: null, age: null, badges: [], points: { darts: 0 } };
+    : { id: '', name: null, age: null, badges: [], points: { darts: 0 } };
   const scoresSnap = await scores.get();
   const scoreData = {};
   scoresSnap.forEach(doc => (scoreData[doc.id] = doc.data().entries || []));
@@ -214,7 +214,7 @@ app.get('/api/user', async (req, res) => {
   if (!ensureFirestore(res)) return;
   const snap = await userDoc.get();
   res.json(
-    snap.exists ? snap.data() : { name: null, age: null, badges: [], points: { darts: 0 } }
+    snap.exists ? snap.data() : { id: '', name: null, age: null, badges: [], points: { darts: 0 } }
   );
 });
 
@@ -374,10 +374,11 @@ app.post('/api/scores/:game', async (req, res) => {
   const snap = await docRef.get();
   let entries = snap.exists ? snap.data().entries || [] : [];
   const name = req.body.name || 'Anonymous';
-  const existingIndex = entries.findIndex(e => e.name === name);
+  const id = req.body.id || '';
+  const existingIndex = entries.findIndex(e => e.id === id);
 
   if (existingIndex === -1) {
-    entries.push({ name, score });
+    entries.push({ id, name, score });
   } else if (score > entries[existingIndex].score) {
     entries[existingIndex].score = score;
   }
