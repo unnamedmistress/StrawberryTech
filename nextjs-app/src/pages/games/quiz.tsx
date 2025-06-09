@@ -4,7 +4,7 @@ import { motion } from 'framer-motion'
 import { toast } from 'react-hot-toast'
 import Link from 'next/link'; import { useRouter } from 'next/router'
 import CompletionModal from '../../components/ui/CompletionModal'
-import Head from 'next/head'
+import HeadTag from 'next/head'
 import { UserContext } from '../../context/UserContext'
 import '../../styles/QuizGame.css'
 import InstructionBanner from '../../components/ui/InstructionBanner'
@@ -80,7 +80,7 @@ function ChatBox() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${import.meta.env.VITE_OPENAI_API_KEY}`,
+          Authorization: `Bearer ${process.env.NEXT_PUBLIC_OPENAI_API_KEY}`,
         },
         body: JSON.stringify({
           model: 'gpt-3.5-turbo',
@@ -202,7 +202,7 @@ export default function QuizGame() {
             'https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_51_28%20PM.png',
         }}
       />
-      <Head>
+        <HeadTag>
         <title>Hallucinations Quiz - StrawberryTech</title>
         <meta property="og:title" content="Hallucinations Quiz - StrawberryTech" />
         <meta
@@ -227,11 +227,11 @@ export default function QuizGame() {
           name="twitter:image"
           content="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_51_28%20PM.png"
         />
-        <meta
-          name="twitter:url"
-          content="https://strawberry-tech.vercel.app/games/quiz"
-        />
-      </Head>
+          <meta
+            name="twitter:url"
+            content="https://strawberry-tech.vercel.app/games/quiz"
+          />
+        </HeadTag>
       <div className="quiz-page">
       <ChallengeBanner />
       <InstructionBanner>
@@ -304,7 +304,7 @@ export default function QuizGame() {
           <p style={{ marginTop: '1rem', textAlign: 'center' }}>
             <button
               className="btn-primary"
-              onClick={() => router.push('/games/escape')}
+              onClick={() => navigate.push('/games/escape')}
             >
               Next
             </button>

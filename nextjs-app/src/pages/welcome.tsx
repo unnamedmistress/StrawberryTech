@@ -12,7 +12,7 @@ export default function SplashPage() {
 
   useEffect(() => {
     if (user.age) {
-      router.push('/games/tone')
+      navigate.push('/games/tone')
     }
   }, [user.age, navigate])
 
@@ -24,7 +24,7 @@ export default function SplashPage() {
       return
     }
     setUser({ ...user, name, age: ageNum })
-    router.push('/games/tone')
+    navigate.push('/games/tone')
   }
 
   return (

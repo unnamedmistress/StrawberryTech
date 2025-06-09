@@ -1,5 +1,5 @@
 import { useContext, useEffect } from 'react'
-import Head from 'next/head'
+import HeadTag from 'next/head'
 import Link from 'next/link'; import { useRouter } from 'next/router'
 import { UserContext } from '../context/UserContext'
 import '../styles/Home.css'
@@ -17,7 +17,7 @@ export default function Home() {
     if (user.age === null) {
       router.push('/age')
     }
-  }, [user.age, navigate])
+  }, [user.age, router])
 
   // Apply reveal animation when elements scroll into view
   useEffect(() => {
@@ -39,7 +39,7 @@ export default function Home() {
 
   return (
     <>
-      <Head>
+        <HeadTag>
         <title>StrawberryTech Learning Games</title>
         <meta property="og:title" content="StrawberryTech Learning Games" />
         <meta
@@ -64,11 +64,11 @@ export default function Home() {
           name="twitter:image"
           content="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_12_36%20PM.png"
         />
-        <meta
-          name="twitter:url"
-          content="https://strawberry-tech.vercel.app/"
-        />
-      </Head>
+          <meta
+            name="twitter:url"
+            content="https://strawberry-tech.vercel.app/"
+          />
+        </HeadTag>
       <div className="home">
       {/* hero section */}
       <section className="hero reveal" aria-label="Homepage hero">

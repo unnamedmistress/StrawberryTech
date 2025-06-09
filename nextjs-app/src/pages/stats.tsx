@@ -24,6 +24,8 @@ export default function StatsPage() {
     { refreshInterval: 60000 }
   )
 
+  const loading = views.length === 0
+
 
   const now = Date.now()
   const lastHour = now - 60 * 60 * 1000

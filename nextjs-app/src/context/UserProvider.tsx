@@ -12,7 +12,7 @@ const STORAGE_KEY = 'strawberrytech_user'
 export function UserProvider({ children }: { children: ReactNode }) {
   // Load any saved user progress from localStorage on first render
   const [user, setUser] = useState<UserData>(() => {
-    const saved = localStorage.getItem(STORAGE_KEY)
+    const saved = typeof window !== 'undefined' ? localStorage.getItem(STORAGE_KEY) : null
     if (saved) {
       try {
         return { ...defaultUser, ...JSON.parse(saved) }
