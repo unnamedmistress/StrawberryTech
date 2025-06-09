@@ -14,12 +14,38 @@ interface PromptData {
 export default function PromptLibraryPage() {
   const [category, setCategory] = useState('all')
   const [search, setSearch] = useState('')
+  const [text, setText] = useState('')
+  const [error, setError] = useState('')
+  const [notice, setNotice] = useState('')
   const base = getApiBase()
   const fetcher = (url: string) => fetch(url).then(res => res.json())
-  const { data: prompts = [] } = useSWR<PromptData[]>(
+  const { data: prompts = [], mutate } = useSWR<PromptData[]>(
     base ? `${base}/api/prompts` : null,
     fetcher
   )
+
+  async function addPrompt(e: React.FormEvent) {
+    e.preventDefault()
+    if (!text.trim()) return
+    try {
+      const resp = await fetch(`${base}/api/prompts`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: text.trim() }),
+      })
+      const data = await resp.json()
+      if (!resp.ok) {
+        setError(data.error || 'Failed to add prompt')
+        return
+      }
+      setNotice('Prompt added!')
+      setError('')
+      setText('')
+      mutate()
+    } catch {
+      setError('Failed to add prompt')
+    }
+  }
 
   const categories = Array.from(new Set(prompts.map(p => p.category)))
   const filtered = prompts.filter(p => {
@@ -72,6 +98,29 @@ export default function PromptLibraryPage() {
               <p style={{ fontSize: '0.9rem', color: '#666' }}>{p.category}</p>
             </Card>
           ))}
+          <form onSubmit={addPrompt} style={{ marginTop: '1rem' }}>
+            <label htmlFor="prompt-text">Add a prompt:</label>
+            <textarea
+              id="prompt-text"
+              value={text}
+              onChange={e => setText(e.target.value)}
+              required
+              style={{ display: 'block', width: '100%', marginTop: '0.25rem' }}
+            />
+            <button type="submit" className="btn-primary" style={{ marginTop: '0.5rem' }}>
+              Submit
+            </button>
+          </form>
+          {error && (
+            <p role="alert" style={{ color: 'red' }}>
+              {error}
+            </p>
+          )}
+          {notice && (
+            <p role="status" style={{ color: 'green' }}>
+              {notice}
+            </p>
+          )}
         </div>
       </div>
       <p style={{ marginTop: '2rem' }}>
