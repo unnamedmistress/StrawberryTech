@@ -14,6 +14,7 @@ export default function ProfilePage() {
   const [name, setNameState] = useState(user.name ?? '')
   const [age, setAgeState] = useState<string>(user.age ? String(user.age) : '')
   const [difficulty, setDifficultyState] = useState(user.difficulty)
+
   const { data: scores = {} } = useLeaderboards()
 
   const totalPoints = useMemo(() => getTotalPoints(user.points), [user.points])

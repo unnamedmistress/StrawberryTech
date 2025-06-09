@@ -35,6 +35,7 @@ export default function ProgressSidebar({ points, badges }: ProgressSidebarProps
 
 
 
+
   const path = typeof window !== 'undefined' ? window.location.pathname : ''
   const slug = path.split('/')[2]
   const gameMap: Record<string, string> = {
@@ -49,10 +50,10 @@ export default function ProgressSidebar({ points, badges }: ProgressSidebarProps
   const game = gameMap[slug] || 'darts'
 
   const entries = (leaderboards[game] ?? [])
-    .concat({ name: user.name ?? 'You', points: userPoints[game] ?? 0 })
+    .concat({ id: user.id, name: user.name ?? 'You', points: userPoints[game] ?? 0 })
     .sort((a, b) => b.points - a.points)
 
-  const rank = entries.findIndex(e => e.name === (user.name ?? 'You')) + 1
+  const rank = entries.findIndex(e => e.id === user.id) + 1
   const leaderboard = entries.slice(0, 3)
 
 

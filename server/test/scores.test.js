@@ -10,7 +10,7 @@ beforeEach(() => {
 test('accepts valid score', async () => {
   const res = await request(app)
     .post('/api/scores/test')
-    .send({ name: 'Alice', score: 5 });
+    .send({ id: 'alice-id', name: 'Alice', score: 5 });
   assert.equal(res.statusCode, 200);
   assert.ok(Array.isArray(res.body));
   assert.equal(res.body[0].score, 5);
@@ -19,6 +19,6 @@ test('accepts valid score', async () => {
 test('rejects invalid score', async () => {
   const res = await request(app)
     .post('/api/scores/test')
-    .send({ name: 'Bob', score: -1 });
+    .send({ id: 'bob', name: 'Bob', score: -1 });
   assert.equal(res.statusCode, 400);
 });
