@@ -486,8 +486,8 @@ export default function PromptRecipeGame() {
       <div className="recipe-wrapper">
         <WhyCard
           className="recipe-sidebar"
-          heading="Why Build Prompts?"
-          text="Combining action, context, format and constraints clarifies intent."
+          title="Why Build Prompts?"
+          explanation="Combining action, context, format and constraints clarifies intent."
           quote="Why Card: This page has potential but needs some polish to make it intuitive, clean, and engaging."
           tip="Arrange each ingredient to craft a clear request."
         />

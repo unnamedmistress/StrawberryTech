@@ -356,8 +356,8 @@ export default function Match3Game() {
       <div className="match3-wrapper">
         <WhyCard
           className="match3-sidebar"
-          heading="Why Tone Matters"
-          text="Drag the adjectives into the blank to try different tones."
+          title="Why Tone Matters"
+          explanation="Drag the adjectives into the blank to try different tones."
           quote={sidebarQuote}
           tip={sidebarTip}
         />

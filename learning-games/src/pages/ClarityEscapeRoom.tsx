@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'react'
+import { useState, useEffect, useRef, useContext, useCallback } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import CompletionModal from '../components/ui/CompletionModal'
 import InstructionBanner from '../components/ui/InstructionBanner'
@@ -7,6 +7,7 @@ import DoorAnimation from '../components/DoorAnimation'
 import ProgressSidebar from '../components/layout/ProgressSidebar'
 import WhyCard from '../components/layout/WhyCard'
 import Tooltip from '../components/ui/Tooltip'
+import { UserContext } from '../context/UserContext'
 import shuffle from '../utils/shuffle'
 import './ClarityEscapeRoom.css'
 import { scorePrompt } from '../utils/scorePrompt'
@@ -104,6 +105,7 @@ const TOTAL_STEPS = 4
 
 
 export default function ClarityEscapeRoom() {
+  const { setScore } = useContext(UserContext)
   const navigate = useNavigate()
   const [doors] = useState(() => shuffle(CLUES).slice(0, TOTAL_STEPS))
   const [index, setIndex] = useState(0)
@@ -248,8 +250,8 @@ export default function ClarityEscapeRoom() {
       <div className="escape-wrapper">
         <WhyCard
           className="escape-sidebar"
-          heading="Why Clarity Matters"
-          text="Vague inputs lock AI in confusion loops; precise prompts open doors."
+          title="Why Clarity Matters"
+          explanation="Vague inputs lock AI in confusion loops; precise prompts open doors."
         />
         <div className="room">
           <div className="room-grid">
