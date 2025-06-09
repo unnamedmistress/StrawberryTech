@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import ProgressSidebarSimple from '../components/layout/ProgressSidebarSimple'
 import GamePageLayout from '../components/layout/GamePageLayout'
 import { UserContext } from '../context/UserContext'
+
 import { getTotalPoints } from '../utils/user'
 import './DragDropGame.css'
 
@@ -174,7 +175,7 @@ export default function DragDropGame() {
         <ProgressSidebarSimple
           totalPoints={totalPoints}
           badgesEarned={badgesEarned}
-          goalPoints={300}
+          goalPoints={GOAL_POINTS}
           topScores={[{ name: 'You', points: user.scores['darts'] ?? 0 }]}
         />
       </div>
