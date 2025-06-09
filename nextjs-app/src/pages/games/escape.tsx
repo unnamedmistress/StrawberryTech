@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useContext, useCallback } from 'react'
+import { toast } from 'react-hot-toast'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import InstructionBanner from '../../components/ui/InstructionBanner'
@@ -160,6 +161,7 @@ export default function ClarityEscapeRoom() {
   const revealHint = useCallback(() => {
     setHintIndex(i => {
       if (i < clue.hints.length) {
+        toast('Hint revealed \u2013 \u22122 points')
         setHintCount(c => c + 1)
         return i + 1
       }
