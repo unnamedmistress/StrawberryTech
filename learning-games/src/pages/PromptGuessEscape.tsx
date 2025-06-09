@@ -5,6 +5,7 @@ import Tooltip from '../components/ui/Tooltip'
 import ProgressBar from '../components/ui/ProgressBar'
 import DoorAnimation from '../components/DoorAnimation'
 import ProgressSidebar from '../components/layout/ProgressSidebar'
+import WhyCard from '../components/layout/WhyCard'
 import { UserContext } from '../context/UserContext'
 import shuffle from '../utils/shuffle'
 import './PromptGuessEscape.css'
@@ -227,10 +228,11 @@ export default function PromptGuessEscape() {
     <div className="guess-page">
       <InstructionBanner>Escape Room: Guess the Prompt</InstructionBanner>
       <div className="guess-wrapper">
-        <aside className="guess-sidebar">
-          <h3>Why Clarity Matters</h3>
-          <p>Vague inputs lock AI in confusion loops; precise prompts open doors.</p>
-        </aside>
+        <WhyCard
+          className="guess-sidebar"
+          heading="Why Clarity Matters"
+          text="Vague inputs lock AI in confusion loops; precise prompts open doors."
+        />
         <div className="guess-game">
           <p className="ai-response"><strong>AI Response:</strong> "{clue.aiResponse}"</p>
           <p className="timer">Time left: {timeLeft}s</p>
