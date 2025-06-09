@@ -192,8 +192,8 @@ export default function NavBar() {
             </li>
             <li>
               <Tooltip message="Hover here for a surprise!">
-                <Link href="/playlist" onClick={() => setOpen(false)}>
-                  Playlist
+                <Link href="/prompt-library" onClick={() => setOpen(false)}>
+                  Prompt Library
                 </Link>
               </Tooltip>
             </li>
