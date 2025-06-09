@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useContext, useCallback } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { toast } from 'react-hot-toast'
 import { Link, useNavigate } from 'react-router-dom'
 import CompletionModal from '../components/ui/CompletionModal'
@@ -9,7 +9,6 @@ import ProgressSidebar from '../components/layout/ProgressSidebar'
 import WhyCard from '../components/layout/WhyCard'
 import Tooltip from '../components/ui/Tooltip'
 import IntroOverlay from '../components/ui/IntroOverlay'
-import { UserContext } from '../context/UserContext'
 import shuffle from '../utils/shuffle'
 import './ClarityEscapeRoom.css'
 import { scorePrompt } from '../utils/scorePrompt'
@@ -115,7 +114,6 @@ const EXTRA_TIME = 10
 
 
 export default function ClarityEscapeRoom() {
-  const { setScore } = useContext(UserContext)
   const navigate = useNavigate()
   const [doors] = useState(() => shuffle(CLUES).slice(0, TOTAL_STEPS))
   const [index, setIndex] = useState(0)
