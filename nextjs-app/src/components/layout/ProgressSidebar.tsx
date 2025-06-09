@@ -1,11 +1,10 @@
-import { useContext, useEffect, useRef, useState } from 'react'
-import { getApiBase } from '../../utils/api'
+import { useContext, useEffect, useRef } from 'react'
+import { useLeaderboards, type PointsEntry } from '../../../../shared/useLeaderboards'
 import confetti from 'canvas-confetti'
 import Link from 'next/link'
 import { UserContext } from '../../../../shared/UserContext'
 import { getTotalPoints } from '../../utils/user'
 import Tooltip from '../ui/Tooltip'
-import type { PointsEntry } from '../../pages/leaderboard'
 import { GOAL_POINTS } from '../../constants/progress'
 
 export interface ProgressSidebarProps {
@@ -22,7 +21,7 @@ export default function ProgressSidebar({ points, badges }: ProgressSidebarProps
   const totalPoints = getTotalPoints(userPoints)
   const celebrated = useRef(false)
 
-  const [leaderboards, setLeaderboards] = useState<Record<string, PointsEntry[]>>({})
+  const { data: leaderboards = {} } = useLeaderboards()
 
   useEffect(() => {
     if (totalPoints >= GOAL_POINTS && !celebrated.current) {
@@ -30,20 +29,6 @@ export default function ProgressSidebar({ points, badges }: ProgressSidebarProps
       celebrated.current = true
     }
   }, [totalPoints])
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const base = getApiBase()
-      fetch(`${base}/api/scores`)
-        .then((res) => (res.ok ? res.json() : {}))
-
-        .then((data: Record<string, PointsEntry[]>) => {
-          setLeaderboards(data)
-
-        })
-        .catch(() => {})
-    }
-  }, [])
 
 
   const path = typeof window !== 'undefined' ? window.location.pathname : ''
