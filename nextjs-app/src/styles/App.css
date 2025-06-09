@@ -455,6 +455,23 @@
   }
 }
 
+@media (max-width: 480px) {
+  .navbar ul {
+    font-size: 0.9rem;
+    padding: 0.25rem 0;
+    flex-wrap: wrap;
+  }
+
+  .menu-toggle {
+    font-size: 1.25rem;
+  }
+
+  .brand-logo {
+    width: 36px;
+    height: 36px;
+  }
+}
+
 .hero {
   background: linear-gradient(135deg, var(--color-blue), var(--color-brand));
   background-size: 200% 200%;
