@@ -12,6 +12,7 @@ import shuffle from '../../utils/shuffle'
 import '../../styles/ClarityEscapeRoom.css'
 import CompletionModal from '../../components/ui/CompletionModal'
 import { scorePrompt } from '../../utils/scorePrompt'
+import { generateRoomDescription } from '../../utils/generateRoomDescription'
 import HeadTag from 'next/head'
 import JsonLd from '../../components/seo/JsonLd'
 
@@ -122,10 +123,16 @@ export default function ClarityEscapeRoom() {
   const [timeLeft, setTimeLeft] = useState(30)
   const [openPercent, setOpenPercent] = useState(0)
 
+  const [roomDescription, setRoomDescription] = useState('')
+
   const [aiHint, setAiHint] = useState('')
   const startRef = useRef(Date.now())
   const [rounds, setRounds] = useState<{ prompt: string; expected: string; tip: string }[]>([])
   const [showSummary, setShowSummary] = useState(false)
+
+  useEffect(() => {
+    generateRoomDescription().then(text => setRoomDescription(text))
+  }, [])
 
   const clue = doors[index]
 
@@ -240,6 +247,8 @@ export default function ClarityEscapeRoom() {
       setHintIndex(0)
       setHintCount(0)
 
+      generateRoomDescription().then(text => setRoomDescription(text))
+
       setAiHint('')
 
       setShowNext(false)
@@ -302,6 +311,9 @@ export default function ClarityEscapeRoom() {
         <div className="room">
           <div className="room-grid">
             <div className="room-main">
+              {roomDescription && (
+                <p className="room-description">{roomDescription}</p>
+              )}
               <p className="ai-response"><strong>AI Response:</strong> "{clue.aiResponse}"</p>
               <p className="timer">Time left: {timeLeft}s</p>
               <form onSubmit={handleSubmit} className="prompt-form">
