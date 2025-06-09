@@ -296,7 +296,7 @@ export default function PromptGuessEscape() {
                 </li>
               ))}
             </ul>
-            <button className="btn-primary" onClick={() => router.push('/leaderboard')}>
+            <button className="btn-primary" onClick={() => navigate.push('/leaderboard')}>
               View Leaderboard
             </button>
           </div>

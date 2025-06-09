@@ -8,7 +8,7 @@ import { UserContext } from '../../context/UserContext'
 import shuffle from '../../utils/shuffle'
 import { getTimeLimit } from '../../utils/time'
 import '../../styles/PromptDartsGame.css'
-import Head from 'next/head'
+import HeadTag from 'next/head'
 import JsonLd from '../../components/seo/JsonLd'
 import CompletionModal from '../../components/ui/CompletionModal'
 
@@ -404,9 +404,8 @@ export default function PromptDartsGame() {
       <div className="darts-page">
         <InstructionBanner>Loading rounds...</InstructionBanner>
       </div>
-    </>
-  )
-}
+    )
+  }
 
   if (round >= rounds.length) {
     return (
@@ -435,7 +434,7 @@ export default function PromptDartsGame() {
             'https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_24_00%20PM.png',
         }}
       />
-      <Head>
+      <HeadTag>
         <title>Prompt Darts - StrawberryTech</title>
         <meta property="og:title" content="Prompt Darts - StrawberryTech" />
         <meta
@@ -464,7 +463,7 @@ export default function PromptDartsGame() {
           name="twitter:url"
           content="https://strawberry-tech.vercel.app/games/darts"
         />
-      </Head>
+      </HeadTag>
       <div className="darts-page">
       <InstructionBanner>
         Choose the clearer prompt that best targets the requested format.

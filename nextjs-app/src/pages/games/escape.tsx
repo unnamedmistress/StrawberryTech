@@ -11,7 +11,7 @@ import shuffle from '../../utils/shuffle'
 import '../../styles/ClarityEscapeRoom.css'
 import CompletionModal from '../../components/ui/CompletionModal'
 import { scorePrompt } from '../../utils/scorePrompt'
-import Head from 'next/head'
+import HeadTag from 'next/head'
 import JsonLd from '../../components/seo/JsonLd'
 
 interface Clue {
@@ -174,7 +174,7 @@ export default function ClarityEscapeRoom() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${import.meta.env.VITE_OPENAI_API_KEY}`,
+          Authorization: `Bearer ${process.env.NEXT_PUBLIC_OPENAI_API_KEY}`,
         },
         body: JSON.stringify({
           model: 'gpt-3.5-turbo',
@@ -260,7 +260,7 @@ export default function ClarityEscapeRoom() {
             'https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_12_36%20PM.png',
         }}
       />
-      <Head>
+        <HeadTag>
         <title>Clarity Escape Room - StrawberryTech</title>
         <meta property="og:title" content="Clarity Escape Room - StrawberryTech" />
         <meta
@@ -285,11 +285,11 @@ export default function ClarityEscapeRoom() {
           name="twitter:image"
           content="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_12_36%20PM.png"
         />
-        <meta
-          name="twitter:url"
-          content="https://strawberry-tech.vercel.app/games/escape"
-        />
-      </Head>
+          <meta
+            name="twitter:url"
+            content="https://strawberry-tech.vercel.app/games/escape"
+          />
+        </HeadTag>
       <div className="escape-page">
       <InstructionBanner>Escape Room: Guess the Prompt</InstructionBanner>
       <div className="escape-wrapper">
@@ -350,7 +350,7 @@ export default function ClarityEscapeRoom() {
           <p style={{ marginTop: '1rem', textAlign: 'center' }}>
             <button
               className="btn-primary"
-              onClick={() => router.push('/games/recipe')}
+              onClick={() => navigate.push('/games/recipe')}
             >
               Next
             </button>
