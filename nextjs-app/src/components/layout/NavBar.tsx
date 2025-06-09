@@ -8,6 +8,14 @@ export default function NavBar() {
   const [progressOpen, setProgressOpen] = useState(false)
   const [accountOpen, setAccountOpen] = useState(false)
   const [communityOpen, setCommunityOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 0)
+    window.addEventListener('scroll', handleScroll)
+    handleScroll()
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   // Close submenus when hamburger menu closes
   useEffect(() => {
@@ -20,7 +28,10 @@ export default function NavBar() {
   }, [open])
 
   return (
-    <nav className="navbar" aria-label="Main navigation">
+    <nav
+      className={`navbar${scrolled ? ' scrolled' : ''}`}
+      aria-label="Main navigation"
+    >
       <div className="brand">
         <img
           src="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_12_36%20PM.png"

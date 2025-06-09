@@ -77,29 +77,35 @@ export default function Home() {
           src="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_12_36%20PM.png"
           alt="Home page strawberry mascot welcomes players at entrance of learning arcade with pastel tones."
           className="hero-img"
+          width="240"
+          height="240"
+          loading="lazy"
         />
         <p className="tagline">Play engaging games and sharpen your skills.</p>
 
-        <button onClick={() => router.push('/games/tone')} className="btn-primary" aria-label="Play Tone Puzzle">
-
-          Play Now
-        </button>
-        <button
-          onClick={() => router.push('/community')}
-          className="btn-primary"
-          style={{ marginLeft: '1rem' }}
-          aria-label="View community feedback"
-        >
-          Community
-        </button>
-        <button
-          onClick={() => router.push('/playlist')}
-          className="btn-primary"
-          style={{ marginLeft: '1rem' }}
-          aria-label="See prompt playlist"
-        >
-          Playlist
-        </button>
+        <div className="hero-actions">
+          <button
+            onClick={() => router.push('/games/tone')}
+            className="btn-primary"
+            aria-label="Play Tone Puzzle"
+          >
+            Play Now
+          </button>
+          <button
+            onClick={() => router.push('/community')}
+            className="btn-primary"
+            aria-label="View community feedback"
+          >
+            Community
+          </button>
+          <button
+            onClick={() => router.push('/playlist')}
+            className="btn-primary"
+            aria-label="See prompt playlist"
+          >
+            Playlist
+          </button>
+        </div>
       </section>
 
 
