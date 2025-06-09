@@ -10,8 +10,10 @@ import { GOAL_POINTS } from '../../constants/progress'
 export default function ProgressSidebar() {
   const { user } = useContext(UserContext)
 
+
   const totalPoints = getTotalPoints(user.scores)
   const GOAL_POINTS = 300
+
   const celebrated = useRef(false)
   const [scores, setScores] = useState<ScoreEntry[]>([])
 
