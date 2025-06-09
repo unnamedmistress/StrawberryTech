@@ -92,12 +92,21 @@ export default function PromptDartsGame() {
       .then(res => (res.ok ? res.json() : null))
       .then(data => {
         if (Array.isArray(data) && data.length) {
-          const fetched = data.map((r: DartRound) => ({
-            options: r.options ?? [(r as any).bad, (r as any).good].filter(Boolean),
-            correct: typeof (r as any).correct === 'number' ? (r as any).correct : 1,
-            why: (r as any).why ?? '',
-            response: (r as any).response ?? ''
-          })) as DartRound[]
+          interface RemoteRound {
+            options?: string[]
+            bad?: string
+            good?: string
+            correct?: number
+            why?: string
+            response?: string
+          }
+
+          const fetched: DartRound[] = (data as RemoteRound[]).map(r => ({
+            options: r.options ?? [r.bad, r.good].filter(Boolean) as string[],
+            correct: typeof r.correct === 'number' ? r.correct : 1,
+            why: r.why ?? '',
+            response: r.response ?? ''
+          }))
           setRounds(shuffle(fetched))
         } else {
           setRounds(shuffle(ROUNDS))
