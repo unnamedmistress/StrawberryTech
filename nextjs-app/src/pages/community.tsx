@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from 'react'
+import { toast } from 'react-hot-toast'
 import Link from 'next/link'
 import Post from '../components/Post'
 import type { PostData } from '../components/Post'
@@ -51,7 +52,10 @@ export default function CommunityPage() {
       fetch(`${base}/api/posts`)
         .then((res) => (res.ok ? res.json() : []))
         .then((data: PostData[]) => setPosts(data.length ? data : initialPosts))
-        .catch(() => {})
+        .catch(() => {
+          setError('Failed to load posts')
+          toast.error('Failed to load posts')
+        })
     }
   }, [])
 
@@ -63,7 +67,11 @@ export default function CommunityPage() {
     setPosts((prev) => prev.map((p) => (p.id === id ? { ...p, flagged: true } : p)))
     if (typeof window !== 'undefined') {
       const base = getApiBase()
-      fetch(`${base}/api/posts/${id}/flag`, { method: 'POST' }).catch(() => {})
+      fetch(`${base}/api/posts/${id}/flag`, { method: 'POST' })
+        .catch(() => {
+          setError('Failed to flag post')
+          toast.error('Failed to flag post')
+        })
     }
   }
 
