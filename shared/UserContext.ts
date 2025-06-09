@@ -2,6 +2,7 @@ import { createContext } from 'react'
 import type { UserData, UserContextType } from './types/user'
 
 export const defaultUser: UserData = {
+  id: '',
   name: null,
   age: null,
   difficulty: 'medium',

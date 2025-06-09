@@ -22,7 +22,13 @@ export default function ProfilePage() {
       const base = getApiBase()
       fetch(`${base}/api/scores`)
         .then(res => (res.ok ? res.json() : {}))
-        .then(data => setScores(data))
+        .then((data: Record<string, { id?: string; name: string; score: number }[]>) => {
+          const mapped: Record<string, PointsEntry[]> = {}
+          Object.entries(data).forEach(([k, list]) => {
+            mapped[k] = (list || []).map(e => ({ id: e.id || '', name: e.name, points: e.score }))
+          })
+          setScores(mapped)
+        })
         .catch(() => {})
     }
   }, [])

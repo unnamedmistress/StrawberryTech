@@ -39,9 +39,16 @@ export default function ProgressSidebar({ badges }: ProgressSidebarProps = {}) {
       const base = getApiBase()
       fetch(`${base}/api/scores`)
         .then((res) => (res.ok ? res.json() : {}))
-
-        .then((data: Record<string, PointsEntry[]>) => {
-          setLeaderboards(data)
+        .then((data: Record<string, { id?: string; name: string; score: number }[]>) => {
+          const mapped: Record<string, PointsEntry[]> = {}
+          Object.entries(data).forEach(([k, list]) => {
+            mapped[k] = (list || []).map((e) => ({
+              id: e.id || '',
+              name: e.name,
+              points: e.score,
+            }))
+          })
+          setLeaderboards(mapped)
 
         })
         .catch(() => {})
@@ -63,10 +70,10 @@ export default function ProgressSidebar({ badges }: ProgressSidebarProps = {}) {
   const game = gameMap[slug] || 'darts'
 
   const entries = (leaderboards[game] ?? [])
-    .concat({ name: user.name ?? 'You', points: userScores[game] ?? 0 })
+    .concat({ id: user.id, name: user.name ?? 'You', points: userScores[game] ?? 0 })
     .sort((a, b) => b.points - a.points)
 
-  const rank = entries.findIndex(e => e.name === (user.name ?? 'You')) + 1
+  const rank = entries.findIndex(e => e.id === user.id) + 1
   const leaderboard = entries.slice(0, 3)
 
   return (
