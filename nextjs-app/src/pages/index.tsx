@@ -102,11 +102,11 @@ export default function Home() {
             Community
           </button>
           <button
-            onClick={() => router.push('/playlist')}
+            onClick={() => router.push('/prompt-library')}
             className="btn-primary"
-            aria-label="See prompt playlist"
+            aria-label="Browse prompt library"
           >
-            Playlist
+            Prompt Library
           </button>
         </div>
       </section>

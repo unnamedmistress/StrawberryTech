@@ -6,6 +6,7 @@ import firestore from '../../utils/firebase'
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY || ''
 
 export const posts = firestore.collection('posts')
+export const prompts = firestore.collection('prompts')
 export const pairs = firestore.collection('pairs')
 export const views = firestore.collection('views')
 export const scores = firestore.collection('scores')
@@ -96,5 +97,47 @@ export async function sanitizeComment(text: string): Promise<{ sanitized: string
   } catch (err) {
     console.error('Sanitize request failed', err)
     return { sanitized: text, alias: 'Guest' }
+  }
+}
+
+export async function moderatePrompt(
+  text: string
+): Promise<{ flagged: boolean; category: string }> {
+  if (!OPENAI_API_KEY)
+    return { flagged: false, category: 'general' }
+  try {
+    const resp = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${OPENAI_API_KEY}`,
+      },
+      body: JSON.stringify({
+        model: 'gpt-3.5-turbo',
+        messages: [
+          {
+            role: 'system',
+            content:
+              'Classify the text into a short category and indicate if it violates content policies. Respond only in JSON with keys "flagged" and "category".',
+          },
+          { role: 'user', content: text.slice(0, 300) },
+        ],
+        max_tokens: 20,
+        temperature: 0,
+      }),
+    })
+    const data = await resp.json()
+    let result: { flagged: boolean; category: string } = {
+      flagged: false,
+      category: 'general',
+    }
+    try {
+      result = JSON.parse(data?.choices?.[0]?.message?.content || '')
+    } catch {}
+    if (!result.category) result.category = 'general'
+    return result
+  } catch (err) {
+    console.error('Moderation request failed', err)
+    return { flagged: false, category: 'general' }
   }
 }
