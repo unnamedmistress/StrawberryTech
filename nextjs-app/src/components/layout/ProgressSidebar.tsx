@@ -1,11 +1,10 @@
-import { useContext, useEffect, useRef, useState } from 'react'
-import { getApiBase } from '../../utils/api'
+import { useContext, useEffect, useRef } from 'react'
+import { useLeaderboards, type PointsEntry } from '../../../../shared/useLeaderboards'
 import confetti from 'canvas-confetti'
 import Link from 'next/link'
 import { UserContext } from '../../../../shared/UserContext'
 import { getTotalPoints } from '../../utils/user'
 import Tooltip from '../ui/Tooltip'
-import type { PointsEntry } from '../../pages/leaderboard'
 import { GOAL_POINTS } from '../../constants/progress'
 
 export interface ProgressSidebarProps {
@@ -17,12 +16,15 @@ export default function ProgressSidebar({ points, badges }: ProgressSidebarProps
   const { user } = useContext(UserContext)
 
   const userPoints = points ?? user.points
-  const userBadges = badges ?? user.badges
-
-  const totalPoints = getTotalPoints(userPoints)
+  const [progress, setProgress] = useState({
+    totalPoints: getTotalPoints(userPoints),
+    badges: badges ?? user.badges,
+  })
+  const userBadges = progress.badges
+  const totalPoints = progress.totalPoints
   const celebrated = useRef(false)
 
-  const [leaderboards, setLeaderboards] = useState<Record<string, PointsEntry[]>>({})
+  const { data: leaderboards = {} } = useLeaderboards()
 
   useEffect(() => {
     if (totalPoints >= GOAL_POINTS && !celebrated.current) {
@@ -31,26 +33,7 @@ export default function ProgressSidebar({ points, badges }: ProgressSidebarProps
     }
   }, [totalPoints])
 
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const base = getApiBase()
-      fetch(`${base}/api/scores`)
-        .then((res) => (res.ok ? res.json() : {}))
-        .then((data: Record<string, { id?: string; name: string; score: number }[]>) => {
-          const mapped: Record<string, PointsEntry[]> = {}
-          Object.entries(data).forEach(([k, list]) => {
-            mapped[k] = (list || []).map((e) => ({
-              id: e.id || '',
-              name: e.name,
-              points: e.score,
-            }))
-          })
-          setLeaderboards(mapped)
 
-        })
-        .catch(() => {})
-    }
-  }, [])
 
 
   const path = typeof window !== 'undefined' ? window.location.pathname : ''
