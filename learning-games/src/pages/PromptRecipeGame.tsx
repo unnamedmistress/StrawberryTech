@@ -80,7 +80,11 @@ export default function PromptRecipeGame() {
 
   useEffect(() => {
     startRound()
-  }, [startRound])
+  }, [round])
+
+  useEffect(() => {
+    setRound(0)
+  }, [])
 
   useEffect(() => {
     if (showPrompt) return
@@ -176,7 +180,6 @@ export default function PromptRecipeGame() {
   function nextRound() {
     if (round + 1 < TOTAL_ROUNDS) {
       setRound(r => r + 1)
-      startRound()
     } else {
       setFinished(true)
       setPoints('recipe', points)
