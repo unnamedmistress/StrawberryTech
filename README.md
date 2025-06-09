@@ -40,8 +40,10 @@ Drag cards to assemble a prompt. Each round now fetches fresh card text from the
    npm install
    npm start
    ```
-3. Copy `.env.example` to `.env` inside `learning-games` and fill in
-   `VITE_OPENAI_API_KEY=<your key>` for the Robot chat and recipe features.
+3. Copy `.env.example` to `.env` inside `learning-games` and fill in your
+  keys. `VITE_API_BASE` defaults to `http://localhost:3001` and the Vite dev
+  server proxies `/api` requests there automatically. Provide
+  `VITE_OPENAI_API_KEY=<your key>` for the Robot chat and recipe features.
 4. Open the printed URL in your browser.
 
 Node **18+** is recommended. Major dependencies include React 19, React Router 7, Vite 6 and TypeScript. Toast notifications are provided by `react-hot-toast` and unit tests use `vitest`.
