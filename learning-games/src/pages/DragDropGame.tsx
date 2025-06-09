@@ -1,10 +1,9 @@
 import { useState, useContext } from 'react'
 import { Link } from 'react-router-dom'
-import ProgressSidebarSimple from '../components/layout/ProgressSidebarSimple'
+import ProgressSidebar from '../components/layout/ProgressSidebar'
 import GamePageLayout from '../components/layout/GamePageLayout'
 import { UserContext } from '../context/UserContext'
 
-import { getTotalPoints } from '../utils/user'
 import './DragDropGame.css'
 
 const tones = [
@@ -40,8 +39,6 @@ export default function DragDropGame() {
   const [userMessage, setUserMessage] = useState('')
   const [submitted, setSubmitted] = useState(false)
   const { user } = useContext(UserContext)
-  const totalPoints = getTotalPoints(user.scores)
-  const badgesEarned = user.badges.length
 
   function handleDragStart(e: React.DragEvent<HTMLDivElement>, tone: Tone) {
     e.dataTransfer.setData('text/plain', tone)
@@ -172,12 +169,7 @@ export default function DragDropGame() {
             )}
           </div>
         </GamePageLayout>
-        <ProgressSidebarSimple
-          totalPoints={totalPoints}
-          badgesEarned={badgesEarned}
-          goalPoints={GOAL_POINTS}
-          topScores={[{ name: 'You', points: user.scores['darts'] ?? 0 }]}
-        />
+        <ProgressSidebar />
       </div>
       <div className="next-area">
         <p style={{ marginTop: '1rem', textAlign: 'center' }}>
