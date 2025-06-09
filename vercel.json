@@ -1,4 +1,4 @@
 {
-  "installCommand": "npm --prefix nextjs-app install",
-  "buildCommand": "npm --prefix nextjs-app run build"
+  "installCommand": "npm --prefix ../nextjs-app install",
+  "buildCommand": "npm --prefix ../nextjs-app run build"
 }
