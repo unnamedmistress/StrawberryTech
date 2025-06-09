@@ -58,6 +58,7 @@ const pairs = firestore ? firestore.collection('pairs') : null;
 const views = firestore ? firestore.collection('views') : null;
 const scores = firestore ? firestore.collection('scores') : createLocalScoresStore();
 const userDoc = firestore ? firestore.collection('config').doc('user') : null;
+const BADGES = require('./badges.json');
 
 async function loadData() {
   const userSnap = await userDoc.get();
@@ -320,6 +321,10 @@ app.post('/api/pairs', async (req, res) => {
 app.get('/api/darts', (req, res) => {
   const rounds = loadDartRounds();
   res.json(rounds);
+});
+
+app.get('/api/badges', (req, res) => {
+  res.json(BADGES);
 });
 
 app.get('/api/views', async (req, res) => {

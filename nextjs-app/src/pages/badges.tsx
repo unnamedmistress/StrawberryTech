@@ -1,32 +1,56 @@
-import { useContext } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import Link from 'next/link'
 import { UserContext } from '../../../shared/UserContext'
-import { BADGES } from '../data/badges'
+import Spinner from '../components/ui/Spinner'
+import { getApiBase } from '../utils/api'
 import '../styles/BadgesPage.css'
 
 export default function BadgesPage() {
   const { user } = useContext(UserContext)
+  interface BadgeDefinition {
+    id: string
+    name: string
+    description: string
+    emoji: string
+  }
+  const [badges, setBadges] = useState<BadgeDefinition[]>([])
+  const base = getApiBase()
+
+  useEffect(() => {
+    if (base) {
+      fetch(`${base}/api/badges`)
+        .then(res => (res.ok ? res.json() : []))
+        .then(data => setBadges(data))
+        .catch(() => {})
+    }
+  }, [base])
+
+  const loading = badges.length === 0
   return (
     <div className="badges-page">
       <h2>Badges</h2>
-      <ul className="badge-list">
-        {BADGES.map(b => (
-          <li key={b.id} className={user.badges.includes(b.id) ? 'earned' : ''}>
-            <span className="emoji" role="img" aria-label={b.name}>
-              {b.emoji}
-            </span>
-            <strong>{b.name}</strong>
-            <p>{b.description}</p>
-          </li>
-        ))}
-      </ul>
+      {loading ? (
+        <Spinner />
+      ) : (
+        <ul className="badge-list">
+          {badges.map(b => (
+            <li key={b.id} className={user.badges.includes(b.id) ? 'earned' : ''}>
+              <span className="emoji" role="img" aria-label={b.name}>
+                {b.emoji}
+              </span>
+              <strong>{b.name}</strong>
+              <p>{b.description}</p>
+            </li>
+          ))}
+        </ul>
+      )}
       <p style={{ textAlign: 'center', marginTop: '1rem' }}>
         <button
           type="button"
           onClick={() => {
             const earnedList = user.badges
               .map(id => {
-                const badge = BADGES.find(b => b.id === id)
+                const badge = badges.find(b => b.id === id)
                 return badge ? `${badge.emoji} ${badge.name}` : id
               })
               .join(', ')
