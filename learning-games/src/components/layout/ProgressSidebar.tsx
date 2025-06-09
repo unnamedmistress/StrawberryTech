@@ -15,10 +15,11 @@ export interface ProgressSidebarProps {
 export default function ProgressSidebar({ scores, badges }: ProgressSidebarProps = {}) {
   const { user } = useContext(UserContext)
 
-  const userScores = scores ?? user.scores
-  const userBadges = badges ?? user.badges
 
-  const totalPoints = getTotalPoints(userScores)
+
+  const totalPoints = getTotalPoints(user.scores)
+  const GOAL_POINTS = 300
+
   const celebrated = useRef(false)
   const [scoreEntries, setScoreEntries] = useState<ScoreEntry[]>([])
 
