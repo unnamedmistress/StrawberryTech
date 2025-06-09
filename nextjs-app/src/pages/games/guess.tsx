@@ -134,7 +134,7 @@ export default function PromptGuessEscape() {
 
   useEffect(() => {
     generateRoomDescription().then(text => setRoomDescription(text))
-  }, [])
+  }, [index])
 
   const clue = doors[index]
 
@@ -224,7 +224,6 @@ export default function PromptGuessEscape() {
       setStatus('')
       setHintIndex(0)
       setHintCount(0)
-      generateRoomDescription().then(text => setRoomDescription(text))
       setShowNext(false)
     } else {
       setPoints('escape', points)
