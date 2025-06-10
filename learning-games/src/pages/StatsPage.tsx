@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { getApiBase } from '../utils/api'
 
-interface ViewData {
+interface View {
   id: number
   visitorId: string | null
   user: string | null
@@ -15,7 +15,7 @@ interface ViewData {
 }
 
 export default function StatsPage() {
-  const [views, setViews] = useState<ViewData[]>([])
+  const [views, setViews] = useState<View[]>([])
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -53,7 +53,7 @@ export default function StatsPage() {
   const sessionViews = views.filter(v => typeof v.duration === 'number')
   const avgDuration = sessionViews.length
     ? Math.round(
-        sessionViews.reduce((sum, v) => sum + (v.duration || 0), 0) /
+        sessionViews.reduce((sum: number, v: View) => sum + (v.duration || 0), 0) /
           sessionViews.length /
           1000
       )
