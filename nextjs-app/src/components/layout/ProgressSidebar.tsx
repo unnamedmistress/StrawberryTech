@@ -50,11 +50,9 @@ export default function ProgressSidebar({ points, badges }: ProgressSidebarProps
   }
   const game = gameMap[slug] || 'darts'
 
-  const entries: (PointsEntry & { id?: string })[] = [
-    ...(leaderboards[game] ?? []),
-  ]
-  entries.push({ id: user.id, name: user.name ?? 'You', points: userPoints[game] ?? 0 })
-  entries.sort((a, b) => b.points - a.points)
+  const entries = (leaderboards[game] ?? [])
+    .concat({ id: user.id, name: user.name ?? 'You', points: userPoints[game] ?? 0 })
+    .sort((a, b) => b.points - a.points)
 
   const rank = entries.findIndex(e => e.id === user.id) + 1
   const leaderboard = entries.slice(0, 3)
