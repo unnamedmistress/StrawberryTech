@@ -55,7 +55,7 @@ export default function ProgressSidebar({ badges }: ProgressSidebarProps = {}) {
     .concat({ id: user.id, name: user.name ?? 'You', points: userScores[game] ?? 0 })
     .sort((a: PointsEntry, b: PointsEntry) => b.points - a.points)
 
-  const rank = entries.findIndex((e: any) => e.id === user.id) + 1
+  const rank = entries.findIndex((e: PointsEntry) => e.id === user.id) + 1
   const leaderboard = entries.slice(0, 3)
 
   return (
@@ -67,7 +67,7 @@ export default function ProgressSidebar({ badges }: ProgressSidebarProps = {}) {
         Goal: Reach {GOAL_POINTS} points to unlock a new badge!
       </p>
       <p aria-live="polite" aria-atomic="true">Badges Earned: {userBadges.length}</p>      <div className="badge-icons">
-        {userBadges.map((b: any) => (
+        {userBadges.map((b: string) => (
           <Tooltip key={b} message={b}>
             <span role="img" aria-label={b}>🏅</span>
           </Tooltip>
@@ -77,7 +77,7 @@ export default function ProgressSidebar({ badges }: ProgressSidebarProps = {}) {
       <h4 className="top-points-title">Top Points</h4>
       <div className="top-points-card">
         <ol className="top-points-list">
-          {leaderboard.map((entry: any, idx: any) => (
+          {leaderboard.map((entry: PointsEntry, idx: number) => (
             <li key={entry.name} className={idx === 0 ? 'top' : undefined}>
               {idx === 0 && <span aria-hidden="true">🏆 </span>}
               {entry.name}: {entry.points}
