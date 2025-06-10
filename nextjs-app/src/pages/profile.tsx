@@ -8,7 +8,7 @@ import { useLeaderboards, type PointsEntry } from '../../../shared/useLeaderboar
 import { getTotalPoints } from '../utils/user'
 
 
-import '../styles/ProfilePage.css'
+import styles from '../styles/ProfilePage.module.css'
 
 export default function ProfilePage() {
   const { user, setName, setAge, setDifficulty } = useContext(UserContext) as UserContextType
@@ -54,8 +54,8 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="profile-page">
-      <form className="profile-card" onSubmit={handleSubmit}>
+    <div className={styles['profile-page']}>
+      <form className={styles['profile-card']} onSubmit={handleSubmit}>
         <h2>Edit Profile</h2>
         <label htmlFor="name">Name</label>
         <input
@@ -85,11 +85,11 @@ export default function ProfilePage() {
         <ThemeToggle />
 
         <button type="submit">Save</button>
-        <Link href="/leaderboard" className="return-link">
+        <Link href="/leaderboard" className={styles['return-link']}>
           Return to Progress
         </Link>
       </form>
-      <div className="stats-card">
+      <div className={styles['stats-card']}>
         <h3>Your Progress</h3>
         <p>Total Points: {totalPoints}</p>
         <p>Badges Earned: {user.badges.length}</p>
@@ -103,7 +103,7 @@ export default function ProfilePage() {
           </div>
         )}
         {games.length > 0 && (
-          <table className="score-table">
+          <table className={styles['score-table']}>
             <thead>
               <tr>
                 <th>Game</th>

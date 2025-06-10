@@ -5,7 +5,7 @@ import { UserContext } from '../../../shared/UserContext'
 import type { UserContextType } from '../../../shared/types/user'
 import { useLeaderboards, type PointsEntry } from '../../../shared/useLeaderboards'
 import ProgressSidebar from '../components/layout/ProgressSidebar'
-import '../styles/LeaderboardPage.css'
+import styles from '../styles/LeaderboardPage.module.css'
 
 
 
@@ -56,12 +56,12 @@ export default function LeaderboardPage() {
     <div className="leaderboard-wrapper">
       <div>
         <h2>Leaderboard</h2>
-        <section className="leaderboard-card">
-          <div className="game-tabs">
+        <section className={styles['leaderboard-card']}>
+          <div className={styles['game-tabs']}>
             {tabs.map(key => (
               <button
                 key={key}
-                className={game === key ? 'active' : undefined}
+                className={game === key ? styles.active : undefined}
                 type="button"
                 onClick={() => setGame(key)}
               >
@@ -69,7 +69,7 @@ export default function LeaderboardPage() {
               </button>
             ))}
           </div>
-          <div className="search-box">
+          <div className={styles['search-box']}>
             <input
               type="text"
               placeholder="Search players"

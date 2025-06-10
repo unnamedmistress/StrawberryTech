@@ -3,7 +3,7 @@ import type { FormEvent } from 'react'
 import { useRouter } from 'next/router'
 import { UserContext } from '../../../shared/UserContext'
 import type { UserContextType } from '../../../shared/types/user'
-import '../styles/SplashPage.css'
+import styles from '../styles/SplashPage.module.css'
 
 export default function SplashPage() {
   const { user, setUser } = useContext(UserContext) as UserContextType
@@ -29,8 +29,8 @@ export default function SplashPage() {
   }
 
   return (
-    <div className="splash-container">
-      <div className="overlay">
+    <div className={styles['splash-container']}>
+      <div className={styles.overlay}>
         <h1>Welcome to StrawberryTech! 🍓</h1>
         <img
           src="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_12_36%20PM.png"
@@ -38,7 +38,7 @@ export default function SplashPage() {
           className="hero-img"
         />
         <p>Play while you learn.</p>
-        <form onSubmit={handleSubmit} className="start-form">
+        <form onSubmit={handleSubmit} className={styles['start-form']}>
           <input
             type="text"
             placeholder="Your name"
@@ -54,7 +54,7 @@ export default function SplashPage() {
             onChange={(e) => setAge(Number(e.target.value))}
             required
           />
-          <button type="submit" className="start-btn btn-primary">Begin Your Journey</button>
+          <button type="submit" className={`start-btn btn-primary ${styles['start-btn']}`}>Begin Your Journey</button>
         </form>
       </div>
     </div>

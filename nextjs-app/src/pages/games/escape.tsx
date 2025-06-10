@@ -13,7 +13,7 @@ import IntroOverlay from '../../components/ui/IntroOverlay'
 import { UserContext } from '../../../../shared/UserContext'
 import type { UserContextType } from '../../../../shared/types/user'
 import shuffle from '../../utils/shuffle'
-import '../../styles/ClarityEscapeRoom.css'
+import styles from '../../styles/ClarityEscapeRoom.module.css'
 import CompletionModal from '../../components/ui/CompletionModal'
 import { scorePrompt } from '../../utils/scorePrompt'
 import { generateRoomDescription } from '../../utils/generateRoomDescription'
@@ -321,23 +321,23 @@ export default function ClarityEscapeRoom() {
             content="https://strawberry-tech.vercel.app/games/escape"
           />
         </HeadTag>
-      <div className="escape-page">
+      <div>
       <InstructionBanner>Escape Room: Guess the Prompt</InstructionBanner>
-      <div className="escape-wrapper">
+      <div className={styles['escape-wrapper']}>
         <WhyCard
-          className="escape-sidebar"
+          className={styles['escape-sidebar']}
           title="Why Clarity Matters"
           explanation="Vague inputs lock AI in confusion loops; precise prompts open doors."
         />
-        <div className="room">
-          <div className="room-grid">
-            <div className="room-main">
+        <div className={styles.room}>
+          <div className={styles['room-grid']}>
+            <div className={styles['room-main']}>
               {roomDescription && (
-                <p className="room-description">{roomDescription}</p>
+                <p className={styles['room-description']}>{roomDescription}</p>
               )}
-              <p className="ai-response"><strong>AI Response:</strong> "{clue.aiResponse}"</p>
-              <p className="timer">Time left: {timeLeft}s</p>
-              <form onSubmit={handleSubmit} className="prompt-form">
+              <p className={styles['ai-response']}><strong>AI Response:</strong> "{clue.aiResponse}"</p>
+              <p className={styles.timer}>Time left: {timeLeft}s</p>
+              <form onSubmit={handleSubmit} className={styles['prompt-form']}>
                 <label htmlFor="prompt-input">Your prompt</label>
                 <input
                   id="prompt-input"
@@ -357,18 +357,18 @@ export default function ClarityEscapeRoom() {
                 <div>
                   {clue.hints.slice(0, hintIndex).map(h => (
                     <Tooltip key={h} message={h}>
-                      <span className="hint-text">{h}</span>
+                      <span className={styles['hint-text']}>{h}</span>
                     </Tooltip>
                   ))}
                   {aiHint && (
                     <Tooltip message={aiHint}>
-                      <span className="hint-text">{aiHint}</span>
+                      <span className={styles['hint-text']}>{aiHint}</span>
                     </Tooltip>
                   )}
                 </div>
               )}
               {message && (
-                <p className={`feedback ${status}`}>{status === 'success' ? '✔️' : '⚠️'} {message}</p>
+                <p className={`${styles.feedback} ${status}`}>{status === 'success' ? '✔️' : '⚠️'} {message}</p>
               )}
               {showNext && (
                 <DoorUnlockedModal
@@ -377,15 +377,15 @@ export default function ClarityEscapeRoom() {
                   onNext={nextChallenge}
                 />
               )}
-              <p className="score">Score: {points}</p>
+              <p className={styles.score}>Score: {points}</p>
             </div>
-            <div className="door-area">
+            <div className={styles['door-area']}>
               <DoorAnimation openPercent={openPercent} />
             </div>
           </div>
         </div>
         <ProgressSidebar />
-        <div className="next-area">
+        <div className={styles['next-area']}>
           <p style={{ marginTop: '1rem', textAlign: 'center' }}>
             <button
               className="btn-primary"
@@ -406,7 +406,7 @@ export default function ClarityEscapeRoom() {
           buttonLabel="Play Prompt Builder"
         >
           <h3>Escape Complete!</h3>
-          <p className="final-score">Points: {points}</p>
+          <p className={styles['final-score']}>Points: {points}</p>
         </CompletionModal>
       )}
     </div>

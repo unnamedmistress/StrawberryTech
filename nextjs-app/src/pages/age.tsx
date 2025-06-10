@@ -3,7 +3,7 @@ import type { FormEvent } from 'react'
 import Link from 'next/link'; import { useRouter } from 'next/router'
 import { UserContext } from '../../../shared/UserContext'
 import type { UserContextType } from '../../../shared/types/user'
-import '../styles/AgeInputForm.css'
+import styles from '../styles/AgeInputForm.module.css'
 
 /**
  * Form for collecting the user's age. Age is stored in context
@@ -45,7 +45,7 @@ export default function AgeInputForm({
   }
 
   return (
-    <div className="age-form">
+    <div className={styles['age-form']}>
       <form onSubmit={handleSubmit}>
         <label htmlFor="name">Enter your name:</label>
         <input

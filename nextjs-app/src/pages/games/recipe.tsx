@@ -16,7 +16,7 @@ import CompletionModal from '../../components/ui/CompletionModal'
 import { UserContext } from '../../../../shared/UserContext'
 import type { UserContextType } from '../../../../shared/types/user'
 import { getTimeLimit } from '../../utils/time'
-import '../../styles/PromptRecipeGame.css'
+import styles from '../../styles/PromptRecipeGame.module.css'
 
 export type Slot = 'Action' | 'Context' | 'Format' | 'Constraints'
 
@@ -433,7 +433,7 @@ export default function PromptRecipeGame() {
         buttonLabel="Play Prompt Darts"
       >
         <h3>You finished Prompt Builder!</h3>
-        <p className="final-score">Your points: {points}</p>
+        <p className={styles['final-score']}>Your points: {points}</p>
       </CompletionModal>
     )
   }
@@ -483,30 +483,30 @@ export default function PromptRecipeGame() {
             content="https://strawberry-tech.vercel.app/games/recipe"
           />
         </HeadTag>
-      <div className="recipe-page">
+      <div className={styles['recipe-page']}>
       <InstructionBanner>
         Drag each card to the category it best fits to build a clear AI prompt.
       </InstructionBanner>
-      <div className="recipe-wrapper">
+      <div className={styles['recipe-wrapper']}>
         <WhyCard
-          className="recipe-sidebar"
+          className={styles['recipe-sidebar']}
           title="Why Build Prompts?"
           explanation="Combining action, context, format and constraints clarifies intent."
           quote="Why Card: This page has potential but needs some polish to make it intuitive, clean, and engaging."
           tip="Arrange each ingredient to craft a clear request."
         />
-        <div className="recipe-game">
-          <div className="status-bar">
-            <span className="round-info">Round {round + 1} / {TOTAL_ROUNDS}</span>
+        <div className={styles['recipe-game']}>
+          <div className={styles['status-bar']}>
+            <span className={styles['round-info']}>Round {round + 1} / {TOTAL_ROUNDS}</span>
             <span className="score">Points: {points}</span>
             <span className="timer">Time: {timeLeft}s</span>
           </div>
           <TimerBar timeLeft={timeLeft} TOTAL_TIME={TOTAL_TIME} />
-          <div className="bowls">
+          <div className={styles.bowls}>
             {(['Action', 'Context', 'Format', 'Constraints'] as Slot[]).map(slot => (
               <div
                 key={slot}
-                className={`bowl${hoverSlot === slot ? ' hover' : ''}${hintSlot === slot ? ' hint' : ''}${feedback[slot] === 'correct' ? ' correct' : ''}${feedback[slot] === 'wrong' ? ' wrong' : ''}`}
+                className={`${styles.bowl}${hoverSlot === slot ? ' ' + styles.hover : ''}${hintSlot === slot ? ' ' + styles.hint : ''}${feedback[slot] === 'correct' ? ' ' + styles.correct : ''}${feedback[slot] === 'wrong' ? ' ' + styles.wrong : ''}`}
                 onDrop={e => handleDrop(slot, e)}
                 onDragOver={e => handleDragOver(slot, e)}
                 onDragLeave={handleDragLeave}
@@ -515,15 +515,15 @@ export default function PromptRecipeGame() {
                 onKeyDown={e => handleBowlKeyDown(slot, e)}
               >
                 <strong>{slot}</strong>
-                <div className="bowl-content">{dropped[slot] || 'Drop here'}</div>
+                <div className={styles['bowl-content']}>{dropped[slot] || 'Drop here'}</div>
               </div>
             ))}
           </div>
-          <div className="cards">
+          <div className={styles.cards}>
             {cards.map(card => (
               <Tooltip key={card.text} message={`Add the ${card.type.toLowerCase()}` }>
                 <motion.div
-                  className={`card${selectedCard?.text === card.text ? ' selected' : ''}`}
+                  className={`${styles.card}${selectedCard?.text === card.text ? ' ' + styles.selected : ''}`}
                   draggable
                   tabIndex={0}
                   role="button"
@@ -543,7 +543,7 @@ export default function PromptRecipeGame() {
               </Tooltip>
             ))}
           </div>
-          <div className="game-actions">
+          <div className={styles['game-actions']}>
             <button className="btn-primary" onClick={showHint}>Hint</button>
             <button
               className="btn-primary"
@@ -555,16 +555,16 @@ export default function PromptRecipeGame() {
             <button className="btn-primary" onClick={clearRound}>Reset</button>
           </div>
           {showPrompt && (
-            <div className="plate">
+            <div className={styles.plate}>
               <h3>Your Prompt</h3>
               <p>{promptText}</p>
-              {example && <p className="sample-output">{example}</p>}
+              {example && <p className={styles['sample-output']}>{example}</p>}
               <img
-                className="prompt-image"
+                className={styles['prompt-image']}
                 src="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_19_23%20PM.png"
                 alt="Prompt recipe builder strawberry chef tossing cards labeled Action, Context, Format, Constraints."
               />
-              <button className="btn-primary copy-btn" onClick={copyPrompt}>
+              <button className={`btn-primary ${styles['copy-btn']}`} onClick={copyPrompt}>
                 Copy Prompt
               </button>
             </div>
@@ -572,11 +572,11 @@ export default function PromptRecipeGame() {
         </div>
         <ProgressSidebar />
         {showPrompt && (
-          <div className="next-area">
+          <div className={styles['next-area']}>
             <button className="btn-primary" onClick={nextRound}>Next Recipe</button>
           </div>
         )}
-        <div className="next-area">
+        <div className={styles['next-area']}>
           <p style={{ marginTop: '1rem', textAlign: 'center' }}>
             <button
               className="btn-primary"

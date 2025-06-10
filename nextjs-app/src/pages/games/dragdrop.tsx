@@ -5,7 +5,7 @@ import GamePageLayout from '../../components/layout/GamePageLayout'
 import WhyCard from '../../components/layout/WhyCard'
 import { UserContext } from '../../../../shared/UserContext'
 import type { UserContextType } from '../../../../shared/types/user'
-import '../../styles/DragDropGame.css'
+import styles from '../../styles/DragDropGame.module.css'
 import JsonLd from '../../components/seo/JsonLd'
 
 const tones = [
@@ -79,8 +79,8 @@ export default function DragDropGame() {
             'https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_19_23%20PM.png',
         }}
       />
-      <div className="dragdrop-page">
-      <div className="dragdrop-wrapper">
+      <div className={styles['dragdrop-page']}>
+      <div className={styles['dragdrop-wrapper']}>
         <GamePageLayout
           imageSrc="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_19_23%20PM.png"
           imageAlt="Tone game illustration"
@@ -94,17 +94,17 @@ export default function DragDropGame() {
           onCTAClick={() => {}}
           ctaText="Start Playing"
         >
-          <div className="dragdrop-game clearfix">
+          <div className={`${styles['dragdrop-game']} clearfix`}>
             <h2>Drag a tone into the blank</h2>
             <img
               src="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_19_23%20PM.png"
               alt="Tone game illustration"
               className="game-card-image"
             />
-            <p className="sentence game-text">
+            <p className={`${styles.sentence} game-text`}>
               Write a
               <span
-                className="drop-area"
+                className={styles['drop-area']}
                 onDrop={handleDrop}
                 onDragOver={handleDragOver}
               >
@@ -112,24 +112,24 @@ export default function DragDropGame() {
               </span>
               short text to my manager calling out of work sick today.
             </p>
-            <div className="word-bank">
+            <div className={styles['word-bank']}>
               {tones.map((tone) => (
                 <div
                   key={tone}
                   draggable
                   onDragStart={(e) => handleDragStart(e, tone)}
-                  className="word"
+                  className={styles.word}
                 >
                   {tone}
                 </div>
               ))}
             </div>
             {selected && (
-              <div className="response">
+              <div className={styles.response}>
                 <h3>AI Response</h3>
                 <p>{examples[selected]}</p>
                 {!submitted && (
-                  <div className="message-input">
+                  <div className={styles['message-input']}>
                     <textarea
                       value={userMessage}
                       onChange={(e) => setUserMessage(e.target.value)}
@@ -150,13 +150,13 @@ export default function DragDropGame() {
               </div>
             )}
             {used.size === tones.length && (
-              <div className="quiz">
+              <div className={styles.quiz}>
                 <h3>Quick test</h3>
                 <p>
                   What tone should you use when writing a message to your boss
                   that you will be out of work sick today?
                 </p>
-                <div className="options">
+                <div className={styles.options}>
                   {tones.map((tone) => (
                     <button
                       key={tone}
@@ -169,7 +169,7 @@ export default function DragDropGame() {
                   ))}
                 </div>
                 {quizAnswer && (
-                  <p className="feedback">
+                  <p className={styles.feedback}>
                     {quizAnswer === 'Polite'
                       ? 'Correct! A polite tone is best for informing your boss.'
                       : 'Not quite. A polite tone is usually most appropriate.'}
@@ -181,7 +181,7 @@ export default function DragDropGame() {
         </GamePageLayout>
         <ProgressSidebar />
       </div>
-      <div className="next-area">
+      <div className={styles['next-area']}>
         <p>
           <Link href="/leaderboard">Return to Progress</Link>
         </p>

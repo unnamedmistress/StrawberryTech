@@ -10,7 +10,7 @@ import ProgressSidebar from '../../components/layout/ProgressSidebar'
 import { UserContext } from '../../../../shared/UserContext'
 import type { UserContextType } from '../../../../shared/types/user'
 import JsonLd from '../../components/seo/JsonLd'
-import '../../styles/ComposeTweetGame.css'
+import styles from '../../styles/ComposeTweetGame.module.css'
 import CompletionModal from '../../components/ui/CompletionModal'
 
 const SAMPLE_RESPONSE =
@@ -132,20 +132,20 @@ export default function ComposeTweetGame() {
       />
       <div className="compose-page clearfix">
       <InstructionBanner>Guess the Prompt</InstructionBanner>
-      <div className="compose-wrapper">
-        <aside className="compose-sidebar">
-          <p className="timer">Time left: {timeLeft}s</p>
+      <div className={styles['compose-wrapper']}>
+        <aside className={styles['compose-sidebar']}>
+          <p className={styles.timer}>Time left: {timeLeft}s</p>
         </aside>
-        <div className="compose-game">
+        <div className={styles['compose-game']}>
           <img
             src="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_16_34%20PM.png"
             alt="Earlier prompt recipe builder with similar strawberry chef and cards."
             className="game-card-image"
           />
-          <div className="ai-box" aria-live="polite">
+          <div className={styles['ai-box']} aria-live="polite">
             {pair.response}
           </div>
-          <form onSubmit={handleSubmit} className="prompt-form">
+          <form onSubmit={handleSubmit} className={styles['prompt-form']}>
             <label htmlFor="prompt-input">Your guess</label>
             <input
               id="prompt-input"
@@ -166,13 +166,13 @@ export default function ComposeTweetGame() {
               Hint
             </button>
           </form>
-          {feedback && <p className="feedback">{feedback}</p>}
+          {feedback && <p className={styles.feedback}>{feedback}</p>}
           {points !== null && (
-            <p className="final-score" aria-live="polite">
+            <p className={styles['final-score']} aria-live="polite">
               Your points: {points}
             </p>
           )}
-          <div className="door-area">
+          <div className={styles['door-area']}>
             <img
               src={doorUnlocked ? '/images/door-open.png' : '/images/door-closed.png'}
               alt={doorUnlocked ? 'Door unlocked' : 'Door locked'}
@@ -188,7 +188,7 @@ export default function ComposeTweetGame() {
               />
             )}
             {doorUnlocked && (
-              <p className="prompt-tip" role="status" aria-live="polite">
+              <p className={styles['prompt-tip']} role="status" aria-live="polite">
                 {PROMPT_TIPS[tipIndex]}
               </p>
             )}
@@ -200,7 +200,7 @@ export default function ComposeTweetGame() {
           )}
         </div>
         <ProgressSidebar />
-        <div className="next-area">
+        <div className={styles['next-area']}>
           <p style={{ marginTop: '1rem', textAlign: 'center' }}>
             <button
               className="btn-primary"
@@ -223,7 +223,7 @@ export default function ComposeTweetGame() {
       >
         <h3>All prompts complete!</h3>
         {points !== null && (
-          <p className="final-score" aria-live="polite">Your points: {points}</p>
+          <p className={styles['final-score']} aria-live="polite">Your points: {points}</p>
         )}
       </CompletionModal>
     )}

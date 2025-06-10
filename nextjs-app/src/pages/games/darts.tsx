@@ -9,7 +9,7 @@ import { UserContext } from '../../../../shared/UserContext'
 import type { UserContextType } from '../../../../shared/types/user'
 import shuffle from '../../utils/shuffle'
 import { getTimeLimit } from '../../utils/time'
-import '../../styles/PromptDartsGame.css'
+import styles from '../../styles/PromptDartsGame.module.css'
 import HeadTag from 'next/head'
 import JsonLd from '../../components/seo/JsonLd'
 import CompletionModal from '../../components/ui/CompletionModal'
@@ -37,7 +37,7 @@ function highlightPrompt(text: string) {
     const clean = word.toLowerCase().replace(/[^a-z0-9]/g, '')
     const highlight = KEYWORDS.includes(clean) || /\d/.test(word)
     return (
-      <span key={i} className={highlight ? 'hint-highlight' : undefined}>{word} </span>
+      <span key={i} className={highlight ? styles['hint-highlight'] : undefined}>{word} </span>
     )
   })
 }
@@ -404,7 +404,7 @@ export default function PromptDartsGame() {
 
   if (!rounds.length) {
     return (
-      <div className="darts-page">
+      <div className={styles['darts-page']}>
         <InstructionBanner>Loading rounds...</InstructionBanner>
       </div>
     )
@@ -412,14 +412,14 @@ export default function PromptDartsGame() {
 
   if (round >= rounds.length) {
     return (
-      <div className="darts-page">
+      <div className={styles['darts-page']}>
         <CompletionModal
           imageSrc="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_24_00%20PM.png"
           buttonHref="/games/compose"
           buttonLabel="Play Compose Tweet"
         >
           <h3>Congratulations!</h3>
-          <p className="final-score">Your points: {score}</p>
+          <p className={styles['final-score']}>Your points: {score}</p>
         </CompletionModal>
       </div>
     )
@@ -467,19 +467,19 @@ export default function PromptDartsGame() {
           content="https://strawberry-tech.vercel.app/games/darts"
         />
       </HeadTag>
-      <div className="darts-page">
+      <div className={styles['darts-page']}>
       <InstructionBanner>
         Choose the clearer prompt that best targets the requested format.
       </InstructionBanner>
-      <div className="darts-wrapper">
+      <div className={styles['darts-wrapper']}>
         <WhyCard
-          className="darts-sidebar"
+          className={styles['darts-sidebar']}
           title="Why Clarity Matters"
           explanation="The clearer your target, the better your aim. Clear prompts act like aiming sights for AI."
           quote="Why Card: Why Clarity Matters"
           tip="Align prompt language with output types (teaching specificity and clarity)."
         />
-        <div className="darts-game">
+        <div className={styles['darts-game']}>
           <img
             src="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_24_00%20PM.png"
             alt="Strawberry throwing dart hitting 'Clear Prompt' bullseye on prompt darts target."
@@ -493,7 +493,7 @@ export default function PromptDartsGame() {
           <p className="points">Available points: {pointsLeft}</p>
 
           <p>Which prompt is clearer?</p>
-          <div className="options">
+          <div className={styles.options}>
 
 
             {choices.map((text, i) => (
@@ -516,11 +516,11 @@ export default function PromptDartsGame() {
           >
             Hint
           </button>
-          {hint && <p className="hint-text">{hint}</p>}
+          {hint && <p className={styles['hint-text']}>{hint}</p>}
           {choice !== null && (
 
             <>
-              <p className="feedback">
+              <p className={styles.feedback}>
                 {checkChoice(current, choice!)
                   ? 'Correct! Clear prompts hit the bullseye.'
                   : 'Not quite. Aim for specific wording.'}
@@ -529,18 +529,18 @@ export default function PromptDartsGame() {
                 <p className="penalty">{penaltyMsg}</p>
               )}
 
-              <p className="why-message">{current.why}</p>
-              <pre className="canned-response">{current.response}</pre>
+              <p className={styles['why-message']}>{current.why}</p>
+              <pre className={styles['canned-response']}>{current.response}</pre>
 
             </>
 
           )}
           {timeLeft === 0 && choice === null && (
-            <p className="feedback">Time's up! No points this round.</p>
+            <p className={styles.feedback}>Time's up! No points this round.</p>
           )}
         </div>
         <ProgressSidebar />
-        <div className="next-area">
+        <div className={styles['next-area']}>
           {choice !== null && (
             <button className="btn-primary" onClick={next}>
               {round + 1 < rounds.length ? 'Next Round' : 'Finish'}
