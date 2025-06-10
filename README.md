@@ -22,7 +22,8 @@ Drag cards to assemble a prompt. Each round now fetches fresh card text from the
 - High contrast theme preference persists via `ThemeToggle`.
 - A unified leaderboard with tabs displays top points for every game.
 - A dedicated Badges page lets you track all achievements.
-- A hidden `/stats` page displays live visitor analytics collected on the server.
+- A hidden `/stats` page displays server-recorded metrics, while page views
+  are automatically tracked by **Vercel Analytics**.
 - A prompt library lets everyone browse shared prompts by category and submit their own ideas.
 - A community feedback page highlights positive comments from players.
 
@@ -72,9 +73,10 @@ Without installing the packages first the `vitest` command used by
 
 ### Visitor Statistics
 
-Analytics data is now stored by the server in **Firebase Firestore**. Open the hidden
-`/stats` page while the server is running to see live counts of page views,
-unique visitors, and average session length.
+Page views are now logged automatically by **Vercel Analytics**.
+The server still stores its own metrics in **Firebase Firestore**; open the hidden
+`/stats` page while the server is running to see counts of page views, unique visitors
+and average session length.
 
 ## Environment Variables
 RobotChat and the Prompt Recipe Builder use the OpenAI API. Create a `.env` file inside `learning-games` containing:
