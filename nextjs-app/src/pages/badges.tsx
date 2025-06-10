@@ -1,12 +1,13 @@
 import { useContext, useEffect, useState } from 'react'
 import Link from 'next/link'
 import { UserContext } from '../../../shared/UserContext'
+import type { UserContextType } from '../../../shared/types/user'
 import Spinner from '../components/ui/Spinner'
 import { getApiBase } from '../utils/api'
 import '../styles/BadgesPage.css'
 
 export default function BadgesPage() {
-  const { user } = useContext(UserContext)
+  const { user } = useContext(UserContext) as UserContextType
   interface BadgeDefinition {
     id: string
     name: string

@@ -4,6 +4,7 @@ import Link from 'next/link'
 import Post from '../components/Post'
 import type { PostData } from '../components/Post'
 import { UserContext } from '../../../shared/UserContext'
+import type { UserContextType } from '../../../shared/types/user'
 import styles from '../styles/CommunityPage.module.css'
 import { getApiBase } from '../utils/api'
 
@@ -21,7 +22,7 @@ const initialPosts: PostData[] = [
 ]
 
 export default function CommunityPage() {
-  const { user } = useContext(UserContext)
+  const { user } = useContext(UserContext) as UserContextType
   const [posts, setPosts] = useState<PostData[]>(() => {
     const saved = typeof window !== 'undefined' ? localStorage.getItem(STORAGE_KEY) : null
     if (saved) {

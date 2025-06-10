@@ -7,6 +7,7 @@ import HeadTag from "next/head";
 import JsonLd from "../../components/seo/JsonLd";
 
 import { UserContext } from "../../../../shared/UserContext";
+import type { UserContextType } from "../../../../shared/types/user";
 import RobotChat from "../../components/RobotChat";
 import InstructionBanner from "../../components/ui/InstructionBanner";
 import WhyCard from "../../components/layout/WhyCard";
@@ -170,7 +171,7 @@ export function checkMatches(
 }
 
 function ToneMatchGame({ onComplete }: { onComplete: (score: number) => void }) {
-  const { setPoints: recordScore } = useContext(UserContext)
+  const { setPoints: recordScore } = useContext(UserContext) as UserContextType
   const [selected, setSelected] = useState<Tone | null>(null)
   const [used, setUsed] = useState<Set<Tone>>(new Set())
   const [quizAnswer, setQuizAnswer] = useState<Tone | null>(null)
@@ -282,7 +283,7 @@ function ToneMatchGame({ onComplete }: { onComplete: (score: number) => void }) 
  * show an age-based leadership tip.
  */
 export default function Match3Game() {
-  const { user, addBadge } = useContext(UserContext)
+  const { user, addBadge } = useContext(UserContext) as UserContextType
   const router = useRouter()
   const [sidebarQuote] = useState(
     () => quotes[Math.floor(Math.random() * quotes.length)],

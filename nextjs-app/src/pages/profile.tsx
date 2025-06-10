@@ -2,6 +2,7 @@ import { useContext, useState, useMemo } from 'react'
 import Link from 'next/link'
 import { notify } from '../../../shared/notify'
 import { UserContext } from '../../../shared/UserContext'
+import type { UserContextType } from '../../../shared/types/user'
 import ThemeToggle from '../components/layout/ThemeToggle'
 import { useLeaderboards, type PointsEntry } from '../../../shared/useLeaderboards'
 import { getTotalPoints } from '../utils/user'
@@ -10,7 +11,7 @@ import { getTotalPoints } from '../utils/user'
 import '../styles/ProfilePage.css'
 
 export default function ProfilePage() {
-  const { user, setName, setAge, setDifficulty } = useContext(UserContext)
+  const { user, setName, setAge, setDifficulty } = useContext(UserContext) as UserContextType
   const [name, setNameState] = useState(user.name ?? '')
   const [age, setAgeState] = useState<string>(user.age ? String(user.age) : '')
   const [difficulty, setDifficultyState] = useState(user.difficulty)

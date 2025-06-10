@@ -4,6 +4,7 @@ import ProgressSidebar from '../../components/layout/ProgressSidebar'
 import GamePageLayout from '../../components/layout/GamePageLayout'
 import WhyCard from '../../components/layout/WhyCard'
 import { UserContext } from '../../../../shared/UserContext'
+import type { UserContextType } from '../../../../shared/types/user'
 import '../../styles/DragDropGame.css'
 import JsonLd from '../../components/seo/JsonLd'
 
@@ -39,7 +40,7 @@ export default function DragDropGame() {
   const [quizAnswer, setQuizAnswer] = useState<Tone | null>(null)
   const [userMessage, setUserMessage] = useState('')
   const [submitted, setSubmitted] = useState(false)
-  const { user } = useContext(UserContext)
+  const { user } = useContext(UserContext) as UserContextType
 
   function handleDragStart(e: React.DragEvent<HTMLDivElement>, tone: Tone) {
     e.dataTransfer.setData('text/plain', tone)

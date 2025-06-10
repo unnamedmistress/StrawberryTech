@@ -9,6 +9,7 @@ import DoorUnlockedModal from '../../components/ui/DoorUnlockedModal'
 import ProgressSidebar from '../../components/layout/ProgressSidebar'
 import WhyCard from '../../components/layout/WhyCard'
 import { UserContext } from '../../../../shared/UserContext'
+import type { UserContextType } from '../../../../shared/types/user'
 import shuffle from '../../utils/shuffle'
 import '../../styles/PromptGuessEscape.css'
 import { scorePrompt } from '../../utils/scorePrompt'
@@ -115,7 +116,7 @@ const EXTRA_TIME = 10
 
 export default function PromptGuessEscape() {
   const navigate = useRouter()
-  const { setPoints: recordScore } = useContext(UserContext)
+  const { setPoints: recordScore } = useContext(UserContext) as UserContextType
   const [doors] = useState(() => shuffle(CLUES).slice(0, TOTAL_STEPS))
   const [index, setIndex] = useState(0)
   const [input, setInput] = useState('')

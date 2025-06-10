@@ -7,6 +7,7 @@ import Link from 'next/link'; import { useRouter } from 'next/router'
 import CompletionModal from '../../components/ui/CompletionModal'
 import HeadTag from 'next/head'
 import { UserContext } from '../../../../shared/UserContext'
+import type { UserContextType } from '../../../../shared/types/user'
 import '../../styles/QuizGame.css'
 import InstructionBanner from '../../components/ui/InstructionBanner'
 import { HALLUCINATION_EXAMPLES } from '../../data/hallucinationExamples'
@@ -128,7 +129,7 @@ function ChatBox() {
 }
 
 export default function QuizGame() {
-  const { user, setPoints, addBadge } = useContext(UserContext)
+  const { user, setPoints, addBadge } = useContext(UserContext) as UserContextType
   const navigate = useRouter()
   const [round, setRound] = useState(0)
   const [choice, setChoice] = useState<number | null>(null)
