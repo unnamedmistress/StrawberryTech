@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import './Tooltip.css'
+import styles from './Tooltip.module.css'
 
 export interface TooltipProps {
   message: string
@@ -11,14 +11,14 @@ export default function Tooltip({ message, children }: TooltipProps) {
 
   return (
     <span
-      className="tooltip-wrapper"
+      className={styles['tooltip-wrapper']}
       onMouseEnter={() => setVisible(true)}
       onMouseLeave={() => setVisible(false)}
       onFocus={() => setVisible(true)}
       onBlur={() => setVisible(false)}
     >
       {children}
-      {visible && <span className="tooltip">{message}</span>}
+      {visible && <span className={styles.tooltip}>{message}</span>}
     </span>
   )
 }

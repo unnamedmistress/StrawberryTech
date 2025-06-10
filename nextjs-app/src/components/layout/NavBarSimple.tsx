@@ -1,5 +1,5 @@
 import React from 'react'
-import './NavBarSimple.css'
+import styles from './NavBarSimple.module.css'
 
 export interface NavLink {
   label: string
@@ -20,11 +20,11 @@ const NavBarSimple: React.FC<NavBarSimpleProps> = ({
   onSurpriseHover,
 }) => {
   return (
-    <nav className="navbar-simple" role="navigation" aria-label="Main navigation">
-      <div className="navbar-logo">
+    <nav className={styles['navbar-simple']} role="navigation" aria-label="Main navigation">
+      <div className={styles['navbar-logo']}>
         <img src={logoSrc} alt={logoAlt} />
       </div>
-      <ul className="navbar-links">
+      <ul className={styles['navbar-links']}>
         {links.map(({ label, href }) => (
           <li key={label}>
             <a href={href} onMouseOver={onSurpriseHover}>
