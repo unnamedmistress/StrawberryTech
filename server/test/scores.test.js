@@ -1,3 +1,4 @@
+process.env.USE_LOCAL_STORE = 'true';
 const request = require('supertest');
 const app = require('../index');
 const { test, beforeEach } = require('node:test');
