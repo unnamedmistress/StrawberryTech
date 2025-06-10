@@ -417,14 +417,22 @@ app.post('/api/scores/:game', async (req, res) => {
   res.json(entries);
 });
 
-// Serve a friendly 404 page for any unknown route
-app.use((req, res) => {
-  res.status(404).sendFile(path.join(__dirname, '404.html'));
-});
-
 if (require.main === module) {
-  app.listen(PORT, () => {
-    console.log(`Server listening on port ${PORT}`);
+  const next = require('next');
+  const dev = process.env.NODE_ENV !== 'production';
+  const nextApp = next({ dev, dir: path.join(__dirname, '../nextjs-app') });
+  const handle = nextApp.getRequestHandler();
+
+  nextApp.prepare().then(() => {
+    app.all('*', (req, res) => handle(req, res));
+    app.listen(PORT, () => {
+      console.log(`Server and Next.js listening on port ${PORT}`);
+    });
+  });
+} else {
+  // Serve a friendly 404 page for any unknown route when running only the API
+  app.use((req, res) => {
+    res.status(404).sendFile(path.join(__dirname, '404.html'));
   });
 }
 
