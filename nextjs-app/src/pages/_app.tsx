@@ -8,7 +8,7 @@ import { Analytics } from '@vercel/analytics/next'
 import ScrollToTop from '../components/ScrollToTop'
 import '../styles/index.css'
 import '../styles/App.css'
-import '../app/globals.css'
+import '../styles/globals.css'
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   const description =

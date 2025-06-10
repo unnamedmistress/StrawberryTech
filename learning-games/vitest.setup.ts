@@ -3,6 +3,7 @@ import { vi, beforeAll } from 'vitest'
 globalThis.alert = vi.fn()
 
 beforeAll(() => {
-  ;(import.meta.env as unknown as { VITE_API_BASE: string }).VITE_API_BASE =
+
+  ;(import.meta.env as { [key: string]: string }).VITE_API_BASE =
     'http://mock-api.local'
 })
