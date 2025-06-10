@@ -6,5 +6,7 @@
       "use": "@vercel/next"
     }
   ],
-  "routes": []
+  "routes": [
+    { "src": "/(.*)", "dest": "nextjs-app/$1" }
+  ]
 }
