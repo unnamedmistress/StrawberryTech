@@ -4,6 +4,7 @@ import fs from 'fs'
 
 let serviceAccount: any
 const envCred = process.env.FIREBASE_SERVICE_ACCOUNT || process.env.GOOGLE_APPLICATION_CREDENTIALS
+
 if (envCred) {
   try {
     let trimmed = envCred.trim()
@@ -11,6 +12,7 @@ if (envCred) {
     if ((trimmed.startsWith('"') && trimmed.endsWith('"')) || (trimmed.startsWith("'") && trimmed.endsWith("'"))) {
       trimmed = trimmed.slice(1, -1)
     }
+    
     if (trimmed.startsWith('{')) {
       serviceAccount = JSON.parse(trimmed)
     } else {
@@ -21,14 +23,18 @@ if (envCred) {
       serviceAccount = JSON.parse(fileContent)
     }
   } catch (err) {
-    console.error('Failed to load Firebase credentials', err)
+    console.error('Failed to load Firebase credentials:', err)
   }
 }
 
 if (!admin.apps.length) {
-  admin.initializeApp(
-    serviceAccount ? { credential: admin.credential.cert(serviceAccount) } : {}
-  )
+  if (serviceAccount) {
+    admin.initializeApp({ credential: admin.credential.cert(serviceAccount) })
+  } else {
+    admin.initializeApp()
+  }
 }
 
-export default admin.firestore()
+const firestore = admin.firestore();
+
+export default firestore

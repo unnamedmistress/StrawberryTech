@@ -23,20 +23,22 @@ const initialPosts: PostData[] = [
 
 export default function CommunityPage() {
   const { user } = useContext(UserContext) as UserContextType
-  const [posts, setPosts] = useState<PostData[]>(() => {
-    const saved = typeof window !== 'undefined' ? localStorage.getItem(STORAGE_KEY) : null
-    if (saved) {
-      try {
-        return JSON.parse(saved) as PostData[]
-      } catch {
-        return initialPosts
-      }
-    }
-    return initialPosts
-  })
+  const [posts, setPosts] = useState<PostData[]>(initialPosts)
   const [message, setMessage] = useState('')
   const [error, setError] = useState('')
   const [notice, setNotice] = useState('')
+
+  // Load from localStorage after mount to prevent hydration issues
+  useEffect(() => {
+    const saved = localStorage.getItem(STORAGE_KEY)
+    if (saved) {
+      try {
+        setPosts(JSON.parse(saved) as PostData[])
+      } catch {
+        setPosts(initialPosts)
+      }
+    }
+  }, [])
 
 
   useEffect(() => {
