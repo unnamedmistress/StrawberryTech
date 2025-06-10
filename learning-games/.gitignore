@@ -37,3 +37,6 @@ strawberrytech-*.json
 *.key
 *.pem
 config/secrets.*
+
+.vercel
+.env*.local
