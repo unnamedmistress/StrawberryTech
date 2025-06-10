@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import './DoorUnlockedModal.css'
+import styles from './DoorUnlockedModal.module.css'
 
 export interface DoorUnlockedModalProps {
   points: number
@@ -14,11 +14,11 @@ export default function DoorUnlockedModal({ points, remaining, onNext }: DoorUnl
   }, [onNext])
 
   return (
-    <div className="door-unlocked-overlay" role="dialog" aria-modal="true">
-      <div className="door-unlocked-modal">
+    <div className={styles['door-unlocked-overlay']} role="dialog" aria-modal="true">
+      <div className={styles['door-unlocked-modal']}>
         <h3>Door Unlocked!</h3>
-        <p className="modal-points">+{points} points</p>
-        <p className="modal-remaining">{remaining} doors remaining</p>
+        <p className={styles['modal-points']}>+{points} points</p>
+        <p className={styles['modal-remaining']}>{remaining} doors remaining</p>
         <button className="btn-primary" onClick={onNext}>
           Next Challenge
         </button>

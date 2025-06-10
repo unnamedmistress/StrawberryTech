@@ -1,4 +1,4 @@
-import './IntroOverlay.css'
+import styles from './IntroOverlay.module.css'
 
 export interface IntroOverlayProps {
   onClose: () => void
@@ -6,8 +6,8 @@ export interface IntroOverlayProps {
 
 export default function IntroOverlay({ onClose }: IntroOverlayProps) {
   return (
-    <div className="intro-overlay" role="dialog" aria-modal="true">
-      <div className="intro-modal">
+    <div className={styles['intro-overlay']} role="dialog" aria-modal="true">
+      <div className={styles['intro-modal']}>
         <h2>How to Play</h2>
         <ul>
           <li>Objective: guess the original prompt that led to the AI response.</li>

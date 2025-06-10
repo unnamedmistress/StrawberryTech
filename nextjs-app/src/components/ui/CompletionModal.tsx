@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import './CompletionModal.css'
+import styles from './CompletionModal.module.css'
 
 export interface CompletionModalProps {
   imageSrc: string
@@ -15,15 +15,15 @@ export default function CompletionModal({
   children,
 }: CompletionModalProps) {
   return (
-    <div className="completion-overlay">
-      <div className="completion-modal" role="dialog" aria-modal="true">
-        <img src={imageSrc} alt="Completion image" className="completion-img" />
+    <div className={styles['completion-overlay']}>
+      <div className={styles['completion-modal']} role="dialog" aria-modal="true">
+        <img src={imageSrc} alt="Completion image" className={styles['completion-img']} />
         {children}
         <Link href={buttonHref} className="btn-primary" style={{ display: 'block', marginTop: '0.5rem' }}>
           {buttonLabel}
         </Link>
         <a
-          className="coffee-link"
+          className={styles['coffee-link']}
           href="https://coff.ee/strawberrytech"
           target="_blank"
           rel="noopener noreferrer"
