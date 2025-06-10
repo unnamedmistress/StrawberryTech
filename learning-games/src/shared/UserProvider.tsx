@@ -95,7 +95,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
         }).catch(err => console.error('Failed to save score', err))
       }
     },
-    [user.name],
+    [user.name, user.id],
   )
 
   const addBadge = useCallback((badge: string) => {
