@@ -11,7 +11,7 @@ import WhyCard from '../../components/layout/WhyCard'
 import { UserContext } from '../../../../shared/UserContext'
 import type { UserContextType } from '../../../../shared/types/user'
 import shuffle from '../../utils/shuffle'
-import '../../styles/PromptGuessEscape.css'
+import styles from '../../styles/PromptGuessEscape.module.css'
 import { scorePrompt } from '../../utils/scorePrompt'
 import { generateRoomDescription } from '../../utils/generateRoomDescription'
 import JsonLd from '../../components/seo/JsonLd'
@@ -258,19 +258,19 @@ export default function PromptGuessEscape() {
       />
       <div className="guess-page">
       <InstructionBanner>Escape Room: Guess the Prompt</InstructionBanner>
-      <div className="guess-wrapper">
+      <div className={styles['guess-wrapper']}>
         <WhyCard
-          className="guess-sidebar"
+          className={styles['guess-sidebar']}
           title="Why Clarity Matters"
           explanation="Vague inputs lock AI in confusion loops; precise prompts open doors."
         />
-        <div className="guess-game">
+        <div className={styles['guess-game']}>
           {roomDescription && (
             <p className="room-description">{roomDescription}</p>
           )}
-          <p className="ai-response"><strong>AI Response:</strong> "{clue.aiResponse}"</p>
-          <p className="timer">Time left: {timeLeft}s</p>
-          <form onSubmit={handleSubmit} className="prompt-form">
+          <p className={styles['ai-response']}><strong>AI Response:</strong> "{clue.aiResponse}"</p>
+          <p className={styles.timer}>Time left: {timeLeft}s</p>
+          <form onSubmit={handleSubmit} className={styles['prompt-form']}>
             <label htmlFor="prompt-input">Your Prompt</label>
             <input
               id="prompt-input"
@@ -290,13 +290,13 @@ export default function PromptGuessEscape() {
             <div>
               {clue.hints.slice(0, hintIndex).map(h => (
                 <Tooltip key={h} message={h}>
-                  <span className="hint-text">{h}</span>
+                  <span className={styles['hint-text']}>{h}</span>
                 </Tooltip>
               ))}
             </div>
           )}
           {message && (
-            <p className={`feedback ${status}`}>{status === 'success' ? '✔️' : '⚠️'} {message}</p>
+            <p className={`${styles.feedback} ${status}`}>{status === 'success' ? '✔️' : '⚠️'} {message}</p>
           )}
           {showNext && (
             <DoorUnlockedModal
@@ -306,16 +306,16 @@ export default function PromptGuessEscape() {
             />
           )}
         </div>
-        <div className="door-area">
+        <div className={styles['door-area']}>
           <DoorAnimation openPercent={openPercent} />
         </div>
         <ProgressSidebar />
       </div>
       {showTip && (
-        <div className="summary-overlay" onClick={() => {}}>
-          <div className="summary-modal" onClick={e => e.stopPropagation()}>
+        <div className={styles['summary-overlay']} onClick={() => {}}>
+          <div className={styles['summary-modal']} onClick={e => e.stopPropagation()}>
             <p>You earned {earned} points!</p>
-            <p className="tip"><strong>Tip:</strong> {currentTip}</p>
+            <p className={styles.tip}><strong>Tip:</strong> {currentTip}</p>
             <button className="btn-primary" onClick={() => { setShowTip(false); nextChallenge(); }}>
               Continue
             </button>
@@ -323,15 +323,15 @@ export default function PromptGuessEscape() {
         </div>
       )}
       {showSummary && (
-        <div className="summary-overlay" onClick={() => setShowSummary(false)}>
-          <div className="summary-modal" onClick={e => e.stopPropagation()}>
+        <div className={styles['summary-overlay']} onClick={() => setShowSummary(false)}>
+          <div className={styles['summary-modal']} onClick={e => e.stopPropagation()}>
             <h3>Round Summary</h3>
             <ul>
               {rounds.map((r, i) => (
                 <li key={i}>
                   <p><strong>Your Prompt:</strong> {r.prompt || '(none)'}</p>
                   <p><strong>Expected:</strong> {r.expected}</p>
-                  <p className="tip"><strong>Tip:</strong> {r.tip}</p>
+                  <p className={styles.tip}><strong>Tip:</strong> {r.tip}</p>
                 </li>
               ))}
             </ul>

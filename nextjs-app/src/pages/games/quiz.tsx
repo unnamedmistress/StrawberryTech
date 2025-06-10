@@ -8,7 +8,7 @@ import CompletionModal from '../../components/ui/CompletionModal'
 import HeadTag from 'next/head'
 import { UserContext } from '../../../../shared/UserContext'
 import type { UserContextType } from '../../../../shared/types/user'
-import '../../styles/QuizGame.css'
+import styles from '../../styles/QuizGame.module.css'
 import InstructionBanner from '../../components/ui/InstructionBanner'
 import { HALLUCINATION_EXAMPLES } from '../../data/hallucinationExamples'
 import { H_ROUNDS } from '../../data/hallucinationRounds'
@@ -36,7 +36,7 @@ interface ChatMessage {
 function ChallengeBanner() {
   return (
     <motion.div
-      className="challenge-banner reveal"
+      className={`${styles['challenge-banner']} reveal`}
       animate={{ scale: [1, 1.1, 1] }}
       transition={{ repeat: Infinity, duration: 2 }}
     >
@@ -53,7 +53,7 @@ function WhyItMatters() {
   )
   return (
     <WhyCard
-      className="quiz-sidebar reveal"
+      className={`${styles['quiz-sidebar']} reveal`}
       title="Why It Matters"
       explanation="AI hallucinations occur when the system confidently states something untrue."
       quote={QUOTE}
@@ -109,14 +109,14 @@ function ChatBox() {
   }
 
   return (
-    <div className="chatbox">
+    <div className={styles.chatbox}>
       <h3>Ask the Assistant</h3>
-      <div className="chatbox-history">
+      <div className={styles['chatbox-history']}>
         {messages.map((m, i) => (
           <p key={i}>{m.role === 'user' ? 'You: ' : 'Assistant: '}{m.content}</p>
         ))}
       </div>
-      <form onSubmit={handleSubmit} className="chatbox-input">
+      <form onSubmit={handleSubmit} className={styles['chatbox-input']}>
         <input
           value={input}
           onChange={e => setInput(e.target.value)}
@@ -238,20 +238,20 @@ export default function QuizGame() {
             content="https://strawberry-tech.vercel.app/games/quiz"
           />
         </HeadTag>
-      <div className="quiz-page">
+      <div className={styles['quiz-page']}>
       <ChallengeBanner />
       <InstructionBanner>
         Find the one false statement—the AI hallucination. Tap the refresh icon
         for new prompts and then select your answer.
       </InstructionBanner>
-      <div className="truth-game">
+      <div className={styles['truth-game']}>
         <WhyItMatters />
-        <div className="game-area">
-          <div className="statements">
-          <div className="statement-header">
+        <div className={styles['game-area']}>
+          <div className={styles.statements}>
+          <div className={styles['statement-header']}>
             <h2>Hallucinations</h2>
             <button
-              className="refresh-btn btn-primary"
+              className={`refresh-btn btn-primary ${styles['refresh-btn']}`}
               onClick={refreshRound}
             aria-label="New statements"
           >
@@ -264,18 +264,18 @@ export default function QuizGame() {
             className="hero-img"
             style={{ width: '150px', display: 'inline-block' }}
           />
-          <p className="header-instruction">
+          <p className={styles['header-instruction']}>
             Pick the hallucination from the {NUM_STATEMENTS} statements.
           </p>
-          <p className="round-info">Round {round + 1} / {ROUNDS.length}</p>
+          <p className={styles['round-info']}>Round {round + 1} / {ROUNDS.length}</p>
           {current.category && (
-            <p className="round-category">{current.category}</p>
+            <p className={styles['round-category']}>{current.category}</p>
           )}
-          <ul className="statement-list">
+          <ul className={styles['statement-list']}>
             {current.statements.map((s, i) => (
               <li key={i}>
                 <button
-                className={`statement-btn btn-primary ${choice === i ? 'selected' : ''}`}
+                className={`statement-btn btn-primary ${choice === i ? styles.selected : ''}`}
                 onClick={() => handleSelect(i)}
                 disabled={choice !== null}
               >
@@ -286,7 +286,7 @@ export default function QuizGame() {
         </ul>
         {choice !== null && (
           <>
-            <p className="feedback">
+            <p className={styles.feedback}>
               {correct
                 ? '✅ Correct! You spotted the hallucination.'
                 : '❌ Incorrect. That one is true.'}
@@ -306,7 +306,7 @@ export default function QuizGame() {
         <ChatBox />
         </div>
         <ProgressSidebar />
-        <div className="next-area">
+        <div className={styles['next-area']}>
           <p style={{ marginTop: '1rem', textAlign: 'center' }}>
             <button
               className="btn-primary"
@@ -328,7 +328,7 @@ export default function QuizGame() {
         buttonLabel="Play Escape Room"
       >
         <h3>You finished the quiz!</h3>
-        <p className="final-score">Your points: {points}</p>
+        <p className={styles['final-score']}>Your points: {points}</p>
       </CompletionModal>
     )}
     </>

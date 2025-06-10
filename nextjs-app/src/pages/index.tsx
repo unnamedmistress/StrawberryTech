@@ -4,7 +4,7 @@ import Link from 'next/link'; import { useRouter } from 'next/router'
 import { UserContext } from '../../../shared/UserContext'
 import type { UserContextType } from '../../../shared/types/user'
 import { getTotalPoints } from '../utils/user'
-import '../styles/Home.css'
+import styles from '../styles/Home.module.css'
 import { GOAL_POINTS } from '../constants/progress'
 import ProgressSummary from '../components/ProgressSummary'
 
@@ -73,19 +73,19 @@ export default function Home() {
             content="https://strawberry-tech.vercel.app/"
           />
         </HeadTag>
-      <div className="home">
+      <div className={styles.home}>
       {/* hero section */}
       <section className="hero reveal" aria-label="Homepage hero">
-        <h1 className="hero-title">Embark on a Fruity Learning Adventure!</h1>
+        <h1 className={styles['hero-title']}>Embark on a Fruity Learning Adventure!</h1>
         <img
           src="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_12_36%20PM.png"
           alt="Home page strawberry mascot welcomes players at entrance of learning arcade with pastel tones."
-          className="hero-img"
+          className={styles['hero-img']}
           width="240"
           height="240"
           loading="lazy"
         />
-        <p className="tagline">Play engaging games and sharpen your skills.</p>
+        <p className={styles.tagline}>Play engaging games and sharpen your skills.</p>
 
         <div className="hero-actions">
           <button
@@ -123,47 +123,47 @@ export default function Home() {
       */}
 
       {/* game list */}
-      <div className="game-grid reveal">
-        <Link className="game-card" href="/games/tone">
+      <div className={`${styles['game-grid']} reveal`}>
+        <Link className={styles['game-card']} href="/games/tone">
           <img
             src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExN3V3YmcybDA1YTExbGhzcDJ4OXFpNGlnMmlkbWt3dGI2dWRraTh2eSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/Z9EX1jzpulWOyM43uG/giphy.gif"
             alt="Tone puzzle preview"
-            className="game-icon"
+            className={styles['game-icon']}
           />
-          <span className="game-title">Tone Puzzle</span>
+          <span className={styles['game-title']}>Tone Puzzle</span>
         </Link>
-        <Link className="game-card" href="/games/quiz">
+        <Link className={styles['game-card']} href="/games/quiz">
           <img
             src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExcTZoaHpxY3AwbmN1OTMwN3dkY3c5eXI1eXB3cDJ5ajNudDdkcnJ6cSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9dg/SR6WK6jz0rRWf2QK0t/giphy.gif"
             alt="Hallucinations preview"
-            className="game-icon"
+            className={styles['game-icon']}
           />
-          <span className="game-title">Hallucinations</span>
+          <span className={styles['game-title']}>Hallucinations</span>
         </Link>
-        <Link className="game-card" href="/games/escape">
+        <Link className={styles['game-card']} href="/games/escape">
           <img
             src="https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExdGxwaGF2eGNmcW1mZzFqNWJhOGs2bmcxZm9scHN4a21ka2ttanhrdyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/vZFZFVYQvtdidWZltF/giphy.gif"
             alt="Escape room preview"
-            className="game-icon"
+            className={styles['game-icon']}
           />
-          <span className="game-title">Escape Room</span>
+          <span className={styles['game-title']}>Escape Room</span>
         </Link>
-        <Link className="game-card" href="/games/recipe">
+        <Link className={styles['game-card']} href="/games/recipe">
           <img
             src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExa3h3cTR0cmEybWt0ZGM2Ymx0ZHB4ZjltbmR2dG55M3Y0MWh6dnRjZCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/Ll22OhMLAlVDbDS3Mo/giphy.gif"
             alt="Prompt recipe preview"
 
-            className="game-icon"
+            className={styles['game-icon']}
           />
-          <span className="game-title">Prompt Builder</span>
+          <span className={styles['game-title']}>Prompt Builder</span>
         </Link>
-        <Link className="game-card" href="/games/darts">
+        <Link className={styles['game-card']} href="/games/darts">
           <img
             src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExMW0xZHBmOTl3bWo3bmx6NDNmcjBkamo2a3prd242NjVmZzJvOTlkZCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/SvhOn6vnGXp0BiqlEc/giphy.gif"
             alt="Prompt darts preview"
-            className="game-icon"
+            className={styles['game-icon']}
           />
-          <span className="game-title">Prompt Darts</span>
+          <span className={styles['game-title']}>Prompt Darts</span>
         </Link>
       </div>
 

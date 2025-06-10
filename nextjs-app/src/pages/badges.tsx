@@ -4,7 +4,7 @@ import { UserContext } from '../../../shared/UserContext'
 import type { UserContextType } from '../../../shared/types/user'
 import Spinner from '../components/ui/Spinner'
 import { getApiBase } from '../utils/api'
-import '../styles/BadgesPage.css'
+import styles from '../styles/BadgesPage.module.css'
 
 export default function BadgesPage() {
   const { user } = useContext(UserContext) as UserContextType
@@ -28,15 +28,18 @@ export default function BadgesPage() {
 
   const loading = badges.length === 0
   return (
-    <div className="badges-page">
+    <div className={styles['badges-page']}>
       <h2>Badges</h2>
       {loading ? (
         <Spinner />
       ) : (
-        <ul className="badge-list">
+        <ul className={styles['badge-list']}>
           {badges.map(b => (
-            <li key={b.id} className={user.badges.includes(b.id) ? 'earned' : ''}>
-              <span className="emoji" role="img" aria-label={b.name}>
+            <li
+              key={b.id}
+              className={user.badges.includes(b.id) ? styles.earned : ''}
+            >
+              <span className={styles.emoji} role="img" aria-label={b.name}>
                 {b.emoji}
               </span>
               <strong>{b.name}</strong>
