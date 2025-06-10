@@ -17,11 +17,14 @@ export default function Home() {
   const router = useRouter()
 
   // Redirect to the age form if age hasn't been provided yet
+  // Temporarily disabled so the home page loads without requiring age
+  /*
   useEffect(() => {
     if (user.age === null) {
       router.push('/age')
     }
   }, [user.age, router])
+  */
 
   // Apply reveal animation when elements scroll into view
   useEffect(() => {
