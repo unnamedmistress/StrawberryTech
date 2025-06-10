@@ -21,19 +21,20 @@ export function UserProvider({ children }: { children: ReactNode }) {
     // Always start with default user to prevent hydration mismatch
     return { ...defaultUser, id: globalThis.crypto?.randomUUID?.() ?? Math.random().toString(36).slice(2) }
   })
-
   // Load from localStorage after mount to prevent hydration issues
   useEffect(() => {
-    const saved = localStorage.getItem(STORAGE_KEY)
-    if (saved) {
-      try {
-        const parsed = { ...defaultUser, ...JSON.parse(saved) }
-        if (!parsed.id) {
-          parsed.id = (globalThis.crypto?.randomUUID?.() ?? Math.random().toString(36).slice(2))
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem(STORAGE_KEY)
+      if (saved) {
+        try {
+          const parsed = { ...defaultUser, ...JSON.parse(saved) }
+          if (!parsed.id) {
+            parsed.id = (globalThis.crypto?.randomUUID?.() ?? Math.random().toString(36).slice(2))
+          }
+          setUser(parsed)
+        } catch (err) {
+          console.error('Failed to parse saved user data', err)
         }
-        setUser(parsed)
-      } catch (err) {
-        console.error('Failed to parse saved user data', err)
       }
     }
   }, [])
