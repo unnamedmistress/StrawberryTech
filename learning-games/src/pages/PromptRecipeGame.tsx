@@ -80,7 +80,7 @@ export default function PromptRecipeGame() {
 
   useEffect(() => {
     startRound()
-  }, [round])
+  }, [round, startRound])
 
   useEffect(() => {
     setRound(0)
