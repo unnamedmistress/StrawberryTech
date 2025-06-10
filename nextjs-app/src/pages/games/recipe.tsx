@@ -14,6 +14,7 @@ import Tooltip from '../../components/ui/Tooltip'
 import TimerBar from '../../components/ui/TimerBar'
 import CompletionModal from '../../components/ui/CompletionModal'
 import { UserContext } from '../../../../shared/UserContext'
+import type { UserContextType } from '../../../../shared/types/user'
 import { getTimeLimit } from '../../utils/time'
 import '../../styles/PromptRecipeGame.css'
 
@@ -176,7 +177,7 @@ async function generateCards(): Promise<Card[]> {
 }
 
 export default function PromptRecipeGame() {
-  const { setPoints, addBadge, user } = useContext(UserContext)
+  const { setPoints, addBadge, user } = useContext(UserContext) as UserContextType
   const router = useRouter()
   const TOTAL_ROUNDS = 5
   const TOTAL_TIME = getTimeLimit(user, {

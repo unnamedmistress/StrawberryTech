@@ -8,6 +8,7 @@ import { scorePrompt } from '../../utils/scorePrompt'
 import InstructionBanner from '../../components/ui/InstructionBanner'
 import ProgressSidebar from '../../components/layout/ProgressSidebar'
 import { UserContext } from '../../../../shared/UserContext'
+import type { UserContextType } from '../../../../shared/types/user'
 import JsonLd from '../../components/seo/JsonLd'
 import '../../styles/ComposeTweetGame.css'
 import CompletionModal from '../../components/ui/CompletionModal'
@@ -36,7 +37,7 @@ const pairs: PromptPair[] = [
 ]
 
 export default function ComposeTweetGame() {
-  const { setPoints, addBadge, user } = useContext(UserContext)
+  const { setPoints, addBadge, user } = useContext(UserContext) as UserContextType
   const router = useRouter()
   const [guess, setGuess] = useState('')
   const [feedback, setFeedback] = useState('')

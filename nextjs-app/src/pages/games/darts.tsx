@@ -6,6 +6,7 @@ import WhyCard from '../../components/layout/WhyCard'
 import InstructionBanner from '../../components/ui/InstructionBanner'
 import TimerBar from '../../components/ui/TimerBar'
 import { UserContext } from '../../../../shared/UserContext'
+import type { UserContextType } from '../../../../shared/types/user'
 import shuffle from '../../utils/shuffle'
 import { getTimeLimit } from '../../utils/time'
 import '../../styles/PromptDartsGame.css'
@@ -272,7 +273,7 @@ export function streakBonus(streak: number) {
 
 export default function PromptDartsGame() {
 
-  const { setPoints, user } = useContext(UserContext)
+  const { setPoints, user } = useContext(UserContext) as UserContextType
   const router = useRouter()
   const [rounds, setRounds] = useState<DartRound[]>([])
   const [round, setRound] = useState(0)

@@ -3,6 +3,7 @@ import { useLeaderboards, type PointsEntry } from '../../../../shared/useLeaderb
 import confetti from 'canvas-confetti'
 import Link from 'next/link'
 import { UserContext } from '../../../../shared/UserContext'
+import type { UserContextType } from '../../../../shared/types/user'
 import { getTotalPoints } from '../../utils/user'
 import Tooltip from '../ui/Tooltip'
 import { GOAL_POINTS } from '../../constants/progress'
@@ -13,7 +14,7 @@ export interface ProgressSidebarProps {
 }
 
 export default function ProgressSidebar({ points, badges }: ProgressSidebarProps = {}) {
-  const { user } = useContext(UserContext)
+  const { user } = useContext(UserContext) as UserContextType
 
   const userPoints = points ?? user.points
   const [progress, setProgress] = useState({

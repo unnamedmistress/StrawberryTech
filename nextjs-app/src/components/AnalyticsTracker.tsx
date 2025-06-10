@@ -1,6 +1,7 @@
 import { useEffect, useContext } from 'react'
 import { usePathname } from 'next/navigation'
 import { UserContext } from '../../../shared/UserContext'
+import type { UserContextType } from '../../../shared/types/user'
 import { getApiBase } from '../utils/api'
 
 function getCookie(name: string) {
@@ -18,7 +19,7 @@ function setCookie(name: string, value: string, days: number) {
 
 export default function AnalyticsTracker() {
   const pathname = usePathname()
-  const { user } = useContext(UserContext)
+  const { user } = useContext(UserContext) as UserContextType
 
   useEffect(() => {
     if (typeof window === 'undefined') return

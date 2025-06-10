@@ -2,6 +2,7 @@ import { useContext, useMemo, useState } from 'react'
 import Link from 'next/link'
 import { notify } from '../../../shared/notify'
 import { UserContext } from '../../../shared/UserContext'
+import type { UserContextType } from '../../../shared/types/user'
 import { useLeaderboards, type PointsEntry } from '../../../shared/useLeaderboards'
 import ProgressSidebar from '../components/layout/ProgressSidebar'
 import '../styles/LeaderboardPage.css'
@@ -10,7 +11,7 @@ import '../styles/LeaderboardPage.css'
 
 
 export default function LeaderboardPage() {
-  const { user } = useContext(UserContext)
+  const { user } = useContext(UserContext) as UserContextType
 
   const [filter, setFilter] = useState('')
   const [sortField, setSortField] = useState<'name' | 'points'>('points')

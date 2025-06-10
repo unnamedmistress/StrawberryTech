@@ -11,6 +11,7 @@ import WhyCard from '../../components/layout/WhyCard'
 import Tooltip from '../../components/ui/Tooltip'
 import IntroOverlay from '../../components/ui/IntroOverlay'
 import { UserContext } from '../../../../shared/UserContext'
+import type { UserContextType } from '../../../../shared/types/user'
 import shuffle from '../../utils/shuffle'
 import '../../styles/ClarityEscapeRoom.css'
 import CompletionModal from '../../components/ui/CompletionModal'
@@ -114,7 +115,7 @@ const TOTAL_STEPS = 4
 
 export default function ClarityEscapeRoom() {
   const navigate = useRouter()
-  const { setPoints: recordScore } = useContext(UserContext)
+  const { setPoints: recordScore } = useContext(UserContext) as UserContextType
   const [doors] = useState(() => shuffle(CLUES).slice(0, TOTAL_STEPS))
   const [index, setIndex] = useState(0)
   const [input, setInput] = useState('')

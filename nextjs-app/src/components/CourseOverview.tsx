@@ -1,11 +1,12 @@
 import { useContext } from 'react'
 import Link from 'next/link'
 import { UserContext } from '../../../shared/UserContext'
+import type { UserContextType } from '../../../shared/types/user'
 import COURSES from '../data/courses'
 import Card from './ui/card'
 
 export default function CourseOverview() {
-  const { user } = useContext(UserContext)
+  const { user } = useContext(UserContext) as UserContextType
   return (
     <div className="course-grid">
       {COURSES.map((course) => {

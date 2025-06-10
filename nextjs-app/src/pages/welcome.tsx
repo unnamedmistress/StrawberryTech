@@ -2,10 +2,11 @@ import { useContext, useEffect, useState } from 'react'
 import type { FormEvent } from 'react'
 import { useRouter } from 'next/router'
 import { UserContext } from '../../../shared/UserContext'
+import type { UserContextType } from '../../../shared/types/user'
 import '../styles/SplashPage.css'
 
 export default function SplashPage() {
-  const { user, setUser } = useContext(UserContext)
+  const { user, setUser } = useContext(UserContext) as UserContextType
   const [name, setName] = useState(user.name ?? '')
   const [age, setAge] = useState<number | ''>(user.age ?? '')
   const navigate = useRouter()
