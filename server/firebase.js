@@ -5,6 +5,12 @@ let firestore = null;
 let serviceAccount;
 const envCred = process.env.FIREBASE_SERVICE_ACCOUNT || process.env.GOOGLE_APPLICATION_CREDENTIALS;
 if (envCred) {
+  const display = envCred.length > 100 ? envCred.slice(0, 100) + '...' : envCred;
+  console.log('FIREBASE_SERVICE_ACCOUNT loaded:', display);
+} else {
+  console.log('FIREBASE_SERVICE_ACCOUNT not set');
+}
+if (envCred) {
   try {
     if (envCred.trim().startsWith('{')) {
       serviceAccount = JSON.parse(envCred);

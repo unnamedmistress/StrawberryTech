@@ -7,6 +7,25 @@ const firestore = require('./firebase');
 
 const useLocalStore = process.env.USE_LOCAL_STORE === 'true';
 
+function logEnvVars() {
+  const keys = [
+    'FIREBASE_SERVICE_ACCOUNT',
+    'GOOGLE_APPLICATION_CREDENTIALS',
+    'USE_LOCAL_STORE',
+    'NODE_ENV',
+  ];
+  console.log('Loaded environment variables:');
+  keys.forEach(key => {
+    const val = process.env[key];
+    if (val) {
+      const display = val.length > 100 ? val.slice(0, 100) + '...' : val;
+      console.log(`  ${key}=${display}`);
+    } else {
+      console.log(`  ${key} is not set`);
+    }
+  });
+}
+
 function ensureFirestore(res) {
   if (!firestore) {
     if (!useLocalStore) {
@@ -418,6 +437,7 @@ app.post('/api/scores/:game', async (req, res) => {
 });
 
 if (require.main === module) {
+  logEnvVars();
   const next = require('next');
   const dev = process.env.NODE_ENV !== 'production';
   const nextApp = next({ dev, dir: path.join(__dirname, '../nextjs-app') });
