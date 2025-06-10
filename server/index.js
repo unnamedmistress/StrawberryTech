@@ -5,12 +5,19 @@ const fs = require('fs');
 const path = require('path');
 const firestore = require('./firebase');
 
-const useLocalStore = !firestore;
+const useLocalStore = process.env.USE_LOCAL_STORE === 'true';
 
 function ensureFirestore(res) {
-  if (!firestore && !useLocalStore) {
-    res.status(503).json({ error: 'Firestore unavailable. Firebase credentials missing.' });
-    return false;
+  if (!firestore) {
+    if (!useLocalStore) {
+      res
+        .status(503)
+        .json({
+          error: 'Firestore unavailable. Set USE_LOCAL_STORE=true to use the local in-memory store.',
+        });
+      return false;
+    }
+    return true;
   }
   return true;
 }
@@ -56,7 +63,11 @@ const posts = firestore ? firestore.collection('posts') : null;
 const prompts = firestore ? firestore.collection('prompts') : null;
 const pairs = firestore ? firestore.collection('pairs') : null;
 const views = firestore ? firestore.collection('views') : null;
-const scores = firestore ? firestore.collection('scores') : createLocalScoresStore();
+const scores = firestore
+  ? firestore.collection('scores')
+  : useLocalStore
+  ? createLocalScoresStore()
+  : null;
 const userDoc = firestore ? firestore.collection('config').doc('user') : null;
 const BADGES = require('./badges.json');
 
