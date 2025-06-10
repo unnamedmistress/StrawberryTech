@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 export interface PointsEntry {
   name: string
   points: number
+  id?: string
 }
 
 export type LeaderboardData = Record<string, PointsEntry[]>

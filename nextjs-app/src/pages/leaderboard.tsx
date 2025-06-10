@@ -16,7 +16,8 @@ export default function LeaderboardPage() {
   const [sortField, setSortField] = useState<'name' | 'points'>('points')
   const [ascending, setAscending] = useState(false)
 
-  const { data: pointsData = {}, loading, error } = useLeaderboards()
+  const { data: pointsDataRaw, loading, error } = useLeaderboards()
+  const pointsData = pointsDataRaw ?? {}
   const [game, setGame] = useState('tone')
   const tabs = useMemo(() => {
     const base = ['tone', 'quiz', 'darts', 'recipe', 'escape', 'compose']

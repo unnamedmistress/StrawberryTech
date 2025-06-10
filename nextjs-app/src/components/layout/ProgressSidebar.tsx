@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef } from 'react'
+import { useContext, useEffect, useRef, useState } from 'react'
 import { useLeaderboards, type PointsEntry } from '../../../../shared/useLeaderboards'
 import confetti from 'canvas-confetti'
 import Link from 'next/link'
@@ -24,7 +24,8 @@ export default function ProgressSidebar({ points, badges }: ProgressSidebarProps
   const totalPoints = progress.totalPoints
   const celebrated = useRef(false)
 
-  const { data: leaderboards = {} } = useLeaderboards()
+  const { data } = useLeaderboards()
+  const leaderboards = data ?? {}
 
   useEffect(() => {
     if (totalPoints >= GOAL_POINTS && !celebrated.current) {
@@ -49,9 +50,11 @@ export default function ProgressSidebar({ points, badges }: ProgressSidebarProps
   }
   const game = gameMap[slug] || 'darts'
 
-  const entries = (leaderboards[game] ?? [])
-    .concat({ id: user.id, name: user.name ?? 'You', points: userPoints[game] ?? 0 })
-    .sort((a, b) => b.points - a.points)
+  const entries: (PointsEntry & { id?: string })[] = [
+    ...(leaderboards[game] ?? []),
+  ]
+  entries.push({ id: user.id, name: user.name ?? 'You', points: userPoints[game] ?? 0 })
+  entries.sort((a, b) => b.points - a.points)
 
   const rank = entries.findIndex(e => e.id === user.id) + 1
   const leaderboard = entries.slice(0, 3)
