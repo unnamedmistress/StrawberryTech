@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import Post from '../components/Post'
 import type { PostData } from '../components/Post'
 import { UserContext } from '../shared/UserContext'
-import type { UserContextType } from '../shared/types/user'
+import type { UserContextType } from '../../../shared/types/user'
 import { getApiBase } from '../utils/api'
 
 const STORAGE_KEY = 'community_posts'

@@ -5,7 +5,7 @@ import confetti from "canvas-confetti";
 import { useNavigate, Link } from "react-router-dom";
 
 import { UserContext } from "../shared/UserContext";
-import type { UserContextType } from "../shared/types/user";
+import type { UserContextType } from "../../../shared/types/user";
 import RobotChat from "../components/RobotChat";
 import InstructionBanner from "../components/ui/InstructionBanner";
 import WhyCard from "../components/layout/WhyCard";

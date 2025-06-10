@@ -1,7 +1,7 @@
 import { useState, useCallback, useEffect } from 'react'
 import { notify } from './notify'
 import type { ReactNode } from 'react'
-import type { UserData } from './types/user'
+import type { UserData } from '../../../shared/types/user'
 import { UserContext, defaultUser } from './UserContext'
 
 function getApiBase() {

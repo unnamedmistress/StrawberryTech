@@ -8,7 +8,7 @@ import InstructionBanner from '../components/ui/InstructionBanner'
 import ProgressSidebar from '../components/layout/ProgressSidebar'
 import CompletionModal from '../components/ui/CompletionModal'
 import { UserContext } from '../shared/UserContext'
-import type { UserContextType } from '../shared/types/user'
+import type { UserContextType } from '../../../shared/types/user'
 import './ComposeTweetGame.css'
 
 const SAMPLE_RESPONSE =

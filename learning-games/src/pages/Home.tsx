@@ -1,7 +1,7 @@
 import { useContext, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { UserContext } from '../shared/UserContext'
-import type { UserContextType } from '../shared/types/user'
+import type { UserContextType } from '../../../shared/types/user'
 import { getTotalPoints } from '../utils/user'
 import './Home.css'
 import { GOAL_POINTS } from '../constants/progress'
