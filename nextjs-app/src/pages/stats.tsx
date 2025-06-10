@@ -3,7 +3,7 @@ import Link from 'next/link'
 import Spinner from '../components/ui/Spinner'
 import { getApiBase } from '../utils/api'
 
-interface ViewData {
+interface View {
   id: number
   visitorId: string | null
   user: string | null
@@ -19,7 +19,7 @@ export default function StatsPage() {
 
   const base = getApiBase()
   const fetcher = (url: string) => fetch(url).then(res => res.json())
-  const { data: views = [] } = useSWR<ViewData[]>(
+  const { data: views = [] } = useSWR<View[]>(
     base ? `${base}/api/views` : null,
     fetcher,
     { refreshInterval: 60000 }
@@ -54,7 +54,7 @@ export default function StatsPage() {
   const sessionViews = views.filter(v => typeof v.duration === 'number')
   const avgDuration = sessionViews.length
     ? Math.round(
-        sessionViews.reduce((sum, v) => sum + (v.duration || 0), 0) /
+        sessionViews.reduce((sum: number, v: View) => sum + (v.duration || 0), 0) /
           sessionViews.length /
           1000
       )
