@@ -53,9 +53,9 @@ export default function ProgressSidebar({ points, badges }: ProgressSidebarProps
 
   const entries = (leaderboards[game] ?? [])
     .concat({ id: user.id, name: user.name ?? 'You', points: userPoints[game] ?? 0 })
-    .sort((a, b) => b.points - a.points)
+    .sort((a: PointsEntry, b: PointsEntry) => b.points - a.points)
 
-  const rank = entries.findIndex(e => e.id === user.id) + 1
+  const rank = entries.findIndex((e: PointsEntry) => e.id === user.id) + 1
   const leaderboard = entries.slice(0, 3)
 
 
@@ -79,7 +79,7 @@ export default function ProgressSidebar({ points, badges }: ProgressSidebarProps
       <h4 className="top-points-title">Top Points</h4>
       <div className="top-points-card">
         <ol className="top-points-list">
-          {leaderboard.map((entry, idx) => (
+          {leaderboard.map((entry: PointsEntry, idx: number) => (
             <li key={entry.name} className={idx === 0 ? 'top' : undefined}>
               {idx === 0 && <span aria-hidden="true">🏆 </span>}
               {entry.name}: {entry.points}

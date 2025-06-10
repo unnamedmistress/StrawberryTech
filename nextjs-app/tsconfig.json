@@ -15,15 +15,14 @@
     "incremental": true,
     "baseUrl": ".",
     "types": ["react", "react-dom"],
+    "typeRoots": ["./node_modules/@types", "../node_modules/@types"],
     "plugins": [
       {
         "name": "next"
       }
     ],
     "paths": {
-      "@/*": ["./src/*"],
-      "react": ["./node_modules/react"],
-      "react-dom": ["./node_modules/react-dom"]
+      "@/*": ["./src/*"]
     }
   },
   "include": [
