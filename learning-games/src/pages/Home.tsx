@@ -16,11 +16,14 @@ export default function Home() {
   const navigate = useNavigate()
 
   // Redirect to the age form if age hasn't been provided yet
+  // Temporarily disabled so the home page loads without requiring age
+  /*
   useEffect(() => {
     if (user.age === null) {
       navigate('/age')
     }
   }, [user.age, navigate])
+  */
 
   // Apply reveal animation when elements scroll into view
   useEffect(() => {

@@ -14,7 +14,7 @@ A short quiz where you spot the single AI hallucination hidden among two truthfu
 Drag cards to assemble a prompt. Each round now fetches fresh card text from the OpenAI API and shows a short sample response after you build the recipe.
 
 ## Age‑Adaptive Features
-- Players enter their age and name on first visit.
+- Players can optionally enter their age and name to personalize the games.
 - Games read the stored age to tweak difficulty and show tailored tips.
 - On easy difficulty, older players automatically receive extra time for tasks
   (5s at 40+, 10s at 50+, 15s at 60+).
