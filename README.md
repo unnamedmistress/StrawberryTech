@@ -46,7 +46,20 @@ Drag cards to assemble a prompt. Each round now fetches fresh card text from the
   server proxies `/api` requests there automatically. Provide
   `VITE_OPENAI_API_KEY=<your key>` for the Robot chat and recipe features.
 4. Copy `.env.example` to `.env` in `nextjs-app` and set `NEXT_PUBLIC_API_BASE`,
-  `NEXT_PUBLIC_OPENAI_API_KEY`, `OPENAI_API_KEY` and the Firebase credentials.
+  `NEXT_PUBLIC_OPENAI_API_KEY`, `OPENAI_API_KEY` and your Firebase keys.
+  The public Firebase values are prefixed with `NEXT_PUBLIC_` so they can be
+  loaded by the browser:
+
+  ```bash
+  NEXT_PUBLIC_FIREBASE_API_KEY=your-firebase-api-key
+  NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your-firebase-auth-domain
+  NEXT_PUBLIC_FIREBASE_PROJECT_ID=your-firebase-project-id
+  NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your-firebase-storage-bucket
+  NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your-messaging-sender-id
+  NEXT_PUBLIC_FIREBASE_APP_ID=your-firebase-app-id
+  NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID=your-measurement-id
+  ```
+
   Leaving these blank causes 500 errors from the API routes. See
   [`server/.env.example`](server/.env.example) for reference.
 5. Open the printed URL in your browser.
@@ -98,6 +111,18 @@ works when the API is served from the same host or proxied.
 Sample `.env.example` files in each app illustrate this configuration.
 These now contain placeholder values so you can copy them directly and replace
 each key with your own credentials.
+
+For Firebase Analytics in the Next.js app, also include the following variables:
+
+```bash
+NEXT_PUBLIC_FIREBASE_API_KEY=your-firebase-api-key
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your-firebase-auth-domain
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=your-firebase-project-id
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your-firebase-storage-bucket
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your-messaging-sender-id
+NEXT_PUBLIC_FIREBASE_APP_ID=your-firebase-app-id
+NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID=your-measurement-id
+```
 
 
 The API server now persists data in Firebase. Provide service account credentials
