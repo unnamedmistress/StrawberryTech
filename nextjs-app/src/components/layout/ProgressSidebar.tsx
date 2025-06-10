@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef } from 'react'
+import { useContext, useEffect, useRef, useState } from 'react'
 import { useLeaderboards, type PointsEntry } from '../../../../shared/useLeaderboards'
 import confetti from 'canvas-confetti'
 import Link from 'next/link'
@@ -24,7 +24,8 @@ export default function ProgressSidebar({ points, badges }: ProgressSidebarProps
   const totalPoints = progress.totalPoints
   const celebrated = useRef(false)
 
-  const { data: leaderboards = {} } = useLeaderboards()
+  const { data } = useLeaderboards()
+  const leaderboards = data ?? {}
 
   useEffect(() => {
     if (totalPoints >= GOAL_POINTS && !celebrated.current) {
