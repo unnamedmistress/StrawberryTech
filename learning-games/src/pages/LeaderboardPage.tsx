@@ -4,6 +4,7 @@ import { notify } from '../shared/notify'
 import { UserContext } from '../shared/UserContext'
 import type { UserContextType } from '../../../shared/types/user'
 import { useLeaderboards } from '../shared/useLeaderboards'
+import type { PointsEntry } from '../shared/useLeaderboards'
 import ProgressSidebar from '../components/layout/ProgressSidebar'
 import './LeaderboardPage.css'
 
@@ -25,13 +26,15 @@ export default function LeaderboardPage() {
   }, [pointsData])
 
   const entries = useMemo(() => {
-    const list = ((pointsData && pointsData[game]) ?? []).slice()
+    const list: PointsEntry[] = ((pointsData && pointsData[game]) ?? []).slice()
     const playerId = user.id
-    const existing = list.find((e: any) => e.id === playerId)
-    if (!existing) list.push({ id: playerId, name: user.name ?? 'You', points: user.points[game] ?? 0 })
+    const existing = list.find((e: PointsEntry) => e.id === playerId)
+    if (!existing) {
+      list.push({ id: playerId, name: user.name ?? 'You', points: user.points[game] ?? 0 })
+    }
     return list
-      .filter((e: any) => e.name.toLowerCase().includes(filter.toLowerCase()))
-      .sort((a: any, b: any) => {
+      .filter((e: PointsEntry) => e.name.toLowerCase().includes(filter.toLowerCase()))
+      .sort((a: PointsEntry, b: PointsEntry) => {
         if (sortField === 'name') {
           const cmp = a.name.localeCompare(b.name)
           return ascending ? cmp : -cmp
@@ -91,7 +94,7 @@ export default function LeaderboardPage() {
                 </th>
               </tr>
             </thead>            <tbody>
-              {entries.map((entry: any, idx: any) => (
+              {entries.map((entry: PointsEntry, idx: number) => (
                 <tr
                   key={entry.id || entry.name}
                   className={idx === 0 ? 'top-row' : undefined}
