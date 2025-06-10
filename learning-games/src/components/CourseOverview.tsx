@@ -1,7 +1,7 @@
 import { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { UserContext } from '../shared/UserContext'
-import type { UserContextType } from '../shared/types/user'
+import type { UserContextType } from '../../../shared/types/user'
 import COURSES from '../data/courses'
 import Card from './ui/card'
 

@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { UserContext } from '../shared/UserContext'
-import type { UserContextType } from '../shared/types/user'
+import type { UserContextType } from '../../../shared/types/user'
 import { getApiBase } from '../utils/api'
 import './BadgesPage.css'
 

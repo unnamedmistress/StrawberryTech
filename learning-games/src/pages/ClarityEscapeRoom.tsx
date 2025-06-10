@@ -14,7 +14,7 @@ import './ClarityEscapeRoom.css'
 import { scorePrompt } from '../utils/scorePrompt'
 import { generateRoomDescription } from '../utils/generateRoomDescription'
 import { UserContext } from '../shared/UserContext'
-import type { UserContextType } from '../shared/types/user'
+import type { UserContextType } from '../../../shared/types/user'
 
 interface Clue {
   aiResponse: string

@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react'
 import type { FormEvent } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { UserContext } from '../shared/UserContext'
-import type { UserContextType } from '../shared/types/user'
+import type { UserContextType } from '../../../shared/types/user'
 import './AgeInputForm.css'
 
 /**
