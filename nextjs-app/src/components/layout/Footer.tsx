@@ -1,3 +1,5 @@
+import Link from 'next/link'
+
 export default function Footer() {
   const year = new Date().getFullYear()
   return (
@@ -12,9 +14,9 @@ export default function Footer() {
           <span>&copy; {year} StrawberryTech</span>
         </div>
         <nav className="footer-links">
-          <a href="/privacy">Privacy Policy</a>
-          <a href="/terms">Terms of Service</a>
-          <a href="/contact">Contact</a>
+          <Link href="/privacy">Privacy Policy</Link>
+          <Link href="/terms">Terms of Service</Link>
+          <Link href="/contact">Contact</Link>
         </nav>
         <a
           className="coffee-link"
