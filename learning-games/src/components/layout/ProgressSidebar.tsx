@@ -7,6 +7,7 @@ import Tooltip from '../ui/Tooltip'
 import { getTotalPoints } from '../../utils/user'
 import { GOAL_POINTS } from '../../constants/progress'
 import { useLeaderboards } from '../../shared/useLeaderboards'
+import type { PointsEntry } from '../../shared/useLeaderboards'
 
 export interface ProgressSidebarProps {
   points?: Record<string, number>
@@ -52,7 +53,7 @@ export default function ProgressSidebar({ badges }: ProgressSidebarProps = {}) {
   const game = gameMap[slug] || 'darts'
   const entries = ((leaderboards && leaderboards[game]) ?? [])
     .concat({ id: user.id, name: user.name ?? 'You', points: userScores[game] ?? 0 })
-    .sort((a: any, b: any) => b.points - a.points)
+    .sort((a: PointsEntry, b: PointsEntry) => b.points - a.points)
 
   const rank = entries.findIndex((e: any) => e.id === user.id) + 1
   const leaderboard = entries.slice(0, 3)
