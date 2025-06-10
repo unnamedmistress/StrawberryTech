@@ -5,12 +5,15 @@ import '../src/index.css'
 import '../src/App.css'
 import '../src/pages/Home.css'
 
-const Analytics = dynamic(() => import('../src/components/AnalyticsTrackerNext'), { ssr: false })
+import { Analytics as VercelAnalytics } from '@vercel/analytics/next'
+
+const AnalyticsTrackerDynamic = dynamic(() => import('../src/components/AnalyticsTrackerNext'), { ssr: false })
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   return (
     <UserProvider>
-      <Analytics />
+      <AnalyticsTrackerDynamic />
+      <VercelAnalytics />
       <Component {...pageProps} />
     </UserProvider>
   )
