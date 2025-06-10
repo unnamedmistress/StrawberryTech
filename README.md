@@ -96,6 +96,8 @@ be the backend URL when the frontend and API run on different hosts. If these
 variables are omitted each app makes relative requests to `/api/...`, which only
 works when the API is served from the same host or proxied.
 Sample `.env.example` files in each app illustrate this configuration.
+These now contain placeholder values so you can copy them directly and replace
+each key with your own credentials.
 
 
 The API server now persists data in Firebase. Provide service account credentials
