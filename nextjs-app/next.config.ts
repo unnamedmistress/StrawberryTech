@@ -4,6 +4,9 @@ const nextConfig: NextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  experimental: {
+    externalDir: true,
+  },
   async rewrites() {
     const base = process.env.NEXT_PUBLIC_API_BASE
     if (base) {
