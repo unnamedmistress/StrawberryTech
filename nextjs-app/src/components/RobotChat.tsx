@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { toast } from 'react-hot-toast'
+import { notify } from '../../../shared/notify'
 
 interface ChatMessage {
   role: 'user' | 'assistant'
@@ -46,7 +46,7 @@ export default function RobotChat() {
       }
     } catch (err) {
       console.error(err)
-      toast.error('Unable to reach the API. Check your network or .env key.')
+      notify('Unable to reach the API. Check your network or .env key.')
       setMessages(prev => [
         ...prev,
         { role: 'assistant', content: 'Failed to get response.' },

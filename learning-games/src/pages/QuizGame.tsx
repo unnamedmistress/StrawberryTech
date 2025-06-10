@@ -2,7 +2,7 @@ import { useState, useEffect, useContext, useMemo } from 'react'
 import ProgressSidebar from '../components/layout/ProgressSidebar'
 import WhyCard from '../components/layout/WhyCard'
 import { motion } from 'framer-motion'
-import { toast } from 'react-hot-toast'
+import { notify } from '../shared/notify'
 import { Link, useNavigate } from 'react-router-dom'
 import CompletionModal from '../components/ui/CompletionModal'
 import { UserContext } from '../shared/UserContext'
@@ -98,7 +98,7 @@ function ChatBox() {
       }
     } catch (err) {
       console.error(err)
-      toast.error('Unable to reach the API. Check your network or .env key.')
+      notify('Unable to reach the API. Check your network or .env key.')
       setMessages(prev => [
         ...prev,
         { role: 'assistant', content: 'Failed to get response.' },
@@ -168,7 +168,7 @@ export default function QuizGame() {
       if (newScore === ROUNDS.length && !user.badges.includes('quiz-whiz')) {
         addBadge('quiz-whiz')
       }
-      toast.success(`You scored ${newScore} out of ${ROUNDS.length}`)
+      notify(`You scored ${newScore} out of ${ROUNDS.length}`)
       setFinished(true)
       return
     }

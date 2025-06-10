@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react'
-import { toast } from 'react-hot-toast'
+import { notify } from '../../../shared/notify'
 import Link from 'next/link'
 import Post from '../components/Post'
 import type { PostData } from '../components/Post'
@@ -46,7 +46,7 @@ export default function CommunityPage() {
         .then((data: PostData[]) => setPosts(data.length ? data : initialPosts))
         .catch(() => {
           setError('Failed to load posts')
-          toast.error('Failed to load posts')
+          notify('Failed to load posts')
         })
     }
   }, [])
@@ -62,7 +62,7 @@ export default function CommunityPage() {
       fetch(`${base}/api/posts/${id}/flag`, { method: 'POST' })
         .catch(() => {
           setError('Failed to flag post')
-          toast.error('Failed to flag post')
+          notify('Failed to flag post')
         })
     }
   }

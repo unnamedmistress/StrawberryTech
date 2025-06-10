@@ -1,4 +1,4 @@
-import { toast } from 'react-hot-toast'
+import { notify } from '../shared/notify'
 
 export type Slot = 'Action' | 'Context' | 'Format' | 'Constraints'
 
@@ -153,7 +153,7 @@ export async function generateCards(): Promise<Card[]> {
     }
   } catch (err) {
     console.error(err)
-    toast.error('Unable to fetch new cards. Using defaults.')
+    notify('Unable to fetch new cards. Using defaults.')
   }
   return ensureCardSet([])
 }

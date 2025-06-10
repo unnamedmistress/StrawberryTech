@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { toast } from 'react-hot-toast'
+import { notify } from '../shared/notify'
 import { UserContext } from '../shared/UserContext'
 import ThemeToggle from '../components/layout/ThemeToggle'
 import './ProfilePage.css'
@@ -15,17 +15,17 @@ export default function ProfilePage() {
     e.preventDefault()
     const ageNum = Number(age)
     if (!name.trim()) {
-      toast.error('Please enter your name')
+      notify('Please enter your name')
       return
     }
     if (!age || Number.isNaN(ageNum) || ageNum <= 0) {
-      toast.error('Age must be a valid number')
+      notify('Age must be a valid number')
       return
     }
     setName(name.trim())
     setAge(ageNum)
     setDifficulty(difficulty)
-    toast.success('Profile saved successfully!')
+    notify('Profile saved successfully!')
   }
 
   return (
