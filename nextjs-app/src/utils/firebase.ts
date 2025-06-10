@@ -6,8 +6,13 @@ let serviceAccount: any
 const envCred = process.env.FIREBASE_SERVICE_ACCOUNT || process.env.GOOGLE_APPLICATION_CREDENTIALS
 if (envCred) {
   try {
-    if (envCred.trim().startsWith('{')) {
-      serviceAccount = JSON.parse(envCred)
+    let trimmed = envCred.trim()
+    // .env parsers may wrap JSON in quotes. Remove them if present
+    if ((trimmed.startsWith('"') && trimmed.endsWith('"')) || (trimmed.startsWith("'") && trimmed.endsWith("'"))) {
+      trimmed = trimmed.slice(1, -1)
+    }
+    if (trimmed.startsWith('{')) {
+      serviceAccount = JSON.parse(trimmed)
     } else {
       const filePath = path.isAbsolute(envCred)
         ? envCred
