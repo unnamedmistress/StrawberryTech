@@ -4,6 +4,7 @@ import { UserProvider } from '../../../shared/UserProvider'
 import NavBar from '../components/layout/NavBar'
 import Footer from '../components/layout/Footer'
 import AnalyticsTracker from '../components/AnalyticsTracker'
+import { Analytics } from '@vercel/analytics/next'
 import ScrollToTop from '../components/ScrollToTop'
 import '../styles/index.css'
 import '../styles/App.css'
@@ -23,6 +24,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         <AnalyticsTracker />
         <Component {...pageProps} />
         <Footer />
+        <Analytics />
       </UserProvider>
     </>
   )
