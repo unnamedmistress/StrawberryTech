@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from 'react'
-import { toast } from 'react-hot-toast'
+import { notify } from './notify'
 import type { ReactNode } from 'react'
 import type { UserData } from './types/user'
 import { UserContext, defaultUser } from './UserContext'
@@ -69,7 +69,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
         const prevBest = prev.points[game] ?? 0
         const nextBest = Math.max(points, prevBest)
         if (nextBest > prevBest) {
-          toast.success(`New high points in ${game}: ${nextBest}`)
+          notify(`New high points in ${game}: ${nextBest}`)
         }
         return {
           ...prev,
@@ -98,7 +98,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
   const addBadge = useCallback((badge: string) => {
     setUser(prev => {
       if (!prev.badges.includes(badge)) {
-        toast.success(`Badge unlocked: ${badge}`)
+        notify(`Badge unlocked: ${badge}`)
         return { ...prev, badges: [...prev.badges, badge] }
       }
       return prev

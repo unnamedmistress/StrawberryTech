@@ -1,5 +1,5 @@
 import { useContext, useState, useEffect } from "react";
-import { toast } from "react-hot-toast";
+import { notify } from "../../../../shared/notify";
 import confetti from "canvas-confetti";
 
 import Link from "next/link"; import { useRouter } from "next/router";
@@ -313,7 +313,7 @@ export default function Match3Game() {
     if (earned.length > 0) {
       confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
     }
-    toast.success(msg);
+    notify(msg);
     setShowComplete(true);
   }
 

@@ -1,6 +1,6 @@
 import { useContext, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { toast } from 'react-hot-toast'
+import { notify } from '../shared/notify'
 import { UserContext } from '../shared/UserContext'
 import type { UserContextType } from '../shared/types/user'
 import { useLeaderboards } from '../shared/useLeaderboards'
@@ -114,7 +114,7 @@ export default function LeaderboardPage() {
                   navigator.share({ text }).catch(() => {})
                 } else {
                   navigator.clipboard.writeText(text).catch(() => {})
-                  toast.success('Points copied to clipboard')
+                  notify('Points copied to clipboard')
                 }
               }}
             >

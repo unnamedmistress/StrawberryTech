@@ -4,7 +4,7 @@ import HeadTag from 'next/head'
 import { useRouter } from 'next/router'
 import { motion } from 'framer-motion'
 import confetti from 'canvas-confetti'
-import { toast } from 'react-hot-toast'
+import { notify } from '../../../../shared/notify'
 import JsonLd from '../../components/seo/JsonLd'
 
 import ProgressSidebar from '../../components/layout/ProgressSidebar'
@@ -170,7 +170,7 @@ async function generateCards(): Promise<Card[]> {
     }
   } catch (err) {
     console.error(err)
-    toast.error('Unable to fetch new cards. Using defaults.')
+    notify('Unable to fetch new cards. Using defaults.')
   }
   return ensureCardSet([])
 }
@@ -265,7 +265,7 @@ export default function PromptRecipeGame() {
   function dropSelected(slot: Slot) {
     if (!selectedCard) return
     if (selectedCard.type !== slot) {
-      toast.error('Try a different category.')
+      notify('Try a different category.')
       setSelectedCard(null)
       return
     }
@@ -390,7 +390,7 @@ export default function PromptRecipeGame() {
         addBadge('prompt-chef')
       }
     }
-    toast.success(`+${finalScore} points`)
+    notify(`+${finalScore} points`)
     setSubmitted(true)
     setShowPrompt(true)
   }
@@ -414,13 +414,13 @@ export default function PromptRecipeGame() {
       if (text) setExample(text.trim())
     } catch (err) {
       console.error(err)
-      toast.error('Unable to fetch example output.')
+      notify('Unable to fetch example output.')
     }
   }
 
   function copyPrompt() {
     navigator.clipboard.writeText(promptText).then(() => {
-      toast.success('Prompt copied!')
+      notify('Prompt copied!')
     })
   }
 

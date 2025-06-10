@@ -21,7 +21,6 @@ import TermsPage from './pages/TermsPage'
 import ContactPage from './pages/ContactPage'
 import StatsPage from './pages/StatsPage'
 import BadgesPage from './pages/BadgesPage'
-import { Toaster } from 'react-hot-toast'
 import NavBar from './components/layout/NavBar'
 import Footer from './components/layout/Footer'
 import AnalyticsTracker from './components/AnalyticsTracker'
@@ -60,11 +59,6 @@ function App() {
         <Route path="/stats" element={<StatsPage />} />
       </Routes>
       {/* Verification comment: routes render correctly with context */}
-      <Toaster
-        toastOptions={{
-          ariaProps: { role: 'status', 'aria-live': 'polite' },
-        }}
-      />
       <Footer />
     </Router>
   )
