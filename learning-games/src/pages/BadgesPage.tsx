@@ -48,8 +48,8 @@ export default function BadgesPage() {
         <button
           type="button"
           onClick={() => {            const earnedList = user.badges
-              .map((id: any) => {
-                const badge = badges.find((b: any) => b.id === id)
+              .map((id: string) => {
+                const badge = badges.find((b: BadgeDefinition) => b.id === id)
                 return badge ? `${badge.emoji} ${badge.name}` : id
               })
               .join(', ')
