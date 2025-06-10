@@ -15,6 +15,8 @@
     "nextstart": "next start"
   },
   "dependencies": {
+    "@ai-sdk/deepinfra": "^0.2.15",
+    "@ai-sdk/groq": "^1.2.9",
     "@vercel/analytics": "^1.5.0",
     "canvas-confetti": "^1.9.3",
     "framer-motion": "^12.16.0",
