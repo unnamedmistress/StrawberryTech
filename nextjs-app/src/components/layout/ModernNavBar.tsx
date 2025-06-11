@@ -58,7 +58,6 @@ export default function ModernNavBar() {
   const router = useRouter()
   const navRef = useRef<HTMLElement>(null)
   const timeoutRef = useRef<NodeJS.Timeout | null>(null)
-
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20)
@@ -71,6 +70,17 @@ export default function ModernNavBar() {
       }
     }
 
+    // Prevent body scroll when mobile menu is open
+    if (isOpen) {
+      document.body.style.overflow = 'hidden'
+      document.body.style.position = 'fixed'
+      document.body.style.width = '100%'
+    } else {
+      document.body.style.overflow = ''
+      document.body.style.position = ''
+      document.body.style.width = ''
+    }
+
     window.addEventListener('scroll', handleScroll)
     document.addEventListener('mousedown', handleClickOutside)
     handleScroll()
@@ -79,8 +89,12 @@ export default function ModernNavBar() {
       window.removeEventListener('scroll', handleScroll)
       document.removeEventListener('mousedown', handleClickOutside)
       if (timeoutRef.current) clearTimeout(timeoutRef.current)
+      // Clean up body styles
+      document.body.style.overflow = ''
+      document.body.style.position = ''
+      document.body.style.width = ''
     }
-  }, [])
+  }, [isOpen])
 
   const handleDropdownEnter = (label: string) => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current)
