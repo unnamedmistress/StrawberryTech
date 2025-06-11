@@ -87,7 +87,7 @@ const navItems: NavItem[] = [
 - Escape Room (Problem-solving challenges)
 - Prompt Builder (Prompt engineering skills)
 - Prompt Darts (Quick prompt practice)
-- Compose Tweet (Social media AI)
+- Prompt Chain (Chain prompt building challenges)
 
 #### **Progress Section**
 - Community & Progress (Combined leaderboard/community)

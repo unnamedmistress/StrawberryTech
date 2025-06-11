@@ -40,7 +40,7 @@ export default function CommunityPage() {
   const pointsData = pointsDataRaw ?? {}
   
   const tabs = useMemo(() => {
-    const base = ['tone', 'quiz', 'escape', 'recipe', 'darts', 'compose']
+    const base = ['tone', 'quiz', 'escape', 'recipe', 'darts', 'chain']
     const dynamic = Object.keys(pointsData)
     return Array.from(new Set([...base, ...dynamic]))
   }, [pointsData])

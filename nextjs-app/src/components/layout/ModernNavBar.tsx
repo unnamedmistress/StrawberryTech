@@ -22,7 +22,7 @@ const navItems: NavItem[] = [
       { label: 'Escape Room', href: '/games/escape', icon: '🚪' },
       { label: 'Prompt Builder', href: '/games/recipe', icon: '📝' },
       { label: 'Prompt Darts', href: '/games/darts', icon: '🎯' },
-      { label: 'Compose Tweet', href: '/games/compose', icon: '🐦' },
+      { label: 'Prompt Chain', href: '/games/chain', icon: '🔗' },
     ],
   },
   {

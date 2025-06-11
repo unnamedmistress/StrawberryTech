@@ -104,9 +104,8 @@ export default function NavBar() {
               </Tooltip>
             </li>
             <li>
-              <Tooltip message="Hover here for a surprise!">
-                <Link href="/games/compose" onClick={() => setOpen(false)}>
-                  Compose Tweet
+              <Tooltip message="Hover here for a surprise!">                <Link href="/games/chain" onClick={() => setOpen(false)}>
+                  Prompt Chain
                 </Link>
               </Tooltip>
             </li>

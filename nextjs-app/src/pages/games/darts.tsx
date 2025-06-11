@@ -23,7 +23,7 @@ const KEYWORDS = [
   'summarize',
   'provide',
   'translate',
-  'compose',
+  'chain',
   'give',
   'write',
   'explain',
@@ -117,7 +117,7 @@ export const FALLBACK_ROUNDS: DartRound[] = [
   {
     options: [
       'Write marketing copy.',
-      'Compose a short tweet promoting our new product and mention its top benefit.',
+      'Create a prompt chain to research, analyze, and summarize climate change impacts.',
       'Tell people about our product.'
     ],
     correct: 1,
@@ -414,9 +414,8 @@ export default function PromptDartsGame() {
     return (
       <div className={styles['darts-page']}>
         <CompletionModal
-          imageSrc="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_24_00%20PM.png"
-          buttonHref="/games/compose"
-          buttonLabel="Play Compose Tweet"
+          imageSrc="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_24_00%20PM.png"          buttonHref="/games/chain"
+          buttonLabel="Play Prompt Chain"
         >
           <h3>Congratulations!</h3>
           <p className={styles['final-score']}>Your points: {score}</p>
@@ -549,13 +548,13 @@ export default function PromptDartsGame() {
           <p style={{ marginTop: '1rem', textAlign: 'center' }}>
             <button
               className="btn-primary"
-              onClick={() => router.push('/games/compose')}
+              onClick={() => router.push('/games/chain')}
             >
               Next
             </button>
           </p>
           <p style={{ marginTop: '1rem', textAlign: 'center' }}>
-            <Link href="/games/compose">Skip to Compose</Link>
+            <Link href="/games/chain">Skip to Chain Game</Link>
           </p>
         </div>
       </div>
