@@ -18,15 +18,19 @@ export default function PromptLibraryPage() {
   const [error, setError] = useState('')
   const [notice, setNotice] = useState('')
   const base = getApiBase()
-  const fetcher = (url: string) => fetch(url).then(res => res.json())
-  const { data: prompts = [], mutate, error: swrError } = useSWR<PromptData[]>(
+    const fetcher = (url: string) => fetch(url).then(res => res.json())
+  const { data: prompts = [], mutate, error: swrError, isLoading } = useSWR<PromptData[]>(
     `/api/prompts`,
-    fetcher
+    fetcher,
+    {
+      refreshInterval: 0, // Disable auto-refresh for debugging
+    }
   )
 
   // Debug logging
   console.log('Prompts data:', prompts)
   console.log('SWR error:', swrError)
+  console.log('Is loading:', isLoading)
   console.log('Base URL:', base)
 
   async function addPrompt(e: React.FormEvent) {
@@ -59,10 +63,23 @@ export default function PromptLibraryPage() {
       p.text.toLowerCase().includes(search.toLowerCase())
     )
   })
-
   return (
     <div className="prompt-library-page">
       <h2>Prompt Library</h2>
+      
+      {/* Debug info for troubleshooting */}
+      {swrError && (
+        <div style={{ background: '#ffe6e6', padding: '1rem', margin: '1rem 0', border: '1px solid #ff9999' }}>
+          <strong>Error loading prompts:</strong> {swrError.toString()}
+        </div>
+      )}
+      
+      {isLoading && (
+        <div style={{ background: '#e6f3ff', padding: '1rem', margin: '1rem 0', border: '1px solid #99ccff' }}>
+          Loading prompts...
+        </div>
+      )}
+      
       <div style={{ display: 'flex', gap: '1rem' }}>
         <aside>
           <input
@@ -79,8 +96,7 @@ export default function PromptLibraryPage() {
                 onClick={() => setCategory('all')}
                 aria-pressed={category === 'all'}
                 style={{ display: 'block', marginBottom: '0.5rem' }}
-              >
-                All
+              >                All ({prompts.length})
               </button>
             </li>
             {categories.map(cat => (
@@ -90,19 +106,24 @@ export default function PromptLibraryPage() {
                   aria-pressed={category === cat}
                   style={{ display: 'block', marginBottom: '0.5rem' }}
                 >
-                  {cat}
+                  {cat} ({prompts.filter(p => p.category === cat).length})
                 </button>
               </li>
             ))}
           </ul>
-        </aside>
-        <div style={{ flex: 1 }}>
-          {filtered.map(p => (
-            <Card key={p.id} style={{ marginBottom: '1rem' }}>
-              <p style={{ whiteSpace: 'pre-wrap' }}>{p.text}</p>
-              <p style={{ fontSize: '0.9rem', color: '#666' }}>{p.category}</p>
-            </Card>
-          ))}
+        </aside>        <div style={{ flex: 1 }}>
+          {filtered.length === 0 && !isLoading ? (
+            <div style={{ background: '#fff3cd', padding: '1rem', border: '1px solid #ffeaa7', marginBottom: '1rem' }}>
+              {prompts.length === 0 ? 'No prompts available yet.' : 'No prompts match your search.'}
+            </div>
+          ) : (
+            filtered.map(p => (
+              <Card key={p.id} style={{ marginBottom: '1rem' }}>
+                <p style={{ whiteSpace: 'pre-wrap' }}>{p.text}</p>
+                <p style={{ fontSize: '0.9rem', color: '#666' }}>{p.category}</p>
+              </Card>
+            ))
+          )}
           <form onSubmit={addPrompt} style={{ marginTop: '1rem' }}>
             <label htmlFor="prompt-text">Add a prompt:</label>
             <textarea
