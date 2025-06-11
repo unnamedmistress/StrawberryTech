@@ -19,16 +19,21 @@ export default function PromptLibraryPage() {
   const [notice, setNotice] = useState('')
   const base = getApiBase()
   const fetcher = (url: string) => fetch(url).then(res => res.json())
-  const { data: prompts = [], mutate } = useSWR<PromptData[]>(
-    base ? `${base}/api/prompts` : null,
+  const { data: prompts = [], mutate, error: swrError } = useSWR<PromptData[]>(
+    `/api/prompts`,
     fetcher
   )
+
+  // Debug logging
+  console.log('Prompts data:', prompts)
+  console.log('SWR error:', swrError)
+  console.log('Base URL:', base)
 
   async function addPrompt(e: React.FormEvent) {
     e.preventDefault()
     if (!text.trim()) return
     try {
-      const resp = await fetch(`${base}/api/prompts`, {
+      const resp = await fetch(`/api/prompts`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ text: text.trim() }),
