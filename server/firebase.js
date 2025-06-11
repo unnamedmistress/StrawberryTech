@@ -4,6 +4,7 @@ const path = require('path');
 let firestore = null;
 let serviceAccount;
 const envCred = process.env.FIREBASE_SERVICE_ACCOUNT || process.env.GOOGLE_APPLICATION_CREDENTIALS;
+
 if (envCred) {
   try {
     let trimmed = envCred.trim();
@@ -11,6 +12,7 @@ if (envCred) {
     if ((trimmed.startsWith('"') && trimmed.endsWith('"')) || (trimmed.startsWith("'") && trimmed.endsWith("'"))) {
       trimmed = trimmed.slice(1, -1);
     }
+    
     if (trimmed.startsWith('{')) {
       serviceAccount = JSON.parse(trimmed);
     } else {
