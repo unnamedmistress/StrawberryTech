@@ -1,10 +1,15 @@
 export function getApiBase() {
-  // In production, use empty string for relative URLs
-  // In development, use the full URL if provided
-  if (typeof window !== 'undefined') {
-    // Client-side: use relative URLs for same-origin requests
+  // In production, always use empty string for relative URLs to use Next.js API routes
+  if (process.env.NODE_ENV === 'production') {
     return ''
   }
-  // Server-side: use environment variable if available
-  return process.env.NEXT_PUBLIC_API_BASE || ''
+  
+  // In development, use the full URL if provided for external server
+  if (typeof window !== 'undefined') {
+    // Client-side: use relative URLs for same-origin requests in production
+    return process.env.NODE_ENV === 'development' ? (process.env.NEXT_PUBLIC_API_BASE || '') : ''
+  }
+  
+  // Server-side: use environment variable only in development
+  return process.env.NODE_ENV === 'development' ? (process.env.NEXT_PUBLIC_API_BASE || '') : ''
 }

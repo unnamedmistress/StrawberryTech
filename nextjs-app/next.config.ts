@@ -16,10 +16,10 @@ const nextConfig: NextConfig = {
       'react-dom': path.resolve(__dirname, 'node_modules/react-dom'),
     };
     return config;
-  },
-  async rewrites() {
+  },  async rewrites() {
     const base = process.env.NEXT_PUBLIC_API_BASE
-    if (base) {
+    // Only use external API in development or when explicitly configured
+    if (base && process.env.NODE_ENV === 'development') {
       return [
         {
           source: '/api/:path*',
