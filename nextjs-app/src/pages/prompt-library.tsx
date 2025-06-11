@@ -8,6 +8,7 @@ interface PromptData {
   id: string
   text: string
   category: string
+  author?: string
   created: string
 }
 
@@ -45,15 +46,15 @@ export default function PromptLibraryPage({ initialPrompts = [] }: { initialProm
       })
       const data = await resp.json()
       if (!resp.ok) {
-        setError(data.error || 'Failed to add prompt')
+        setError(data.error || 'Your message was filtered, try again.')
         return
       }
-      setNotice('Prompt added!')
+      setNotice('Prompt added successfully!')
       setError('')
       setText('')
       mutate()
     } catch {
-      setError('Failed to add prompt')
+      setError('Your message was filtered, try again.')
     }
   }
 
@@ -117,11 +118,19 @@ export default function PromptLibraryPage({ initialPrompts = [] }: { initialProm
             <div style={{ background: '#fff3cd', padding: '1rem', border: '1px solid #ffeaa7', marginBottom: '1rem' }}>
               {prompts.length === 0 ? 'No prompts available yet.' : 'No prompts match your search.'}
             </div>
-          ) : (
-            filtered.map(p => (
+          ) : (            filtered.map(p => (
               <Card key={p.id} style={{ marginBottom: '1rem' }}>
-                <p style={{ whiteSpace: 'pre-wrap' }}>{p.text}</p>
-                <p style={{ fontSize: '0.9rem', color: '#666' }}>{p.category}</p>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+                  <div>
+                    <p style={{ fontWeight: 'bold', margin: 0, color: '#e91e63', fontSize: '0.9rem' }}>
+                      {p.author || 'Anonymous'}
+                    </p>
+                    <p style={{ fontSize: '0.8rem', color: '#666', margin: 0 }}>
+                      {new Date(p.created).toLocaleDateString()} • {p.category}
+                    </p>
+                  </div>
+                </div>
+                <p style={{ whiteSpace: 'pre-wrap', margin: '0.5rem 0' }}>{p.text}</p>
               </Card>
             ))
           )}

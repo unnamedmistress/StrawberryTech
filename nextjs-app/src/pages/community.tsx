@@ -57,8 +57,7 @@ export default function CommunityPage() {
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(posts))
   }, [posts])
-
-  function flagPost(id: number) {
+  function flagPost(id: number | string) {
     setPosts((prev) => prev.map((p) => (p.id === id ? { ...p, flagged: true } : p)))
     if (typeof window !== 'undefined') {
       const base = getApiBase()
@@ -82,12 +81,12 @@ export default function CommunityPage() {
         })
         const data = await resp.json()
         if (!resp.ok) {
-          setError(data.error || 'Failed to post')
+          setError(data.error || 'Your message was filtered, try again.')
           return
         }
         if (data.status === 'approved') {
           setPosts((prev) => [...prev, data])
-          setNotice('Thanks for sharing!')
+          setNotice('Thanks for sharing! Your message is now live.')
         } else {
           setNotice('Thanks! Your feedback is awaiting review.')
         }

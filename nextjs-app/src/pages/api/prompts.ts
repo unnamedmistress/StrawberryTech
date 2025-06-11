@@ -1,6 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { prompts } from './helpers'
-import { sanitizeComment, moderatePrompt } from './helpers'
+import { prompts, moderateContent } from './helpers'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'GET') {
@@ -13,15 +12,40 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   if (req.method === 'POST') {
     const text = (req.body?.text || '') as string
-    const { sanitized } = await sanitizeComment(text)
-    const { flagged, category } = await moderatePrompt(sanitized)
-    if (flagged) {
-      res.status(400).json({ error: 'Prompt rejected due to policy violation.' })
+    
+    if (!text.trim()) {
+      res.status(400).json({ error: 'Prompt text is required.' })
       return
     }
+
+    // Enhanced moderation with child safety checks
+    const moderation = await moderateContent(text, 'prompt')
+    
+    if (!moderation.approved) {
+      res.status(400).json({ 
+        error: 'Your message was filtered, try again.',
+        reason: moderation.reason 
+      })
+      return
+    }
+
     const created = new Date().toISOString()
-    const ref = await prompts.add({ text: sanitized, category, created, flagged })
-    res.status(201).json({ id: ref.id, text: sanitized, category, created, flagged })
+    const ref = await prompts.add({ 
+      text: moderation.sanitized, 
+      category: moderation.category, 
+      author: moderation.avatarName,
+      created, 
+      flagged: false 
+    })
+    
+    res.status(201).json({ 
+      id: ref.id, 
+      text: moderation.sanitized, 
+      category: moderation.category,
+      author: moderation.avatarName, 
+      created, 
+      flagged: false 
+    })
     return
   }
 

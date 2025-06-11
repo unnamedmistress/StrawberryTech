@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { posts, sanitizeComment, analyzeSentiment } from './helpers'
+import { posts, moderateContent, analyzeSentiment } from './helpers'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'GET') {
@@ -12,23 +12,50 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   if (req.method === 'POST') {
     const content = (req.body?.content || '') as string
-    const score = await analyzeSentiment(content)
-    if (score < -0.1) {
-      res.status(400).json({ error: 'Only positive feedback is allowed.' })
+    
+    if (!content.trim()) {
+      res.status(400).json({ error: 'Content is required.' })
       return
-    }    const { sanitized, alias } = await sanitizeComment(content)
-    // For testing: approve all posts since sentiment analysis requires OpenAI API key
-    const status = 'approved' // score <= 0.2 ? 'pending' : 'approved'
+    }
+
+    // Enhanced moderation with child safety checks
+    const moderation = await moderateContent(content, 'post')
+    
+    if (!moderation.approved) {
+      res.status(400).json({ 
+        error: 'Your message was filtered, try again.',
+        reason: moderation.reason 
+      })
+      return
+    }
+
+    // Additional sentiment check for positivity
+    const score = await analyzeSentiment(moderation.sanitized)
+    if (score < -0.1) {
+      res.status(400).json({ error: 'Your message was filtered, try again. Please keep comments positive and constructive.' })
+      return
+    }
+
     const now = new Date().toISOString()
     const docRef = await posts.add({
-      author: alias,
-      content: sanitized,
+      author: moderation.avatarName,
+      content: moderation.sanitized,
+      category: moderation.category,
       date: now,
       sentiment: score,
-      status,
+      status: 'approved',
     })
-    const post = { id: docRef.id, author: alias, content: sanitized, date: now, sentiment: score, status }
-    res.status(status === 'approved' ? 201 : 202).json(post)
+    
+    const post = { 
+      id: docRef.id, 
+      author: moderation.avatarName, 
+      content: moderation.sanitized, 
+      category: moderation.category,
+      date: now, 
+      sentiment: score, 
+      status: 'approved' 
+    }
+    res.status(201).json(post)
     return
   }
 
