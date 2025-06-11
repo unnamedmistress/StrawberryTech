@@ -1,10 +1,10 @@
 import { useContext, useState, useMemo } from 'react'
 import Link from 'next/link'
-import { notify } from '../../../shared/notify'
-import { UserContext } from '../../../shared/UserContext'
-import type { UserContextType } from '../../../shared/types/user'
+import { notify } from '../shared/notify'
+import { UserContext } from '../shared/UserContext'
+import type { UserContextType } from '../shared/types/user'
 import ThemeToggle from '../components/layout/ThemeToggle'
-import { useLeaderboards, type PointsEntry } from '../../../shared/useLeaderboards'
+import { useLeaderboards, type PointsEntry } from '../shared/useLeaderboards'
 import { getTotalPoints } from '../utils/user'
 
 

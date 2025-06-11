@@ -1,5 +1,5 @@
 import { useContext, useEffect, useRef, useState } from 'react'
-import { useLeaderboards, type PointsEntry } from '../../../../shared/useLeaderboards'
+import { useLeaderboards, type PointsEntry } from '../../shared/useLeaderboards'
 import confetti from 'canvas-confetti'
 import Link from 'next/link'
 import { UserContext } from '../../shared/UserContext'

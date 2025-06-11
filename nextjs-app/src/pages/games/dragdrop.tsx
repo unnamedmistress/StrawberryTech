@@ -3,8 +3,8 @@ import Link from 'next/link'
 import ProgressSidebar from '../../components/layout/ProgressSidebar'
 import GamePageLayout from '../../components/layout/GamePageLayout'
 import WhyCard from '../../components/layout/WhyCard'
-import { UserContext } from '../../../../shared/UserContext'
-import type { UserContextType } from '../../../../shared/types/user'
+import { UserContext } from '../../shared/UserContext'
+import type { UserContextType } from '../../shared/types/user'
 import styles from '../../styles/DragDropGame.module.css'
 import JsonLd from '../../components/seo/JsonLd'
 
@@ -84,10 +84,27 @@ export default function DragDropGame() {
         <GamePageLayout
           imageSrc="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_19_23%20PM.png"
           imageAlt="Tone game illustration"
-          infoCardContent={
-            <WhyCard
-              title="Why Tone Matters"
-              explanation="Drag the adjectives into the blank to try different tones. Swap words wisely and watch your message sparkle!"
+          infoCardContent={            <WhyCard
+              title="Spotting AI Hallucinations"
+              explanation="AI sometimes creates confident-sounding but incorrect information. Learning to spot these 'hallucinations' is a crucial skill for working with AI."
+              lesson={
+                <div>
+                  <p><strong>Common AI hallucination patterns:</strong></p>
+                  <ul>
+                    <li><strong>Fake facts:</strong> Made-up statistics or dates</li>
+                    <li><strong>False connections:</strong> Linking unrelated concepts</li>
+                    <li><strong>Invented details:</strong> Adding specifics that don't exist</li>
+                    <li><strong>Confident errors:</strong> Wrong info stated with certainty</li>
+                  </ul>
+                </div>
+              }
+              examples={[
+                {
+                  good: "I need to verify this information from reliable sources before using it.",
+                  bad: "If the AI said it, it must be true."
+                }
+              ]}
+              tip="Always fact-check important information from AI, especially statistics, dates, quotes, and technical details. Think critically about what sounds too convenient or specific!"
             />
           }
           instructions="Match adjectives to explore how tone changes the meaning of a message."

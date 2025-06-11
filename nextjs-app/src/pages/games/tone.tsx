@@ -1,13 +1,13 @@
 import { useContext, useState, useEffect } from "react";
-import { notify } from "../../../../shared/notify";
+import { notify } from "../../shared/notify";
 import confetti from "canvas-confetti";
 
 import Link from "next/link"; import { useRouter } from "next/router";
 import HeadTag from "next/head";
 import JsonLd from "../../components/seo/JsonLd";
 
-import { UserContext } from "../../../../shared/UserContext";
-import type { UserContextType } from "../../../../shared/types/user";
+import { UserContext } from "../../shared/UserContext";
+import type { UserContextType } from "../../shared/types/user";
 import RobotChat from "../../components/RobotChat";
 import InstructionBanner from "../../components/ui/InstructionBanner";
 import WhyCard from "../../components/layout/WhyCard";
@@ -410,13 +410,28 @@ export default function Match3Game() {
       <InstructionBanner>
         Match adjectives to explore how tone changes the meaning of a message.
       </InstructionBanner>
-      <div className="match3-wrapper">
-        <WhyCard
+      <div className="match3-wrapper">        <WhyCard
           className="match3-sidebar"
           title="Why Tone Matters"
-          explanation="Drag the adjectives into the blank to try different tones."
-          quote={sidebarQuote}
-          tip={sidebarTip}
+          explanation="The same message can sound completely different depending on the words you choose. In AI prompting, tone controls how the AI responds to you."
+          lesson={
+            <div>
+              <p><strong>Tone in AI prompting affects:</strong></p>
+              <ul>
+                <li><strong>Formality:</strong> Professional vs. casual responses</li>
+                <li><strong>Mood:</strong> Enthusiastic vs. neutral delivery</li>
+                <li><strong>Approach:</strong> Direct vs. gentle communication</li>
+                <li><strong>Audience:</strong> Expert vs. beginner explanations</li>
+              </ul>
+            </div>
+          }
+          examples={[
+            {
+              good: "Please explain quantum physics in simple, friendly terms for a curious 12-year-old.",
+              bad: "Explain quantum physics."
+            }
+          ]}
+          tip="Experiment with different adjectives to see how they change the feeling of your message. The right tone helps AI give you exactly the style of response you need!"
         />
         <div className="match3-container">
           <img

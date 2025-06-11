@@ -4,7 +4,7 @@ import HeadTag from 'next/head'
 import { useRouter } from 'next/router'
 import { motion } from 'framer-motion'
 import confetti from 'canvas-confetti'
-import { notify } from '../../../../shared/notify'
+import { notify } from '../../shared/notify'
 import JsonLd from '../../components/seo/JsonLd'
 
 import ProgressSidebar from '../../components/layout/ProgressSidebar'
@@ -13,8 +13,8 @@ import InstructionBanner from '../../components/ui/InstructionBanner'
 import Tooltip from '../../components/ui/Tooltip'
 import TimerBar from '../../components/ui/TimerBar'
 import CompletionModal from '../../components/ui/CompletionModal'
-import { UserContext } from '../../../../shared/UserContext'
-import type { UserContextType } from '../../../../shared/types/user'
+import { UserContext } from '../../shared/UserContext'
+import type { UserContextType } from '../../shared/types/user'
 import { getTimeLimit } from '../../utils/time'
 import styles from '../../styles/PromptRecipeGame.module.css'
 
@@ -487,13 +487,25 @@ export default function PromptRecipeGame() {
       <InstructionBanner>
         Drag each card to the category it best fits to build a clear AI prompt.
       </InstructionBanner>
-      <div className={styles['recipe-wrapper']}>
-        <WhyCard
+      <div className={styles['recipe-wrapper']}>        <WhyCard
           className={styles['recipe-sidebar']}
           title="Why Build Prompts?"
-          explanation="Combining action, context, format and constraints clarifies intent."
-          quote="Why Card: This page has potential but needs some polish to make it intuitive, clean, and engaging."
-          tip="Arrange each ingredient to craft a clear request."
+          explanation="Good prompts are like recipes - each ingredient serves a purpose. Let's learn the four essential components that make AI understand exactly what you want."
+          lesson={
+            <div>
+              <p><strong>Action:</strong> What do you want the AI to do? (write, explain, create, analyze)</p>
+              <p><strong>Context:</strong> What background information does it need?</p>
+              <p><strong>Format:</strong> How should the response be structured?</p>
+              <p><strong>Constraints:</strong> What rules or limits should it follow?</p>
+            </div>
+          }
+          examples={[
+            {
+              good: "Write a professional email to decline a meeting, keeping it under 100 words, with a polite and apologetic tone.",
+              bad: "Write an email about not going to a meeting."
+            }
+          ]}
+          tip="Think of prompts like giving directions to a helpful friend - be specific, clear, and include all the details they need to help you successfully!"
         />
         <div className={styles['recipe-game']}>
           <div className={styles['status-bar']}>

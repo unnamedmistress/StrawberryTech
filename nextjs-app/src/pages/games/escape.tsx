@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useContext, useCallback } from 'react'
-import { notify } from '../../../../shared/notify'
+import { notify } from '../../shared/notify'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import InstructionBanner from '../../components/ui/InstructionBanner'
@@ -10,8 +10,8 @@ import ProgressSidebar from '../../components/layout/ProgressSidebar'
 import WhyCard from '../../components/layout/WhyCard'
 import Tooltip from '../../components/ui/Tooltip'
 import IntroOverlay from '../../components/ui/IntroOverlay'
-import { UserContext } from '../../../../shared/UserContext'
-import type { UserContextType } from '../../../../shared/types/user'
+import { UserContext } from '../../shared/UserContext'
+import type { UserContextType } from '../../shared/types/user'
 import shuffle from '../../utils/shuffle'
 import styles from '../../styles/ClarityEscapeRoom.module.css'
 import CompletionModal from '../../components/ui/CompletionModal'
@@ -323,11 +323,28 @@ export default function ClarityEscapeRoom() {
         </HeadTag>
       <div>
       <InstructionBanner>Escape Room: Guess the Prompt</InstructionBanner>
-      <div className={styles['escape-wrapper']}>
-        <WhyCard
+      <div className={styles['escape-wrapper']}>        <WhyCard
           className={styles['escape-sidebar']}
           title="Why Clarity Matters"
-          explanation="Vague inputs lock AI in confusion loops; precise prompts open doors."
+          explanation="Vague prompts create confusion. Clear, specific instructions help AI understand exactly what you need and provide better responses."
+          lesson={
+            <div>
+              <p><strong>Clear prompting strategies:</strong></p>
+              <ul>
+                <li><strong>Be specific:</strong> Instead of 'help me', say exactly what kind of help</li>
+                <li><strong>Set context:</strong> Explain the situation and your goal</li>
+                <li><strong>Use examples:</strong> Show what good output looks like</li>
+                <li><strong>Break complex tasks:</strong> Split big requests into steps</li>
+              </ul>
+            </div>
+          }
+          examples={[
+            {
+              good: "Explain the water cycle in 3 simple steps using everyday language for a 5th-grade science class.",
+              bad: "Tell me about water."
+            }
+          ]}
+          tip="Think of AI like a helpful but literal assistant. The clearer your instructions, the better the results. Precision unlocks AI's full potential!"
         />
         <div className={styles.room}>
           <div className={styles['room-grid']}>

@@ -1,52 +1,48 @@
-import { useContext, useEffect } from 'react'
+import { useContext } from 'react'
 import HeadTag from 'next/head'
-import Link from 'next/link'; import { useRouter } from 'next/router'
-import { UserContext } from '../../../shared/UserContext'
-import type { UserContextType } from '../../../shared/types/user'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { UserContext } from '../shared/UserContext'
+import type { UserContextType } from '../shared/types/user'
 import { getTotalPoints } from '../utils/user'
 import styles from '../styles/Home.module.css'
-import { GOAL_POINTS } from '../constants/progress'
-import ProgressSummary from '../components/ProgressSummary'
 
 /**
- * Home page listing available games.
- * If the user's age isn't known we send them to the age input form first.
+ * Clean and Simple Home Page
+ * Focused on clear call-to-action and easy game access
  */
 export default function Home() {
   const { user } = useContext(UserContext) as UserContextType
   const router = useRouter()
-
-  // Redirect to the age form if age hasn't been provided yet
-  // Temporarily disabled so the home page loads without requiring age
-  /*
-  useEffect(() => {
-    if (user.age === null) {
-      router.push('/age')
-    }
-  }, [user.age, router])
-  */
-
-  // Apply reveal animation when elements scroll into view
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('visible')
-          }
-        })
-      },
-      { threshold: 0.1 }
-    )
-    document.querySelectorAll('.reveal').forEach((el) => observer.observe(el))
-    return () => observer.disconnect()
-  }, [])
-
   const totalPoints = getTotalPoints(user.points)
 
+  // Core games that teach AI prompting skills through interactive challenges
+  const games = [
+    {
+      id: 'tone',
+      title: 'Tone',
+      description: 'Master prompt tone and style through audio recognition',
+      icon: '🎵',
+      path: '/games/tone'
+    },
+    {
+      id: 'guess',
+      title: 'Hallucination',
+      description: 'Learn to identify AI hallucinations and fact-check responses',
+      icon: '🔍',
+      path: '/games/guess'
+    },
+    {
+      id: 'escape',
+      title: 'Escape Game Puzzle',
+      description: 'Solve complex prompting challenges to escape each room',
+      icon: '🚪',
+      path: '/games/escape'
+    }
+  ]
   return (
     <>
-        <HeadTag>
+      <HeadTag>
         <title>StrawberryTech Learning Games</title>
         <meta property="og:title" content="StrawberryTech Learning Games" />
         <meta
@@ -71,73 +67,110 @@ export default function Home() {
           name="twitter:image"
           content="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_12_36%20PM.png"
         />
-          <meta
-            name="twitter:url"
-            content="https://strawberry-tech.vercel.app/"
-          />
-        </HeadTag>
-      <div className={styles.home}>
-      {/* hero section */}
-      <section className="hero reveal" aria-label="Homepage hero">
-        <h1 className={styles['hero-title']}>Embark on a Fruity Learning Adventure!</h1>
-        <img
-          src="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_12_36%20PM.png"
-          alt="Home page strawberry mascot welcomes players at entrance of learning arcade with pastel tones."
-          className={styles['hero-img']}
-          width="240"
-          height="240"
-          loading="lazy"
+        <meta
+          name="twitter:url"
+          content="https://strawberry-tech.vercel.app/"
         />
-        <p className={styles.tagline}>Play engaging games and sharpen your skills.</p>
+      </HeadTag>
+      
+      <div className={styles.home}>        {/* Modern Hero Section */}
+        <header className={styles.hero}>
+          <div className={styles.heroContent}>
+            <div className={styles.heroText}>
+              <h1 className={styles.title}>StrawberryTech</h1>
+              <p className={styles.subtitle}>
+                Master AI prompting through engaging, interactive games
+              </p>
+              <p className={styles.description}>
+                Learn the art and science of AI prompting with our carefully designed mini-games. 
+                Each challenge teaches you essential skills for crafting effective prompts, 
+                identifying AI limitations, and maximizing AI collaboration.
+              </p>
+              
+              {/* Call to Action */}
+              <div className={styles.ctaContainer}>
+                <button 
+                  className={styles.ctaButton}
+                  onClick={() => router.push('/games/tone')}
+                >
+                  Start Learning Prompting
+                </button>
+                <p className={styles.ctaHint}>Begin with tone mastery</p>
+              </div>
+            </div>
+            
+            <div className={styles.heroVisual}>
+              <img
+                src="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_12_36%20PM.png"
+                alt="StrawberryTech mascot"
+                className={styles.logo}
+                width="140"
+                height="140"
+              />
+            </div>
+          </div>
+        </header>        {/* Games Section */}
+        <section className={styles.gamesSection}>
+          <div className={styles.sectionHeader}>
+            <h2 className={styles.sectionTitle}>Prompting Skills Training</h2>
+            <p className={styles.sectionSubtitle}>
+              Three core games designed to teach you the fundamentals of effective AI prompting
+            </p>
+          </div>
+          
+          <div className={styles.gamesGrid}>
+            {games.map((game, index) => (
+              <button
+                key={game.id}
+                className={styles.gameCard}
+                onClick={() => router.push(game.path)}
+                style={{ animationDelay: `${index * 0.1}s` }}
+              >
+                <div className={styles.gameIcon}>{game.icon}</div>
+                <h3 className={styles.gameTitle}>{game.title}</h3>
+                <p className={styles.gameDescription}>{game.description}</p>
+                <div className={styles.gameArrow}>→</div>
+              </button>
+            ))}
+          </div>
+        </section>        {/* Refined Progress Section */}
+        {totalPoints > 0 && (
+          <section className={styles.progressSection}>
+            <div className={styles.progressCard}>
+              <div className={styles.progressContent}>
+                <span className={styles.progressIcon}>🏆</span>
+                <div className={styles.progressInfo}>
+                  <div className={styles.progressPoints}>{totalPoints}</div>
+                  <div className={styles.progressLabel}>Points Earned</div>
+                </div>
+              </div>
+              <div className={styles.progressMessage}>
+                You're making excellent progress!
+              </div>
+            </div>
+          </section>
+        )}
 
-        <div className="hero-actions">
-          <button
-            onClick={() => router.push('/games/tone')}
-            className="btn-primary"
-            aria-label="Play Tone Puzzle"
-          >
-            Play Now
-          </button>
-          <button
-            onClick={() => router.push('/community')}
-            className="btn-primary"
-            aria-label="View community feedback"
-          >
-            Community
-          </button>
-          <button
-            onClick={() => router.push('/prompt-library')}
-            className="btn-primary"
-            aria-label="Browse prompt library"
-          >
-            Prompt Library
-          </button>
-        </div>
-      </section>
-
-
-      {/* greeting - temporarily disabled per UX review */}
-      {/**
-      {user.age && (
-        <h2 className="reveal">
-          Welcome{user.name ? `, ${user.name}` : ''}! Age group: {user.age}
-        </h2>
-      )}      */}      {/* navigation */}
-      <p className="reveal">
-        <Link href="/community">View Community & Progress</Link>
-      </p>
-
-      {/* progress summary */}
-      {totalPoints > 0 && (
-        <div className="reveal">
-          <ProgressSummary
-            totalPoints={totalPoints}
-            badges={user.badges}
-            goalPoints={GOAL_POINTS}
-          />
-        </div>
-      )}
-    </div>
+        {/* Elegant Footer Navigation */}
+        <footer className={styles.footer}>
+          <div className={styles.footerContent}>
+            <div className={styles.quickLinks}>
+              <Link href="/community" className={styles.link}>
+                <span className={styles.linkIcon}>👥</span>
+                <span className={styles.linkLabel}>Community</span>
+              </Link>
+              <Link href="/badges" className={styles.link}>
+                <span className={styles.linkIcon}>🏅</span>
+                <span className={styles.linkLabel}>Achievements</span>
+              </Link>
+              <Link href="/prompt-library" className={styles.link}>
+                <span className={styles.linkIcon}>📚</span>
+                <span className={styles.linkLabel}>Resources</span>
+              </Link>
+            </div>
+          </div>
+        </footer>
+      </div>
     </>
   )
 }

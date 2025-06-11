@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { notify } from '../../../shared/notify'
+import { notify } from '../shared/notify'
 
 interface ChatMessage {
   role: 'user' | 'assistant'

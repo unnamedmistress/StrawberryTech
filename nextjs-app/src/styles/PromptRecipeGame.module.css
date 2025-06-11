@@ -1,4 +1,3 @@
-
 .recipe-page {
   background: var(--color-background);
   padding: 1rem;
@@ -249,4 +248,146 @@
     max-width: none;
     margin-bottom: 1rem;
   }
+}
+
+/* Enhanced WhyCard Styles */
+.why-card-enhanced {
+  position: relative;
+  overflow: hidden;
+}
+
+.why-card-enhanced::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--color-brand), var(--color-accent));
+  border-radius: 8px 8px 0 0;
+}
+
+.why-card-title {
+  color: var(--color-brand);
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.why-card-title::before {
+  content: '🧠';
+  font-size: 1.2rem;
+}
+
+.why-card-content {
+  line-height: 1.5;
+}
+
+.why-card-explanation {
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
+  color: var(--color-text-dark);
+}
+
+.why-card-lesson {
+  background: rgba(109, 191, 77, 0.1);
+  border-left: 3px solid var(--color-accent);
+  padding: 0.75rem;
+  margin: 1rem 0;
+  border-radius: 0 4px 4px 0;
+}
+
+.why-card-lesson h4 {
+  margin: 0 0 0.5rem 0;
+  font-size: 0.9rem;
+  color: var(--color-accent);
+  font-weight: 600;
+}
+
+.why-card-examples {
+  margin: 1rem 0;
+}
+
+.why-card-examples h4 {
+  margin: 0 0 0.75rem 0;
+  font-size: 0.9rem;
+  color: var(--color-brand);
+  font-weight: 600;
+}
+
+.example-pair {
+  margin-bottom: 1rem;
+}
+
+.example-good,
+.example-bad {
+  padding: 0.5rem;
+  margin: 0.25rem 0;
+  border-radius: 4px;
+  font-size: 0.85rem;
+}
+
+.example-good {
+  background: rgba(109, 191, 77, 0.1);
+  border-left: 3px solid var(--color-accent);
+}
+
+.example-bad {
+  background: rgba(238, 58, 87, 0.1);
+  border-left: 3px solid var(--color-brand);
+}
+
+.example-label {
+  font-weight: 600;
+  font-size: 0.8rem;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.example-label.good {
+  color: var(--color-accent);
+}
+
+.example-label.bad {
+  color: var(--color-brand);
+}
+
+.example-good p,
+.example-bad p {
+  margin: 0;
+  font-style: italic;
+}
+
+.why-card-quote {
+  background: rgba(238, 58, 87, 0.05);
+  border-left: 3px solid var(--color-brand);
+  padding: 0.75rem;
+  margin: 1rem 0;
+  font-style: italic;
+  border-radius: 0 4px 4px 0;
+  font-size: 0.9rem;
+}
+
+.why-card-tip {
+  background: rgba(255, 193, 7, 0.1);
+  border: 1px solid rgba(255, 193, 7, 0.3);
+  padding: 0.75rem;
+  border-radius: 4px;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.tip-icon {
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.why-card-tip span:last-child {
+  font-size: 0.9rem;
+  line-height: 1.4;
 }
