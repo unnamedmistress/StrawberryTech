@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StrawberryTech Favicon Test</title>
+    
+    <!-- Comprehensive favicon setup for testing -->
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="/android-chrome-512x512.png">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="shortcut icon" href="/favicon-32x32.png">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="mask-icon" href="/favicon.svg" color="#ee3a57">
+    
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            line-height: 1.6;
+        }
+        .favicon-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        .favicon-item {
+            text-align: center;
+            padding: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        .favicon-item img {
+            display: block;
+            margin: 0 auto 0.5rem;
+            border: 1px solid #eee;
+        }
+        .test-result {
+            background: #f0f8ff;
+            border: 1px solid #0066cc;
+            border-radius: 4px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        .success { background: #f0fff0; border-color: #00cc00; }
+        .warning { background: #fffbf0; border-color: #ffaa00; }
+    </style>
+</head>
+<body>
+    <h1>🍓 StrawberryTech Favicon Test</h1>
+    
+    <div class="test-result success">
+        <h3>✅ Test Instructions</h3>
+        <p><strong>Check the browser tab</strong> - you should see the strawberry favicon in the tab title.</p>
+        <p>This page tests all favicon formats for maximum browser compatibility.</p>
+    </div>
+    
+    <h2>Available Favicon Formats</h2>
+    
+    <div class="favicon-grid">
+        <div class="favicon-item">
+            <img src="/favicon-16x16.png" alt="16x16 PNG" width="32" height="32">
+            <p><strong>16x16 PNG</strong><br>Browser tabs</p>
+        </div>
+        
+        <div class="favicon-item">
+            <img src="/favicon-32x32.png" alt="32x32 PNG" width="32" height="32">
+            <p><strong>32x32 PNG</strong><br>Browser tabs (Retina)</p>
+        </div>
+        
+        <div class="favicon-item">
+            <img src="/favicon-48x48.png" alt="48x48 PNG" width="48" height="48">
+            <p><strong>48x48 PNG</strong><br>Desktop shortcuts</p>
+        </div>
+        
+        <div class="favicon-item">
+            <img src="/apple-touch-icon-180x180.png" alt="180x180 PNG" width="64" height="64">
+            <p><strong>180x180 PNG</strong><br>iOS home screen</p>
+        </div>
+        
+        <div class="favicon-item">
+            <img src="/android-chrome-192x192.png" alt="192x192 PNG" width="64" height="64">
+            <p><strong>192x192 PNG</strong><br>Android home screen</p>
+        </div>
+        
+        <div class="favicon-item">
+            <img src="/favicon.svg" alt="SVG" width="64" height="64">
+            <p><strong>SVG Vector</strong><br>Modern browsers</p>
+        </div>
+    </div>
+    
+    <div class="test-result">
+        <h3>🧪 Browser Compatibility</h3>
+        <ul>
+            <li><strong>Chrome/Edge:</strong> Uses PNG files (16x16, 32x32)</li>
+            <li><strong>Firefox:</strong> Uses PNG files + SVG fallback</li>
+            <li><strong>Safari:</strong> Uses PNG + Apple touch icon</li>
+            <li><strong>Mobile browsers:</strong> Uses appropriate size PNG files</li>
+            <li><strong>Legacy browsers:</strong> Uses 32x32 PNG fallback</li>
+        </ul>
+    </div>
+    
+    <div class="test-result warning">
+        <h3>⚠️ Note</h3>
+        <p>If you don't see the favicon immediately, try:</p>
+        <ol>
+            <li>Hard refresh (Ctrl+F5 or Cmd+Shift+R)</li>
+            <li>Clear browser cache</li>
+            <li>Close and reopen the browser tab</li>
+        </ol>
+    </div>
+    
+    <h2>Technical Implementation</h2>
+    <p>This favicon implementation includes:</p>
+    <ul>
+        <li>Multiple PNG sizes for broad compatibility</li>
+        <li>SVG favicon for modern browsers</li>
+        <li>Apple touch icons for iOS</li>
+        <li>Android home screen icons</li>
+        <li>Web app manifest for PWA support</li>
+        <li>Proper fallback chain for legacy browsers</li>
+    </ul>
+    
+    <p><a href="/">← Back to StrawberryTech Home</a></p>
+</body>
+</html>

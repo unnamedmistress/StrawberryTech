@@ -6,6 +6,7 @@
   margin: 0 auto;
   padding: 0 1rem;
   min-height: 100vh;
+  padding-top: 1rem; /* Add top padding for fixed navbar spacing */
 }
 
 /* Hero Section - Split layout for elegance */
@@ -29,6 +30,7 @@
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  max-width: 600px;
 }
 
 .title {
@@ -54,7 +56,7 @@
   color: #4a5568;
   line-height: 1.6;
   margin: 0;
-  max-width: 600px;
+  max-width: 500px;
   opacity: 0.8;
 }
 
@@ -101,12 +103,16 @@
   justify-content: center;
   align-items: center;
   position: relative;
+  flex-shrink: 0;
+  min-width: 140px;
 }
 
 .logo {
   border-radius: 24px;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease;
+  max-width: 140px;
+  height: auto;
 }
 
 .logo:hover {
@@ -344,7 +350,8 @@
   }
   
   .hero {
-    padding: 3rem 0 4rem 0;
+    padding: 2rem 0 3rem 0;
+    margin: 0 -0.75rem 3rem -0.75rem;
   }
   
   .heroContent {
@@ -354,12 +361,34 @@
     padding: 0 1rem;
   }
   
+  .heroText {
+    max-width: 100%;
+  }
+  
+  .heroVisual {
+    order: -1;
+    margin-bottom: 1rem;
+  }
+  
+  .logo {
+    max-width: 120px;
+  }
+  
   .title {
     font-size: 2.5rem;
   }
   
   .subtitle {
     font-size: 1.1rem;
+    max-width: 100%;
+  }
+  
+  .description {
+    max-width: 100%;
+  }
+  
+  .ctaButton {
+    align-self: center;
   }
   
   .sectionTitle {
@@ -379,6 +408,42 @@
     gap: 1.5rem;
     flex-direction: column;
     align-items: center;
+  }
+}
+
+@media (max-width: 520px) {
+  .heroContent {
+    padding: 0 0.5rem;
+    gap: 1.5rem;
+  }
+  
+  .hero {
+    padding: 1.5rem 0 2.5rem 0;
+    margin: 0 -0.75rem 2rem -0.75rem;
+  }
+  
+  .title {
+    font-size: 2rem;
+    line-height: 1.2;
+  }
+  
+  .subtitle {
+    font-size: 1rem;
+  }
+  
+  .description {
+    font-size: 0.9rem;
+  }
+  
+  .logo {
+    max-width: 100px;
+  }
+  
+  .ctaButton {
+    padding: 1rem 1.5rem;
+    font-size: 1rem;
+    width: 100%;
+    max-width: 280px;
   }
 }
 
@@ -407,5 +472,25 @@
   
   .progressInfo {
     text-align: center;
+  }
+}
+
+/* Ensure no overflow on very small screens */
+@media (max-width: 360px) {
+  .home {
+    padding: 0 0.5rem;
+  }
+  
+  .heroContent {
+    padding: 0 0.25rem;
+  }
+  
+  .title {
+    font-size: 1.75rem;
+  }
+  
+  .ctaButton {
+    padding: 0.875rem 1.25rem;
+    font-size: 0.95rem;
   }
 }

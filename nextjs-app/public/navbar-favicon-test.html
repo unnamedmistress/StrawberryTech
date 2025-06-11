@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navigation Favicon Test</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            line-height: 1.6;
+        }
+        .test-nav {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            margin: 2rem 0;
+        }
+        .nav-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            object-fit: contain;
+            box-shadow: 0 4px 12px rgba(233, 30, 99, 0.2);
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: crisp-edges;
+        }
+        .nav-text {
+            font-weight: 700;
+            font-size: 1.25rem;
+            background: linear-gradient(135deg, #e91e63, #ff6b9d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .favicon-tests {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        .favicon-test {
+            text-align: center;
+            padding: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        .test-result {
+            background: #f0f8ff;
+            border: 1px solid #0066cc;
+            border-radius: 4px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        .success { background: #f0fff0; border-color: #00cc00; }
+    </style>
+</head>
+<body>
+    <h1>🍓 Navigation Favicon Test</h1>
+    
+    <div class="test-result success">
+        <h3>✅ Navigation Bar Preview</h3>
+        <p>This shows how the favicon should appear in the navigation bar:</p>
+    </div>
+    
+    <div class="test-nav">
+        <img src="/favicon-32x32.png" alt="StrawberryTech Logo" class="nav-logo">
+        <span class="nav-text">StrawberryTech</span>
+    </div>
+    
+    <h2>Favicon Format Tests</h2>
+    
+    <div class="favicon-tests">
+        <div class="favicon-test">
+            <img src="/favicon.svg" alt="SVG Favicon" width="40" height="40">
+            <p><strong>SVG Favicon</strong><br>Vector format</p>
+        </div>
+        
+        <div class="favicon-test">
+            <img src="/favicon-32x32.png" alt="32x32 PNG" width="40" height="40">
+            <p><strong>32x32 PNG</strong><br>Used in nav (recommended)</p>
+        </div>
+        
+        <div class="favicon-test">
+            <img src="/favicon-48x48.png" alt="48x48 PNG" width="40" height="40">
+            <p><strong>48x48 PNG</strong><br>High resolution</p>
+        </div>
+    </div>
+    
+    <div class="test-result">
+        <h3>🔍 What to Check</h3>
+        <ol>
+            <li><strong>Navigation bar:</strong> The strawberry icon should display clearly in the simulated nav above</li>
+            <li><strong>Clarity:</strong> Icon should be crisp and not blurry</li>
+            <li><strong>Colors:</strong> Red strawberry with pink center and green stem</li>
+            <li><strong>Browser tab:</strong> Check the actual browser tab for the favicon</li>
+        </ol>
+    </div>
+    
+    <div class="test-result">
+        <h3>📋 Implementation Details</h3>
+        <p><strong>Current setup:</strong></p>
+        <ul>
+            <li>Using <code>favicon-32x32.png</code> in navigation for best compatibility</li>
+            <li>Next.js Image component with optimization disabled for favicon</li>
+            <li>CSS optimizations for crisp rendering</li>
+            <li>Proper sizing and object-fit for consistent display</li>
+        </ul>
+    </div>
+    
+    <p><a href="/">← Back to StrawberryTech Home</a></p>
+    
+    <script>
+        // Test if favicons are loading properly
+        const testImages = ['/favicon.svg', '/favicon-32x32.png', '/favicon-48x48.png'];
+        testImages.forEach(src => {
+            const img = new Image();
+            img.onload = () => console.log(`✅ ${src} loaded successfully`);
+            img.onerror = () => console.error(`❌ ${src} failed to load`);
+            img.src = src;
+        });
+    </script>
+</body>
+</html>
