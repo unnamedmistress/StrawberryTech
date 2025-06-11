@@ -11,20 +11,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return
     }    if (req.method === 'POST') {
       console.log('POST /api/views - Starting request processing')
-      console.log('Request body:', req.body)
-      console.log('Firebase initialized:', !!views)
       
+      // Test with minimal data first
       const view = {
-        visitorId: req.body?.visitorId || null,
-        user: req.body?.user || null,
-        path: req.body?.path || '',
-        referrer: req.body?.referrer || req.headers.referer || '',
-        agent: req.body?.agent || req.headers['user-agent'] || '',
-        ip: (req as any).ip || req.headers['x-forwarded-for'] || req.headers['x-real-ip'] || 'unknown',
+        path: req.body?.path || '/test',
+        ip: 'unknown',
         start: new Date().toISOString(),
       }
       
-      console.log('View object to save:', view)
+      console.log('Minimal view object:', view)
       
       try {
         const ref = await views.add(view)
@@ -33,7 +28,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return
       } catch (firestoreError) {
         console.error('Firestore save error:', firestoreError)
-        throw new Error(`Firestore operation failed: ${(firestoreError as Error).message}`)
+        res.status(500).json({ 
+          error: 'Firestore operation failed', 
+          details: (firestoreError as Error).message,
+          timestamp: new Date().toISOString()
+        })
+        return
       }
     }
     res.setHeader('Allow', 'GET, POST')
