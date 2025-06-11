@@ -84,6 +84,118 @@
   margin-bottom: 0.5rem;
 }
 
+/* Improved mobile responsiveness with better breakpoints */
+@media (max-width: 768px) {
+  .guess-wrapper {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      'sidebar'
+      'game'
+      'door'
+      'progress';
+    gap: 0.75rem;
+    padding: 0.5rem;
+  }
+  
+  .guess-game {
+    padding: 0.75rem;
+  }
+  
+  .guess-sidebar {
+    max-width: none;
+    font-size: 0.85rem;
+    padding: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .guess-wrapper {
+    gap: 0.5rem;
+    padding: 0.25rem;
+  }
+  
+  .guess-game {
+    padding: 0.5rem;
+  }
+  
+  .prompt-form {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .prompt-form input {
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 0.9rem;
+  }
+
+  .prompt-form button {
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 0.9rem;
+  }
+
+  .guess-sidebar {
+    padding: 0.5rem;
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .guess-wrapper {
+    padding: 0.125rem;
+  }
+  
+  .guess-game {
+    padding: 0.375rem;
+  }
+  
+  .prompt-form input {
+    padding: 0.625rem;
+    font-size: 0.85rem;
+  }
+
+  .prompt-form button {
+    padding: 0.625rem;
+    font-size: 0.85rem;
+  }
+
+  .guess-sidebar {
+    padding: 0.375rem;
+    font-size: 0.75rem;
+  }
+  
+  .ai-response {
+    font-size: 0.9rem;
+  }
+  
+  .timer {
+    font-size: 0.9rem;
+  }
+}
+
+/* Ultra-small screens */
+@media (max-width: 320px) {
+  .guess-game {
+    padding: 0.25rem;
+  }
+  
+  .prompt-form input {
+    padding: 0.5rem;
+    font-size: 0.8rem;
+  }
+
+  .prompt-form button {
+    padding: 0.5rem;
+    font-size: 0.8rem;
+  }
+
+  .guess-sidebar {
+    padding: 0.25rem;
+    font-size: 0.7rem;
+  }
+}
+
 @media (max-width: 600px) {
   .guess-wrapper {
     grid-template-columns: 1fr;

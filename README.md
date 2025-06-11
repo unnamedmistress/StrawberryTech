@@ -10,6 +10,9 @@ Swap adjectives to explore how word choice affects tone. Matches award points an
 ### Hallucinations
 A short quiz where you spot the single AI hallucination hidden among two truthful statements.
 
+### Prompt Chain Challenge
+Master the art of breaking complex tasks into sequences of simple, effective prompts. Learn how each prompt can build on the previous response for better AI results.
+
 ### Prompt Recipe Builder
 Drag cards to assemble a prompt. Each round now fetches fresh card text from the OpenAI API and shows a short sample response after you build the recipe.
 

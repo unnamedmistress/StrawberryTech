@@ -42,9 +42,15 @@
     "emoji": "\ud83d\udd0e"
   },
   {
-    "id": "speedy-composer",
-    "name": "Speedy Composer",
-    "description": "Unlock the tweet door with 20 seconds left",
-    "emoji": "\ud83d\ude80"
+    "id": "chain-master",
+    "name": "Chain Master",
+    "description": "Complete a prompt chain challenge with time to spare",
+    "emoji": "\ud83d\udd17"
+  },
+  {
+    "id": "first-chain",
+    "name": "First Chain",
+    "description": "Complete your first prompt chain without hints",
+    "emoji": "\u26d3"
   }
 ]

@@ -74,7 +74,7 @@ export const FALLBACK_ROUNDS: DartRound[] = [
   {
     options: [
       'Write marketing copy.',
-      'Compose a short tweet promoting our new product and mention its top benefit.',
+      'Create a prompt chain to research, analyze, and summarize climate change impacts.',
       'Tell people about our product.'
     ],
     correct: 1,

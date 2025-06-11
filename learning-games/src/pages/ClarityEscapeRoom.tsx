@@ -313,17 +313,39 @@ export default function ClarityEscapeRoom() {
             <div className="room-main">
               {roomDescription && (
                 <p className="room-description">{roomDescription}</p>
+              )}              <p className="ai-response"><strong>AI Response:</strong> "{clue.aiResponse}"</p>
+              {index === 0 && (
+                <div style={{ 
+                  background: 'rgba(255, 255, 255, 0.1)', 
+                  padding: '0.5rem', 
+                  borderRadius: '6px', 
+                  marginBottom: '0.5rem',
+                  fontSize: '0.9rem',
+                  fontStyle: 'italic'
+                }}>
+                  💡 <strong>Tip:</strong> Look at the AI response above and think: what specific request would have produced this exact answer?
+                </div>
               )}
-              <p className="ai-response"><strong>AI Response:</strong> "{clue.aiResponse}"</p>
               <p className="timer">Time left: {timeLeft}s</p>
               <form onSubmit={handleSubmit} className="prompt-form">
-                <label htmlFor="prompt-input">Your prompt</label>
-                <input
+                <label htmlFor="prompt-input">Your prompt</label>                <input
                   id="prompt-input"
                   value={input}
                   onChange={e => setInput(e.target.value.slice(0, 100))}
-                  placeholder="Type the prompt that caused this reply"
-                />
+                  placeholder={index === 0 ? 
+                    "Example: Tell me a kid-friendly joke" : 
+                    "Start with an action word like 'Write', 'Explain', 'Give'..."
+                  }                />
+                {index === 0 && input === '' && (
+                  <button 
+                    type="button" 
+                    className="btn-secondary"
+                    onClick={() => setInput(clue.expectedPrompt)}
+                    style={{ fontSize: '0.8rem', padding: '0.5rem', marginRight: '0.5rem' }}
+                  >
+                    Try Example
+                  </button>
+                )}
                 <button type="submit" className="btn-primary">Submit</button>
                 <Tooltip message="Reveal a hint (press H). Each hint reduces your points.">
                   <button type="button" className="btn-primary" onClick={revealHint}>

@@ -195,8 +195,8 @@ export default function PromptDartsGame() {
       <div className="darts-page">
         <CompletionModal
           imageSrc="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_24_00%20PM.png"
-          buttonHref="/games/compose"
-          buttonLabel="Play Compose Tweet"
+          buttonHref="/games/chain"
+          buttonLabel="Play Prompt Chain"
         >
           <h3>Congratulations!</h3>
           <p className="final-score">Your points: {points}</p>
@@ -288,13 +288,13 @@ export default function PromptDartsGame() {
           <p style={{ marginTop: '1rem', textAlign: 'center' }}>
             <button
               className="btn-primary"
-              onClick={() => navigate('/games/compose')}
+              onClick={() => navigate('/games/chain')}
             >
               Next
             </button>
           </p>
           <p style={{ marginTop: '1rem', textAlign: 'center' }}>
-            <Link to="/games/compose">Skip to Compose</Link>
+            <Link to="/games/chain">Skip to Chain Game</Link>
           </p>
         </div>
       </div>

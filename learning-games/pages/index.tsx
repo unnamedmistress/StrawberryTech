@@ -92,14 +92,21 @@ export default function HomePage() {
             className="game-icon"
           />
           <span className="game-title">Prompt Builder</span>
-        </Link>
-        <Link className="game-card" href="/games/darts">
+        </Link>        <Link className="game-card" href="/games/darts">
           <img
             src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExMW0xZHBmOTl3bWo3bmx6NDNmcjBkamo2a3prd242NjVmZzJvOTlkZCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/SvhOn6vnGXp0BiqlEc/giphy.gif"
             alt="Prompt darts preview"
             className="game-icon"
           />
           <span className="game-title">Prompt Darts</span>
+        </Link>
+        <Link className="game-card" href="/games/chain">
+          <img
+            src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExeW1waDgxcTJjZms2bGZvZjFxZzBwMGgzcGRvNWVob2R0dWo0aGQybiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/3o7abKhOpu0NwenH3O/giphy.gif"
+            alt="Prompt chain challenge preview"
+            className="game-icon"
+          />
+          <span className="game-title">Prompt Chain</span>
         </Link>
       </div>
 

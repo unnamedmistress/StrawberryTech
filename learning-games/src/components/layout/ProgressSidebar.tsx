@@ -46,7 +46,7 @@ export default function ProgressSidebar({ badges }: ProgressSidebarProps = {}) {
     recipe: 'recipe',
     escape: 'escape',
     guess: 'escape',
-    compose: 'compose',
+    chain: 'chain',
     quiz: 'quiz',
     tone: 'tone',
   }
