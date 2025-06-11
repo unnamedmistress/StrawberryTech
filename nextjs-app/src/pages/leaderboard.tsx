@@ -30,7 +30,7 @@ export function Head() {
     <>
       <title>Leaderboard | StrawberryTech</title>
       <meta name="description" content="See top points across all games." />
-      <link rel="canonical" href="https://strawberrytech.com/leaderboard" />
+      <link rel="canonical" href="https://strawberrytech.vercel.com/community" />
     </>
   )
 }

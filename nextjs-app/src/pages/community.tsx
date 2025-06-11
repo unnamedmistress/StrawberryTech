@@ -277,7 +277,7 @@ export function Head() {
         name="description"
         content="See top players and share feedback with the StrawberryTech community."
       />
-      <link rel="canonical" href="https://strawberrytech.com/community" />
+      <link rel="canonical" href="https://strawberry-tech.vercel.app/community" />
     </>
   )
 }

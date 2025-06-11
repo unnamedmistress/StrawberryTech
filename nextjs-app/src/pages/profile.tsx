@@ -131,7 +131,7 @@ export function Head() {
     <>
       <title>Your Profile | StrawberryTech</title>
       <meta name="description" content="Edit your name, age and difficulty level." />
-      <link rel="canonical" href="https://strawberrytech.com/profile" />
+      <link rel="canonical" href="https://strawberry-tech.vercel.app/profile" />
     </>
   )
 }

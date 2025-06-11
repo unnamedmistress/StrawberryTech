@@ -353,7 +353,7 @@ export function Head() {
         name="description"
         content="Deduce the prompt from the AI's reply before time runs out."
       />
-      <link rel="canonical" href="https://strawberrytech.com/games/guess" />
+      <link rel="canonical" href="https://strawberry-tech.vercel.app/games/guess" />
     </>
   )
 }

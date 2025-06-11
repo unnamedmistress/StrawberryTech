@@ -124,11 +124,10 @@ export default function NavBar() {
           >
             Progress
           </button>
-          <ul id="progress-submenu" className={progressOpen ? 'open' : undefined}>
-            <li>
+          <ul id="progress-submenu" className={progressOpen ? 'open' : undefined}>            <li>
               <Tooltip message="Hover here for a surprise!">
-                <Link href="/leaderboard" onClick={() => setOpen(false)}>
-                  Leaderboard
+                <Link href="/community" onClick={() => setOpen(false)}>
+                  Community & Progress
                 </Link>
               </Tooltip>
             </li>

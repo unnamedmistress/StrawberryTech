@@ -96,34 +96,36 @@ button:hover {
   border-radius: 8px;
   padding: 0.8rem 1.6rem;
   color: #fff;
-  transition: background-color 0.25s;
-}
-.btn-primary:hover {
-  background-color: var(--color-deep-red);
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto var(--color-accent);
-}
-
-.btn-primary {
-  background-color: var(--color-brand);
-  border-radius: 8px;
-  padding: 0.8rem 1.6rem;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: all 0.25s ease;
+  /* Mobile touch optimization */
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  /* Ensure proper touch target size for mobile */
+  min-height: 44px;
+  min-width: 44px;
 }
 
 .btn-primary:hover {
   background-color: var(--color-deep-red);
+  transform: translateY(-1px);
 }
 
-.btn-primary {
-  background-color: var(--color-brand);
-  border-radius: 8px;
-  padding: 0.8rem 1.6rem;
-}
-
-.btn-primary:hover {
+.btn-primary:active {
+  transform: translateY(0);
   background-color: var(--color-deep-red);
+}
+
+/* Mobile-specific button styling */
+@media (max-width: 768px) {
+  .btn-primary {
+    padding: 1rem 1.8rem;
+    font-size: 1.1rem;
+    min-height: 48px;
+  }
 }
 
 .reveal {
@@ -205,4 +207,45 @@ body.high-contrast button {
     width: 100%;
     height: auto;
   }
+}
+
+/* Mobile-friendly interactive elements */
+.word {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.word:hover {
+  transform: scale(1.05);
+}
+
+.word:active {
+  transform: scale(0.95);
+}
+
+/* Ensure proper touch targets on mobile */
+@media (max-width: 768px) {
+  .word {
+    min-height: 48px;
+    min-width: 48px;
+    padding: 0.8rem 1rem;
+    font-size: 1.1rem;
+  }
+  
+  .drop-area {
+    min-height: 48px;
+    padding: 0.8rem;
+    font-size: 1.1rem;
+  }
+}
+
+/* Fix focus states for accessibility */
+button:focus,
+button:focus-visible,
+.word:focus,
+.word:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 2px;
 }

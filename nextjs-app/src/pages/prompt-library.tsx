@@ -171,7 +171,7 @@ export function Head() {
     <>
       <title>Prompt Library | StrawberryTech</title>
       <meta name="description" content="Browse community prompts by category." />
-      <link rel="canonical" href="https://strawberrytech.com/prompt-library" />
+      <link rel="canonical" href="https://strawberry-tech.vercel.app/prompt-library" />
     </>
   )
 }

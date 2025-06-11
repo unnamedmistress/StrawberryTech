@@ -150,7 +150,7 @@ export function Head() {
         name="description"
         content="Explore mini games that teach AI prompting techniques."
       />
-      <link rel="canonical" href="https://strawberrytech.com/" />
+      <link rel="canonical" href="https://strawberry-tech.vercel.app/" />
     </>
   )
 }

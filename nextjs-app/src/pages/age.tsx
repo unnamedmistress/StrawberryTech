@@ -21,23 +21,21 @@ export default function AgeInputForm({
   const [name, setNameState] = useState(user.name ?? '')
   const [difficulty, setDifficultyState] = useState(user.difficulty)
   const router = useRouter()
-
   // If age already exists and editing isn't allowed, redirect away
   useEffect(() => {
-    if (user.age && !allowEdit) router.push('/leaderboard')
+    if (user.age && !allowEdit) router.push('/community')
   }, [user.age, router, allowEdit])
 
   function handleSubmit(e: FormEvent) {
     e.preventDefault()
     const ageNumber = Number(age)
-    if (!Number.isNaN(ageNumber) && ageNumber > 0) {
-      setAge(ageNumber)
+    if (!Number.isNaN(ageNumber) && ageNumber > 0) {      setAge(ageNumber)
       if (name) setName(name)
       setDifficulty(difficulty)
       if (onSaved) {
         onSaved()
       } else {
-        router.push('/leaderboard')
+        router.push('/community')
       }
     } else {
       alert('Please enter a valid age')
@@ -77,9 +75,8 @@ export default function AgeInputForm({
           <option value="hard">Hard</option>
         </select>
         <button type="submit" className="btn-primary">Save</button>
-      </form>
-      <p style={{ marginTop: '1rem' }}>
-        <Link href="/leaderboard">Return to Progress</Link>
+      </form>      <p style={{ marginTop: '1rem' }}>
+        <Link href="/community">Return to Progress</Link>
       </p>
     </div>
   )
@@ -93,7 +90,7 @@ export function Head() {
         name="description"
         content="Provide your age and name to personalize the games."
       />
-      <link rel="canonical" href="https://strawberrytech.com/age" />
+      <link rel="canonical" href="https://strawberry-tech.vercel.app/age" />
     </>
   )
 }

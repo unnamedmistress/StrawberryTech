@@ -23,7 +23,7 @@ export function Head() {
     <>
       <title>Terms of Service | StrawberryTech</title>
       <meta name="description" content="Review the rules for using the site." />
-      <link rel="canonical" href="https://strawberrytech.com/terms" />
+      <link rel="canonical" href="https://strawberry-tech.vercel.app/terms" />
     </>
   )
 }

@@ -422,7 +422,7 @@ export function Head() {
         name="description"
         content="Enter the right prompt to unlock the door."
       />
-      <link rel="canonical" href="https://strawberrytech.com/games/escape" />
+      <link rel="canonical" href="https://strawberry-tech.vercel.app/games/escape" />
     </>
   )
 }

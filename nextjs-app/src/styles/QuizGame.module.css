@@ -36,11 +36,30 @@
   color: var(--color-text-dark);
   cursor: pointer;
   transition: transform 0.15s, background-color 0.15s;
+  /* Mobile touch optimization */
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  min-height: 44px;
 }
 
 .statement-btn:hover {
   background: var(--color-secondary);
   transform: scale(1.03);
+}
+
+.statement-btn:active {
+  transform: scale(0.98);
+  background: var(--color-secondary);
+}
+
+/* Mobile-specific styling */
+@media (max-width: 768px) {
+  .statement-btn {
+    padding: 1rem;
+    font-size: 1rem;
+    min-height: 48px;
+    margin-bottom: 0.75rem;
+  }
 }
 
 .statement-btn.selected {

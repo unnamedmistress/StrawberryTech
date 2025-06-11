@@ -111,14 +111,26 @@ export default function DragDropGame() {
                 {selected ? ` ${selected} ` : ' ____ '}
               </span>
               short text to my manager calling out of work sick today.
-            </p>
-            <div className={styles['word-bank']}>
+            </p>            <div className={styles['word-bank']}>
               {tones.map((tone) => (
                 <div
                   key={tone}
                   draggable
                   onDragStart={(e) => handleDragStart(e, tone)}
                   className={styles.word}
+                  onClick={() => {
+                    if (!used.has(tone)) {
+                      setSelected(tone)
+                      setUsed(new Set(used).add(tone))
+                      setUserMessage('')
+                      setSubmitted(false)
+                    }
+                  }}
+                  style={{
+                    opacity: used.has(tone) ? 0.5 : 1,
+                    cursor: used.has(tone) ? 'default' : 'pointer',
+                    userSelect: 'none'
+                  }}
                 >
                   {tone}
                 </div>
@@ -198,7 +210,7 @@ export function Head() {
         name="description"
         content="Drag adjectives to explore how tone changes a message."
       />
-      <link rel="canonical" href="https://strawberrytech.com/games/dragdrop" />
+      <link rel="canonical" href="https://strawberry-tech.vercel.app/games/dragdrop" />
     </>
   )
 }

@@ -342,7 +342,7 @@ export function Head() {
         name="description"
         content="Spot the AI's false statement among the truths."
       />
-      <link rel="canonical" href="https://strawberrytech.com/games/quiz" />
+      <link rel="canonical" href="https://strawberry-tech.vercel.app/games/quiz" />
     </>
   )
 }

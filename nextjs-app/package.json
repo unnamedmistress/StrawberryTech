@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build && npx -y ts-node --transpile-only --compiler-options '{\"module\":\"CommonJS\"}' ../scripts/generate-sitemap.ts",
+    "build": "next build && npx -y ts-node --transpile-only --compiler-options=\"{\\\"module\\\":\\\"CommonJS\\\"}\" ../scripts/generate-sitemap.ts",
     "start": "next start",
     "lint": "next lint"
   },

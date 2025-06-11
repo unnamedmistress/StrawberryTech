@@ -203,9 +203,8 @@ function ToneMatchGame({ onComplete }: { onComplete: (score: number) => void }) 
     }
   }, [used, onComplete, score, recordScore])
 
-  return (
-    <div className="dragdrop-game">
-      <h2>Drag a tone into the blank</h2>
+  return (    <div className="dragdrop-game">
+      <h2>Drag a tone into the blank or tap to select</h2>
       <p className="sentence">
         Write a
         <span
@@ -217,8 +216,7 @@ function ToneMatchGame({ onComplete }: { onComplete: (score: number) => void }) 
           {selected ? ` ${selected} ` : " ____ "}
         </span>
         short text to call out of work sick today.
-      </p>
-      <div className="word-bank">
+      </p><div className="word-bank">
         {tones.map((tone) => (
           <div
             key={tone}
@@ -227,12 +225,27 @@ function ToneMatchGame({ onComplete }: { onComplete: (score: number) => void }) 
             className="word"
             aria-label={`Word ${tone}`}
             tabIndex={0}
+            onClick={() => {
+              if (!used.has(tone)) {
+                setSelected(tone)
+                setUsed(new Set(used).add(tone))
+                setScore((s) => s + 20)
+              }
+            }}
             onKeyDown={(e) => {
               if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault()
-                setSelected(tone)
-                setUsed(new Set(used).add(tone))
+                if (!used.has(tone)) {
+                  setSelected(tone)
+                  setUsed(new Set(used).add(tone))
+                  setScore((s) => s + 20)
+                }
               }
+            }}
+            style={{
+              opacity: used.has(tone) ? 0.5 : 1,
+              cursor: used.has(tone) ? 'default' : 'pointer',
+              userSelect: 'none'
             }}
           >
             {tone}
@@ -436,7 +449,7 @@ export function Head() {
         name="description"
         content="Match adjectives to explore how tone changes a message."
       />
-      <link rel="canonical" href="https://strawberrytech.com/games/tone" />
+      <link rel="canonical" href="https://strawberry-tech.vercel.app/games/tone" />
     </>
   )
 }

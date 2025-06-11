@@ -66,7 +66,7 @@ export function Head() {
     <>
       <title>Welcome | StrawberryTech</title>
       <meta name="description" content="Introduce yourself and start playing." />
-      <link rel="canonical" href="https://strawberrytech.com/welcome" />
+      <link rel="canonical" href="https://strawberry-tech.vercel.app/welcome" />
     </>
   )
 }

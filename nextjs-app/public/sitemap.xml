@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://example.com/age</loc></url>
+  <url><loc>https://example.com/api/darts</loc></url>
+  <url><loc>https://example.com/api/debug</loc></url>
+  <url><loc>https://example.com/api/helpers</loc></url>
+  <url><loc>https://example.com/api/posts/[id]/flag</loc></url>
+  <url><loc>https://example.com/api/posts</loc></url>
+  <url><loc>https://example.com/api/prompts</loc></url>
+  <url><loc>https://example.com/api/scores/[game]</loc></url>
+  <url><loc>https://example.com/api/scores</loc></url>
+  <url><loc>https://example.com/api/sentiment</loc></url>
+  <url><loc>https://example.com/api/user</loc></url>
+  <url><loc>https://example.com/api/views/[id]/end</loc></url>
+  <url><loc>https://example.com/api/views</loc></url>
   <url><loc>https://example.com/badges</loc></url>
   <url><loc>https://example.com/community</loc></url>
   <url><loc>https://example.com/contact</loc></url>
@@ -15,10 +27,11 @@
   <url><loc>https://example.com/help</loc></url>
   <url><loc>https://example.com/</loc></url>
   <url><loc>https://example.com/leaderboard</loc></url>
-  <url><loc>https://example.com/prompt-library</loc></url>
   <url><loc>https://example.com/privacy</loc></url>
   <url><loc>https://example.com/profile</loc></url>
+  <url><loc>https://example.com/prompt-library</loc></url>
   <url><loc>https://example.com/stats</loc></url>
   <url><loc>https://example.com/terms</loc></url>
+  <url><loc>https://example.com/testimonials</loc></url>
   <url><loc>https://example.com/welcome</loc></url>
 </urlset>
