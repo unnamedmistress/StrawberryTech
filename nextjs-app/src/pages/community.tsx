@@ -1,10 +1,10 @@
 import { useContext, useEffect, useState } from 'react'
-import { notify } from '../../../shared/notify'
+import { notify } from '../shared/notify'
 import Link from 'next/link'
 import Post from '../components/Post'
 import type { PostData } from '../components/Post'
-import { UserContext } from '../../../shared/UserContext'
-import type { UserContextType } from '../../../shared/types/user'
+import { UserContext } from '../shared/UserContext'
+import type { UserContextType } from '../shared/types/user'
 import styles from '../styles/CommunityPage.module.css'
 import { getApiBase } from '../utils/api'
 

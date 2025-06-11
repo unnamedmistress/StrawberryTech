@@ -1,7 +1,7 @@
 import { useEffect, useContext } from 'react'
 import { usePathname } from 'next/navigation'
-import { UserContext } from '../../../shared/UserContext'
-import type { UserContextType } from '../../../shared/types/user'
+import { UserContext } from '../shared/UserContext'
+import type { UserContextType } from '../shared/types/user'
 import { getApiBase } from '../utils/api'
 
 function getCookie(name: string) {
