@@ -11,19 +11,20 @@ interface PromptData {
   created: string
 }
 
-export default function PromptLibraryPage() {
+export default function PromptLibraryPage({ initialPrompts = [] }: { initialPrompts?: PromptData[] }) {
   const [category, setCategory] = useState('all')
   const [search, setSearch] = useState('')
   const [text, setText] = useState('')
   const [error, setError] = useState('')
   const [notice, setNotice] = useState('')
   const base = getApiBase()
-    const fetcher = (url: string) => fetch(url).then(res => res.json())
-  const { data: prompts = [], mutate, error: swrError, isLoading } = useSWR<PromptData[]>(
+      const fetcher = (url: string) => fetch(url).then(res => res.json())
+  const { data: prompts = initialPrompts, mutate, error: swrError, isLoading } = useSWR<PromptData[]>(
     `/api/prompts`,
     fetcher,
     {
       refreshInterval: 0, // Disable auto-refresh for debugging
+      fallbackData: initialPrompts, // Use initial data as fallback
     }
   )
 
@@ -166,4 +167,14 @@ export function Head() {
   )
 }
 
-export const getStaticProps = async () => ({ props: {} })
+export const getServerSideProps = async () => {
+  // Fetch prompts on server-side for initial render
+  try {
+    const res = await fetch('https://strawberry-tech.vercel.app/api/prompts')
+    const prompts = await res.json()
+    return { props: { initialPrompts: prompts } }
+  } catch (error) {
+    console.error('Failed to fetch prompts:', error)
+    return { props: { initialPrompts: [] } }
+  }
+}
