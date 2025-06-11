@@ -122,11 +122,9 @@ export default function Home() {
         <h2 className="reveal">
           Welcome{user.name ? `, ${user.name}` : ''}! Age group: {user.age}
         </h2>
-      )}      */}
-
-      {/* navigation */}
+      )}      */}      {/* navigation */}
       <p className="reveal">
-        <Link href="/leaderboard">View Progress</Link>
+        <Link href="/community">View Community & Progress</Link>
       </p>
 
       {/* progress summary */}

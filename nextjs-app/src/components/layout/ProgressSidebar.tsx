@@ -88,10 +88,9 @@ export default function ProgressSidebar({ points, badges }: ProgressSidebarProps
         </ol>
         <p className="your-rank" aria-live="polite" aria-atomic="true">
           Your rank: #{rank}
-        </p>
-      </div>
+        </p>      </div>
       <p className="view-leaderboard">
-        <Link href="/leaderboard">View full leaderboard</Link>
+        <Link href="/community">View community & leaderboard</Link>
       </p>
     </aside>
   )

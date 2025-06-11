@@ -70,9 +70,8 @@ export default function BadgesPage() {
         >
           Share Badges
         </button>
-      </p>
-      <p style={{ marginTop: '2rem' }}>
-        <Link href="/leaderboard">Return to Progress</Link>
+      </p>      <p style={{ marginTop: '2rem' }}>
+        <Link href="/community">Return to Community</Link>
       </p>
     </div>
   )

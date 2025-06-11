@@ -84,9 +84,8 @@ export default function ProfilePage() {
 
         <ThemeToggle />
 
-        <button type="submit">Save</button>
-        <Link href="/leaderboard" className={styles['return-link']}>
-          Return to Progress
+        <button type="submit">Save</button>        <Link href="/community" className={styles['return-link']}>
+          Return to Community
         </Link>
       </form>
       <div className={styles['stats-card']}>
