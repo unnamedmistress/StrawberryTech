@@ -10,6 +10,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       res.status(200).json(list)
       return
     }    if (req.method === 'POST') {
+      console.log('POST /api/views - Starting request processing')
+      console.log('Request body:', req.body)
+      console.log('Firebase initialized:', !!views)
+      
       const view = {
         visitorId: req.body?.visitorId || null,
         user: req.body?.user || null,
@@ -20,9 +24,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         start: new Date().toISOString(),
       }
       
-      const ref = await views.add(view)
-      res.status(201).json({ id: ref.id, ...view })
-      return
+      console.log('View object to save:', view)
+      
+      try {
+        const ref = await views.add(view)
+        console.log('Successfully saved view with ID:', ref.id)
+        res.status(201).json({ id: ref.id, ...view })
+        return
+      } catch (firestoreError) {
+        console.error('Firestore save error:', firestoreError)
+        throw new Error(`Firestore operation failed: ${(firestoreError as Error).message}`)
+      }
     }
     res.setHeader('Allow', 'GET, POST')
     res.status(405).end('Method Not Allowed')  } catch (error) {
