@@ -333,10 +333,9 @@ export default function PromptGuessEscape() {
                   <p><strong>Expected:</strong> {r.expected}</p>
                   <p className={styles.tip}><strong>Tip:</strong> {r.tip}</p>
                 </li>
-              ))}
-            </ul>
-            <button className="btn-primary" onClick={() => navigate.push('/leaderboard')}>
-              View Leaderboard
+              ))}            </ul>
+            <button className="btn-primary" onClick={() => navigate.push('/community')}>
+              View Community
             </button>
           </div>
         </div>

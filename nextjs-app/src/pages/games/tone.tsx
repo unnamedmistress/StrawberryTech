@@ -421,7 +421,7 @@ export default function Match3Game() {
 
       </p>
       <p style={{ marginTop: '1rem', textAlign: 'center' }}>
-        <Link href="/leaderboard">Return to Progress</Link>
+        <Link href="/community">Return to Progress</Link>
       </p>
     </div>
     </>

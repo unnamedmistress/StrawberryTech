@@ -180,10 +180,9 @@ export default function DragDropGame() {
           </div>
         </GamePageLayout>
         <ProgressSidebar />
-      </div>
-      <div className={styles['next-area']}>
+      </div>      <div className={styles['next-area']}>
         <p>
-          <Link href="/leaderboard">Return to Progress</Link>
+          <Link href="/community">Return to Progress</Link>
         </p>
       </div>
     </div>

@@ -201,25 +201,23 @@ export default function ComposeTweetGame() {
         </div>
         <ProgressSidebar />
         <div className={styles['next-area']}>
-          <p style={{ marginTop: '1rem', textAlign: 'center' }}>
-            <button
+          <p style={{ marginTop: '1rem', textAlign: 'center' }}>            <button
               className="btn-primary"
-              onClick={() => router.push('/leaderboard')}
+              onClick={() => router.push('/community')}
             >
               Next
             </button>
           </p>
           <p style={{ marginTop: '1rem', textAlign: 'center' }}>
-            <Link href="/leaderboard">Return to Progress</Link>
+            <Link href="/community">Return to Progress</Link>
           </p>
         </div>
       </div>
     </div>
-    {finished && (
-      <CompletionModal
+    {finished && (      <CompletionModal
         imageSrc="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_47_29%20PM.png"
-        buttonHref="/leaderboard"
-        buttonLabel="View Leaderboard"
+        buttonHref="/community"
+        buttonLabel="View Community"
       >
         <h3>All prompts complete!</h3>
         {points !== null && (

@@ -313,10 +313,9 @@ export default function QuizGame() {
               onClick={() => navigate.push('/games/escape')}
             >
               Next
-            </button>
-          </p>
+            </button>          </p>
           <p style={{ marginTop: '1rem', textAlign: 'center' }}>
-            <Link href="/leaderboard">Return to Progress</Link>
+            <Link href="/community">Return to Progress</Link>
           </p>
         </div>
       </div>
