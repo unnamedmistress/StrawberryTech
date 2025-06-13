@@ -43,18 +43,31 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         <link rel="manifest" href="/manifest.json" />
         
         {/* Safari pinned tab */}
-        <link rel="mask-icon" href="/favicon.svg" color="#ee3a57" />
-        
-        {/* Open Graph / Facebook */}
+        <link rel="mask-icon" href="/favicon.svg" color="#ee3a57" />        {/* Open Graph / Facebook */}
         <meta property="og:type" content="website" />
         <meta property="og:title" content="StrawberryTech - Master AI Prompting Through Games" />
         <meta property="og:description" content={description} />
         <meta property="og:site_name" content="StrawberryTech" />
+        <meta property="og:image" content="https://strawberry-tech.vercel.app/android-chrome-512x512.png" />
+        <meta property="og:image:width" content="512" />
+        <meta property="og:image:height" content="512" />
+        <meta property="og:image:alt" content="StrawberryTech - Learn AI Prompting Skills" />
+        <meta property="og:url" content="https://strawberry-tech.vercel.app/" />
+        <meta property="og:locale" content="en_US" />
         
         {/* Twitter */}
         <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content="@strawberrytech" />
+        <meta name="twitter:creator" content="@strawberrytech" />
         <meta name="twitter:title" content="StrawberryTech - Master AI Prompting Through Games" />
-        <meta name="twitter:description" content={description} />      </Head>
+        <meta name="twitter:description" content={description} />
+        <meta name="twitter:image" content="https://strawberry-tech.vercel.app/android-chrome-512x512.png" />
+        <meta name="twitter:image:alt" content="StrawberryTech - Learn AI Prompting Skills" />
+        
+        {/* Additional meta tags for better social sharing */}
+        <meta name="robots" content="index, follow" />
+        <meta name="author" content="StrawberryTech" />
+        <meta name="keywords" content="AI prompting, artificial intelligence, learning games, prompt engineering, AI skills, interactive learning" /></Head>
       <NotificationProvider>
         <UserProvider>
           <ScrollToTop />

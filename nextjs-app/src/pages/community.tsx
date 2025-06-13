@@ -113,26 +113,41 @@ export default function CommunityPage() {
           <span className={styles.points}>{totalPoints} pts</span>
           <div className={styles.badges}>{user.badges.map((b) => (
             <span key={b} className={styles.badge}>🏅</span>
-          ))}</div>
-          <button
+          ))}</div>          <button
             type="button"
             className={styles.shareBtn}
-            onClick={() => {
-              const shareData = {
-                text: `I scored ${totalPoints} points on StrawberryTech! 🍓`,
-                url: 'https://strawberry-tech.vercel.app/',
+            onClick={async () => {
+              const badgeCount = user.badges.length
+              const badgeText = badgeCount > 0 ? ` and earned ${badgeCount} badge${badgeCount > 1 ? 's' : ''}` : ''
+                const shareData = {
+                title: 'StrawberryTech - AI Prompting Skills',
+                text: `I scored ${totalPoints} points learning AI prompting on StrawberryTech${badgeText}! 🍓 Join me and level up your AI skills!`,
+                url: 'https://strawberry-tech.vercel.app/community'
               }
-              if (navigator.share) {
-                navigator.share(shareData).catch(() => {})
-              } else {
-                navigator.clipboard
-                  .writeText(`${shareData.text} ${shareData.url}`)
-                  .catch(() => {})
-                notify('Share link copied to clipboard')
-              }
-            }}
+              
+              try {
+                if (navigator.share && navigator.canShare && navigator.canShare(shareData)) {
+                  await navigator.share(shareData)
+                  notify('Thanks for sharing! 🎉')
+                } else {
+                  // Fallback: copy nicely formatted text to clipboard
+                  const shareText = `${shareData.text}\n\n${shareData.url}`
+                  await navigator.clipboard.writeText(shareText)
+                  notify('Share text copied to clipboard! 📋')
+                }
+              } catch (error) {
+                // If sharing was cancelled or failed, try clipboard as backup
+                try {
+                  const shareText = `${shareData.text}\n\n${shareData.url}`
+                  await navigator.clipboard.writeText(shareText)
+                  notify('Share text copied to clipboard! 📋')
+                } catch {
+                  notify('Unable to share or copy text 😅')
+                }
+              }            }}
+            aria-label={`Share your progress: ${totalPoints} points${user.badges.length > 0 ? ` and ${user.badges.length} badge${user.badges.length > 1 ? 's' : ''}` : ''}`}
           >
-            Share
+            📤 Share Progress
           </button>
         </div>
 
@@ -196,9 +211,35 @@ export function Head() {
       <title>Community | StrawberryTech</title>
       <meta
         name="description"
-        content="Share feedback with other StrawberryTech players."
+        content="Join the StrawberryTech community! Share your AI prompting progress and connect with other learners."
       />
       <link rel="canonical" href="https://strawberry-tech.vercel.app/community" />
+        {/* Open Graph / Facebook */}
+      <meta property="og:type" content="website" />
+      <meta property="og:url" content="https://strawberry-tech.vercel.app/community" />
+      <meta property="og:title" content="StrawberryTech Community - AI Prompting Skills" />
+      <meta property="og:description" content="Join thousands learning AI prompting skills through fun, interactive games. Share your progress and connect with other learners!" />
+      <meta property="og:image" content="https://strawberry-tech.vercel.app/android-chrome-512x512.png" />
+      <meta property="og:image:width" content="512" />
+      <meta property="og:image:height" content="512" />
+      <meta property="og:image:alt" content="StrawberryTech Community - Share your AI learning progress" />
+      <meta property="og:site_name" content="StrawberryTech" />
+      <meta property="og:locale" content="en_US" />
+      
+      {/* Twitter */}
+      <meta property="twitter:card" content="summary_large_image" />
+      <meta property="twitter:site" content="@strawberrytech" />
+      <meta property="twitter:creator" content="@strawberrytech" />
+      <meta property="twitter:url" content="https://strawberry-tech.vercel.app/community" />
+      <meta property="twitter:title" content="StrawberryTech Community - AI Prompting Skills" />
+      <meta property="twitter:description" content="Join thousands learning AI prompting skills through fun, interactive games. Share your progress and connect with other learners!" />
+      <meta property="twitter:image" content="https://strawberry-tech.vercel.app/android-chrome-512x512.png" />
+      <meta property="twitter:image:alt" content="StrawberryTech Community - Share your AI learning progress" />
+      
+      {/* Additional social sharing optimization */}
+      <meta name="robots" content="index, follow" />
+      <meta name="author" content="StrawberryTech" />
+      <meta name="keywords" content="AI prompting community, AI learning progress, prompt engineering, AI skills sharing, interactive learning community" />
     </>
   )
 }
