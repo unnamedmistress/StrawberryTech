@@ -200,7 +200,10 @@ export default function CommunityPage() {
                 type="button"
                 className={styles.shareBtn}
                 onClick={() => {
-                  const text = `I scored ${user.points[game] ?? 0} points in ${game} on StrawberryTech! 🍓`
+                  const score = user.points[game] ?? 0
+                  const pitch =
+                    'These bite-sized games make AI learning fun and easy. Come play and see if you can beat my score!'
+                  const text = `I scored ${score} points in ${game} on StrawberryTech! 🍓 ${pitch} https://strawberry-tech.vercel.app/`
                   if (navigator.share) {
                     navigator.share({ text }).catch(() => {})
                   } else {
