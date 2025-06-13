@@ -108,6 +108,7 @@ export default function CommunityPage() {
         <h1 className={styles.pageTitle}>Community</h1>
         
 
+
         <div className={styles.statsBar}>
           <span className={styles.points}>{totalPoints} pts</span>
           <div className={styles.badges}>{user.badges.map((b) => (
@@ -134,6 +135,7 @@ export default function CommunityPage() {
             Share
           </button>
         </div>
+
 
         {/* Community Feedback Section */}
         <section className={styles.communitySection}>

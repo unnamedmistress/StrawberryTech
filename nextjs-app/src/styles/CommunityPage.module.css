@@ -229,6 +229,7 @@
 .statsBar .badges {
   display: flex;
   gap: 0.25rem;
+
 }
 
 /* Community Section */
