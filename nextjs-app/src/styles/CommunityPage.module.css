@@ -196,19 +196,21 @@
 }
 
 .shareBtn {
-  background: #ee3a57;
-  color: white;
+  background: linear-gradient(90deg, #ff7b7b, #ee3a57);
+  color: #ffffff;
   border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
-  font-size: 0.875rem;
-  font-weight: 500;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s ease, background 0.2s ease;
 }
 
 .shareBtn:hover {
-  background: #dc2626;
+  background: linear-gradient(90deg, #ff6b6b, #dc2626);
+  transform: translateY(-2px);
 }
 
 /* Stats bar at the top */
