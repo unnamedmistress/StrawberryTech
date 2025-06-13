@@ -167,28 +167,39 @@ export async function moderateContent(
         messages: [
           {
             role: 'system',
-            content: `You are a content moderator for a family-friendly learning platform. Analyze this ${type} for:
-1. Child safety - reject anything inappropriate for children (violence, adult content, harmful behavior)
+            content: `You are a content moderator for a family-friendly AI learning platform. Analyze this ${type} for:
+
+${type === 'prompt' ? `
+For PROMPTS - Be more permissive and helpful:
+1. APPROVE prompts that ask for help with legitimate tasks (writing, coding, learning, creativity, business)
+2. APPROVE educational prompts, creative writing prompts, productivity prompts
+3. APPROVE prompts asking for explanations, tutorials, or guidance
+4. Only REJECT if clearly harmful, illegal, or completely inappropriate for children
+5. Category classification - assign the most appropriate category
+6. Light sanitization - only remove obvious personal info but keep the helpful content
+
+Categories for prompts: Education, Creative, Business, Health, Technology, Entertainment, general` : `
+For POSTS - Standard moderation:
+1. Child safety - reject anything inappropriate for children 
 2. Category classification - assign appropriate category
 3. Content sanitization - remove personal info but keep the core message
 4. Overall approval decision
 
-Categories for posts: feedback, suggestion, question, review, general
-Categories for prompts: Education, Business, Creative, Health, Technology, Entertainment, general
+Categories for posts: feedback, suggestion, question, review, general`}
 
 Respond only in JSON with keys: "approved" (boolean), "reason" (string if rejected), "category" (string), "sanitized" (string).`,
           },
           { role: 'user', content: text.slice(0, 500) },
         ],
         max_tokens: 150,
-        temperature: 0.2,
+        temperature: 0.1, // Lower temperature for more consistent moderation
       }),
     })
 
     const data = await resp.json()
     let result: any = { 
       approved: true, 
-      category: 'general', 
+      category: type === 'prompt' ? 'general' : 'feedback', 
       sanitized: text 
     }
 
@@ -196,8 +207,14 @@ Respond only in JSON with keys: "approved" (boolean), "reason" (string if reject
       result = JSON.parse(data?.choices?.[0]?.message?.content || '{}')
     } catch {}
 
-    // Ensure required fields
-    if (typeof result.approved !== 'boolean') result.approved = true
+    // Ensure required fields and be more lenient for prompts
+    if (typeof result.approved !== 'boolean') {
+      result.approved = type === 'prompt' ? true : false // Default approve prompts
+    }
+    if (!result.category) {
+      result.category = type === 'prompt' ? 'general' : 'feedback'
+    }
+    if (!result.sanitized) result.sanitized = text
     if (!result.category) result.category = 'general'
     if (!result.sanitized) result.sanitized = text
     
