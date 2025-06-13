@@ -1,9 +1,9 @@
 /* Modern Combined Community & Leaderboard Styles */
 .communityWrapper {
-  display: flex;
   min-height: 100vh;
   font-family: 'Poppins', system-ui, -apple-system, sans-serif;
   background: #f8fafc;
+  padding: 1rem;
 }
 
 .mainContent {
@@ -211,6 +211,24 @@
 .shareBtn:hover {
   background: linear-gradient(90deg, #ff6b6b, #dc2626);
   transform: translateY(-2px);
+}
+
+/* Stats bar at the top */
+.statsBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: white;
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  margin-bottom: 1.5rem;
+  gap: 1rem;
+}
+
+.statsBar .badges {
+  display: flex;
+  gap: 0.25rem;
 }
 
 /* Community Section */
