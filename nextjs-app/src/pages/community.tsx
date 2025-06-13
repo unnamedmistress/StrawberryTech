@@ -1,12 +1,10 @@
-import { useContext, useEffect, useMemo, useState } from 'react'
+import { useContext, useEffect, useState, useMemo } from 'react'
 import { notify } from '../shared/notify'
 import Link from 'next/link'
 import Post from '../components/Post'
 import type { PostData } from '../components/Post'
 import { UserContext } from '../shared/UserContext'
 import type { UserContextType } from '../shared/types/user'
-import { useLeaderboards, type PointsEntry } from '../shared/useLeaderboards'
-import ProgressSidebar from '../components/layout/ProgressSidebar'
 import { getTotalPoints } from '../utils/user'
 import styles from '../styles/CommunityPage.module.css'
 import { getApiBase } from '../utils/api'
@@ -17,7 +15,7 @@ const initialPosts: PostData[] = [
   {
     id: 1,
     author: 'Admin',
-    content: 'Welcome to the community! Share your thoughts and see how you rank!',
+    content: 'Welcome to the community! Share your thoughts with other players.',
     date: '2025-01-01T00:00:00Z',
     sentiment: 1,
     status: 'approved',
@@ -33,29 +31,6 @@ export default function CommunityPage() {
   const [error, setError] = useState('')
   const [notice, setNotice] = useState('')
   
-  // Leaderboard state
-  const [filter, setFilter] = useState('')
-  const [game, setGame] = useState('tone')
-  const { data: pointsDataRaw, loading } = useLeaderboards()
-  const pointsData = pointsDataRaw ?? {}
-  
-  const tabs = useMemo(() => {
-    const base = ['tone', 'quiz', 'escape', 'recipe', 'darts', 'chain']
-    const dynamic = Object.keys(pointsData)
-    return Array.from(new Set([...base, ...dynamic]))
-  }, [pointsData])
-
-  const topEntries = useMemo(() => {
-    const list = (pointsData[game] ?? []).slice()
-    const playerId = user.id
-    const existing = list.find((e: PointsEntry) => e.id === playerId)
-    if (!existing) list.push({ id: playerId, name: user.name ?? 'You', points: user.points[game] ?? 0 })
-    return list
-      .filter((e: PointsEntry) => e.name.toLowerCase().includes(filter.toLowerCase()))
-      .sort((a: PointsEntry, b: PointsEntry) => b.points - a.points)
-      .slice(0, 5) // Only show top 5
-  }, [filter, user.id, user.name, user.points, pointsData, game])
-
   const totalPoints = useMemo(() => getTotalPoints(user.points), [user.points])
 
   // Load from localStorage after mount to prevent hydration issues
@@ -130,90 +105,34 @@ export default function CommunityPage() {
   return (
     <div className={styles.communityWrapper}>
       <div className={styles.mainContent}>
-        <h1 className={styles.pageTitle}>Community & Leaderboard</h1>
+        <h1 className={styles.pageTitle}>Community</h1>
         
-        {/* Leaderboard Section */}
-        <section className={styles.leaderboardSection}>
-          <h2 className={styles.sectionTitle}>Top Players</h2>
-          
-          <div className={styles.gameTabs}>
-            {tabs.map(key => (
-              <button
-                key={key}
-                className={`${styles.gameTab} ${game === key ? styles.active : ''}`}
-                type="button"
-                onClick={() => setGame(key)}
-              >
-                {key}
-              </button>
-            ))}
-          </div>
-
-          <div className={styles.leaderboardCard}>
-            <div className={styles.searchContainer}>
-              <input
-                type="text"
-                placeholder="Search players..."
-                value={filter}
-                onChange={(e) => setFilter(e.target.value)}
-                className={styles.searchInput}
-              />
-            </div>
-            
-            <div className={styles.playersGrid}>
-              {topEntries.map((entry: PointsEntry, idx: number) => (
-                <div
-                  key={entry.id || entry.name}
-                  className={`${styles.playerCard} ${idx === 0 ? styles.topPlayer : ''} ${
-                    entry.id === user.id ? styles.currentUser : ''
-                  }`}
-                >
-                  <div className={styles.playerRank}>
-                    {idx === 0 ? '🏆' : `#${idx + 1}`}
-                  </div>
-                  <div className={styles.playerInfo}>
-                    <div className={styles.playerName}>{entry.name}</div>
-                    <div className={styles.playerStats}>
-                      <span className={styles.points}>{entry.points} pts</span>
-                      {entry.id === user.id && user.badges.length > 0 && (
-                        <div className={styles.badges}>
-                          {user.badges.slice(0, 3).map((badge) => (
-                            <span key={badge} className={styles.badge}>🏅</span>
-                          ))}
-                          {user.badges.length > 3 && (
-                            <span className={styles.badgeCount}>+{user.badges.length - 3}</span>
-                          )}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <div className={styles.userSummary}>
-              <div className={styles.yourStats}>
-                <span>Your Total: {totalPoints} pts</span>
-                <span>Badges: {user.badges.length}</span>
-              </div>
-              <button
-                type="button"
-                className={styles.shareBtn}
-                onClick={() => {
-                  const text = `I scored ${user.points[game] ?? 0} points in ${game} on StrawberryTech! 🍓`
-                  if (navigator.share) {
-                    navigator.share({ text }).catch(() => {})
-                  } else {
-                    navigator.clipboard.writeText(text).catch(() => {})
-                    notify('Points copied to clipboard')
-                  }
-                }}
-              >
-                Share Score
-              </button>
-            </div>
-          </div>
-        </section>
+        <div className={styles.statsBar}>
+          <span className={styles.points}>{totalPoints} pts</span>
+          <div className={styles.badges}>{user.badges.map((b) => (
+            <span key={b} className={styles.badge}>🏅</span>
+          ))}</div>
+          <button
+            type="button"
+            className={styles.shareBtn}
+            onClick={() => {
+              const shareData = {
+                text: `I scored ${totalPoints} points on StrawberryTech! 🍓`,
+                url: 'https://strawberry-tech.vercel.app/',
+              }
+              if (navigator.share) {
+                navigator.share(shareData).catch(() => {})
+              } else {
+                navigator.clipboard
+                  .writeText(`${shareData.text} ${shareData.url}`)
+                  .catch(() => {})
+                notify('Share link copied to clipboard')
+              }
+            }}
+          >
+            Share
+          </button>
+        </div>
 
         {/* Community Feedback Section */}
         <section className={styles.communitySection}>
@@ -264,7 +183,6 @@ export default function CommunityPage() {
         </div>
       </div>
       
-      <ProgressSidebar />
     </div>
   )
 }
@@ -272,10 +190,10 @@ export default function CommunityPage() {
 export function Head() {
   return (
     <>
-      <title>Community & Leaderboard | StrawberryTech</title>
+      <title>Community | StrawberryTech</title>
       <meta
         name="description"
-        content="See top players and share feedback with the StrawberryTech community."
+        content="Share feedback with other StrawberryTech players."
       />
       <link rel="canonical" href="https://strawberry-tech.vercel.app/community" />
     </>
