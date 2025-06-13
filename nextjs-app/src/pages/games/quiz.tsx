@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext, useMemo } from 'react'
-import ProgressSidebar from '../../components/layout/ProgressSidebar'
 import WhyCard from '../../components/layout/WhyCard'
+import ModernGameLayout from '../../components/layout/ModernGameLayout'
 import { motion } from 'framer-motion'
 import { notify } from '../../shared/notify'
 import Link from 'next/link'; import { useRouter } from 'next/router'
@@ -9,7 +9,6 @@ import HeadTag from 'next/head'
 import { UserContext } from '../../shared/UserContext'
 import type { UserContextType } from '../../shared/types/user'
 import styles from '../../styles/QuizGame.module.css'
-import InstructionBanner from '../../components/ui/InstructionBanner'
 import { HALLUCINATION_EXAMPLES } from '../../data/hallucinationExamples'
 import { H_ROUNDS } from '../../data/hallucinationRounds'
 import JsonLd from '../../components/seo/JsonLd'
@@ -31,42 +30,6 @@ const TIP = 'Tip: ask for sources when something sounds off.'
 interface ChatMessage {
   role: 'user' | 'assistant'
   content: string
-}
-
-function ChallengeBanner() {
-  return (
-    <motion.div
-      className={`${styles['challenge-banner']} reveal`}
-      animate={{ scale: [1, 1.1, 1] }}
-      transition={{ repeat: Infinity, duration: 2 }}
-    >
-      Ultimate Challenge: find the AI's lie! 🕵️
-    </motion.div>
-  )
-}
-
-function WhyItMatters() {
-  const example = useMemo(
-    () =>
-      HALLUCINATION_EXAMPLES[Math.floor(Math.random() * HALLUCINATION_EXAMPLES.length)],
-    [],
-  )
-  return (
-    <WhyCard
-      className={`${styles['quiz-sidebar']} reveal`}
-      title="Why It Matters"
-      explanation="AI hallucinations occur when the system confidently states something untrue."
-      quote={QUOTE}
-      tip={TIP}
-    >
-      <p className="sidebar-example">
-        Example: {example.statement}{" "}
-        <a href={example.source} target="_blank" rel="noopener noreferrer">
-          Source
-        </a>
-      </p>
-    </WhyCard>
-  )
 }
 
 function ChatBox() {
@@ -130,7 +93,7 @@ function ChatBox() {
 
 export default function QuizGame() {
   const { user, setPoints, addBadge } = useContext(UserContext) as UserContextType
-  const navigate = useRouter()
+  const router = useRouter()
   const [round, setRound] = useState(0)
   const [choice, setChoice] = useState<number | null>(null)
   const [points, setPointsState] = useState(0)
@@ -197,8 +160,7 @@ export default function QuizGame() {
   }, [])
 
   return (
-    <>
-      <JsonLd
+    <>      <JsonLd
         data={{
           '@context': 'https://schema.org',
           '@type': 'Game',
@@ -238,14 +200,26 @@ export default function QuizGame() {
             content="https://strawberry-tech.vercel.app/games/quiz"
           />
         </HeadTag>
-      <div className={styles['quiz-page']}>
-      <ChallengeBanner />
-      <InstructionBanner>
-        Find the one false statement—the AI hallucination. Tap the refresh icon
-        for new prompts and then select your answer.
-      </InstructionBanner>
-      <div className={styles['truth-game']}>
-        <WhyItMatters />
+      
+      <ModernGameLayout
+        gameTitle="Hallucinations"
+        gameIcon="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_51_28%20PM.png"
+        whyCard={
+          <WhyCard
+            title="Why It Matters"
+            explanation="AI hallucinations occur when an AI system confidently states something untrue. Learn to spot these to verify AI-generated content."
+            quote="Always verify surprising claims."
+            tip="Tip: ask for sources when something sounds off."
+          />
+        }        nextGameButton={
+          <button
+            className="btn-primary"
+            onClick={() => router.push('/games/escape')}
+          >
+            Next Game
+          </button>
+        }
+      >
         <div className={styles['game-area']}>
           <div className={styles.statements}>
           <div className={styles['statement-header']}>
@@ -299,27 +273,23 @@ export default function QuizGame() {
             </p>
 
             <button className="btn-primary" onClick={nextRound}>Next Round</button>
+            
+            {played > 0 && (
+              <button 
+                className="btn-secondary" 
+                onClick={() => router.push('/games/escape')}
+                style={{ marginLeft: '1rem' }}
+              >
+                Next Game →
+              </button>
+            )}
 
           </>
         )}
         </div>
         <ChatBox />
         </div>
-        <ProgressSidebar />
-        <div className={styles['next-area']}>
-          <p style={{ marginTop: '1rem', textAlign: 'center' }}>
-            <button
-              className="btn-primary"
-              onClick={() => navigate.push('/games/escape')}
-            >
-              Next
-            </button>          </p>
-          <p style={{ marginTop: '1rem', textAlign: 'center' }}>
-            <Link href="/community">Return to Progress</Link>
-          </p>
-        </div>
-      </div>
-    </div>
+      </ModernGameLayout>
     {finished && (
       <CompletionModal
         imageSrc="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_51_28%20PM.png"

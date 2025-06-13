@@ -2,11 +2,10 @@ import { useState, useEffect, useRef, useContext, useCallback } from 'react'
 import { notify } from '../../shared/notify'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
-import InstructionBanner from '../../components/ui/InstructionBanner'
+import ModernGameLayout from '../../components/layout/ModernGameLayout'
 import ProgressBar from '../../components/ui/ProgressBar'
 import DoorAnimation from '../../components/DoorAnimation'
 import DoorUnlockedModal from '../../components/ui/DoorUnlockedModal'
-import ProgressSidebar from '../../components/layout/ProgressSidebar'
 import WhyCard from '../../components/layout/WhyCard'
 import Tooltip from '../../components/ui/Tooltip'
 import IntroOverlay from '../../components/ui/IntroOverlay'
@@ -114,7 +113,7 @@ const TOTAL_STEPS = 4
 
 
 export default function ClarityEscapeRoom() {
-  const navigate = useRouter()
+  const router = useRouter()
   const { setPoints: recordScore } = useContext(UserContext) as UserContextType
   const [doors] = useState(() => shuffle(CLUES).slice(0, TOTAL_STEPS))
   const [index, setIndex] = useState(0)
@@ -173,10 +172,13 @@ export default function ClarityEscapeRoom() {
       return i
     })
   }, [clue.hints])
-
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
-      if (e.key.toLowerCase() === 'h') {
+      // Only trigger hint if user is NOT typing in an input field
+      if (e.key.toLowerCase() === 'h' && 
+          e.target && 
+          (e.target as HTMLElement).tagName !== 'INPUT' && 
+          (e.target as HTMLElement).tagName !== 'TEXTAREA') {
         e.preventDefault()
         revealHint()
       }
@@ -319,39 +321,51 @@ export default function ClarityEscapeRoom() {
           <meta
             name="twitter:url"
             content="https://strawberry-tech.vercel.app/games/escape"
-          />
-        </HeadTag>
-      <div>
-      <InstructionBanner>Escape Room: Guess the Prompt</InstructionBanner>
-      <div className={styles['escape-wrapper']}>        <WhyCard
-          className={styles['escape-sidebar']}
-          title="Why Clarity Matters"
-          explanation="Vague prompts create confusion. Clear, specific instructions help AI understand exactly what you need and provide better responses."
-          lesson={
-            <div>
-              <p><strong>Clear prompting strategies:</strong></p>
-              <ul>
-                <li><strong>Be specific:</strong> Instead of 'help me', say exactly what kind of help</li>
-                <li><strong>Set context:</strong> Explain the situation and your goal</li>
-                <li><strong>Use examples:</strong> Show what good output looks like</li>
-                <li><strong>Break complex tasks:</strong> Split big requests into steps</li>
-              </ul>
-            </div>
-          }
-          examples={[
-            {
-              good: "Explain the water cycle in 3 simple steps using everyday language for a 5th-grade science class.",
-              bad: "Tell me about water."
+          />        </HeadTag>
+      
+      <ModernGameLayout
+        gameTitle="Clarity Escape Room"
+        gameIcon="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_12_36%20PM.png"
+        whyCard={
+          <WhyCard
+            title="Why Clarity Matters"
+            explanation="Clear, specific prompts get better AI responses. This escape room teaches you to think like the AI - working backwards from responses to understand what makes prompts effective."
+            lesson={
+              <div>
+                <p><strong>Elements of clear prompts:</strong></p>
+                <ul>
+                  <li><strong>Action word:</strong> Tell, write, explain, create</li>
+                  <li><strong>Context:</strong> Who, what, when, where</li>
+                  <li><strong>Specificity:</strong> Details that guide the response</li>
+                  <li><strong>Format:</strong> How you want the output structured</li>
+                </ul>
+              </div>
             }
-          ]}
-          tip="Think of AI like a helpful but literal assistant. The clearer your instructions, the better the results. Precision unlocks AI's full potential!"
-        />
+            examples={[
+              {
+                good: "Write a polite email to my teacher asking for help with math homework due tomorrow",
+                bad: "Help me with homework"
+              }
+            ]}
+            tip="Look at the AI's response and think: what specific request would have generated this exact answer? Start with an action word!"
+          />
+        }
+        nextGameButton={
+          <button className="btn-primary" onClick={() => router.push('/games/recipe')}>
+            Next: Prompt Builder →
+          </button>
+        }
+      >
+      <div className={styles['escape-wrapper']}>
         <div className={styles.room}>
           <div className={styles['room-grid']}>
             <div className={styles['room-main']}>
-              {roomDescription && (
-                <p className={styles['room-description']}>{roomDescription}</p>
-              )}              <p className={styles['ai-response']}><strong>AI Response:</strong> "{clue.aiResponse}"</p>
+              <img
+                src="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_12_36%20PM.png"
+                alt="Escape room with doors and prompts"
+                className="hero-img"
+                style={{ width: '150px', display: 'inline-block' }}
+              /><p className={styles['ai-response']}><strong>AI Response:</strong> "{clue.aiResponse}"</p>
               {index === 0 && (
                 <div style={{ 
                   background: 'rgba(255, 255, 255, 0.1)', 
@@ -384,10 +398,9 @@ export default function ClarityEscapeRoom() {
                     Try Example
                   </button>
                 )}
-                <button type="submit" className="btn-primary">Submit</button>
-                <Tooltip message="Reveal a hint (press H). Each hint reduces your points.">
+                <button type="submit" className="btn-primary">Submit</button>                <Tooltip message="Reveal a hint. Click the button or press H when not typing.">
                   <button type="button" className="btn-primary" onClick={revealHint}>
-                    Hint (H)
+                    Hint
                   </button>
                 </Tooltip>
               </form>
@@ -416,28 +429,14 @@ export default function ClarityEscapeRoom() {
                   onNext={nextChallenge}
                 />
               )}
-              <p className={styles.score}>Score: {points}</p>
-            </div>
+              <p className={styles.score}>Score: {points}</p>            </div>
             <div className={styles['door-area']}>
               <DoorAnimation openPercent={openPercent} />
             </div>
           </div>
         </div>
-        <ProgressSidebar />
-        <div className={styles['next-area']}>
-          <p style={{ marginTop: '1rem', textAlign: 'center' }}>
-            <button
-              className="btn-primary"
-              onClick={() => navigate.push('/games/recipe')}
-            >
-              Next
-            </button>
-          </p>
-          <p style={{ marginTop: '1rem', textAlign: 'center' }}>
-            <Link href="/games/recipe">Skip to Prompt Builder</Link>
-          </p>
         </div>
-      </div>
+      </ModernGameLayout>
       {showSummary && (
         <CompletionModal
           imageSrc="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_12_36%20PM.png"
@@ -448,7 +447,6 @@ export default function ClarityEscapeRoom() {
           <p className={styles['final-score']}>Points: {points}</p>
         </CompletionModal>
       )}
-    </div>
     </>
   )
 }

@@ -1,9 +1,8 @@
 import { useState, useContext, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import ProgressSidebar from '../../components/layout/ProgressSidebar'
+import ModernGameLayout from '../../components/layout/ModernGameLayout'
 import WhyCard from '../../components/layout/WhyCard'
-import InstructionBanner from '../../components/ui/InstructionBanner'
 import TimerBar from '../../components/ui/TimerBar'
 import { UserContext } from '../../shared/UserContext'
 import type { UserContextType } from '../../shared/types/user'
@@ -402,10 +401,9 @@ export default function PromptDartsGame() {
     }
   }
 
-  if (!rounds.length) {
-    return (
+  if (!rounds.length) {    return (
       <div className={styles['darts-page']}>
-        <InstructionBanner>Loading rounds...</InstructionBanner>
+        <p>Loading rounds...</p>
       </div>
     )
   }
@@ -466,18 +464,30 @@ export default function PromptDartsGame() {
           content="https://strawberry-tech.vercel.app/games/darts"
         />
       </HeadTag>
-      <div className={styles['darts-page']}>
-      <InstructionBanner>
-        Choose the clearer prompt that best targets the requested format.
-      </InstructionBanner>
-      <div className={styles['darts-wrapper']}>
-        <WhyCard
-          className={styles['darts-sidebar']}
-          title="Why Clarity Matters"
-          explanation="The clearer your target, the better your aim. Clear prompts act like aiming sights for AI."
-          quote="Why Card: Why Clarity Matters"
-          tip="Align prompt language with output types (teaching specificity and clarity)."
-        />
+      <ModernGameLayout
+        gameTitle="Prompt Darts"
+        gameIcon="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_24_00%20PM.png"
+        whyCard={
+          <WhyCard
+            title="Why Clarity Wins"
+            explanation="Clear, specific prompts help AI give you exactly what you want. In Prompt Darts, you'll learn to spot the most effective prompt by looking for details like format, audience, and constraints."
+            lesson={<div>
+              <ul>
+                <li><strong>Be specific:</strong> State exactly what you want (e.g., 'List 3 tips' instead of 'Give advice').</li>
+                <li><strong>Define format:</strong> Ask for a list, paragraph, or number of items.</li>
+                <li><strong>Set context:</strong> Who is the answer for? What is the topic?</li>
+                <li><strong>Constrain output:</strong> Limit length, style, or audience for better results.</li>
+              </ul>
+            </div>}
+            tip="The more specific your prompt, the more useful the AI's answer will be!"
+          />
+        }
+        nextGameButton={
+          <button className="btn-primary" onClick={() => router.push('/games/chain')}>
+            Next: Prompt Chain →
+          </button>
+        }
+      >
         <div className={styles['darts-game']}>
           <img
             src="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_24_00%20PM.png"
@@ -485,16 +495,12 @@ export default function PromptDartsGame() {
             className="hero-img"
             style={{ width: '200px' }}
           />
-
           <h3>Round {round + 1} of {rounds.length}</h3>
           <TimerBar timeLeft={timeLeft} TOTAL_TIME={TOTAL_TIME} />
           <p className="timer">Time: {timeLeft}s</p>
           <p className="points">Available points: {pointsLeft}</p>
-
           <p>Which prompt is clearer?</p>
           <div className={styles.options}>
-
-
             {choices.map((text, i) => (
               <button
                 key={i}
@@ -503,10 +509,8 @@ export default function PromptDartsGame() {
                 disabled={choice !== null}
               >
                 {highlightPrompt(text)}
-
               </button>
             ))}
-
           </div>
           <button
             className="btn-primary"
@@ -517,7 +521,6 @@ export default function PromptDartsGame() {
           </button>
           {hint && <p className={styles['hint-text']}>{hint}</p>}
           {choice !== null && (
-
             <>
               <p className={styles.feedback}>
                 {checkChoice(current, choice!)
@@ -527,38 +530,15 @@ export default function PromptDartsGame() {
               {penaltyMsg && !checkChoice(current, choice!) && (
                 <p className="penalty">{penaltyMsg}</p>
               )}
-
               <p className={styles['why-message']}>{current.why}</p>
               <pre className={styles['canned-response']}>{current.response}</pre>
-
             </>
-
           )}
           {timeLeft === 0 && choice === null && (
             <p className={styles.feedback}>Time's up! No points this round.</p>
           )}
         </div>
-        <ProgressSidebar />
-        <div className={styles['next-area']}>
-          {choice !== null && (
-            <button className="btn-primary" onClick={next}>
-              {round + 1 < rounds.length ? 'Next Round' : 'Finish'}
-            </button>
-          )}
-          <p style={{ marginTop: '1rem', textAlign: 'center' }}>
-            <button
-              className="btn-primary"
-              onClick={() => router.push('/games/chain')}
-            >
-              Next
-            </button>
-          </p>
-          <p style={{ marginTop: '1rem', textAlign: 'center' }}>
-            <Link href="/games/chain">Skip to Chain Game</Link>
-          </p>
-        </div>
-      </div>
-    </div>
+      </ModernGameLayout>
     </>
   )
 }

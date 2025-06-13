@@ -1,12 +1,11 @@
 import { useState, useEffect, useRef, useContext, useCallback } from 'react'
 import { notify } from '../../shared/notify'
 import { useRouter } from 'next/router'
-import InstructionBanner from '../../components/ui/InstructionBanner'
 import Tooltip from '../../components/ui/Tooltip'
 import ProgressBar from '../../components/ui/ProgressBar'
 import DoorAnimation from '../../components/DoorAnimation'
 import DoorUnlockedModal from '../../components/ui/DoorUnlockedModal'
-import ProgressSidebar from '../../components/layout/ProgressSidebar'
+import ModernGameLayout from '../../components/layout/ModernGameLayout'
 import WhyCard from '../../components/layout/WhyCard'
 import { UserContext } from '../../shared/UserContext'
 import type { UserContextType } from '../../shared/types/user'
@@ -115,7 +114,7 @@ const EXTRA_TIME = 10
 
 
 export default function PromptGuessEscape() {
-  const navigate = useRouter()
+  const router = useRouter()
   const { setPoints: recordScore } = useContext(UserContext) as UserContextType
   const [doors] = useState(() => shuffle(CLUES).slice(0, TOTAL_STEPS))
   const [index, setIndex] = useState(0)
@@ -182,10 +181,13 @@ export default function PromptGuessEscape() {
       return i
     })
   }, [clue.hints])
-
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
-      if (e.key.toLowerCase() === 'h') {
+      // Only trigger hint if user is NOT typing in an input field
+      if (e.key.toLowerCase() === 'h' && 
+          e.target && 
+          (e.target as HTMLElement).tagName !== 'INPUT' && 
+          (e.target as HTMLElement).tagName !== 'TEXTAREA') {
         e.preventDefault()
         revealHint()
       }
@@ -254,20 +256,49 @@ export default function PromptGuessEscape() {
           description: "Deduce the prompt from the AI's reply before time runs out.",
           image:
             'https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_12_36%20PM.png',
-        }}
-      />
+        }}      />
+      <ModernGameLayout
+        gameTitle="Guess the Prompt"
+        gameIcon="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_12_36%20PM.png"
+        whyCard={
+          <WhyCard
+            title="Why Reverse Engineering Matters"
+            explanation="Understanding how AI interprets prompts helps you write better prompts. By working backwards from AI responses, you learn what makes prompts clear and effective."
+            lesson={
+              <div>
+                <p><strong>Good prompts usually include:</strong></p>
+                <ul>
+                  <li><strong>Clear action:</strong> What you want the AI to do</li>
+                  <li><strong>Context:</strong> Who, what, when, where</li>
+                  <li><strong>Format:</strong> How you want the response</li>
+                  <li><strong>Tone:</strong> The style of communication</li>
+                </ul>
+              </div>
+            }
+            examples={[
+              {
+                good: "Write a polite email to my teacher asking for help with math homework",
+                bad: "Help me"
+              }
+            ]}
+            tip="Look for clues in the AI's response about the original prompt. What tone was used? What action was requested? What context was provided?"
+          />
+        }
+        nextGameButton={
+          <button className="btn-primary" onClick={() => router.push('/games/dragdrop')}>
+            Next: Drag & Drop →
+          </button>
+        }
+      >
       <div className="guess-page">
-      <InstructionBanner>Escape Room: Guess the Prompt</InstructionBanner>
       <div className={styles['guess-wrapper']}>
-        <WhyCard
-          className={styles['guess-sidebar']}
-          title="Why Clarity Matters"
-          explanation="Vague inputs lock AI in confusion loops; precise prompts open doors."
-        />
         <div className={styles['guess-game']}>
-          {roomDescription && (
-            <p className="room-description">{roomDescription}</p>
-          )}
+          <img
+            src="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_12_36%20PM.png"
+            alt="Detective strawberry examining clues"
+            className="hero-img"
+            style={{ width: '150px', display: 'inline-block' }}
+          />
           <p className={styles['ai-response']}><strong>AI Response:</strong> "{clue.aiResponse}"</p>
           <p className={styles.timer}>Time left: {timeLeft}s</p>
           <form onSubmit={handleSubmit} className={styles['prompt-form']}>
@@ -278,10 +309,9 @@ export default function PromptGuessEscape() {
               onChange={e => setInput(e.target.value)}
               placeholder="Type the prompt that caused this reply"
             />
-            <button type="submit" className="btn-primary">Submit</button>
-            <Tooltip message="Reveal a hint (press H). Each hint reduces your points.">
+            <button type="submit" className="btn-primary">Submit</button>            <Tooltip message="Reveal a hint. Click the button or press H when not typing.">
               <button type="button" className="btn-primary" onClick={revealHint}>
-                Hint (H)
+                Hint
               </button>
             </Tooltip>
           </form>
@@ -307,9 +337,7 @@ export default function PromptGuessEscape() {
           )}
         </div>
         <div className={styles['door-area']}>
-          <DoorAnimation openPercent={openPercent} />
-        </div>
-        <ProgressSidebar />
+          <DoorAnimation openPercent={openPercent} />        </div>
       </div>
       {showTip && (
         <div className={styles['summary-overlay']} onClick={() => {}}>
@@ -318,8 +346,7 @@ export default function PromptGuessEscape() {
             <p className={styles.tip}><strong>Tip:</strong> {currentTip}</p>
             <button className="btn-primary" onClick={() => { setShowTip(false); nextChallenge(); }}>
               Continue
-            </button>
-          </div>
+            </button>          </div>
         </div>
       )}
       {showSummary && (
@@ -333,14 +360,13 @@ export default function PromptGuessEscape() {
                   <p><strong>Expected:</strong> {r.expected}</p>
                   <p className={styles.tip}><strong>Tip:</strong> {r.tip}</p>
                 </li>
-              ))}            </ul>
-            <button className="btn-primary" onClick={() => navigate.push('/community')}>
-              View Community
-            </button>
+              ))}            </ul>            <button className="btn-primary" onClick={() => router.push('/community')}>
+              View Community            </button>
           </div>
         </div>
       )}
-      </div>
+        </div>
+      </ModernGameLayout>
     </>
   )
 }

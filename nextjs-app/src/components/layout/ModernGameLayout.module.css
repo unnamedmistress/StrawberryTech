@@ -1,0 +1,253 @@
+/* Modern Game Layout Styles */
+.modernGameLayout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  padding: 1rem;
+  gap: 1.5rem;
+}
+
+/* Game Header */
+.gameHeader {
+  background: white;
+  border-radius: 16px;
+  padding: 1.5rem 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(238, 58, 87, 0.1);
+}
+
+.gameTitleSection {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.gameHeaderIcon {
+  width: 60px;
+  height: 60px;
+  border-radius: 12px;
+  object-fit: cover;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.gameTitle {
+  font-family: 'Fredoka One', 'Poppins', sans-serif;
+  font-size: 2rem;
+  color: var(--color-brand);
+  margin: 0;
+  font-weight: 600;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Main Game Grid */
+.gameGrid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 300px 1fr 280px;
+  grid-template-areas: 'why content progress';
+  gap: 1.5rem;
+  align-items: start;
+}
+
+/* Why Section */
+.whySection {
+  grid-area: why;
+}
+
+.whySection :global(.why-card-enhanced) {
+  background: white;
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(109, 191, 77, 0.2);
+  position: sticky;
+  top: 1rem;
+}
+
+.whySection :global(.why-card-enhanced::before) {
+  height: 6px;
+  background: linear-gradient(90deg, var(--color-accent), var(--color-orange));
+}
+
+/* Game Content */
+.gameContent {
+  grid-area: content;
+  background: white;
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  min-height: 500px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Progress Section */
+.progressSection {
+  grid-area: progress;
+  position: sticky;
+  top: 1rem;
+}
+
+.progressSection aside {
+  background: white;
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(238, 58, 87, 0.1);
+}
+
+/* Navigation Footer */
+.gameNavigation {
+  background: white;
+  border-radius: 16px;
+  padding: 1.5rem 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  text-align: center;
+}
+
+.gameNavigation :global(.btn-primary) {
+  padding: 0.875rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(238, 58, 87, 0.3);
+  transition: all 0.3s ease;
+}
+
+.gameNavigation :global(.btn-primary:hover) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(238, 58, 87, 0.4);
+}
+
+/* Tablet Layout */
+@media (max-width: 1024px) {
+  .gameGrid {
+    grid-template-columns: 1fr 260px;
+    grid-template-areas: 
+      'content progress'
+      'why why';
+  }
+  
+  .gameHeaderIcon {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .gameTitle {
+    font-size: 1.75rem;
+  }
+}
+
+/* Mobile Layout */
+@media (max-width: 768px) {
+  .modernGameLayout {
+    padding: 0.75rem;
+    gap: 1rem;
+  }
+  
+  .gameHeader {
+    padding: 1rem 1.5rem;
+  }
+  
+  .gameTitle {
+    font-size: 1.5rem;
+  }
+  
+  .gameHeaderIcon {
+    width: 40px;
+    height: 40px;
+  }
+    .gameGrid {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      'why'
+      'content';
+  }
+  
+  .gameContent {
+    padding: 1.5rem;
+    min-height: 400px;
+  }
+  
+  .whySection :global(.why-card-enhanced),
+  .progressSection aside {
+    position: static;
+    padding: 1rem;
+  }
+  
+  .gameNavigation {
+    padding: 1rem 1.5rem;
+  }
+}
+
+/* Small Mobile */
+@media (max-width: 480px) {
+  .modernGameLayout {
+    padding: 0.5rem;
+  }
+  
+  .gameHeader {
+    padding: 0.75rem 1rem;
+  }
+  
+  .gameTitle {
+    font-size: 1.25rem;
+  }
+  
+  .gameContent {
+    padding: 1rem;
+  }
+  
+  .whySection :global(.why-card-enhanced),
+  .progressSection aside {
+    padding: 0.75rem;
+  }
+}
+
+/* Enhanced animations and interactions */
+.modernGameLayout * {
+  transition: all 0.2s ease;
+}
+
+.gameHeader,
+.gameContent,
+.whySection :global(.why-card-enhanced),
+.progressSection aside,
+.gameNavigation {
+  transform: translateY(0);
+  opacity: 1;
+  animation: slideInUp 0.6s ease-out;
+}
+
+@keyframes slideInUp {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Focus and accessibility improvements */
+.gameContent:focus-within,
+.whySection :global(.why-card-enhanced:focus-within),
+.progressSection aside:focus-within {
+  outline: 2px solid var(--color-brand);
+  outline-offset: 2px;
+}
+
+/* Enhanced card hover effects */
+.whySection :global(.why-card-enhanced:hover),
+.progressSection aside:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.12);
+}
+
+.gameContent:hover {
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.1);
+}

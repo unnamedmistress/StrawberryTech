@@ -7,9 +7,8 @@ import confetti from 'canvas-confetti'
 import { notify } from '../../shared/notify'
 import JsonLd from '../../components/seo/JsonLd'
 
-import ProgressSidebar from '../../components/layout/ProgressSidebar'
+import ModernGameLayout from '../../components/layout/ModernGameLayout'
 import WhyCard from '../../components/layout/WhyCard'
-import InstructionBanner from '../../components/ui/InstructionBanner'
 import Tooltip from '../../components/ui/Tooltip'
 import TimerBar from '../../components/ui/TimerBar'
 import CompletionModal from '../../components/ui/CompletionModal'
@@ -481,33 +480,49 @@ export default function PromptRecipeGame() {
           <meta
             name="twitter:url"
             content="https://strawberry-tech.vercel.app/games/recipe"
-          />
-        </HeadTag>
-      <div className={styles['recipe-page']}>
-      <InstructionBanner>
-        Drag each card to the category it best fits to build a clear AI prompt.
-      </InstructionBanner>
-      <div className={styles['recipe-wrapper']}>        <WhyCard
-          className={styles['recipe-sidebar']}
-          title="Why Build Prompts?"
-          explanation="Good prompts are like recipes - each ingredient serves a purpose. Let's learn the four essential components that make AI understand exactly what you want."
-          lesson={
-            <div>
-              <p><strong>Action:</strong> What do you want the AI to do? (write, explain, create, analyze)</p>
-              <p><strong>Context:</strong> What background information does it need?</p>
-              <p><strong>Format:</strong> How should the response be structured?</p>
-              <p><strong>Constraints:</strong> What rules or limits should it follow?</p>
-            </div>
-          }
-          examples={[
-            {
-              good: "Write a professional email to decline a meeting, keeping it under 100 words, with a polite and apologetic tone.",
-              bad: "Write an email about not going to a meeting."
+          />        </HeadTag>
+      
+      <ModernGameLayout
+        gameTitle="Prompt Builder"
+        gameIcon="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_19_23%20PM.png"
+        whyCard={
+          <WhyCard
+            title="Why Structure Matters"
+            explanation="Great prompts have four key ingredients: Action, Context, Format, and Constraints. Like a recipe, the right combination creates better results."
+            lesson={
+              <div>
+                <p><strong>The 4 Elements of Effective Prompts:</strong></p>
+                <ul>
+                  <li><strong>Action:</strong> What you want the AI to do (write, explain, list, create)</li>
+                  <li><strong>Context:</strong> Background info or setting (for students, about climate, in Spanish)</li>
+                  <li><strong>Format:</strong> How you want the output (3 bullet points, paragraph, email)</li>
+                  <li><strong>Constraints:</strong> Limits or requirements (under 100 words, beginner-friendly, formal tone)</li>
+                </ul>
+              </div>
             }
-          ]}
-          tip="Think of prompts like giving directions to a helpful friend - be specific, clear, and include all the details they need to help you successfully!"
-        />
+            examples={[
+              {
+                good: "Write a friendly email to parents explaining the science fair project requirements in 3 bullet points",
+                bad: "Write about the science fair"
+              }
+            ]}
+            tip="Not every prompt needs all 4 elements, but including them makes your requests clearer and more effective!"
+          />
+        }
+        nextGameButton={
+          <button className="btn-primary" onClick={() => router.push('/games/darts')}>
+            Next: Prompt Darts →
+          </button>
+        }
+      >
+      <div className={styles['recipe-wrapper']}>
         <div className={styles['recipe-game']}>
+          <img
+            src="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_19_23%20PM.png"
+            alt="Prompt recipe builder strawberry chef tossing cards labeled Action, Context, Format, Constraints."
+            className="hero-img"
+            style={{ width: '150px', display: 'inline-block' }}
+          />
           <div className={styles['status-bar']}>
             <span className={styles['round-info']}>Round {round + 1} / {TOTAL_ROUNDS}</span>
             <span className="score">Points: {points}</span>
@@ -580,29 +595,14 @@ export default function PromptRecipeGame() {
                 Copy Prompt
               </button>
             </div>
-          )}
-        </div>
-        <ProgressSidebar />
+          )}        </div>
         {showPrompt && (
           <div className={styles['next-area']}>
             <button className="btn-primary" onClick={nextRound}>Next Recipe</button>
           </div>
         )}
-        <div className={styles['next-area']}>
-          <p style={{ marginTop: '1rem', textAlign: 'center' }}>
-            <button
-              className="btn-primary"
-              onClick={() => router.push('/games/darts')}
-            >
-              Next
-            </button>
-          </p>
-          <p style={{ marginTop: '1rem', textAlign: 'center' }}>
-            <Link href="/games/darts">Skip to Prompt Darts</Link>
-          </p>
         </div>
-      </div>
-    </div>
+      </ModernGameLayout>
     </>
   )
 }

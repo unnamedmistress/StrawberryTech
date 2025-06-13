@@ -1,13 +1,10 @@
 import { useState, useEffect, useContext } from 'react'
-import Link from 'next/link'
-import { useRouter } from 'next/router'
 import { motion, AnimatePresence } from 'framer-motion'
 import confetti from 'canvas-confetti'
 import HeadTag from 'next/head'
 import JsonLd from '../../components/seo/JsonLd'
 
-import InstructionBanner from '../../components/ui/InstructionBanner'
-import ProgressSidebar from '../../components/layout/ProgressSidebar'
+import ModernGameLayout from '../../components/layout/ModernGameLayout'
 import CompletionModal from '../../components/ui/CompletionModal'
 import WhyCard from '../../components/layout/WhyCard'
 import TimerBar from '../../components/ui/TimerBar'
@@ -139,7 +136,6 @@ const WHY_CONTENT = {
 
 export default function PromptChainGame() {
   const { setPoints, addBadge, user } = useContext(UserContext) as UserContextType
-  const router = useRouter()
   
   const [currentChallenge, setCurrentChallenge] = useState(0)
   const [currentStep, setCurrentStep] = useState(0)
@@ -278,15 +274,49 @@ export default function PromptChainGame() {
           name: 'Prompt Chain Challenge',
           description: 'Learn to break complex tasks into chains of simple prompts for better AI results.',
           image: 'https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_47_29%20PM.png',
-        }}
-      />
-
+        }}      />
+      
+      <ModernGameLayout
+        gameTitle="Prompt Chain Challenge"
+        gameIcon="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_47_29%20PM.png"
+        whyCard={
+          <WhyCard
+            title="Why Chain Prompts?"
+            explanation="Complex tasks work better when broken into smaller, connected steps. Instead of asking for everything at once, prompt chaining helps you guide the AI through a logical sequence."
+            lesson={
+              <div>
+                <p><strong>Benefits of Prompt Chaining:</strong></p>
+                <ul>
+                  <li><strong>Better Quality:</strong> Each step builds on the previous response</li>
+                  <li><strong>More Control:</strong> You can guide the direction at each step</li>
+                  <li><strong>Less Overwhelm:</strong> AI handles one focused task at a time</li>
+                  <li><strong>Iterative Improvement:</strong> Refine and adjust as you go</li>
+                </ul>
+              </div>
+            }
+            examples={[
+              {
+                good: "Step 1: 'List renewable energy types' → Step 2: 'Give statistics about solar' → Step 3: 'Write 200-word summary'",
+                bad: "Write a comprehensive 200-word summary about renewable energy with statistics"
+              }
+            ]}
+            tip="Think of complex tasks like cooking - you don't throw all ingredients together at once, you follow a recipe step by step!"
+          />
+        }
+        nextGameButton={
+          <button className="btn-primary" onClick={() => window.location.href = '/community'}>
+            View Community →
+          </button>
+        }
+      >
       <div className="chain-page">
-        <InstructionBanner>
-          Break complex tasks into a chain of simple prompts
-        </InstructionBanner>
-        
         <div className={styles['chain-wrapper']}>
+          <img
+            src="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_47_29%20PM.png"
+            alt="Prompt chain challenge"
+            className="hero-img"
+            style={{ width: '150px', display: 'inline-block' }}
+          />
           <aside className={styles['chain-sidebar']}>
             <h3>Challenge {currentChallenge + 1}/{CHALLENGES.length}</h3>
             <h4>{challenge.title}</h4>
@@ -394,14 +424,9 @@ export default function PromptChainGame() {
                 <p>You've successfully chained {challenge.steps.length} prompts together!</p>
                 <p className={styles.score}>Score: {totalScore} points</p>
               </motion.div>
-            )}
-          </main>
-
-          <ProgressSidebar />
+            )}          </main>        </div>
         </div>
-
-        <WhyCard {...WHY_CONTENT} />
-      </div>
+      </ModernGameLayout>
 
       {gameComplete && (
         <CompletionModal

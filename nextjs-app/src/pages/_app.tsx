@@ -1,6 +1,7 @@
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
 import { UserProvider } from '../shared/UserProvider'
+import { NotificationProvider } from '../contexts/NotificationContext'
 import ModernNavBar from '../components/layout/ModernNavBar'
 import Footer from '../components/layout/Footer'
 import AnalyticsTracker from '../components/AnalyticsTracker'
@@ -53,15 +54,17 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         {/* Twitter */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="StrawberryTech - Master AI Prompting Through Games" />
-        <meta name="twitter:description" content={description} />
-      </Head><UserProvider>
-        <ScrollToTop />
-        <ModernNavBar />
-        <AnalyticsTracker />
-        <Component {...pageProps} />
-        <Footer />
-        <Analytics />
-      </UserProvider>
+        <meta name="twitter:description" content={description} />      </Head>
+      <NotificationProvider>
+        <UserProvider>
+          <ScrollToTop />
+          <ModernNavBar />
+          <AnalyticsTracker />
+          <Component {...pageProps} />
+          <Footer />
+          <Analytics />
+        </UserProvider>
+      </NotificationProvider>
     </>
   )
 }

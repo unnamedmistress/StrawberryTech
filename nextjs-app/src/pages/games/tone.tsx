@@ -2,14 +2,14 @@ import { useContext, useState, useEffect } from "react";
 import { notify } from "../../shared/notify";
 import confetti from "canvas-confetti";
 
-import Link from "next/link"; import { useRouter } from "next/router";
+import { useRouter } from "next/router";
 import HeadTag from "next/head";
 import JsonLd from "../../components/seo/JsonLd";
 
 import { UserContext } from "../../shared/UserContext";
 import type { UserContextType } from "../../shared/types/user";
 import RobotChat from "../../components/RobotChat";
-import InstructionBanner from "../../components/ui/InstructionBanner";
+import ModernGameLayout from "../../components/layout/ModernGameLayout";
 import WhyCard from "../../components/layout/WhyCard";
 
 /** Tile element used in the grid */
@@ -298,13 +298,6 @@ function ToneMatchGame({ onComplete }: { onComplete: (score: number) => void }) 
 export default function Match3Game() {
   const { user, addBadge } = useContext(UserContext) as UserContextType
   const router = useRouter()
-  const [sidebarQuote] = useState(
-    () => quotes[Math.floor(Math.random() * quotes.length)],
-  )
-  const [sidebarTip] = useState(
-    () =>
-      tips[Math.floor(Math.random() * tips.length)],
-  )
   const [showComplete, setShowComplete] = useState(false)
 
   function handleComplete(score: number) {
@@ -404,35 +397,41 @@ export default function Match3Game() {
           <meta
             name="twitter:url"
             content="https://strawberry-tech.vercel.app/games/tone"
-          />
-        </HeadTag>
-      <div className="match3-page">
-      <InstructionBanner>
-        Match adjectives to explore how tone changes the meaning of a message.
-      </InstructionBanner>
-      <div className="match3-wrapper">        <WhyCard
-          className="match3-sidebar"
-          title="Why Tone Matters"
-          explanation="The same message can sound completely different depending on the words you choose. In AI prompting, tone controls how the AI responds to you."
-          lesson={
-            <div>
-              <p><strong>Tone in AI prompting affects:</strong></p>
-              <ul>
-                <li><strong>Formality:</strong> Professional vs. casual responses</li>
-                <li><strong>Mood:</strong> Enthusiastic vs. neutral delivery</li>
-                <li><strong>Approach:</strong> Direct vs. gentle communication</li>
-                <li><strong>Audience:</strong> Expert vs. beginner explanations</li>
-              </ul>
-            </div>
-          }
-          examples={[
-            {
-              good: "Please explain quantum physics in simple, friendly terms for a curious 12-year-old.",
-              bad: "Explain quantum physics."
+          />        </HeadTag>
+      
+      <ModernGameLayout
+        gameTitle="Tone Master"
+        gameIcon="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_47_46%20PM.png"
+        whyCard={
+          <WhyCard
+            title="Why Tone Matters"
+            explanation="The same message can sound completely different depending on the words you choose. In AI prompting, tone controls how the AI responds to you."
+            lesson={
+              <div>
+                <p><strong>Tone in AI prompting affects:</strong></p>
+                <ul>
+                  <li><strong>Formality:</strong> Professional vs. casual responses</li>
+                  <li><strong>Mood:</strong> Enthusiastic vs. neutral delivery</li>
+                  <li><strong>Approach:</strong> Direct vs. gentle communication</li>
+                  <li><strong>Audience:</strong> Expert vs. beginner explanations</li>
+                </ul>
+              </div>
             }
-          ]}
-          tip="Experiment with different adjectives to see how they change the feeling of your message. The right tone helps AI give you exactly the style of response you need!"
-        />
+            examples={[
+              {
+                good: "Please explain quantum physics in simple, friendly terms for a curious 12-year-old.",
+                bad: "Explain quantum physics."
+              }
+            ]}
+            tip="Experiment with different adjectives to see how they change the feeling of your message. The right tone helps AI give you exactly the style of response you need!"
+          />
+        }
+        nextGameButton={
+          <button className="btn-primary" onClick={() => router.push('/games/quiz')}>
+            Next: Hallucinations →
+          </button>
+        }
+      >
         <div className="match3-container">
           <img
             src="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_47_46%20PM.png"
@@ -440,18 +439,9 @@ export default function Match3Game() {
             className="hero-img"
             style={{ width: '200px' }}
           />
-          <ToneMatchGame onComplete={handleComplete} />
-        </div>
-      </div>
-      <RobotChat />
-      <p style={{ marginTop: '1rem', textAlign: 'center' }}>
-        <button className="btn-primary" onClick={() => router.push('/games/quiz')}>Next Lesson</button>
-
-      </p>
-      <p style={{ marginTop: '1rem', textAlign: 'center' }}>
-        <Link href="/community">Return to Progress</Link>
-      </p>
-    </div>
+          <ToneMatchGame onComplete={handleComplete} />        </div>
+          <RobotChat />
+      </ModernGameLayout>
     </>
   );
 }

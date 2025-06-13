@@ -1,7 +1,6 @@
 import { useState, useContext } from 'react'
-import Link from 'next/link'
-import ProgressSidebar from '../../components/layout/ProgressSidebar'
-import GamePageLayout from '../../components/layout/GamePageLayout'
+import { useRouter } from 'next/router'
+import ModernGameLayout from '../../components/layout/ModernGameLayout'
 import WhyCard from '../../components/layout/WhyCard'
 import { UserContext } from '../../shared/UserContext'
 import type { UserContextType } from '../../shared/types/user'
@@ -41,6 +40,7 @@ export default function DragDropGame() {
   const [userMessage, setUserMessage] = useState('')
   const [submitted, setSubmitted] = useState(false)
   const { user } = useContext(UserContext) as UserContextType
+  const router = useRouter()
 
   function handleDragStart(e: React.DragEvent<HTMLDivElement>, tone: Tone) {
     e.dataTransfer.setData('text/plain', tone)
@@ -78,40 +78,42 @@ export default function DragDropGame() {
           image:
             'https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_19_23%20PM.png',
         }}
-      />
-      <div className={styles['dragdrop-page']}>
-      <div className={styles['dragdrop-wrapper']}>
-        <GamePageLayout
-          imageSrc="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_19_23%20PM.png"
-          imageAlt="Tone game illustration"
-          infoCardContent={            <WhyCard
-              title="Spotting AI Hallucinations"
-              explanation="AI sometimes creates confident-sounding but incorrect information. Learning to spot these 'hallucinations' is a crucial skill for working with AI."
-              lesson={
-                <div>
-                  <p><strong>Common AI hallucination patterns:</strong></p>
-                  <ul>
-                    <li><strong>Fake facts:</strong> Made-up statistics or dates</li>
-                    <li><strong>False connections:</strong> Linking unrelated concepts</li>
-                    <li><strong>Invented details:</strong> Adding specifics that don't exist</li>
-                    <li><strong>Confident errors:</strong> Wrong info stated with certainty</li>
-                  </ul>
-                </div>
+      />      <div className={styles['dragdrop-page']}>
+      <ModernGameLayout
+        gameTitle="Drag & Drop Tone"
+        gameIcon="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_19_23%20PM.png"
+        whyCard={
+          <WhyCard
+            title="Why Tone Matters"
+            explanation="The same message can sound completely different depending on the words you choose. In AI prompting, tone controls how the AI responds to you."
+            lesson={
+              <div>
+                <p><strong>Tone in AI prompting affects:</strong></p>
+                <ul>
+                  <li><strong>Formality:</strong> Professional vs. casual responses</li>
+                  <li><strong>Mood:</strong> Enthusiastic vs. neutral delivery</li>
+                  <li><strong>Approach:</strong> Direct vs. gentle communication</li>
+                  <li><strong>Audience:</strong> Expert vs. beginner explanations</li>
+                </ul>
+              </div>
+            }
+            examples={[
+              {
+                good: "Please explain quantum physics in simple, friendly terms for a curious 12-year-old.",
+                bad: "Explain quantum physics."
               }
-              examples={[
-                {
-                  good: "I need to verify this information from reliable sources before using it.",
-                  bad: "If the AI said it, it must be true."
-                }
-              ]}
-              tip="Always fact-check important information from AI, especially statistics, dates, quotes, and technical details. Think critically about what sounds too convenient or specific!"
-            />
-          }
-          instructions="Match adjectives to explore how tone changes the meaning of a message."
-          onCTAClick={() => {}}
-          ctaText="Start Playing"
-        >
-          <div className={`${styles['dragdrop-game']} clearfix`}>
+            ]}
+            tip="Experiment with different adjectives to see how they change the feeling of your message. The right tone helps AI give you exactly the style of response you need!"
+          />
+        }
+        nextGameButton={
+          <button className="btn-primary" onClick={() => router.push('/games/guess')}>
+            Next: Guess the Prompt →
+          </button>
+        }
+      >
+      <div className={styles['dragdrop-wrapper']}>
+        <div className={`${styles['dragdrop-game']} clearfix`}>
             <h2>Drag a tone into the blank</h2>
             <img
               src="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_19_23%20PM.png"
@@ -203,17 +205,11 @@ export default function DragDropGame() {
                       ? 'Correct! A polite tone is best for informing your boss.'
                       : 'Not quite. A polite tone is usually most appropriate.'}
                   </p>
-                )}
-              </div>
+                )}              </div>
             )}
           </div>
-        </GamePageLayout>
-        <ProgressSidebar />
-      </div>      <div className={styles['next-area']}>
-        <p>
-          <Link href="/community">Return to Progress</Link>
-        </p>
-      </div>
+        </div>
+      </ModernGameLayout>
     </div>
     </>
   )
