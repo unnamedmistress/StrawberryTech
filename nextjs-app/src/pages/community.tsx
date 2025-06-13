@@ -218,10 +218,9 @@ export function Head() {
       <meta property="og:type" content="website" />
       <meta property="og:url" content="https://strawberry-tech.vercel.app/community" />
       <meta property="og:title" content="StrawberryTech Community - AI Prompting Skills" />
-      <meta property="og:description" content="Join thousands learning AI prompting skills through fun, interactive games. Share your progress and connect with other learners!" />
-      <meta property="og:image" content="https://strawberry-tech.vercel.app/android-chrome-512x512.png" />
-      <meta property="og:image:width" content="512" />
-      <meta property="og:image:height" content="512" />
+      <meta property="og:description" content="Join thousands learning AI prompting skills through fun, interactive games. Share your progress and connect with other learners!" />      <meta property="og:image" content="https://github.com/unnamedmistress/images/blob/main/ChatGPT%20Image%20Jun%206%2C%202025%2C%2011_20_14%20AM.png" />
+      <meta property="og:image:width" content="1024" />
+      <meta property="og:image:height" content="1024" />
       <meta property="og:image:alt" content="StrawberryTech Community - Share your AI learning progress" />
       <meta property="og:site_name" content="StrawberryTech" />
       <meta property="og:locale" content="en_US" />
@@ -232,8 +231,7 @@ export function Head() {
       <meta property="twitter:creator" content="@strawberrytech" />
       <meta property="twitter:url" content="https://strawberry-tech.vercel.app/community" />
       <meta property="twitter:title" content="StrawberryTech Community - AI Prompting Skills" />
-      <meta property="twitter:description" content="Join thousands learning AI prompting skills through fun, interactive games. Share your progress and connect with other learners!" />
-      <meta property="twitter:image" content="https://strawberry-tech.vercel.app/android-chrome-512x512.png" />
+      <meta property="twitter:description" content="Join thousands learning AI prompting skills through fun, interactive games. Share your progress and connect with other learners!" />      <meta property="twitter:image" content="https://github.com/unnamedmistress/images/blob/main/ChatGPT%20Image%20Jun%206%2C%202025%2C%2011_20_14%20AM.png" />
       <meta property="twitter:image:alt" content="StrawberryTech Community - Share your AI learning progress" />
       
       {/* Additional social sharing optimization */}
