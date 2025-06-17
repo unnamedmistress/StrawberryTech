@@ -26,7 +26,7 @@ export default function ModernGameLayout({
   nextGameButton
 }: ModernGameLayoutProps) {
   return (
-    <div className={`${styles.modernGameLayout} ${className}`}>
+    <div id="main-content" className={`${styles.modernGameLayout} ${className}`}>
       {/* Game Header */}
       <header className={styles.gameHeader}>
         <div className={styles.gameTitleSection}>

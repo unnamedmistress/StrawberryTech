@@ -45,7 +45,7 @@ export default function AgeInputForm({
   }
 
   return (
-    <div className="age-form">
+    <div id="main-content" className="age-form">
       <form onSubmit={handleSubmit}>
         <label htmlFor="name">Enter your name:</label>
         <input

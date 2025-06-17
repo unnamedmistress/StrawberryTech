@@ -2,7 +2,7 @@ import Link from 'next/link'
 
 export default function HelpPage() {
   return (
-    <div className="help-page">
+    <div id="main-content" className="help-page">
       <h2>How to Play</h2>
       <img
         src="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_12_36%20PM.png"

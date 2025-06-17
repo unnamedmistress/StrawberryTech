@@ -71,7 +71,7 @@ export default function StatsPage() {
     .join(' ')
 
   return (
-    <div className="stats-page">
+    <div id="main-content" className="stats-page">
       <h2>Site Statistics</h2>
       <img
         src="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_12_36%20PM.png"

@@ -2,7 +2,7 @@ import Link from 'next/link'
 
 export default function NotFoundPage() {
   return (
-    <div className="not-found-page">
+    <div id="main-content" className="not-found-page">
       <h2>Page Not Found</h2>
       <img
         src="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_12_36%20PM.png"

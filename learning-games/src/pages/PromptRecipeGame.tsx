@@ -294,7 +294,7 @@ export default function PromptRecipeGame() {
   const allFilled = Object.values(dropped).every(Boolean)
 
   return (
-    <div className="recipe-page">
+    <div id="main-content" className="recipe-page">
       <InstructionBanner>
         Drag each card to the category it best fits to build a clear AI prompt.
       </InstructionBanner>

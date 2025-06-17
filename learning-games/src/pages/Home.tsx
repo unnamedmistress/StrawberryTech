@@ -44,7 +44,7 @@ export default function Home() {
   const totalPoints = getTotalPoints(user.points)
 
   return (
-    <div className="home">
+    <div id="main-content" className="home">
       {/* hero section */}
       <section className="hero reveal" aria-label="Homepage hero">
         <h1 className="hero-title">Embark on a Fruity Learning Adventure!</h1>

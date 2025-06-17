@@ -184,7 +184,7 @@ export default function PromptDartsGame() {
 
   if (!rounds.length) {
     return (
-      <div className="darts-page">
+      <div id="main-content" className="darts-page">
         <InstructionBanner>Loading rounds...</InstructionBanner>
       </div>
     )
@@ -192,7 +192,7 @@ export default function PromptDartsGame() {
 
   if (round >= rounds.length) {
     return (
-      <div className="darts-page">
+      <div id="main-content" className="darts-page">
         <CompletionModal
           imageSrc="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_24_00%20PM.png"
           buttonHref="/games/chain"
@@ -206,7 +206,7 @@ export default function PromptDartsGame() {
   }
 
   return (
-    <div className="darts-page">
+    <div id="main-content" className="darts-page">
       <InstructionBanner>
         Choose the clearer prompt that best targets the requested format.
       </InstructionBanner>

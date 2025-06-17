@@ -57,7 +57,7 @@ export default function CommunityPlaylistPage() {
   }
 
   return (
-    <div className="playlist-page">
+    <div id="main-content" className="playlist-page">
       <h2>Community Playlist</h2>
       <form onSubmit={addPair} style={{ marginBottom: '1rem' }}>
         <label htmlFor="bad">Bad prompt:</label>

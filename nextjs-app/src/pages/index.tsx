@@ -73,7 +73,7 @@ export default function Home() {
         />
       </HeadTag>
       
-      <div className={styles.home}>        {/* Modern Hero Section */}
+      <div id="main-content" className={styles.home}>        {/* Modern Hero Section */}
         <header className={styles.hero}>
           <div className={styles.heroContent}>
             <div className={styles.heroText}>
