@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react'
+import { useState, useContext, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import JsonLd from '../../components/seo/JsonLd'
 import ModernGameLayout from '../../components/layout/ModernGameLayout'
@@ -144,9 +144,29 @@ export default function IntroGame() {
   const [topicIndex, setTopicIndex] = useState<number>(0)
   const [usedTopics, setUsedTopics] = useState<number[]>([])
   const [email, setEmail] = useState<string[]>([])
+  const [typingLine, setTypingLine] = useState('')
+  const [isTyping, setIsTyping] = useState(false)
+  const [showCompletion, setShowCompletion] = useState(false)
   const [points, setPointsState] = useState(0)
 
   const context = EMAIL_DATA[contextKey]
+
+  function typeLine(text: string, after: () => void) {
+    setIsTyping(true)
+    setTypingLine('')
+    let idx = 0
+    const interval = setInterval(() => {
+      idx += 1
+      setTypingLine(text.slice(0, idx))
+      if (idx >= text.length) {
+        clearInterval(interval)
+        setEmail(prev => [...prev, text])
+        setTypingLine('')
+        setIsTyping(false)
+        after()
+      }
+    }, 30)
+  }
 
   function chooseContext(key: string) {
     setContextKey(key)
@@ -154,9 +174,8 @@ export default function IntroGame() {
   }
 
   function chooseOpener(opener: SentenceOption) {
-    setEmail([opener.text])
     setPointsState(p => p + 10)
-    setStep('topic')
+    typeLine(opener.text, () => setStep('topic'))
   }
 
   function chooseTopic(idx: number) {
@@ -165,18 +184,19 @@ export default function IntroGame() {
   }
 
   function chooseSentence(sentence: SentenceOption) {
-    setEmail(prev => [...prev, sentence.text])
     setUsedTopics(prev => [...prev, topicIndex])
     const gained = 15 + (sentence.best ? 20 : 0)
     const total = points + gained
     setPointsState(total)
-    if (round + 1 < TOTAL_SENTENCES) {
-      setRound(r => r + 1)
-      setStep('topic')
-    } else {
-      setStep('review')
-      finalize(total)
-    }
+    typeLine(sentence.text, () => {
+      if (round + 1 < TOTAL_SENTENCES) {
+        setRound(r => r + 1)
+        setStep('topic')
+      } else {
+        setStep('review')
+        finalize(total)
+      }
+    })
   }
 
   function finalize(totalPoints: number) {
@@ -190,6 +210,14 @@ export default function IntroGame() {
       addBadge('prompt-novice')
     }
   }
+
+  useEffect(() => {
+    if (step === 'review') {
+      const timer = setTimeout(() => setShowCompletion(true), 5000)
+      return () => clearTimeout(timer)
+    }
+    setShowCompletion(false)
+  }, [step])
 
   const percent = Math.min(100, (points / GOAL_POINTS) * 100)
 
@@ -224,7 +252,7 @@ export default function IntroGame() {
               <p className={styles.prompt}>Choose the type of email</p>
               <div className={styles.options}>
                 {Object.entries(EMAIL_DATA).map(([key, ctx]) => (
-                  <button key={key} className="btn-primary" onClick={() => chooseContext(key)}>
+                  <button key={key} className="btn-primary" onClick={() => chooseContext(key)} disabled={isTyping}>
                     {ctx.label}
                   </button>
                 ))}
@@ -237,7 +265,7 @@ export default function IntroGame() {
               <p className={styles.prompt}>Select an email opener</p>
               <div className={styles.options}>
                 {context.openers.map((o, i) => (
-                  <button key={i} className="btn-primary" onClick={() => chooseOpener(o)}>
+                  <button key={i} className="btn-primary" onClick={() => chooseOpener(o)} disabled={isTyping}>
                     {o.text}
                   </button>
                 ))}
@@ -255,6 +283,7 @@ export default function IntroGame() {
                       key={t.name}
                       className="btn-primary"
                       onClick={() => chooseTopic(i)}
+                      disabled={isTyping}
                     >
                       {t.name}
                     </button>
@@ -269,7 +298,7 @@ export default function IntroGame() {
               <p className={styles.prompt}>Choose a sentence</p>
               <div className={styles.options}>
                 {context.topics[topicIndex].sentences.map((s, i) => (
-                  <button key={i} className="btn-primary" onClick={() => chooseSentence(s)}>
+                  <button key={i} className="btn-primary" onClick={() => chooseSentence(s)} disabled={isTyping}>
                     {s.text}
                   </button>
                 ))}
@@ -277,12 +306,13 @@ export default function IntroGame() {
             </>
           )}
 
-          {email.length > 0 && step !== 'review' && (
+          {(email.length > 0 || isTyping) && step !== 'review' && (
             <div className={styles.storyText} style={{ textAlign: 'left' }}>
               <h3>Email So Far</h3>
               {email.map((line, i) => (
                 <p key={i}>{line}</p>
               ))}
+              {isTyping && <p>{typingLine}</p>}
             </div>
           )}
 
@@ -298,7 +328,7 @@ export default function IntroGame() {
           )}
         </div>
       </ModernGameLayout>
-      {step === 'review' && (
+      {showCompletion && (
         <CompletionModal
           imageSrc="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_12_36%20PM.png"
           buttonHref="/games/tone"
