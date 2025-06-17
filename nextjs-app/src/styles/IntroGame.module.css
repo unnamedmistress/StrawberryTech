@@ -47,3 +47,37 @@
   font-size: 0.9rem;
   color: var(--color-text-dark);
 }
+
+.hint {
+  font-size: 0.9rem;
+  color: var(--color-brand);
+  margin-top: 0.5rem;
+}
+
+.final-score {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: var(--color-brand);
+  margin: 1rem 0;
+}
+
+.completion-tips {
+  text-align: left;
+  margin-top: 1rem;
+}
+
+.completion-tips h4 {
+  margin: 0 0 0.5rem 0;
+  color: var(--color-brand);
+}
+
+.completion-tips ul {
+  margin: 0;
+  padding-left: 1.2rem;
+}
+
+.completion-tips li {
+  margin-bottom: 0.3rem;
+  color: var(--color-text);
+  line-height: 1.4;
+}
