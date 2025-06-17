@@ -1,121 +1,205 @@
-import { useState, useContext, useEffect, useCallback } from 'react'
+import { useState, useContext } from 'react'
 import { useRouter } from 'next/router'
 import JsonLd from '../../components/seo/JsonLd'
 import ModernGameLayout from '../../components/layout/ModernGameLayout'
 import WhyCard from '../../components/layout/WhyCard'
-import IntroOverlay from '../../components/ui/IntroOverlay'
+import EmailIntroModal from '../../components/ui/EmailIntroModal'
 import CompletionModal from '../../components/ui/CompletionModal'
+import ProgressBar from '../../components/ui/ProgressBar'
 import { UserContext } from '../../shared/UserContext'
 import type { UserContextType } from '../../shared/types/user'
+import { GOAL_POINTS } from '../../constants/progress'
 import styles from '../../styles/IntroGame.module.css'
 
-interface StoryPart {
-  line: string
-  explanation: string
-  hint: string
+interface SentenceOption {
+  text: string
+  best?: boolean
 }
 
-const STORY_PARTS: StoryPart[] = [
-  {
-    line: 'I hope this email finds you well.',
-    explanation:
-      'AI predicts a polite opener because most professional emails start with a friendly greeting.',
-    hint: 'Try beginning with a warm greeting.'
+interface Topic {
+  name: string
+  sentences: SentenceOption[]
+}
+
+interface EmailContext {
+  label: string
+  openers: SentenceOption[]
+  topics: Topic[]
+}
+
+const EMAIL_DATA: Record<string, EmailContext> = {
+  meeting: {
+    label: 'Scheduling Meeting',
+    openers: [
+      { text: 'I hope you\'re doing well.' },
+      { text: 'I\'m writing to schedule our meeting.', best: true },
+      { text: 'Just reaching out to find a good time to connect.' },
+    ],
+    topics: [
+      {
+        name: 'Propose Meeting Time',
+        sentences: [
+          { text: 'Could we meet on Tuesday at 3 PM?', best: true },
+          { text: 'Are you free Tuesday afternoon?' },
+          { text: 'Let\'s plan to meet sometime Tuesday.' },
+        ],
+      },
+      {
+        name: 'Ask Availability',
+        sentences: [
+          { text: 'What time works best for you?', best: true },
+          { text: 'When might you be available?' },
+          { text: 'Let me know your preferred time.' },
+        ],
+      },
+      {
+        name: 'Mention Agenda',
+        sentences: [
+          { text: 'I\'ll share a short agenda before we meet.', best: true },
+          { text: 'I\'ll send over the discussion points soon.' },
+          { text: 'I\'ll outline our topics beforehand.' },
+        ],
+      },
+    ],
   },
-  {
-    line: 'I wanted to follow up about our upcoming meeting.',
-    explanation:
-      'Given the greeting, the model assumes a common next step is stating the reason for writing.',
-    hint: 'Mention why you are writing.'
+  followup: {
+    label: 'Following Up',
+    openers: [
+      { text: 'I hope you\'re having a good week.' },
+      { text: 'I\'m following up on our last conversation.', best: true },
+      { text: 'Just checking in regarding my previous email.' },
+    ],
+    topics: [
+      {
+        name: 'Request Update',
+        sentences: [
+          { text: 'Do you have any updates for me?', best: true },
+          { text: 'Have you had a chance to review?' },
+          { text: 'Could you share your thoughts?' },
+        ],
+      },
+      {
+        name: 'Offer Help',
+        sentences: [
+          { text: 'I\'m happy to answer any questions.', best: true },
+          { text: 'Let me know if anything is unclear.' },
+          { text: 'I\'d be glad to provide more details.' },
+        ],
+      },
+      {
+        name: 'Mention Deadline',
+        sentences: [
+          { text: 'We\'re hoping to finalize this by Friday.', best: true },
+          { text: 'A quick response would be appreciated.' },
+          { text: 'Please reply when you can.' },
+        ],
+      },
+    ],
   },
-  {
-    line: 'Please let me know if you have any questions.',
-    explanation:
-      'Many emails end with an invitation to respond, so the model predicts a courteous closing line.',
-    hint: 'End with a polite invitation to reply.'
-  }
-]
+  thankyou: {
+    label: 'Thank You',
+    openers: [
+      { text: 'Thank you so much for your help.', best: true },
+      { text: 'I really appreciate your assistance.' },
+      { text: 'I wanted to express my gratitude for your support.' },
+    ],
+    topics: [
+      {
+        name: 'Acknowledge Effort',
+        sentences: [
+          { text: 'Your quick response made all the difference.', best: true },
+          { text: 'You really went above and beyond.' },
+          { text: 'I recognize the time you put into this.' },
+        ],
+      },
+      {
+        name: 'Offer Future Help',
+        sentences: [
+          { text: 'Please let me know if I can return the favor.', best: true },
+          { text: 'Don\'t hesitate to reach out if you need anything.' },
+          { text: 'Feel free to contact me whenever you need help.' },
+        ],
+      },
+      {
+        name: 'Close Warmly',
+        sentences: [
+          { text: 'Looking forward to working with you again.', best: true },
+          { text: 'Hope we can collaborate again soon.' },
+          { text: 'Can\'t wait to work together next time.' },
+        ],
+      },
+    ],
+  },
+}
 
 export default function IntroGame() {
   const router = useRouter()
-  const { setPoints } = useContext(UserContext) as UserContextType
-  const [step, setStep] = useState(-1)
-  const [story, setStory] = useState<string[]>([])
-  const [input, setInput] = useState('')
-  const [explanation, setExplanation] = useState('')
-  const [hint, setHint] = useState('')
+  const { setPoints, addBadge, user } = useContext(UserContext) as UserContextType
+
   const [showIntro, setShowIntro] = useState(true)
+  const [step, setStep] = useState<'context' | 'opener' | 'topic' | 'sentence' | 'review'>('context')
+  const [round, setRound] = useState(0)
+  const [contextKey, setContextKey] = useState<string>('')
+  const [topicIndex, setTopicIndex] = useState<number>(0)
+  const [email, setEmail] = useState<string[]>([])
+  const [points, setPointsState] = useState(0)
 
-  function start(reason: string) {
-    setStory([`You chose: ${reason}`])
-    setExplanation('Great choice! Let\'s see what might happen next.')
-    setStep(0)
-    setInput('')
-    setHint('')
+  const context = EMAIL_DATA[contextKey]
+
+  function chooseContext(key: string) {
+    setContextKey(key)
+    setStep('opener')
   }
 
-  function handleSubmit(e: React.FormEvent) {
-    e.preventDefault()
-    if (step >= STORY_PARTS.length) return
-    const userAction = input.trim() || '...'
-    setStory(prev => [...prev, `You: ${userAction}`, `AI: ${STORY_PARTS[step].line}`])
-    setExplanation(STORY_PARTS[step].explanation)
-    setHint('')
-    setInput('')
-    setStep(s => s + 1)
+  function chooseOpener(opener: SentenceOption) {
+    setEmail([opener.text])
+    setPointsState(p => p + 10)
+    setStep('topic')
   }
 
-  const revealHint = useCallback(() => {
-    if (step >= 0 && step < STORY_PARTS.length) {
-      setHint(STORY_PARTS[step].hint)
-    }
-  }, [step])
-
-  function finish() {
-    setPoints('intro', STORY_PARTS.length * 5)
-    router.push('/games/tone')
+  function chooseTopic(idx: number) {
+    setTopicIndex(idx)
+    setStep('sentence')
   }
 
-  const finished = step >= STORY_PARTS.length
+  function chooseSentence(sentence: SentenceOption) {
+    setEmail(prev => [...prev, sentence.text])
+    setPointsState(p => p + 15 + (sentence.best ? 20 : 0))
+    if (round === 0) {
+      setRound(1)
+      setStep('topic')
+    } else {
+      setStep('review')
+      const total = points + 15 + (sentence.best ? 20 : 0)
+      finalize(total)
+    }
+  }
 
-  useEffect(() => {
-    function onKey(e: KeyboardEvent) {
-      if (
-        e.key.toLowerCase() === 'h' &&
-        (e.target as HTMLElement).tagName !== 'INPUT' &&
-        (e.target as HTMLElement).tagName !== 'TEXTAREA'
-      ) {
-        e.preventDefault()
-        revealHint()
-      }
+  function finalize(totalPoints: number) {
+    setPoints('intro', totalPoints)
+    const overall = Object.values({ ...user.points, intro: Math.max(user.points.intro ?? 0, totalPoints) }).reduce((a, b) => a + b, 0)
+    if (overall >= 1000 && !user.badges.includes('prompt-master')) {
+      addBadge('prompt-master')
+    } else if (overall >= 600 && !user.badges.includes('email-apprentice')) {
+      addBadge('email-apprentice')
+    } else if (overall >= 300 && !user.badges.includes('prompt-novice')) {
+      addBadge('prompt-novice')
     }
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
-  }, [revealHint])
+  }
 
-  useEffect(() => {
-    function handleEsc(e: KeyboardEvent) {
-      if (e.key === 'Escape') {
-        setShowIntro(false)
-      }
-    }
-    if (showIntro) {
-      window.addEventListener('keydown', handleEsc)
-      return () => window.removeEventListener('keydown', handleEsc)
-    }
-  }, [showIntro])
+  const percent = Math.min(100, (points / GOAL_POINTS) * 100)
 
   return (
     <>
-      {showIntro && <IntroOverlay onClose={() => setShowIntro(false)} />}
+      {showIntro && <EmailIntroModal onClose={() => setShowIntro(false)} />}
       <JsonLd
         data={{
           '@context': 'https://schema.org',
           '@type': 'Game',
           name: 'AI Basics',
-          description: 'Learn how AI predicts the next word while drafting a short email.',
+          description: 'Build a professional email by choosing AI-suggested sentences.',
           image:
-            'https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_12_36%20PM.png'
+            'https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_12_36%20PM.png',
         }}
       />
       <ModernGameLayout
@@ -126,79 +210,83 @@ export default function IntroGame() {
           <WhyCard
             title="What is AI?"
             explanation="Think of AI as a prediction engine. It guesses the next words based on patterns, like finishing a puzzle."
-            lesson={<p>Type the next line you expect. The AI will reveal a common follow-up so you can compare.</p>}
+            lesson={<p>Pick the options you like best to assemble a polished email.</p>}
           />
-        }
-        nextGameButton={
-          finished && (
-            <button className="btn-primary" onClick={finish}>
-              Next: Tone Game →
-            </button>
-          )
         }
       >
         <div className={styles.introGame}>
-          {step === -1 && (
+          {step === 'context' && (
             <>
-              <p className={styles.prompt}>Choose why you're emailing</p>
+              <p className={styles.prompt}>Choose the type of email</p>
               <div className={styles.options}>
-                <button className="btn-primary" onClick={() => start('scheduling a meeting')}>Schedule a Meeting</button>
-                <button className="btn-primary" onClick={() => start('thanking someone')}>Say Thanks</button>
-                <button className="btn-primary" onClick={() => start('asking for information')}>Request Info</button>
+                {Object.entries(EMAIL_DATA).map(([key, ctx]) => (
+                  <button key={key} className="btn-primary" onClick={() => chooseContext(key)}>
+                    {ctx.label}
+                  </button>
+                ))}
               </div>
-              <form onSubmit={e => { e.preventDefault(); if (input.trim()) start(input.trim()) }} className={styles.inputArea}>
-                <input
-                  value={input}
-                  onChange={e => setInput(e.target.value)}
-                  placeholder="Or type your own reason"
-                />
-                <button type="submit" className="btn-primary">Start</button>
-              </form>
             </>
           )}
 
-          {step >= 0 && (
+          {step === 'opener' && context && (
             <>
-              <div className={styles.storyText}>
-                {story.map((line, i) => (
-                  <p key={i}>{line}</p>
+              <p className={styles.prompt}>Select an email opener</p>
+              <div className={styles.options}>
+                {context.openers.map((o, i) => (
+                  <button key={i} className="btn-primary" onClick={() => chooseOpener(o)}>
+                    {o.text}
+                  </button>
                 ))}
               </div>
-              {!finished && (
-                <form onSubmit={handleSubmit} className={styles.inputArea}>
-                  <input
-                    value={input}
-                    onChange={e => setInput(e.target.value)}
-                  placeholder="Type your next sentence"
-                  />
-                  <button type="submit" className="btn-primary">Continue</button>
-                  <button type="button" className="btn-primary" onClick={revealHint}>
-                    Hint (H)
-                  </button>
-                </form>
-              )}
-              {hint && <p className={styles.hint}>Hint: {hint}</p>}
-              {explanation && <p className={styles.explanation}>{explanation}</p>}
             </>
+          )}
+
+          {step === 'topic' && context && (
+            <>
+              <p className={styles.prompt}>What would you like to say next?</p>
+              <div className={styles.options}>
+                {context.topics.map((t, i) => (
+                  <button key={t.name} className="btn-primary" onClick={() => chooseTopic(i)}>
+                    {t.name}
+                  </button>
+                ))}
+              </div>
+            </>
+          )}
+
+          {step === 'sentence' && context && (
+            <>
+              <p className={styles.prompt}>Choose a sentence</p>
+              <div className={styles.options}>
+                {context.topics[topicIndex].sentences.map((s, i) => (
+                  <button key={i} className="btn-primary" onClick={() => chooseSentence(s)}>
+                    {s.text}
+                  </button>
+                ))}
+              </div>
+            </>
+          )}
+
+          {step === 'review' && (
+            <div className={styles.storyText} style={{ textAlign: 'left' }}>
+              <h3>Email Preview</h3>
+              {email.map((line, i) => (
+                <p key={i}>{line}</p>
+              ))}
+              <p className={styles.finalScore}>Total Points: {points}</p>
+              <ProgressBar percent={percent} />
+            </div>
           )}
         </div>
       </ModernGameLayout>
-      {finished && (
+      {step === 'review' && (
         <CompletionModal
           imageSrc="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_12_36%20PM.png"
           buttonHref="/games/tone"
           buttonLabel="Play Tone Game"
         >
           <h3>Great job!</h3>
-          <p>You learned how AI predicts the next line in an email.</p>
-          <div className={styles['completion-tips']}>
-            <h4>Key Learning:</h4>
-            <ul>
-              <li>AI guesses text based on common patterns</li>
-              <li>Clear context helps it continue your writing</li>
-              <li>Use hints if you're not sure what comes next</li>
-            </ul>
-          </div>
+          <p>You built a professional email with AI assistance.</p>
         </CompletionModal>
       )}
     </>
@@ -209,7 +297,7 @@ export function Head() {
   return (
     <>
       <title>AI Basics | StrawberryTech</title>
-      <meta name="description" content="Learn how AI predicts the next word while drafting a short email." />
+      <meta name="description" content="Build a professional email step by step." />
       <link rel="canonical" href="https://strawberry-tech.vercel.app/games/intro" />
     </>
   )
