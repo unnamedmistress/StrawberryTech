@@ -52,5 +52,23 @@
     "name": "First Chain",
     "description": "Complete your first prompt chain without hints",
     "emoji": "\u26d3"
+  },
+  {
+    "id": "prompt-novice",
+    "name": "Prompt Novice",
+    "description": "Reach 300 total points across games",
+    "emoji": "\ud83d\udc7e"
+  },
+  {
+    "id": "email-apprentice",
+    "name": "Email Apprentice",
+    "description": "Earn 600 total points across games",
+    "emoji": "\ud83d\udc69\u200d\ud83d\udcbb"
+  },
+  {
+    "id": "prompt-master",
+    "name": "Prompt Master",
+    "description": "Accumulate 1000 total points",
+    "emoji": "\ud83e\udd47"
   }
 ]
