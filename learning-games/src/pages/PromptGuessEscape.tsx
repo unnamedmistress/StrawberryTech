@@ -235,7 +235,7 @@ export default function PromptGuessEscape() {
   }
 
   return (
-    <div className="guess-page">
+    <div id="main-content" className="guess-page">
       <InstructionBanner>Escape Room: Guess the Prompt</InstructionBanner>
       <div className="guess-wrapper">
         <WhyCard

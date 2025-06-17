@@ -103,7 +103,7 @@ export default function CommunityPage() {
     }
   }
   return (
-    <div className={styles.communityWrapper}>
+    <div id="main-content" className={styles.communityWrapper}>
       <div className={styles.mainContent}>
         <h1 className={styles.pageTitle}>Community</h1>
         

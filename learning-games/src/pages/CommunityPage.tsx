@@ -102,7 +102,7 @@ export default function CommunityPage() {
   }
 
   return (
-    <div className="community-page">
+    <div id="main-content" className="community-page">
       <h2>Community</h2>
       <form onSubmit={addPost} style={{ marginBottom: '1rem' }}>
         <label htmlFor="message">Share your thoughts:</label>

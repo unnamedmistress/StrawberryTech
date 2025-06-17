@@ -4,7 +4,7 @@ export default function ComposeTweetGame() {
   const router = useRouter()
 
   return (
-    <div style={{ 
+    <div id="main-content" style={{
       padding: '2rem', 
       textAlign: 'center',
       minHeight: '60vh',

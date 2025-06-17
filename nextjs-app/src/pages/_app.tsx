@@ -3,6 +3,7 @@ import Head from 'next/head'
 import { UserProvider } from '../shared/UserProvider'
 import { NotificationProvider } from '../contexts/NotificationContext'
 import ModernNavBar from '../components/layout/ModernNavBar'
+import SkipLink from '../components/layout/SkipLink'
 import Footer from '../components/layout/Footer'
 import AnalyticsTracker from '../components/AnalyticsTracker'
 import { Analytics } from '@vercel/analytics/next'
@@ -69,6 +70,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
       <NotificationProvider>
         <UserProvider>
           <ScrollToTop />
+          <SkipLink />
           <ModernNavBar />
           <AnalyticsTracker />
           <Component {...pageProps} />

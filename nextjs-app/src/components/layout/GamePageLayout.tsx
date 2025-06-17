@@ -21,7 +21,7 @@ const GamePageLayout: React.FC<GamePageLayoutProps> = ({
   ctaText,
 }) => {
   return (
-    <div className={styles['game-page-container']}>
+    <div id="main-content" className={styles['game-page-container']}>
       <aside className={styles['left-column']}>
         <div className={styles['info-card']}>
           <img src={imageSrc} alt={imageAlt} className={styles['game-image']} />

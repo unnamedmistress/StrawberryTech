@@ -196,7 +196,7 @@ export default function QuizGame() {
 
   return (
     <>
-    <div className="quiz-page">
+    <div id="main-content" className="quiz-page">
       <ChallengeBanner />
       <InstructionBanner>
         Find the one false statement—the AI hallucination. Tap the refresh icon

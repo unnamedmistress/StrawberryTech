@@ -196,7 +196,7 @@ export default function Match3Game() {
 
   if (showComplete) {
     return (
-      <div className="match3-page">
+      <div id="main-content" className="match3-page">
         <div className="congrats-overlay">
           <div className="congrats-modal" role="dialog" aria-modal="true">
             <img
@@ -228,7 +228,7 @@ export default function Match3Game() {
   }
 
   return (
-    <div className="match3-page">
+    <div id="main-content" className="match3-page">
       <InstructionBanner>
         Match adjectives to explore how tone changes the meaning of a message.
       </InstructionBanner>

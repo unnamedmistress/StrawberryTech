@@ -256,7 +256,7 @@ export default function PromptChainGame() {
 
   return (
     <>
-      <div className="chain-page">
+      <div id="main-content" className="chain-page">
         <InstructionBanner>
           Break complex tasks into a chain of simple prompts
         </InstructionBanner>

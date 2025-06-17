@@ -28,7 +28,7 @@ export default function BadgesPage() {
 
   const loading = badges.length === 0
   return (
-    <div className={styles['badges-page']}>
+    <div id="main-content" className={styles['badges-page']}>
       <h2>Badges</h2>
       {loading ? (
         <Spinner />
