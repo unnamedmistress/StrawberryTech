@@ -9,6 +9,13 @@ export interface CourseMeta {
 /** Basic metadata for each available course */
 export const COURSES: CourseMeta[] = [
   {
+    id: 'intro',
+    title: 'AI Basics',
+    description: 'Discover how AI predicts the next word.',
+    path: '/games/intro',
+    meme: 'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExN3V3YmcybDA1YTExbGhzcDJ4OXFpNGlnMmlkbWt3dGI2dWRraTh2eSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/Z9EX1jzpulWOyM43uG/giphy.gif',
+  },
+  {
     id: 'tone',
     title: 'Tone Puzzle',
     description: 'Swap adjectives to explore how tone changes a message.',

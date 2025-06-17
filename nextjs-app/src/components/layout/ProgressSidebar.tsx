@@ -42,6 +42,7 @@ export default function ProgressSidebar({ points, badges }: ProgressSidebarProps
   const slug = path.split('/')[2]
   const gameMap: Record<string, string> = {
     darts: 'darts',
+    intro: 'intro',
     recipe: 'recipe',
     escape: 'escape',
     guess: 'escape',

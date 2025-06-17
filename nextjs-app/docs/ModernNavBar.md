@@ -71,6 +71,7 @@ const navItems: NavItem[] = [
     label: 'Games',
     icon: '🎮',
     children: [
+      { label: 'AI Basics', href: '/games/intro', icon: '🤖' },
       { label: 'Tone Game', href: '/games/tone', icon: '🎭' },
       // ... more game items
     ],
@@ -81,7 +82,7 @@ const navItems: NavItem[] = [
 
 ### Features by Section
 
-#### **Games Section**
+- AI Basics (Intro to how AI works)
 - Tone Game (Communication style practice)
 - Hallucination Quiz (AI accuracy training)
 - Escape Room (Problem-solving challenges)
