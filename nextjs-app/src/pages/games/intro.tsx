@@ -138,9 +138,11 @@ export default function IntroGame() {
 
   const [showIntro, setShowIntro] = useState(true)
   const [step, setStep] = useState<'context' | 'opener' | 'topic' | 'sentence' | 'review'>('context')
+  const TOTAL_SENTENCES = 3
   const [round, setRound] = useState(0)
   const [contextKey, setContextKey] = useState<string>('')
   const [topicIndex, setTopicIndex] = useState<number>(0)
+  const [usedTopics, setUsedTopics] = useState<number[]>([])
   const [email, setEmail] = useState<string[]>([])
   const [points, setPointsState] = useState(0)
 
@@ -164,13 +166,15 @@ export default function IntroGame() {
 
   function chooseSentence(sentence: SentenceOption) {
     setEmail(prev => [...prev, sentence.text])
-    setPointsState(p => p + 15 + (sentence.best ? 20 : 0))
-    if (round === 0) {
-      setRound(1)
+    setUsedTopics(prev => [...prev, topicIndex])
+    const gained = 15 + (sentence.best ? 20 : 0)
+    const total = points + gained
+    setPointsState(total)
+    if (round + 1 < TOTAL_SENTENCES) {
+      setRound(r => r + 1)
       setStep('topic')
     } else {
       setStep('review')
-      const total = points + 15 + (sentence.best ? 20 : 0)
       finalize(total)
     }
   }
@@ -245,11 +249,17 @@ export default function IntroGame() {
             <>
               <p className={styles.prompt}>What would you like to say next?</p>
               <div className={styles.options}>
-                {context.topics.map((t, i) => (
-                  <button key={t.name} className="btn-primary" onClick={() => chooseTopic(i)}>
-                    {t.name}
-                  </button>
-                ))}
+                {context.topics.map((t, i) =>
+                  usedTopics.includes(i) ? null : (
+                    <button
+                      key={t.name}
+                      className="btn-primary"
+                      onClick={() => chooseTopic(i)}
+                    >
+                      {t.name}
+                    </button>
+                  ),
+                )}
               </div>
             </>
           )}
@@ -265,6 +275,15 @@ export default function IntroGame() {
                 ))}
               </div>
             </>
+          )}
+
+          {email.length > 0 && step !== 'review' && (
+            <div className={styles.storyText} style={{ textAlign: 'left' }}>
+              <h3>Email So Far</h3>
+              {email.map((line, i) => (
+                <p key={i}>{line}</p>
+              ))}
+            </div>
           )}
 
           {step === 'review' && (
@@ -287,6 +306,14 @@ export default function IntroGame() {
         >
           <h3>Great job!</h3>
           <p>You built a professional email with AI assistance.</p>
+          <div className={styles['completion-tips']}>
+            <h4>Lesson Recap</h4>
+            <ul>
+              <li>AI suggests words by predicting what comes next.</li>
+              <li>Combining an opener and new topics creates a clear message.</li>
+              <li>Avoid repeating topics to keep the email focused.</li>
+            </ul>
+          </div>
         </CompletionModal>
       )}
     </>
