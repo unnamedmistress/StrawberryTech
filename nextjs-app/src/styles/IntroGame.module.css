@@ -23,3 +23,27 @@
   font-size: 0.9rem;
   color: var(--color-brand);
 }
+
+.storyText {
+  background: white;
+  border-radius: 8px;
+  padding: 1rem;
+  width: 100%;
+  min-height: 150px;
+}
+
+.inputArea {
+  display: flex;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.inputArea input {
+  flex: 1;
+  padding: 0.5rem;
+}
+
+.explanation {
+  font-size: 0.9rem;
+  color: var(--color-text-dark);
+}
