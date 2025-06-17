@@ -5,7 +5,7 @@
   top: 0;
   left: 0;
   right: 0;
-  z-index: 1000;
+  z-index: 1100;
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
@@ -44,7 +44,7 @@
   font-size: 1.25rem;
   letter-spacing: -0.025em;
   transition: all 0.2s ease;
-  z-index: 1001;
+  z-index: 1101;
 }
 
 .brand:hover {
@@ -170,7 +170,7 @@
   visibility: hidden;
   transform: translateX(-50%) translateY(-10px);
   transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
-  z-index: 1000;
+  z-index: 1100;
   animation: dropdownFadeIn 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
 }
 
@@ -254,7 +254,7 @@
   cursor: pointer;
   padding: 8px;
   position: relative;
-  z-index: 1001;
+  z-index: 1101;
   border-radius: 8px;
   transition: background-color 0.2s ease, transform 0.1s ease;
   /* Ensure adequate touch target size */
@@ -313,7 +313,7 @@
   transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1), 
               opacity 0.3s cubic-bezier(0.4, 0.0, 0.2, 1),
               visibility 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
-  z-index: 1002;
+  z-index: 1102;
   display: block;
   visibility: hidden;
   opacity: 0;
