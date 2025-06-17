@@ -5,6 +5,7 @@ import ModernGameLayout from '../../components/layout/ModernGameLayout'
 import WhyCard from '../../components/layout/WhyCard'
 import EmailIntroModal from '../../components/ui/EmailIntroModal'
 import CompletionModal from '../../components/ui/CompletionModal'
+import EmailPreviewModal from '../../components/ui/EmailPreviewModal'
 import ProgressBar from '../../components/ui/ProgressBar'
 import { UserContext } from '../../shared/UserContext'
 import type { UserContextType } from '../../shared/types/user'
@@ -147,6 +148,7 @@ export default function IntroGame() {
   const [typingLine, setTypingLine] = useState('')
   const [isTyping, setIsTyping] = useState(false)
   const [showCompletion, setShowCompletion] = useState(false)
+  const [showEmailPreview, setShowEmailPreview] = useState(false)
   const [points, setPointsState] = useState(0)
   const [finalEmail, setFinalEmail] = useState('')
   const [generating, setGenerating] = useState(false)
@@ -257,11 +259,23 @@ export default function IntroGame() {
       if (!finalEmail && !generating) {
         generateFullEmail(email).then(text => setFinalEmail(text))
       }
-      const timer = setTimeout(() => setShowCompletion(true), 5000)
-      return () => clearTimeout(timer)
+    } else {
+      setShowCompletion(false)
+      setShowEmailPreview(false)
+      setFinalEmail('')
     }
-    setShowCompletion(false)
   }, [step, finalEmail, generating, email])
+
+  useEffect(() => {
+    if (step === 'review' && finalEmail && !showEmailPreview) {
+      setShowEmailPreview(true)
+    }
+  }, [finalEmail, step, showEmailPreview])
+
+  function handlePreviewClose() {
+    setShowEmailPreview(false)
+    setShowCompletion(true)
+  }
 
   const percent = Math.min(100, (points / GOAL_POINTS) * 100)
 
@@ -375,6 +389,9 @@ export default function IntroGame() {
           )}
         </div>
       </ModernGameLayout>
+      {showEmailPreview && finalEmail && (
+        <EmailPreviewModal emailText={finalEmail} onClose={handlePreviewClose} />
+      )}
       {showCompletion && (
         <CompletionModal
           imageSrc="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_12_36%20PM.png"
