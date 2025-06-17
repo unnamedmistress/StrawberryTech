@@ -70,6 +70,13 @@ export default function NavBar() {
           <ul id="games-submenu" className={gamesOpen ? 'open' : undefined}>
             <li>
               <Tooltip message="Hover here for a surprise!">
+                <Link href="/games/intro" onClick={() => setOpen(false)}>
+                  AI Basics
+                </Link>
+              </Tooltip>
+            </li>
+            <li>
+              <Tooltip message="Hover here for a surprise!">
                 <Link href="/games/tone" onClick={() => setOpen(false)}>
                   Tone
                 </Link>

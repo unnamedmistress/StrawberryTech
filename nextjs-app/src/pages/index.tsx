@@ -19,6 +19,13 @@ export default function Home() {
   // Core games that teach AI prompting skills through interactive challenges
   const games = [
     {
+      id: 'intro',
+      title: 'AI Basics',
+      description: 'Discover how AI predicts the next word',
+      icon: '🤖',
+      path: '/games/intro'
+    },
+    {
       id: 'tone',
       title: 'Tone',
       description: 'Master prompt tone and style through audio recognition',
@@ -89,13 +96,13 @@ export default function Home() {
               
               {/* Call to Action */}
               <div className={styles.ctaContainer}>
-                <button 
+                <button
                   className={styles.ctaButton}
-                  onClick={() => router.push('/games/tone')}
+                  onClick={() => router.push('/games/intro')}
                 >
                   Start Learning Prompting
                 </button>
-                <p className={styles.ctaHint}>Begin with tone mastery</p>
+                <p className={styles.ctaHint}>Begin with an AI intro</p>
               </div>
             </div>
             

@@ -17,6 +17,7 @@ const navItems: NavItem[] = [
     label: 'Games',
     icon: '🎮',
     children: [
+      { label: 'AI Basics', href: '/games/intro', icon: '🤖' },
       { label: 'Tone Game', href: '/games/tone', icon: '🎭' },
       { label: 'Hallucination Quiz', href: '/games/quiz', icon: '🧠' },
       { label: 'Escape Room', href: '/games/escape', icon: '🚪' },
