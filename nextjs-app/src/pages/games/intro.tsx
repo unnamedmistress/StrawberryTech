@@ -133,17 +133,19 @@ const EMAIL_DATA: Record<string, EmailContext> = {
   },
 }
 
+const ALL_OPENERS = Object.entries(EMAIL_DATA).flatMap(([context, ctx]) =>
+  ctx.openers.map(o => ({ ...o, context }))
+)
+
 export default function IntroGame() {
   const router = useRouter()
   const { setPoints, addBadge, user } = useContext(UserContext) as UserContextType
 
   const [showIntro, setShowIntro] = useState(true)
-  const [step, setStep] = useState<'context' | 'opener' | 'topic' | 'sentence' | 'review'>('context')
+  const [step, setStep] = useState<'opener' | 'sentence' | 'review'>('opener')
   const TOTAL_SENTENCES = 3
   const [round, setRound] = useState(0)
   const [contextKey, setContextKey] = useState<string>('')
-  const [topicIndex, setTopicIndex] = useState<number>(0)
-  const [usedTopics, setUsedTopics] = useState<number[]>([])
   const [email, setEmail] = useState<string[]>([])
   const [typingLine, setTypingLine] = useState('')
   const [isTyping, setIsTyping] = useState(false)
@@ -172,30 +174,20 @@ export default function IntroGame() {
     }, 30)
   }
 
-  function chooseContext(key: string) {
-    setContextKey(key)
-    setStep('opener')
-  }
-
-  function chooseOpener(opener: SentenceOption) {
+  function chooseOpener(opener: { context: string } & SentenceOption) {
+    setContextKey(opener.context)
     setPointsState(p => p + 10)
-    typeLine(opener.text, () => setStep('topic'))
-  }
-
-  function chooseTopic(idx: number) {
-    setTopicIndex(idx)
-    setStep('sentence')
+    typeLine(opener.text, () => setStep('sentence'))
   }
 
   function chooseSentence(sentence: SentenceOption) {
-    setUsedTopics(prev => [...prev, topicIndex])
     const gained = 15 + (sentence.best ? 20 : 0)
     const total = points + gained
     setPointsState(total)
     typeLine(sentence.text, () => {
       if (round + 1 < TOTAL_SENTENCES) {
         setRound(r => r + 1)
-        setStep('topic')
+        setStep('sentence')
       } else {
         setStep('review')
         finalize(total)
@@ -277,6 +269,19 @@ export default function IntroGame() {
     setShowCompletion(true)
   }
 
+  function restartGame() {
+    setStep('opener')
+    setRound(0)
+    setContextKey('')
+    setEmail([])
+    setTypingLine('')
+    setIsTyping(false)
+    setShowCompletion(false)
+    setShowEmailPreview(false)
+    setPointsState(0)
+    setFinalEmail('')
+  }
+
   const percent = Math.min(100, (points / GOAL_POINTS) * 100)
 
   return (
@@ -305,24 +310,11 @@ export default function IntroGame() {
         }
       >
         <div className={styles.introGame}>
-          {step === 'context' && (
-            <>
-              <p className={styles.prompt}>Choose the type of email</p>
-              <div className={styles.options}>
-                {Object.entries(EMAIL_DATA).map(([key, ctx]) => (
-                  <button key={key} className="btn-primary" onClick={() => chooseContext(key)} disabled={isTyping}>
-                    {ctx.label}
-                  </button>
-                ))}
-              </div>
-            </>
-          )}
-
-          {step === 'opener' && context && (
+          {step === 'opener' && (
             <>
               <p className={styles.prompt}>Select an email opener</p>
               <div className={styles.options}>
-                {context.openers.map((o, i) => (
+                {ALL_OPENERS.map((o, i) => (
                   <button key={i} className="btn-primary" onClick={() => chooseOpener(o)} disabled={isTyping}>
                     {o.text}
                   </button>
@@ -331,31 +323,11 @@ export default function IntroGame() {
             </>
           )}
 
-          {step === 'topic' && context && (
-            <>
-              <p className={styles.prompt}>What would you like to say next?</p>
-              <div className={styles.options}>
-                {context.topics.map((t, i) =>
-                  usedTopics.includes(i) ? null : (
-                    <button
-                      key={t.name}
-                      className="btn-primary"
-                      onClick={() => chooseTopic(i)}
-                      disabled={isTyping}
-                    >
-                      {t.name}
-                    </button>
-                  ),
-                )}
-              </div>
-            </>
-          )}
-
           {step === 'sentence' && context && (
             <>
               <p className={styles.prompt}>Choose a sentence</p>
               <div className={styles.options}>
-                {context.topics[topicIndex].sentences.map((s, i) => (
+                {context.topics.flatMap(t => t.sentences).map((s, i) => (
                   <button key={i} className="btn-primary" onClick={() => chooseSentence(s)} disabled={isTyping}>
                     {s.text}
                   </button>
@@ -371,6 +343,9 @@ export default function IntroGame() {
                 <p key={i}>{line}</p>
               ))}
               {isTyping && <p>{typingLine}</p>}
+              <button className="btn-secondary" onClick={restartGame} disabled={isTyping}>
+                Restart
+              </button>
             </div>
           )}
 
@@ -385,6 +360,9 @@ export default function IntroGame() {
                 email.map((line, i) => <p key={i}>{line}</p>)}
               <p className={styles.finalScore}>Total Points: {points}</p>
               <ProgressBar percent={percent} />
+              <button className="btn-secondary" onClick={restartGame}>
+                Restart
+              </button>
             </div>
           )}
         </div>
