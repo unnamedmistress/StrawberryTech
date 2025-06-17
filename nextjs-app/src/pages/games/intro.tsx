@@ -148,6 +148,8 @@ export default function IntroGame() {
   const [isTyping, setIsTyping] = useState(false)
   const [showCompletion, setShowCompletion] = useState(false)
   const [points, setPointsState] = useState(0)
+  const [finalEmail, setFinalEmail] = useState('')
+  const [generating, setGenerating] = useState(false)
 
   const context = EMAIL_DATA[contextKey]
 
@@ -199,6 +201,45 @@ export default function IntroGame() {
     })
   }
 
+  async function generateFullEmail(lines: string[]): Promise<string> {
+    const joined = lines.join(' ')
+    const key = process.env.NEXT_PUBLIC_OPENAI_API_KEY
+    if (!key) {
+      return `Hi there,\n\n${joined}\n\nBest regards,\nYour Name`
+    }
+    try {
+      setGenerating(true)
+      const resp = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${key}`,
+        },
+        body: JSON.stringify({
+          model: 'gpt-3.5-turbo',
+          messages: [
+            {
+              role: 'system',
+              content:
+                'Write a concise, professional email incorporating the provided lines. Include a greeting and closing. Keep it under 120 words.',
+            },
+            { role: 'user', content: joined },
+          ],
+          max_tokens: 160,
+          temperature: 0.7,
+        }),
+      })
+      const data = await resp.json()
+      const text: string | undefined = data?.choices?.[0]?.message?.content
+      return text ? text.trim() : joined
+    } catch (err) {
+      console.error('Email generation failed', err)
+      return joined
+    } finally {
+      setGenerating(false)
+    }
+  }
+
   function finalize(totalPoints: number) {
     setPoints('intro', totalPoints)
     const overall = Object.values({ ...user.points, intro: Math.max(user.points.intro ?? 0, totalPoints) }).reduce((a, b) => a + b, 0)
@@ -213,11 +254,14 @@ export default function IntroGame() {
 
   useEffect(() => {
     if (step === 'review') {
+      if (!finalEmail && !generating) {
+        generateFullEmail(email).then(text => setFinalEmail(text))
+      }
       const timer = setTimeout(() => setShowCompletion(true), 5000)
       return () => clearTimeout(timer)
     }
     setShowCompletion(false)
-  }, [step])
+  }, [step, finalEmail, generating, email])
 
   const percent = Math.min(100, (points / GOAL_POINTS) * 100)
 
@@ -319,9 +363,12 @@ export default function IntroGame() {
           {step === 'review' && (
             <div className={styles.storyText} style={{ textAlign: 'left' }}>
               <h3>Email Preview</h3>
-              {email.map((line, i) => (
-                <p key={i}>{line}</p>
-              ))}
+              {generating && <p>Generating email...</p>}
+              {!generating && finalEmail && (
+                finalEmail.split('\n').map((line, i) => <p key={i}>{line}</p>)
+              )}
+              {!generating && !finalEmail &&
+                email.map((line, i) => <p key={i}>{line}</p>)}
               <p className={styles.finalScore}>Total Points: {points}</p>
               <ProgressBar percent={percent} />
             </div>
