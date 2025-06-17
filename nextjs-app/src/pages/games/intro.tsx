@@ -14,19 +14,19 @@ interface StoryPart {
 
 const STORY_PARTS: StoryPart[] = [
   {
-    line: 'A dusty book glows on the shelf.',
+    line: 'I hope this email finds you well.',
     explanation:
-      'I started with a setting because most stories begin by describing where things take place.'
+      'AI predicts a polite opener because most professional emails start with a friendly greeting.'
   },
   {
-    line: 'Inside, a map points to a hidden door.',
+    line: 'I wanted to follow up about our upcoming meeting.',
     explanation:
-      'After a scene is set, the next logical piece is usually a clue or problem to solve.'
+      'Given the greeting, the model assumes a common next step is stating the reason for writing.'
   },
   {
-    line: 'The door creaks open revealing a shimmering portal.',
+    line: 'Please let me know if you have any questions.',
     explanation:
-      'Stories often introduce a twist to keep readers engaged. I predicted a portal as a likely surprise.'
+      'Many emails end with an invitation to respond, so the model predicts a courteous closing line.'
   }
 ]
 
@@ -38,8 +38,8 @@ export default function IntroGame() {
   const [input, setInput] = useState('')
   const [explanation, setExplanation] = useState('')
 
-  function start(scene: string) {
-    setStory([`You chose: ${scene}`])
+  function start(reason: string) {
+    setStory([`You chose: ${reason}`])
     setExplanation('Great choice! Let\'s see what might happen next.')
     setStep(0)
     setInput('')
@@ -69,7 +69,7 @@ export default function IntroGame() {
           '@context': 'https://schema.org',
           '@type': 'Game',
           name: 'AI Basics',
-          description: 'Learn how AI predicts the next word through a short story.',
+          description: 'Learn how AI predicts the next word while drafting a short email.',
           image:
             'https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_12_36%20PM.png'
         }}
@@ -94,17 +94,17 @@ export default function IntroGame() {
         <div className={styles.introGame}>
           {step === -1 && (
             <>
-              <p className={styles.prompt}>Choose a starting scene</p>
+              <p className={styles.prompt}>Choose why you're emailing</p>
               <div className={styles.options}>
-                <button className="btn-primary" onClick={() => start('a mysterious library')}>Library</button>
-                <button className="btn-primary" onClick={() => start('a space station')}>Space Station</button>
-                <button className="btn-primary" onClick={() => start('an enchanted forest')}>Enchanted Forest</button>
+                <button className="btn-primary" onClick={() => start('scheduling a meeting')}>Schedule a Meeting</button>
+                <button className="btn-primary" onClick={() => start('thanking someone')}>Say Thanks</button>
+                <button className="btn-primary" onClick={() => start('asking for information')}>Request Info</button>
               </div>
               <form onSubmit={e => { e.preventDefault(); if (input.trim()) start(input.trim()) }} className={styles.inputArea}>
                 <input
                   value={input}
                   onChange={e => setInput(e.target.value)}
-                  placeholder="Or type your own scene"
+                  placeholder="Or type your own reason"
                 />
                 <button type="submit" className="btn-primary">Start</button>
               </form>
@@ -123,7 +123,7 @@ export default function IntroGame() {
                   <input
                     value={input}
                     onChange={e => setInput(e.target.value)}
-                    placeholder="What do you do next?"
+                  placeholder="Type your next sentence"
                   />
                   <button type="submit" className="btn-primary">Continue</button>
                 </form>
@@ -141,7 +141,7 @@ export function Head() {
   return (
     <>
       <title>AI Basics | StrawberryTech</title>
-      <meta name="description" content="Learn how AI predicts the next word." />
+      <meta name="description" content="Learn how AI predicts the next word while drafting a short email." />
       <link rel="canonical" href="https://strawberry-tech.vercel.app/games/intro" />
     </>
   )
