@@ -1,6 +1,8 @@
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import { motion } from 'framer-motion'
 import { notify } from '../shared/notify'
+import { UserContext } from '../shared/UserContext'
+import type { UserContextType } from '../../../shared/types/user'
 
 interface ChatMessage {
   role: 'user' | 'assistant'
@@ -8,15 +10,15 @@ interface ChatMessage {
 }
 
 export default function RobotChat() {
+  const { ageGroup } = useContext(UserContext) as UserContextType
   const [open, setOpen] = useState(false)
   const [input, setInput] = useState('')
   const [messages, setMessages] = useState<ChatMessage[]>([])
 
   // Instruction sent with every request so the bot behaves like a teacher
   const systemMsg = {
-    role: 'system',
-    content:
-      'You are a friendly instructor for this lesson. Reply in one short sentence at a 4th grade reading level.',
+    role: 'system' as const,
+    content: `You are a friendly instructor for this lesson. Reply in one short sentence for a ${ageGroup} player.`,
   }
 
   async function sendMessage(e: React.FormEvent) {

@@ -118,7 +118,7 @@ const EXTRA_TIME = 10
 
 export default function ClarityEscapeRoom() {
   const navigate = useNavigate()
-  const { setPoints: recordScore } = useContext(UserContext) as UserContextType
+  const { setPoints: recordScore, ageGroup } = useContext(UserContext) as UserContextType
   const [doors] = useState(() => shuffle(CLUES).slice(0, TOTAL_STEPS))
   const [index, setIndex] = useState(0)
   const [input, setInput] = useState('')
@@ -142,8 +142,8 @@ export default function ClarityEscapeRoom() {
   const [showSummary, setShowSummary] = useState(false)
 
   useEffect(() => {
-    generateRoomDescription().then(text => setRoomDescription(text))
-  }, [index])
+    generateRoomDescription(ageGroup).then(text => setRoomDescription(text))
+  }, [index, ageGroup])
 
   const clue = doors[index]
 
@@ -222,7 +222,7 @@ export default function ClarityEscapeRoom() {
             {
               role: 'system',
               content:
-                'Provide a single short hint referencing the user\'s guess without revealing the answer.',
+                `Provide a single short hint for a ${ageGroup} player referencing the user's guess without revealing the answer.`,
             },
             {
               role: 'user',

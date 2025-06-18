@@ -22,6 +22,7 @@ Drag cards to assemble a prompt. Each round now fetches fresh card text from the
 ## Age‑Adaptive Features
 - Players can optionally enter their age and name to personalize the games.
 - Games read the stored age to tweak difficulty and show tailored tips.
+- AI-generated hints and chat responses adapt tone for each age group.
 - On easy difficulty, older players automatically receive extra time for tasks
   (5s at 40+, 10s at 50+, 15s at 60+).
 - Points and badges now sync to a small server so progress follows you across devices.

@@ -10,6 +10,8 @@ export interface UserData {
   badges: string[]
 }
 
+export type AgeGroup = 'child' | 'teen' | 'adult' | 'senior'
+
 export interface UserContextType {
   user: UserData
   setUser: (user: UserData) => void
@@ -35,4 +37,8 @@ export interface UserContextType {
    * Update the difficulty setting for all games.
    */
   setDifficulty: (level: 'easy' | 'medium' | 'hard') => void
+  /**
+   * Age group derived from the user's age. Used to tailor AI responses.
+   */
+  ageGroup: AgeGroup
 }
