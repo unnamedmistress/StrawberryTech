@@ -139,7 +139,7 @@ const ALL_OPENERS = Object.entries(EMAIL_DATA).flatMap(([context, ctx]) =>
 
 export default function IntroGame() {
   const router = useRouter()
-  const { setPoints, addBadge, user } = useContext(UserContext) as UserContextType
+  const { setPoints, addBadge, user, ageGroup } = useContext(UserContext) as UserContextType
 
   const [showIntro, setShowIntro] = useState(true)
   const [step, setStep] = useState<'opener' | 'sentence' | 'review'>('opener')
@@ -215,7 +215,7 @@ export default function IntroGame() {
             {
               role: 'system',
               content:
-                'Write a concise, professional email incorporating the provided lines. Include a greeting and closing. Keep it under 120 words.',
+                `Write a concise, professional email for a ${ageGroup} user incorporating the provided lines. Include a greeting and closing. Keep it under 120 words.`,
             },
             { role: 'user', content: joined },
           ],

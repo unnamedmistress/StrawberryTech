@@ -23,7 +23,7 @@ import {
 
 
 export default function PromptRecipeGame() {
-  const { setPoints, addBadge, user } = useContext(UserContext)
+  const { setPoints, addBadge, user, ageGroup } = useContext(UserContext)
   const navigate = useNavigate()
   const TOTAL_ROUNDS = 5
   const TOTAL_TIME = getTimeLimit(user, {
@@ -60,7 +60,7 @@ export default function PromptRecipeGame() {
   const [example, setExample] = useState<string | null>(null)
 
   const startRound = useCallback(async () => {
-    const newCards = await generateCards()
+    const newCards = await generateCards(ageGroup)
     setRoundCards(newCards)
     setCards(shuffle([...newCards]))
     setDropped({ Action: null, Context: null, Format: null, Constraints: null })
@@ -76,7 +76,7 @@ export default function PromptRecipeGame() {
       Format: null,
       Constraints: null,
     })
-  }, [TOTAL_TIME])
+  }, [TOTAL_TIME, ageGroup])
 
   useEffect(() => {
     startRound()
@@ -258,7 +258,10 @@ export default function PromptRecipeGame() {
         },
         body: JSON.stringify({
           model: 'gpt-3.5-turbo',
-          messages: [{ role: 'user', content: prompt }],
+          messages: [
+            { role: 'system', content: `Reply in one short sentence for a ${ageGroup} player.` },
+            { role: 'user', content: prompt },
+          ],
           max_tokens: 60,
         }),
       })

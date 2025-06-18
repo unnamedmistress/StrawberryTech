@@ -138,7 +138,9 @@ function randomItem<T>(arr: T[]): T {
   return arr[Math.floor(Math.random() * arr.length)]
 }
 
-async function generateCards(): Promise<Card[]> {
+import type { AgeGroup } from '../../../shared/getAgeGroup'
+
+async function generateCards(ageGroup: AgeGroup): Promise<Card[]> {
   try {
     const resp = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
@@ -152,7 +154,7 @@ async function generateCards(): Promise<Card[]> {
           {
             role: 'system',
             content:
-              'Provide four short phrases that clearly fit the labels Action, Context, Format and Constraints. Output exactly four lines in that order and prefix each line with the matching label followed by a colon. Example:\nAction: Write a thank you note\nContext: to a colleague\nFormat: as a short poem\nConstraints: under 50 words.',
+              `Provide four short phrases for a ${ageGroup} player that clearly fit the labels Action, Context, Format and Constraints. Output exactly four lines in that order and prefix each line with the matching label followed by a colon. Example:\nAction: Write a thank you note\nContext: to a colleague\nFormat: as a short poem\nConstraints: under 50 words.`,
           },
           { role: 'user', content: 'Provide the labeled phrases.' },
         ],
@@ -176,7 +178,7 @@ async function generateCards(): Promise<Card[]> {
 }
 
 export default function PromptRecipeGame() {
-  const { setPoints, addBadge, user } = useContext(UserContext) as UserContextType
+  const { setPoints, addBadge, user, ageGroup } = useContext(UserContext) as UserContextType
   const router = useRouter()
   const TOTAL_ROUNDS = 5
   const TOTAL_TIME = getTimeLimit(user, {
@@ -213,7 +215,7 @@ export default function PromptRecipeGame() {
   const [example, setExample] = useState<string | null>(null)
 
   async function startRound() {
-    const newCards = await generateCards()
+    const newCards = await generateCards(ageGroup)
     setRoundCards(newCards)
     setCards(shuffle([...newCards]))
     setDropped({ Action: null, Context: null, Format: null, Constraints: null })
@@ -405,7 +407,10 @@ export default function PromptRecipeGame() {
         },
         body: JSON.stringify({
           model: 'gpt-3.5-turbo',
-          messages: [{ role: 'user', content: prompt }],
+          messages: [
+            { role: 'system', content: `Reply in one short sentence for a ${ageGroup} player.` },
+            { role: 'user', content: prompt },
+          ],
           max_tokens: 60,
         }),
       })

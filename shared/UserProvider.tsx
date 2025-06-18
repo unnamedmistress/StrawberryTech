@@ -3,6 +3,7 @@ import { notify } from './notify'
 import type { ReactNode } from 'react'
 import type { UserData } from './types/user'
 import { UserContext, defaultUser } from './UserContext'
+import { getAgeGroup } from './getAgeGroup'
 import { getApiBase } from './getApiBase'
 
 const STORAGE_KEY = 'strawberrytech_user'
@@ -133,6 +134,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
         setPoints,
         addBadge,
         setDifficulty,
+        ageGroup: getAgeGroup(user.age),
       }}
     >
       {children}

@@ -68,8 +68,14 @@ function WhyItMatters() {
 }
 
 function ChatBox() {
+  const { ageGroup } = useContext(UserContext)
   const [input, setInput] = useState('')
   const [messages, setMessages] = useState<ChatMessage[]>([])
+
+  const systemMsg = {
+    role: 'system' as const,
+    content: `Reply in one short sentence for a ${ageGroup} player.`,
+  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -88,7 +94,7 @@ function ChatBox() {
         },
         body: JSON.stringify({
           model: 'gpt-3.5-turbo',
-          messages: [...messages, userMsg],
+          messages: [systemMsg, ...messages, userMsg],
         }),
       })
       const data = await resp.json()

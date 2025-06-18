@@ -114,7 +114,7 @@ const EXTRA_TIME = 10
 
 export default function PromptGuessEscape() {
   const navigate = useNavigate()
-  const { setPoints: recordScore } = useContext(UserContext)
+  const { setPoints: recordScore, ageGroup } = useContext(UserContext)
   const [doors] = useState(() => shuffle(CLUES).slice(0, TOTAL_STEPS))
   const [index, setIndex] = useState(0)
   const [input, setInput] = useState('')
@@ -134,8 +134,8 @@ export default function PromptGuessEscape() {
   const [showSummary, setShowSummary] = useState(false)
 
   useEffect(() => {
-    generateRoomDescription().then(text => setRoomDescription(text))
-  }, [index])
+    generateRoomDescription(ageGroup).then(text => setRoomDescription(text))
+  }, [index, ageGroup])
 
   const clue = doors[index]
 

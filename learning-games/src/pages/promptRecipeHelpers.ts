@@ -121,7 +121,9 @@ function randomItem<T>(arr: T[]): T {
   return arr[Math.floor(Math.random() * arr.length)]
 }
 
-export async function generateCards(): Promise<Card[]> {
+import type { AgeGroup } from '../../../shared/getAgeGroup'
+
+export async function generateCards(ageGroup: AgeGroup): Promise<Card[]> {
   try {
     const resp = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
@@ -135,7 +137,7 @@ export async function generateCards(): Promise<Card[]> {
           {
             role: 'system',
             content:
-              'Provide four short phrases that clearly fit the labels Action, Context, Format and Constraints. Output exactly four lines in that order and prefix each line with the matching label followed by a colon. Example:\nAction: Write a thank you note\nContext: to a colleague\nFormat: as a short poem\nConstraints: under 50 words.',
+              `Provide four short phrases for a ${ageGroup} player that clearly fit the labels Action, Context, Format and Constraints. Output exactly four lines in that order and prefix each line with the matching label followed by a colon. Example:\nAction: Write a thank you note\nContext: to a colleague\nFormat: as a short poem\nConstraints: under 50 words.`,
           },
           { role: 'user', content: 'Provide the labeled phrases.' },
         ],

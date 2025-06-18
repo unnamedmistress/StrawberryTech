@@ -1,4 +1,6 @@
-export async function generateRoomDescription(): Promise<string> {
+import type { AgeGroup } from '../../../shared/getAgeGroup'
+
+export async function generateRoomDescription(ageGroup: AgeGroup): Promise<string> {
   try {
     const resp = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
@@ -12,7 +14,7 @@ export async function generateRoomDescription(): Promise<string> {
           {
             role: 'system',
             content:
-              'You create short, vivid scene descriptions for an escape room game. Keep it under 20 words.',
+              `You create short, vivid scene descriptions for an escape room game that a ${ageGroup} player would understand. Keep it under 20 words.`,
           },
           { role: 'user', content: 'Describe the next room the player enters.' },
         ],
