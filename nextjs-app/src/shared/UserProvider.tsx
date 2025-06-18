@@ -3,7 +3,7 @@ import { notify } from './notify'
 import type { ReactNode } from 'react'
 import type { UserData } from './types/user'
 import { UserContext, defaultUser } from './UserContext'
-import { getApiBase } from '../../shared/getApiBase'
+import { getApiBase } from '../../../shared/getApiBase'
 
 const STORAGE_KEY = 'strawberrytech_user'
 
