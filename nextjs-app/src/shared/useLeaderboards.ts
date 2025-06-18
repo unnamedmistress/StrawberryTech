@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { getApiBase } from '../../shared/getApiBase'
+import { getApiBase } from '../../../shared/getApiBase'
 
 export interface PointsEntry {
   name: string

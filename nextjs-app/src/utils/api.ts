@@ -1,1 +1,1 @@
-export { getApiBase } from '../../shared/getApiBase'
+export { getApiBase } from '../../../shared/getApiBase'
