@@ -62,9 +62,11 @@ export default function NotificationModal({
       aria-labelledby="notification-message"
     >
       <div className={styles['notification-modal']}>
-        <div 
+        <div
           id="notification-message"
           className={styles['notification-message']}
+          role="alert"
+          aria-live="assertive"
         >
           {message}
         </div>
