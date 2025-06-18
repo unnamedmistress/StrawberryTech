@@ -54,6 +54,26 @@
   margin-top: 0.5rem;
 }
 
+.debug {
+  white-space: pre-wrap;
+  background: #f0f0f0;
+  padding: 0.5rem;
+  margin-top: 0.5rem;
+  border-radius: 4px;
+  max-height: 200px;
+  overflow: auto;
+}
+
+.quiz {
+  margin-top: 1rem;
+  text-align: left;
+}
+
+.quiz label {
+  display: block;
+  margin-bottom: 0.3rem;
+}
+
 .final-score {
   font-size: 1.3rem;
   font-weight: bold;
