@@ -3,19 +3,7 @@ import { notify } from './notify'
 import type { ReactNode } from 'react'
 import type { UserData } from '../../../shared/types/user'
 import { UserContext, defaultUser } from './UserContext'
-
-function getApiBase() {
-  if (typeof process !== 'undefined' && process.env.NEXT_PUBLIC_API_BASE) {
-    return process.env.NEXT_PUBLIC_API_BASE
-  }
-  if (
-    typeof import.meta !== 'undefined' &&
-    (import.meta.env as { [key: string]: string }).VITE_API_BASE
-  ) {
-    return (import.meta.env as { VITE_API_BASE: string }).VITE_API_BASE
-  }
-  return ''
-}
+import { getApiBase } from '../../../shared/getApiBase'
 
 const STORAGE_KEY = 'strawberrytech_user'
 
