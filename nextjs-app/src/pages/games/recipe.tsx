@@ -138,7 +138,7 @@ function randomItem<T>(arr: T[]): T {
   return arr[Math.floor(Math.random() * arr.length)]
 }
 
-import type { AgeGroup } from '../../../shared/getAgeGroup'
+import type { AgeGroup } from '../../../../shared/getAgeGroup'
 
 async function generateCards(ageGroup: AgeGroup): Promise<Card[]> {
   try {

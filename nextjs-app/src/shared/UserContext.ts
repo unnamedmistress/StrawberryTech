@@ -1,5 +1,6 @@
 import { createContext } from 'react'
-import type { UserData, UserContextType } from './types/user'
+import type { UserData, UserContextType, AgeGroup } from './types/user'
+import { getAgeGroup } from '../../../shared/getAgeGroup'
 
 export const defaultUser: UserData = {
   id: '',
@@ -10,6 +11,8 @@ export const defaultUser: UserData = {
   badges: [],
 }
 
+const defaultAgeGroup: AgeGroup = getAgeGroup(null)
+
 export const UserContext = createContext<UserContextType>({
   user: defaultUser,
   setUser: () => {},
@@ -18,4 +21,5 @@ export const UserContext = createContext<UserContextType>({
   setPoints: () => {},
   addBadge: () => {},
   setDifficulty: () => {},
+  ageGroup: defaultAgeGroup,
 })
