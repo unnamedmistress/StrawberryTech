@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { getApiBase } from './getApiBase'
 
 export interface PointsEntry {
   name: string
@@ -8,15 +9,6 @@ export interface PointsEntry {
 
 export type LeaderboardData = Record<string, PointsEntry[]>
 
-function getApiBase(): string {
-  if (typeof process !== 'undefined' && process.env.NEXT_PUBLIC_API_BASE) {
-    return process.env.NEXT_PUBLIC_API_BASE
-  }
-  if (typeof import.meta !== 'undefined' && (import.meta as any).env?.VITE_API_BASE) {
-    return (import.meta as any).env.VITE_API_BASE as string
-  }
-  return ''
-}
 
 let cachedData: LeaderboardData | null = null
 let fetchPromise: Promise<LeaderboardData> | null = null

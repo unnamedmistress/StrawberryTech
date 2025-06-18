@@ -6,6 +6,13 @@ const fs = require('fs');
 const path = require('path');
 const firestore = require('./firebase');
 
+// Validate essential environment variables
+['OPENAI_API_KEY'].forEach(key => {
+  if (!process.env[key]) {
+    console.warn(`Warning: ${key} is not set`);
+  }
+});
+
 const useLocalStore = process.env.USE_LOCAL_STORE === 'true';
 
 function ensureFirestore(res) {
@@ -452,5 +459,11 @@ if (require.main === module) {
     res.status(404).sendFile(path.join(__dirname, '404.html'));
   });
 }
+
+// Centralized error handler
+app.use((err, req, res, next) => {
+  console.error(err);
+  res.status(500).json({ error: 'Internal Server Error' });
+});
 
 module.exports = app;

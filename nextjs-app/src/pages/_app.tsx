@@ -2,6 +2,7 @@ import type { AppProps } from 'next/app'
 import Head from 'next/head'
 import { UserProvider } from '../shared/UserProvider'
 import { NotificationProvider } from '../contexts/NotificationContext'
+import { ErrorBoundary } from '../../shared/ErrorBoundary'
 import ModernNavBar from '../components/layout/ModernNavBar'
 import SkipLink from '../components/layout/SkipLink'
 import Footer from '../components/layout/Footer'
@@ -69,13 +70,15 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         <meta name="keywords" content="AI prompting, artificial intelligence, learning games, prompt engineering, AI skills, interactive learning" /></Head>
       <NotificationProvider>
         <UserProvider>
-          <ScrollToTop />
-          <SkipLink />
-          <ModernNavBar />
-          <AnalyticsTracker />
-          <Component {...pageProps} />
-          <Footer />
-          <Analytics />
+          <ErrorBoundary>
+            <ScrollToTop />
+            <SkipLink />
+            <ModernNavBar />
+            <AnalyticsTracker />
+            <Component {...pageProps} />
+            <Footer />
+            <Analytics />
+          </ErrorBoundary>
         </UserProvider>
       </NotificationProvider>
     </>
