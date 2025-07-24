@@ -13,6 +13,8 @@ import shuffle from '../utils/shuffle'
 import './ClarityEscapeRoom.css'
 import { scorePrompt } from '../utils/scorePrompt'
 import { generateRoomDescription } from '../utils/generateRoomDescription'
+import AdventureProgress from '../components/ui/AdventureProgress'
+import { getAdventureStep, getNextGame, pointsToStars } from '../utils/adventure'
 import { UserContext } from '../shared/UserContext'
 import type { UserContextType } from '../../../shared/types/user'
 
@@ -118,7 +120,7 @@ const EXTRA_TIME = 10
 
 export default function ClarityEscapeRoom() {
   const navigate = useNavigate()
-  const { setPoints: recordScore, ageGroup } = useContext(UserContext) as UserContextType
+  const { user, setPoints: recordScore, ageGroup } = useContext(UserContext) as UserContextType
   const [doors] = useState(() => shuffle(CLUES).slice(0, TOTAL_STEPS))
   const [index, setIndex] = useState(0)
   const [input, setInput] = useState('')
@@ -140,6 +142,16 @@ export default function ClarityEscapeRoom() {
   const startRef = useRef(Date.now())
   const [showIntro, setShowIntro] = useState(true)
   const [showSummary, setShowSummary] = useState(false)
+  const [finalScore, setFinalScore] = useState(0)
+  const step = getAdventureStep(user.points)
+  const next = getNextGame(user.points)
+
+  useEffect(() => {
+    if (showSummary && next) {
+      const id = setTimeout(() => navigate(next.path), 2000)
+      return () => clearTimeout(id)
+    }
+  }, [showSummary, next, navigate])
 
   useEffect(() => {
     generateRoomDescription(ageGroup).then(text => setRoomDescription(text))
@@ -293,6 +305,7 @@ export default function ClarityEscapeRoom() {
       setShowNext(false)
     } else {
       recordScore('escape', points)
+      setFinalScore(points)
       setShowSummary(true)
     }
   }
@@ -301,6 +314,7 @@ export default function ClarityEscapeRoom() {
     <>
       {showIntro && <IntroOverlay onClose={() => setShowIntro(false)} />}
       <div className="escape-page">
+      <AdventureProgress step={step} />
       <InstructionBanner>Escape Room: Guess the Prompt</InstructionBanner>
       <div className="escape-wrapper">
         <WhyCard
@@ -401,11 +415,12 @@ export default function ClarityEscapeRoom() {
       {showSummary && (
         <CompletionModal
           imageSrc="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_12_36%20PM.png"
-          buttonHref="/games/recipe"
-          buttonLabel="Play Prompt Builder"
+          buttonHref={next ? next.path : '/'}
+          buttonLabel="Next Game"
         >
+          <AdventureProgress step={step} />
           <h3>Escape Complete!</h3>
-          <p className="final-score">Points: {points}</p>
+          <p className="final-score">Stars earned: {'{'}'⭐'.repeat(pointsToStars(finalScore)){'}'}</p>
         </CompletionModal>
       )}
     </div>

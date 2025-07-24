@@ -6,6 +6,8 @@ import { getTotalPoints } from '../utils/user'
 import './Home.css'
 import { GOAL_POINTS } from '../constants/progress'
 import ProgressSummary from '../components/ProgressSummary'
+import AdventureProgress from '../components/ui/AdventureProgress'
+import { ADVENTURE_GAMES, getAdventureStep } from '../utils/adventure'
 
 /**
  * Home page listing available games.
@@ -14,6 +16,8 @@ import ProgressSummary from '../components/ProgressSummary'
 export default function Home() {
   const { user } = useContext(UserContext) as UserContextType
   const navigate = useNavigate()
+  const step = getAdventureStep(user.points)
+  const nextGame = ADVENTURE_GAMES[step]
 
   // Redirect to the age form if age hasn't been provided yet
   // Temporarily disabled so the home page loads without requiring age
@@ -55,10 +59,15 @@ export default function Home() {
         />
         <p className="tagline">Play engaging games and sharpen your skills.</p>
 
-        <button onClick={() => navigate('/games/tone')} className="btn-primary" aria-label="Play Tone Puzzle">
-
-          Play Now
-        </button>
+        {nextGame && (
+          <button
+            onClick={() => navigate(nextGame.path)}
+            className="btn-primary"
+            aria-label="Play next game"
+          >
+            Play
+          </button>
+        )}
         <button
           onClick={() => navigate('/community')}
           className="btn-primary"
@@ -77,6 +86,8 @@ export default function Home() {
         </button>
       </section>
 
+      <AdventureProgress step={step} />
+
 
       {/* greeting - temporarily disabled per UX review */}
       {/**
@@ -87,58 +98,32 @@ export default function Home() {
       )}
       */}
 
+
       {/* game list */}
       <div className="game-grid reveal">
-        <Link className="game-card" to="/games/tone">
-          <img
-            src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExN3V3YmcybDA1YTExbGhzcDJ4OXFpNGlnMmlkbWt3dGI2dWRraTh2eSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/Z9EX1jzpulWOyM43uG/giphy.gif"
-            alt="Tone puzzle preview"
-            className="game-icon"
-          />
-          <span className="game-title">Tone Puzzle</span>
-        </Link>
-        <Link className="game-card" to="/games/quiz">
-          <img
-            src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExcTZoaHpxY3AwbmN1OTMwN3dkY3c5eXI1eXB3cDJ5ajNudDdkcnJ6cSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9dg/SR6WK6jz0rRWf2QK0t/giphy.gif"
-            alt="Hallucinations preview"
-            className="game-icon"
-          />
-          <span className="game-title">Hallucinations</span>
-        </Link>
-        <Link className="game-card" to="/games/escape">
-          <img
-            src="https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExdGxwaGF2eGNmcW1mZzFqNWJhOGs2bmcxZm9scHN4a21ka2ttanhrdyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/vZFZFVYQvtdidWZltF/giphy.gif"
-            alt="Escape room preview"
-            className="game-icon"
-          />
-          <span className="game-title">Escape Room</span>
-        </Link>
-        <Link className="game-card" to="/games/recipe">
-          <img
-            src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExa3h3cTR0cmEybWt0ZGM2Ymx0ZHB4ZjltbmR2dG55M3Y0MWh6dnRjZCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/Ll22OhMLAlVDbDS3Mo/giphy.gif"
-            alt="Prompt recipe preview"
-
-            className="game-icon"
-          />
-          <span className="game-title">Prompt Builder</span>
-        </Link>        <Link className="game-card" to="/games/darts">
-          <img
-            src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExMW0xZHBmOTl3bWo3bmx6NDNmcjBkamo2a3prd242NjVmZzJvOTlkZCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/SvhOn6vnGXp0BiqlEc/giphy.gif"
-            alt="Prompt darts preview"
-            className="game-icon"
-          />
-          <span className="game-title">Prompt Darts</span>
-        </Link>
-        <Link className="game-card" to="/games/chain">
-          <img
-            src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExeW1waDgxcTJjZms2bGZvZjFxZzBwMGgzcGRvNWVob2R0dWo0aGQybiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/3o7abKhOpu0NwenH3O/giphy.gif"
-            alt="Prompt chain challenge preview"
-            className="game-icon"
-          />
-          <span className="game-title">Prompt Chain</span>
-        </Link>
+        {ADVENTURE_GAMES.map((g, idx) => (
+          <Link
+            key={g.key}
+            className={`game-card${idx > step ? ' locked' : ''}`}
+            to={g.path}
+          >
+            <img
+              src={
+                g.key === 'tone'
+                  ? 'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExN3V3YmcybDA1YTexbGhzcDJ4OXFpNGlnMmlkbWt3dGI2dWRraTh2eSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/Z9EX1jzpulWOyM43uG/giphy.gif'
+                  : g.key === 'quiz'
+                  ? 'https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExcTZoaHpxY3AwbmN1OTMwN3dkY3c5eXI1eXB3cDJ5ajNudDdkcnJ6cSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9dg/SR6WK6jz0rRWf2QK0t/giphy.gif'
+                  : g.key === 'recipe'
+                  ? 'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExa3h3cTR0cmEybWt0ZGM2Ymx0ZHB4ZjltbmR2dG55M3Y0MWh6dnRjZCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/Ll22OhMLAlVDbDS3Mo/giphy.gif'
+                  : 'https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExdGxwaGF2eGNmcW1mZzFqNWJhOGs2bmcxZm9scHN4a21ka2ttanhrdyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/vZFZFVYQvtdidWZltF/giphy.gif'
+              }
+              alt={`${g.title} preview`}
+              className="game-icon"
+            />
+            <span className="game-title">{g.title}</span>
+          </Link>
+        ))}
       </div>
-
       {/* navigation */}
       <p className="reveal">
         <Link to="/leaderboard">View Progress</Link>
