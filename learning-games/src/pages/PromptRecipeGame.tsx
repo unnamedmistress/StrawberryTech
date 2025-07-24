@@ -12,6 +12,8 @@ import Tooltip from '../components/ui/Tooltip'
 import TimerBar from '../components/ui/TimerBar'
 import { UserContext } from '../shared/UserContext'
 import { getTimeLimit } from '../utils/time'
+import AdventureProgress from '../components/ui/AdventureProgress'
+import { getAdventureStep, getNextGame, pointsToStars } from '../utils/adventure'
 import './PromptRecipeGame.css'
 import {
   type Slot,
@@ -51,6 +53,9 @@ export default function PromptRecipeGame() {
   const [selectedCard, setSelectedCard] = useState<Card | null>(null)
   const [round, setRound] = useState(0)
   const [finished, setFinished] = useState(false)
+  const [finalScore, setFinalScore] = useState(0)
+  const step = getAdventureStep(user.points)
+  const next = getNextGame(user.points)
   const [feedback, setFeedback] = useState<Record<Slot, 'correct' | 'wrong' | null>>({
     Action: null,
     Context: null,
@@ -100,6 +105,13 @@ export default function PromptRecipeGame() {
     }, 1000)
     return () => clearInterval(id)
   }, [showPrompt])
+
+  useEffect(() => {
+    if (finished && next) {
+      const id = setTimeout(() => navigate(next.path), 2000)
+      return () => clearTimeout(id)
+    }
+  }, [finished, next, navigate])
 
   useEffect(() => {
     if (showPrompt) {
@@ -181,6 +193,7 @@ export default function PromptRecipeGame() {
     if (round + 1 < TOTAL_ROUNDS) {
       setRound(r => r + 1)
     } else {
+      setFinalScore(points)
       setFinished(true)
       setPoints('recipe', points)
     }
@@ -284,11 +297,12 @@ export default function PromptRecipeGame() {
     return (
       <CompletionModal
         imageSrc="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_19_23%20PM.png"
-        buttonHref="/games/darts"
-        buttonLabel="Play Prompt Darts"
+        buttonHref={next ? next.path : '/'}
+        buttonLabel="Next Game"
       >
+        <AdventureProgress step={step} />
         <h3>You finished Prompt Builder!</h3>
-        <p className="final-score">Your points: {points}</p>
+        <p className="final-score">Stars earned: {'{'}'⭐'.repeat(pointsToStars(finalScore)){'}'}</p>
       </CompletionModal>
     )
   }
@@ -298,6 +312,7 @@ export default function PromptRecipeGame() {
 
   return (
     <div id="main-content" className="recipe-page">
+      <AdventureProgress step={step} />
       <InstructionBanner>
         Drag each card to the category it best fits to build a clear AI prompt.
       </InstructionBanner>

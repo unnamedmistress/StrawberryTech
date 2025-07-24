@@ -9,6 +9,8 @@ import type { UserContextType } from "../../../shared/types/user";
 import RobotChat from "../components/RobotChat";
 import InstructionBanner from "../components/ui/InstructionBanner";
 import WhyCard from "../components/layout/WhyCard";
+import AdventureProgress from "../components/ui/AdventureProgress";
+import { getAdventureStep, getNextGame, pointsToStars } from "../utils/adventure";
 
 const quotes = [
   "Prompting is like seasoning \u2013 a single word changes the flavor.",
@@ -169,6 +171,16 @@ export default function Match3Game() {
       tips[Math.floor(Math.random() * tips.length)],
   )
   const [showComplete, setShowComplete] = useState(false)
+  const [finalScore, setFinalScore] = useState(0)
+  const step = getAdventureStep(user.points)
+  const next = getNextGame(user.points)
+
+  useEffect(() => {
+    if (showComplete && next) {
+      const id = setTimeout(() => navigate(next.path), 2000)
+      return () => clearTimeout(id)
+    }
+  }, [showComplete, next, navigate])
 
   function handleComplete(score: number) {
     const earned: string[] = [];
@@ -191,12 +203,14 @@ export default function Match3Game() {
       confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
     }
     notify(msg);
+    setFinalScore(score)
     setShowComplete(true);
   }
 
   if (showComplete) {
     return (
       <div id="main-content" className="match3-page">
+        <AdventureProgress step={step} />
         <div className="congrats-overlay">
           <div className="congrats-modal" role="dialog" aria-modal="true">
             <img
@@ -204,14 +218,17 @@ export default function Match3Game() {
               alt="Strawberry calling out sick wrapped in blanket, holding phone with polite sick day message bubble."
               style={{ width: '200px', display: 'block', margin: '0 auto' }}
             />
-            <p>Great job matching tones! Ready for a quick quiz?</p>
-            <button
-              className="btn-primary"
-              onClick={() => navigate('/games/quiz')}
-              style={{ display: 'block', marginTop: '0.5rem' }}
-            >
-              Start Quiz
-            </button>
+            <p>Great job matching tones!</p>
+            <p>Stars earned: {'{'}'⭐'.repeat(pointsToStars(finalScore)){'}'}</p>
+            {next && (
+              <button
+                className="btn-primary"
+                onClick={() => navigate(next.path)}
+                style={{ display: 'block', marginTop: '0.5rem' }}
+              >
+                Next Game
+              </button>
+            )}
             <a
               className="coffee-link"
               href="https://coff.ee/strawberrytech"
@@ -229,6 +246,7 @@ export default function Match3Game() {
 
   return (
     <div id="main-content" className="match3-page">
+      <AdventureProgress step={step} />
       <InstructionBanner>
         Match adjectives to explore how tone changes the meaning of a message.
       </InstructionBanner>

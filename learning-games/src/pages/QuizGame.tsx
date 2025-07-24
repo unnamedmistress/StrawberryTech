@@ -9,6 +9,8 @@ import { UserContext } from '../shared/UserContext'
 import type { UserContextType } from '../../../shared/types/user'
 import './QuizGame.css'
 import InstructionBanner from '../components/ui/InstructionBanner'
+import AdventureProgress from '../components/ui/AdventureProgress'
+import { getAdventureStep, getNextGame, pointsToStars } from '../utils/adventure'
 import { HALLUCINATION_EXAMPLES } from '../data/hallucinationExamples'
 import { H_ROUNDS } from '../data/hallucinationRounds'
 
@@ -141,6 +143,9 @@ export default function QuizGame() {
   const [played, setPlayed] = useState(0)
   const [streak, setStreak] = useState(0)
   const [finished, setFinished] = useState(false)
+  const [finalScore, setFinalScore] = useState(0)
+  const step = getAdventureStep(user.points)
+  const next = getNextGame(user.points)
   const NUM_STATEMENTS = 3
 
   const current = ROUNDS[round]
@@ -175,6 +180,7 @@ export default function QuizGame() {
         addBadge('quiz-whiz')
       }
       notify(`You scored ${newScore} out of ${ROUNDS.length}`)
+      setFinalScore(newScore)
       setFinished(true)
       return
     }
@@ -200,9 +206,17 @@ export default function QuizGame() {
     return () => observer.disconnect()
   }, [])
 
+  useEffect(() => {
+    if (finished && next) {
+      const id = setTimeout(() => navigate(next.path), 2000)
+      return () => clearTimeout(id)
+    }
+  }, [finished, next, navigate])
+
   return (
     <>
     <div id="main-content" className="quiz-page">
+      <AdventureProgress step={step} />
       <ChallengeBanner />
       <InstructionBanner>
         Find the one false statement—the AI hallucination. Tap the refresh icon
@@ -288,11 +302,12 @@ export default function QuizGame() {
     {finished && (
       <CompletionModal
         imageSrc="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_51_28%20PM.png"
-        buttonHref="/games/escape"
-        buttonLabel="Play Escape Room"
+        buttonHref={next ? next.path : '/'}
+        buttonLabel="Next Game"
       >
+        <AdventureProgress step={step} />
         <h3>You finished the quiz!</h3>
-        <p className="final-score">Your points: {points}</p>
+        <p className="final-score">Stars earned: {'{'}'⭐'.repeat(pointsToStars(finalScore)){'}'}</p>
       </CompletionModal>
     )}
     </>

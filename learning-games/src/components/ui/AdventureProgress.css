@@ -1,0 +1,33 @@
+.adventure-progress {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin: 1rem 0;
+  padding: 0;
+}
+
+.adventure-progress li {
+  text-align: center;
+  color: var(--color-text-dark);
+  font-size: 0.85rem;
+}
+
+.adventure-progress .step-num {
+  width: 2rem;
+  height: 2rem;
+  line-height: 2rem;
+  border-radius: 50%;
+  background: var(--color-secondary);
+  color: #fff;
+  display: inline-block;
+  margin-bottom: 0.25rem;
+}
+
+.adventure-progress li.done .step-num {
+  background: var(--color-accent);
+}
+
+.adventure-progress li.current .step-num {
+  background: var(--color-brand);
+}
