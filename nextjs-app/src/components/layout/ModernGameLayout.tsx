@@ -10,6 +10,7 @@ export interface ModernGameLayoutProps {
   gameIcon?: string
   showProgressSidebar?: boolean
   nextGameButton?: React.ReactNode
+  instructions?: React.ReactNode
 }
 
 /**
@@ -23,7 +24,8 @@ export default function ModernGameLayout({
   gameTitle,
   gameIcon,
   showProgressSidebar = false,
-  nextGameButton
+  nextGameButton,
+  instructions
 }: ModernGameLayoutProps) {
   return (
     <div id="main-content" className={`${styles.modernGameLayout} ${className}`}>
@@ -33,6 +35,7 @@ export default function ModernGameLayout({
           {gameIcon && <img src={gameIcon} alt="" className={styles.gameHeaderIcon} />}
           <h1 className={styles.gameTitle}>{gameTitle}</h1>
         </div>
+        {instructions}
       </header>
 
       {/* Main Game Grid */}

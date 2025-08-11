@@ -54,6 +54,18 @@
   margin-top: 0.5rem;
 }
 
+.instructions {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0.5rem;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+.instructions li {
+  margin-bottom: 0.25rem;
+}
+
 .debug {
   white-space: pre-wrap;
   background: #f0f0f0;

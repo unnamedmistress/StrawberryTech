@@ -8,7 +8,6 @@ import DoorAnimation from '../../components/DoorAnimation'
 import DoorUnlockedModal from '../../components/ui/DoorUnlockedModal'
 import WhyCard from '../../components/layout/WhyCard'
 import Tooltip from '../../components/ui/Tooltip'
-import IntroOverlay from '../../components/ui/IntroOverlay'
 import { UserContext } from '../../shared/UserContext'
 import type { UserContextType } from '../../shared/types/user'
 import shuffle from '../../utils/shuffle'
@@ -132,7 +131,6 @@ export default function ClarityEscapeRoom() {
 
   const [aiHint, setAiHint] = useState('')
   const startRef = useRef(Date.now())
-  const [showIntro, setShowIntro] = useState(true)
   const [rounds, setRounds] = useState<{ prompt: string; expected: string; tip: string }[]>([])
   const [showSummary, setShowSummary] = useState(false)
 
@@ -187,17 +185,6 @@ export default function ClarityEscapeRoom() {
     return () => window.removeEventListener('keydown', onKey)
   }, [revealHint])
 
-  useEffect(() => {
-    function handleEsc(e: KeyboardEvent) {
-      if (e.key === 'Escape') {
-        setShowIntro(false)
-      }
-    }
-    if (showIntro) {
-      window.addEventListener('keydown', handleEsc)
-      return () => window.removeEventListener('keydown', handleEsc)
-    }
-  }, [showIntro])
 
   async function fetchAiHint(guess: string) {
     try {
@@ -282,7 +269,6 @@ export default function ClarityEscapeRoom() {
 
   return (
     <>
-      {showIntro && <IntroOverlay onClose={() => setShowIntro(false)} />}
       <JsonLd
         data={{
           '@context': 'https://schema.org',
@@ -326,6 +312,14 @@ export default function ClarityEscapeRoom() {
       <ModernGameLayout
         gameTitle="Clarity Escape Room"
         gameIcon="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_12_36%20PM.png"
+        instructions={
+          <ul className={styles.instructions}>
+            <li>Objective: guess the original prompt that led to the AI response.</li>
+            <li>Time limit: 30 seconds per door.</li>
+            <li>Use the Hint button or press "H" for clues; each hint deducts 2 points.</li>
+            <li>Earn points for clear prompts and speed — hints subtract from your score.</li>
+          </ul>
+        }
         whyCard={
           <WhyCard
             title="Why Clarity Matters"

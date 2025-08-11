@@ -3,7 +3,6 @@ import { useRouter } from 'next/router'
 import JsonLd from '../../components/seo/JsonLd'
 import ModernGameLayout from '../../components/layout/ModernGameLayout'
 import WhyCard from '../../components/layout/WhyCard'
-import EmailIntroModal from '../../components/ui/EmailIntroModal'
 import CompletionModal from '../../components/ui/CompletionModal'
 import EmailPreviewModal from '../../components/ui/EmailPreviewModal'
 import ProgressBar from '../../components/ui/ProgressBar'
@@ -194,7 +193,6 @@ export default function IntroGame() {
   const router = useRouter()
   const { setPoints, addBadge, user, ageGroup } = useContext(UserContext) as UserContextType
 
-  const [showIntro, setShowIntro] = useState(true)
   const [step, setStep] = useState<'opener' | 'sentence' | 'review'>('opener')
   const TOTAL_SENTENCES = 3
   const [round, setRound] = useState(0)
@@ -379,7 +377,6 @@ export default function IntroGame() {
 
   return (
     <>
-      {showIntro && <EmailIntroModal onClose={() => setShowIntro(false)} />}
       <JsonLd
         data={{
           '@context': 'https://schema.org',
@@ -394,6 +391,13 @@ export default function IntroGame() {
         gameTitle="AI Basics"
         gameIcon="https://raw.githubusercontent.com/unnamedmistress/images/main/ChatGPT%20Image%20Jun%207%2C%202025%2C%2007_12_36%20PM.png"
         showProgressSidebar
+        instructions={
+          <ul className={styles.instructions}>
+            <li>Pick the type of email you need.</li>
+            <li>Choose three lines suggested by AI.</li>
+            <li>Watch the preview grow after each choice.</li>
+          </ul>
+        }
         whyCard={
           <WhyCard
             title="What is AI?"
