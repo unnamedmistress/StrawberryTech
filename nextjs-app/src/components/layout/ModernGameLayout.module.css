@@ -15,12 +15,35 @@
   padding: 1.5rem 2rem;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   border: 1px solid rgba(238, 58, 87, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 .gameTitleSection {
   display: flex;
   align-items: center;
   gap: 1rem;
+}
+
+.headerNav {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.navButton {
+  background: var(--color-brand);
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.navButton:hover {
+  filter: brightness(1.1);
 }
 
 .gameHeaderIcon {

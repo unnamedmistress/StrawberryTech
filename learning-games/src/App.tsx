@@ -21,7 +21,6 @@ import TermsPage from './pages/TermsPage'
 import ContactPage from './pages/ContactPage'
 import StatsPage from './pages/StatsPage'
 import BadgesPage from './pages/BadgesPage'
-import NavBar from './components/layout/NavBar'
 import Footer from './components/layout/Footer'
 import AnalyticsTracker from './components/AnalyticsTracker'
 import ScrollToTop from './components/ScrollToTop'
@@ -33,7 +32,6 @@ function App() {
     <Router>
       <ScrollToTop />
       <SkipLink />
-      <NavBar />
       <AnalyticsTracker />
       <Routes>
         <Route path="/age" element={<AgeInputForm />} />
