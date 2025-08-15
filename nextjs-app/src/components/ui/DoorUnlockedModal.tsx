@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import BaseModal from '../../../../shared/components/BaseModal'
 import styles from './DoorUnlockedModal.module.css'
 
 export interface DoorUnlockedModalProps {
@@ -14,15 +15,18 @@ export default function DoorUnlockedModal({ points, remaining, onNext }: DoorUnl
   }, [onNext])
 
   return (
-    <div className={styles['door-unlocked-overlay']} role="dialog" aria-modal="true">
-      <div className={styles['door-unlocked-modal']}>
-        <h3>Door Unlocked!</h3>
-        <p className={styles['modal-points']}>+{points} points</p>
-        <p className={styles['modal-remaining']}>{remaining} doors remaining</p>
-        <button className="btn-primary" onClick={onNext}>
-          Next Challenge
-        </button>
-      </div>
-    </div>
+    <BaseModal
+      isOpen={true}
+      onClose={onNext}
+      overlayClassName={styles['door-unlocked-overlay']}
+      className={styles['door-unlocked-modal']}
+    >
+      <h3>Door Unlocked!</h3>
+      <p className={styles['modal-points']}>+{points} points</p>
+      <p className={styles['modal-remaining']}>{remaining} doors remaining</p>
+      <button className="btn-primary" onClick={onNext}>
+        Next Challenge
+      </button>
+    </BaseModal>
   )
 }

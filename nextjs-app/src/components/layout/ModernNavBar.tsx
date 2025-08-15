@@ -13,43 +13,9 @@ interface NavItem {
 
 const navItems: NavItem[] = [
   { label: 'Home', href: '/', icon: '🏠' },
-  {
-    label: 'Games',
-    icon: '🎮',
-    children: [
-      { label: 'AI Basics', href: '/games/intro', icon: '🤖' },
-      { label: 'Tone Game', href: '/games/tone', icon: '🎭' },
-      { label: 'Hallucination Quiz', href: '/games/quiz', icon: '🧠' },
-      { label: 'Escape Room', href: '/games/escape', icon: '🚪' },
-      { label: 'Prompt Builder', href: '/games/recipe', icon: '📝' },
-      { label: 'Prompt Darts', href: '/games/darts', icon: '🎯' },
-      { label: 'Prompt Chain', href: '/games/chain', icon: '🔗' },
-    ],
-  },
-  {
-    label: 'Progress',
-    icon: '📊',
-    children: [
-      { label: 'Community & Progress', href: '/community', icon: '👥' },
-      { label: 'Badges', href: '/badges', icon: '🏆' },
-    ],
-  },
-  {
-    label: 'Account',
-    icon: '👤',
-    children: [
-      { label: 'Profile', href: '/profile', icon: '⚙️' },
-      { label: 'Help', href: '/help', icon: '❓' },
-    ],
-  },
-  {
-    label: 'Community',
-    icon: '🌟',
-    children: [
-      { label: 'Community Home', href: '/community', icon: '🏘️' },
-      { label: 'Prompt Library', href: '/prompt-library', icon: '📚' },
-    ],
-  },
+  { label: 'Games', href: '/games', icon: '🎮' },
+  { label: 'Community', href: '/community', icon: '🌟' },
+  { label: 'Profile', href: '/profile', icon: '👤' },
 ]
 
 export default function ModernNavBar() {

@@ -8,7 +8,6 @@ import DoorAnimation from '../components/DoorAnimation'
 import ProgressSidebar from '../components/layout/ProgressSidebar'
 import WhyCard from '../components/layout/WhyCard'
 import Tooltip from '../components/ui/Tooltip'
-import IntroOverlay from '../components/ui/IntroOverlay'
 import shuffle from '../utils/shuffle'
 import './ClarityEscapeRoom.css'
 import { scorePrompt } from '../utils/scorePrompt'
@@ -140,7 +139,6 @@ export default function ClarityEscapeRoom() {
 
   const [aiHint, setAiHint] = useState('')
   const startRef = useRef(Date.now())
-  const [showIntro, setShowIntro] = useState(true)
   const [showSummary, setShowSummary] = useState(false)
   const [finalScore, setFinalScore] = useState(0)
   const step = getAdventureStep(user.points)
@@ -208,17 +206,6 @@ export default function ClarityEscapeRoom() {
     return () => window.removeEventListener('keydown', onKey)
   }, [revealHint])
 
-  useEffect(() => {
-    function handleEsc(e: KeyboardEvent) {
-      if (e.key === 'Escape') {
-        setShowIntro(false)
-      }
-    }
-    if (showIntro) {
-      window.addEventListener('keydown', handleEsc)
-      return () => window.removeEventListener('keydown', handleEsc)
-    }
-  }, [showIntro])
 
   async function fetchAiHint(guess: string) {
     try {
@@ -312,10 +299,15 @@ export default function ClarityEscapeRoom() {
 
   return (
     <>
-      {showIntro && <IntroOverlay onClose={() => setShowIntro(false)} />}
       <div className="escape-page">
       <AdventureProgress step={step} />
       <InstructionBanner>Escape Room: Guess the Prompt</InstructionBanner>
+      <ul className="instructions">
+        <li>Objective: guess the original prompt that led to the AI response.</li>
+        <li>Time limit: 30 seconds per door.</li>
+        <li>Use the Hint button or press "H" for clues; each hint deducts 2 points.</li>
+        <li>Earn points for clear prompts and speed — hints subtract from your score.</li>
+      </ul>
       <div className="escape-wrapper">
         <WhyCard
           className="escape-sidebar"

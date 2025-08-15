@@ -1,4 +1,6 @@
 import React from 'react'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
 import ProgressSidebar from './ProgressSidebar'
 import styles from './ModernGameLayout.module.css'
 
@@ -10,6 +12,7 @@ export interface ModernGameLayoutProps {
   gameIcon?: string
   showProgressSidebar?: boolean
   nextGameButton?: React.ReactNode
+  instructions?: React.ReactNode
 }
 
 /**
@@ -23,16 +26,27 @@ export default function ModernGameLayout({
   gameTitle,
   gameIcon,
   showProgressSidebar = false,
-  nextGameButton
+  nextGameButton,
+  instructions
 }: ModernGameLayoutProps) {
+  const router = useRouter()
   return (
     <div id="main-content" className={`${styles.modernGameLayout} ${className}`}>
       {/* Game Header */}
       <header className={styles.gameHeader}>
+        <div className={styles.headerNav}>
+          <Link href="/" className={styles.navButton}>
+            Home
+          </Link>
+          <button onClick={() => router.back()} className={styles.navButton}>
+            Back
+          </button>
+        </div>
         <div className={styles.gameTitleSection}>
           {gameIcon && <img src={gameIcon} alt="" className={styles.gameHeaderIcon} />}
           <h1 className={styles.gameTitle}>{gameTitle}</h1>
         </div>
+        {instructions}
       </header>
 
       {/* Main Game Grid */}
