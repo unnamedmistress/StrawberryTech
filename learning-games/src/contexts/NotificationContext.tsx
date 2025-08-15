@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useCallback, ReactNode, useEffect } from 'react'
-import NotificationModal from '../components/ui/NotificationModal'
+import Toast from '../../../shared/components/Toast'
 import { setNotificationHandler } from '../shared/notify'
 
 interface NotificationContextType {
@@ -7,15 +7,13 @@ interface NotificationContextType {
 }
 
 interface NotificationOptions {
-  autoClose?: boolean
-  autoCloseDelay?: number
+  duration?: number
 }
 
 interface NotificationState {
   message: string
   isOpen: boolean
-  autoClose: boolean
-  autoCloseDelay: number
+  duration: number
 }
 
 const NotificationContext = createContext<NotificationContextType | undefined>(undefined)
@@ -36,16 +34,14 @@ export function NotificationProvider({ children }: NotificationProviderProps) {
   const [notification, setNotification] = useState<NotificationState>({
     message: '',
     isOpen: false,
-    autoClose: true,
-    autoCloseDelay: 3000,
+    duration: 3000,
   })
 
   const showNotification = useCallback((message: string, options: NotificationOptions = {}) => {
     setNotification({
       message,
       isOpen: true,
-      autoClose: options.autoClose ?? true,
-      autoCloseDelay: options.autoCloseDelay ?? 3000,
+      duration: options.duration ?? 3000,
     })
   }, [])
   const closeNotification = useCallback(() => {
@@ -60,12 +56,11 @@ export function NotificationProvider({ children }: NotificationProviderProps) {
   return (
     <NotificationContext.Provider value={{ showNotification }}>
       {children}
-      <NotificationModal
+      <Toast
         message={notification.message}
         isOpen={notification.isOpen}
         onClose={closeNotification}
-        autoClose={notification.autoClose}
-        autoCloseDelay={notification.autoCloseDelay}
+        duration={notification.duration}
       />
     </NotificationContext.Provider>
   )
