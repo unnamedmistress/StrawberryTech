@@ -75,39 +75,36 @@ export default function RobotChat() {
       >
         {'\u{1F916}'}
       </motion.div>
-      {open && (
-        <div className="chat-modal-overlay" onClick={() => setOpen(false)}>
-          <div className="chat-modal" onClick={e => e.stopPropagation()}>
-            <button className="chat-close" onClick={() => setOpen(false)}>
-              X
-            </button>
-            <h3>Practice</h3>
-            <div className="chat-history">
-              {messages.map((m, i) => (
-                <p key={i} className={`chat-message ${m.role}`}>{
-                  m.role === 'user' ? '🧑 ' : '🤖 '
-                }{m.content}</p>
-              ))}
-            </div>
-            <form className="chat-input" onSubmit={sendMessage}>
-              <input
-                value={input}
-                onChange={e => setInput(e.target.value)}
-                placeholder="Say something..."
-                maxLength={100}
-              />
-              <button
-                type="submit"
-                className="btn-primary"
-                disabled={input.length >= 100}
-              >
-                Send
-              </button>
-            </form>
-            <p className="char-counter">{input.length} / 100</p>
-          </div>
+      <div className={`chat-panel ${open ? 'open' : ''}`} aria-hidden={!open}>
+        <button className="chat-close" onClick={() => setOpen(false)}>
+          X
+        </button>
+        <h3>Practice</h3>
+        <div className="chat-history">
+          {messages.map((m, i) => (
+            <p key={i} className={`chat-message ${m.role}`}>
+              {m.role === 'user' ? '🧑 ' : '🤖 '}
+              {m.content}
+            </p>
+          ))}
         </div>
-      )}
+        <form className="chat-input" onSubmit={sendMessage}>
+          <input
+            value={input}
+            onChange={e => setInput(e.target.value)}
+            placeholder="Say something..."
+            maxLength={100}
+          />
+          <button
+            type="submit"
+            className="btn-primary"
+            disabled={input.length >= 100}
+          >
+            Send
+          </button>
+        </form>
+        <p className="char-counter">{input.length} / 100</p>
+      </div>
     </>
   )
 }

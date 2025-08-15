@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useCallback, ReactNode, useEffect } from 'react'
-import NotificationModal from '../components/ui/NotificationModal'
+import NotificationToast from '../components/ui/NotificationToast'
 import { setNotificationHandler } from '../shared/notify'
 
 interface NotificationContextType {
@@ -60,7 +60,7 @@ export function NotificationProvider({ children }: NotificationProviderProps) {
   return (
     <NotificationContext.Provider value={{ showNotification }}>
       {children}
-      <NotificationModal
+      <NotificationToast
         message={notification.message}
         isOpen={notification.isOpen}
         onClose={closeNotification}
