@@ -1,5 +1,7 @@
 import React, { createContext, useContext, useState, useCallback, ReactNode, useEffect } from 'react'
-import Toast from '../../../shared/components/Toast'
+
+import NotificationToast from '../components/ui/NotificationToast'
+
 import { setNotificationHandler } from '../shared/notify'
 
 interface NotificationContextType {
@@ -56,7 +58,9 @@ export function NotificationProvider({ children }: NotificationProviderProps) {
   return (
     <NotificationContext.Provider value={{ showNotification }}>
       {children}
-      <Toast
+
+      <NotificationToast
+
         message={notification.message}
         isOpen={notification.isOpen}
         onClose={closeNotification}

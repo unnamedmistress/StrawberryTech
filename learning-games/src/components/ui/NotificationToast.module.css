@@ -1,0 +1,100 @@
+/* NotificationToast.module.css */
+.notification-toast {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  background: var(--color-background);
+  color: var(--color-text-dark);
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  border: 2px solid var(--color-primary, #007bff);
+  animation: slideIn 0.3s ease-out;
+  min-width: 200px;
+}
+
+.notification-message {
+  font-size: 1.1rem;
+  line-height: 1.4;
+  margin-right: 2rem;
+  word-wrap: break-word;
+}
+
+.notification-close {
+  position: absolute;
+  top: 0.25rem;
+  right: 0.25rem;
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: var(--color-text-light, #666);
+  width: 1.5rem;
+  height: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.notification-close:hover {
+  background: rgba(0, 0, 0, 0.1);
+  color: var(--color-text-dark);
+}
+
+.notification-close:focus {
+  outline: 2px solid var(--color-primary, #007bff);
+  outline-offset: 2px;
+}
+
+.notification-progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 0 0 8px 8px;
+  overflow: hidden;
+}
+
+.notification-progress-bar {
+  height: 100%;
+  background: var(--color-primary, #007bff);
+  animation: progressBar linear;
+  transform-origin: left;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes progressBar {
+  from {
+    transform: scaleX(1);
+  }
+  to {
+    transform: scaleX(0);
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .notification-toast {
+    animation: none;
+  }
+
+  .notification-progress-bar {
+    animation: none;
+    transform: scaleX(0);
+  }
+}

@@ -749,30 +749,27 @@
   z-index: 1000;
 }
 
-.chat-modal-overlay {
+/* Sliding side chat panel */
+.chat-panel {
   position: fixed;
   top: 0;
-  left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0,0,0,0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-/* Chat modal container - relative to position close button */
-
-.chat-modal {
+  width: 320px;
+  max-width: 80%;
   background: var(--color-background);
   color: var(--color-text-dark);
+  box-shadow: -2px 0 8px rgba(0, 0, 0, 0.2);
+  transform: translateX(100%);
+  transition: transform 0.3s ease-in-out;
+  z-index: 1000;
   padding: 1rem;
-  border-radius: 8px;
-  width: 90%;
-  max-width: 400px;
-  max-height: 80vh;
-  overflow-y: auto;
-  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-panel.open {
+  transform: translateX(0);
 }
 
 .chat-history {
