@@ -168,7 +168,7 @@ abstract class BaseDataverseRepository<T extends BaseEntity> {
  * Conversation repository implementation
  */
 export class ConversationRepository extends BaseDataverseRepository<Conversation> implements IConversationRepository {
-  protected tableName = 'conversations';
+  protected tableName = 'st_conversation'; // Dataverse logical entity name
 
   async findByParticipant(userId: string): Promise<Conversation[]> {
     return this.findAll({
@@ -185,7 +185,7 @@ export class ConversationRepository extends BaseDataverseRepository<Conversation
  * Message repository implementation
  */
 export class MessageRepository extends BaseDataverseRepository<Message> implements IMessageRepository {
-  protected tableName = 'messages';
+  protected tableName = 'st_message'; // Dataverse logical entity name
 
   async findByConversation(conversationId: string): Promise<Message[]> {
     return this.findAll({ 
@@ -206,7 +206,7 @@ export class MessageRepository extends BaseDataverseRepository<Message> implemen
  * Attachment repository implementation
  */
 export class AttachmentRepository extends BaseDataverseRepository<AttachmentLink> implements IAttachmentRepository {
-  protected tableName = 'attachmentlinks';
+  protected tableName = 'st_attachmentlink'; // Dataverse logical entity name
 
   async findByMessage(messageId: string): Promise<AttachmentLink[]> {
     return this.findAll({ messageId });
@@ -217,7 +217,7 @@ export class AttachmentRepository extends BaseDataverseRepository<AttachmentLink
  * Meeting repository implementation
  */
 export class MeetingRepository extends BaseDataverseRepository<MeetingContext> implements IMeetingRepository {
-  protected tableName = 'meetingcontexts';
+  protected tableName = 'st_meetingcontext'; // Dataverse logical entity name
 
   async findByConversation(conversationId: string): Promise<MeetingContext[]> {
     return this.findAll({ 
@@ -239,7 +239,7 @@ export class MeetingRepository extends BaseDataverseRepository<MeetingContext> i
  * Export artifact repository implementation
  */
 export class ExportRepository extends BaseDataverseRepository<ExportArtifact> implements IExportRepository {
-  protected tableName = 'exportartifacts';
+  protected tableName = 'st_exportartifact'; // Dataverse logical entity name
 
   async findByConversation(conversationId: string): Promise<ExportArtifact[]> {
     return this.findAll({ 
@@ -260,7 +260,7 @@ export class ExportRepository extends BaseDataverseRepository<ExportArtifact> im
  * Audit log repository implementation
  */
 export class AuditRepository extends BaseDataverseRepository<AuditLog> implements IAuditRepository {
-  protected tableName = 'auditlogs';
+  protected tableName = 'st_auditlog'; // Dataverse logical entity name
 
   async findByEntity(entityType: string, entityId: string): Promise<AuditLog[]> {
     return this.findAll({ 
@@ -286,6 +286,127 @@ export class AuditRepository extends BaseDataverseRepository<AuditLog> implement
 
   async findByShortCode(shortCode: string): Promise<AuditLog[]> {
     return this.findAll({ shortCode });
+  }
+
+  /**
+   * Purge old audit logs and return metrics
+   */
+  async purgeOldAuditLogs(olderThanDays: number = 30): Promise<{ purgedCount: number; errors: string[] }> {
+    try {
+      const cutoffDate = new Date();
+      cutoffDate.setDate(cutoffDate.getDate() - olderThanDays);
+      const cutoffIso = cutoffDate.toISOString();
+
+      // Find all audit logs older than the cutoff
+      const oldLogs = await this.findAll({
+        createdon: { '<': cutoffIso }
+      });
+
+      const errors: string[] = [];
+      let purgedCount = 0;
+
+      // Delete each old log by its AuditLogId
+      for (const log of oldLogs) {
+        try {
+          const deleted = await this.delete(log.id);
+          if (deleted) {
+            purgedCount++;
+          } else {
+            errors.push(`Failed to delete audit log ${log.id}`);
+          }
+        } catch (error) {
+          errors.push(`Error deleting audit log ${log.id}: ${error instanceof Error ? error.message : 'Unknown error'}`);
+        }
+      }
+
+      // Log the purge operation
+      await this.logAuditEvent('st_auditlog', 'delete', 'system', {
+        purgedCount,
+        olderThanDays,
+        cutoffDate: cutoffIso,
+        errors: errors.length
+      }, `PURGE-${Date.now()}`);
+
+      return { purgedCount, errors };
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      console.error('Failed to purge old audit logs:', errorMessage);
+      
+      // Log the failure
+      await this.logAuditEvent('st_auditlog', 'delete', 'system', {
+        error: errorMessage,
+        olderThanDays
+      }, `PURGE-FAILED-${Date.now()}`);
+
+      return { purgedCount: 0, errors: [errorMessage] };
+    }
+  }
+
+  /**
+   * Log audit event with masked payloads and correlation IDs
+   */
+  async logAuditEvent(
+    entityType: string,
+    action: AuditLog['action'],
+    userId: string,
+    details: Record<string, unknown>,
+    shortCode?: string,
+    correlationId?: string
+  ): Promise<void> {
+    try {
+      // Mask sensitive data in the payload
+      const maskedDetails = this.maskSensitiveData(details);
+      
+      const auditLog: Omit<AuditLog, 'id' | 'createdOn' | 'modifiedOn'> = {
+        entityType,
+        entityId: correlationId || `${entityType}_${Date.now()}`,
+        action,
+        userId,
+        details: JSON.stringify(maskedDetails),
+        shortCode,
+        metadata: {
+          correlationId: correlationId || `corr_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+          userAgent: typeof window !== 'undefined' ? window.navigator.userAgent : 'server',
+          timestamp: new Date().toISOString()
+        }
+      };
+
+      await this.create(auditLog);
+    } catch (error) {
+      console.error('Failed to log audit event:', error);
+    }
+  }
+
+  /**
+   * Mask sensitive data in audit payloads
+   */
+  private maskSensitiveData(data: Record<string, unknown>): Record<string, unknown> {
+    const sensitiveKeys = [
+      'password', 'token', 'key', 'secret', 'credential', 'auth', 
+      'ssn', 'social', 'credit', 'card', 'account', 'email', 'phone'
+    ];
+    
+    const masked = { ...data };
+    
+    for (const key in masked) {
+      const lowerKey = key.toLowerCase();
+      if (sensitiveKeys.some(sensitive => lowerKey.includes(sensitive))) {
+        masked[key] = '[MASKED]';
+      } else if (typeof masked[key] === 'string') {
+        // Mask potential email patterns
+        masked[key] = (masked[key] as string).replace(
+          /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/g,
+          '[EMAIL]'
+        );
+        // Mask potential credit card patterns
+        masked[key] = (masked[key] as string).replace(
+          /\b\d{4}[-\s]?\d{4}[-\s]?\d{4}[-\s]?\d{4}\b/g,
+          '[CARD]'
+        );
+      }
+    }
+    
+    return masked;
   }
 }
 

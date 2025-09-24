@@ -24,6 +24,32 @@ export class HumanApprovalService {
   private connectorService = getConnectorService();
   private auditRepo = DataverseRepositoryFactory.getAuditRepository();
   private pendingRequests = new Map<string, ApprovalRequest>();
+  private approvalCallbacks = new Map<string, (result: ApprovalResult) => void>();
+  private isInitialized = false;
+
+  /**
+   * Initialize the approval service and register required callbacks
+   */
+  async initialize(): Promise<void> {
+    if (this.isInitialized) return;
+    this.isInitialized = true;
+  }
+
+  /**
+   * Register approval callback handler (required before enabling live operations)
+   */
+  registerApprovalCallback(operationType: string, callback: (result: ApprovalResult) => void): void {
+    this.approvalCallbacks.set(operationType, callback);
+  }
+
+  /**
+   * Check if approval callbacks are registered for live operations
+   */
+  private ensureApprovalCallbacksRegistered(): void {
+    if (!this.isInitialized) {
+      throw new Error('HumanApprovalService must be initialized before use');
+    }
+  }
 
   /**
    * Request approval for sending an Outlook email

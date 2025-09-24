@@ -274,7 +274,7 @@ const AssistantIntegrationDemo: React.FC<AssistantIntegrationDemoProps> = ({
 
     try {
       if (approved) {
-        await approvalService.approveRequest(approvalRequest.id, 'current-user', reason);
+        await approvalService.approveRequest(approvalRequest.id, reason || '');
         
         // Send email via connector
         const result = await connectorService.sendEmail({
