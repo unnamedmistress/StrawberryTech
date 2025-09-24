@@ -1,5 +1,4 @@
-import React, { useMemo, useRef, useEffect, forwardRef } from 'react';
-import { FixedSizeList as List, ListChildComponentProps } from 'react-window';
+import React, { useMemo } from 'react';
 import { Message } from '../../types/dataverse';
 import { SharePointCitation } from '../../types/microsoft365';
 import MarkdownRenderer from './MarkdownRenderer';
@@ -336,21 +335,6 @@ const MessageItem: React.FC<MessageItemProps> = ({ message, onMessageAction }) =
   );
 };
 
-const VirtualizedMessageItem = forwardRef<HTMLDivElement, ListChildComponentProps>(
-  ({ index, style, data }, ref) => {
-    const { messages, onMessageAction } = data;
-    const message = messages[index];
-
-    return (
-      <div ref={ref} style={style}>
-        <MessageItem message={message} onMessageAction={onMessageAction} />
-      </div>
-    );
-  }
-);
-
-VirtualizedMessageItem.displayName = 'VirtualizedMessageItem';
-
 const MessageList: React.FC<MessageListProps> = ({
   messages,
   height,
@@ -361,26 +345,13 @@ const MessageList: React.FC<MessageListProps> = ({
   onMessageAction,
   className = ''
 }) => {
-  const listRef = useRef<List>(null);
-
   // Scroll to bottom when new messages arrive
-  useEffect(() => {
-    if (listRef.current && messages.length > 0) {
-      listRef.current.scrollToItem(messages.length - 1, 'end');
-    }
-  }, [messages.length]);
-
-  // Load more messages when scrolling near the top
-  const handleScroll = ({ scrollOffset }: { scrollOffset: number }) => {
-    if (scrollOffset < 100 && hasNextPage && !isLoading && onLoadMore) {
+  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    const element = e.currentTarget;
+    if (element.scrollTop < 100 && hasNextPage && !isLoading && onLoadMore) {
       onLoadMore();
     }
   };
-
-  const itemData = useMemo(() => ({
-    messages,
-    onMessageAction
-  }), [messages, onMessageAction]);
 
   if (messages.length === 0) {
     return (
@@ -448,18 +419,19 @@ const MessageList: React.FC<MessageListProps> = ({
         </div>
       )}
 
-      <List
-        ref={listRef}
-        height={height}
-        width={width}
-        itemCount={messages.length}
-        itemSize={150} // Estimated height per message
-        itemData={itemData}
+      <div 
+        className="message-list-content"
+        style={{ height: typeof height === 'number' ? `${height}px` : height, width }}
         onScroll={handleScroll}
-        overscanCount={5}
       >
-        {VirtualizedMessageItem}
-      </List>
+        {messages.map((message) => (
+          <MessageItem 
+            key={message.id} 
+            message={message} 
+            onMessageAction={onMessageAction} 
+          />
+        ))}
+      </div>
 
       <style jsx>{`
         .message-list-container {
@@ -467,6 +439,11 @@ const MessageList: React.FC<MessageListProps> = ({
           background: #f8f9fa;
           border-radius: 8px;
           overflow: hidden;
+        }
+
+        .message-list-content {
+          overflow-y: auto;
+          padding: 1rem;
         }
 
         .loading-indicator {

@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@types/react-window": "^1.8.8",
     "@vercel/analytics": "latest",
     "canvas-confetti": "^1.9.3",
     "dompurify": "^3.2.7",

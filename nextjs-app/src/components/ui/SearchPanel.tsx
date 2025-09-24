@@ -169,11 +169,11 @@ const SearchPanel: React.FC<SearchPanelProps> = ({
                     <div className="result-title">{result.text}</div>
                     {result.metadata && (
                       <div className="result-meta">
-                        {result.metadata.author && (
-                          <span>By {result.metadata.author}</span>
+                        {(result.metadata as any).author && (
+                          <span>By {String((result.metadata as any).author)}</span>
                         )}
-                        {result.metadata.lastModified && (
-                          <span>Modified {new Date(result.metadata.lastModified).toLocaleDateString()}</span>
+                        {(result.metadata as any).lastModified && (
+                          <span>Modified {new Date(String((result.metadata as any).lastModified)).toLocaleDateString()}</span>
                         )}
                       </div>
                     )}

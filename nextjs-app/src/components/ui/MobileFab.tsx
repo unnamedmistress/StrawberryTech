@@ -33,7 +33,7 @@ const MobileFab: React.FC<MobileFabProps> = ({
 
   // Close FAB when clicking outside
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
+    const handleClickOutside = (event: Event) => {
       if (fabRef.current && !fabRef.current.contains(event.target as Node)) {
         setIsExpanded(false);
       }

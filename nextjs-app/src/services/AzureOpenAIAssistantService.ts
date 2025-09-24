@@ -65,7 +65,7 @@ export class AzureOpenAIAssistantService {
       return { ...response, data: thread };
     }
 
-    return response;
+    return response as ConnectorResponse<AssistantThread>;
   }
 
   /**

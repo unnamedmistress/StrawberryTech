@@ -121,30 +121,30 @@ const AssistantIntegrationDemo: React.FC<AssistantIntegrationDemoProps> = ({
         content: userMessage,
         role: 'user',
         messageType: 'text',
-        threadId: conversation.threadId,
+        threadId: conversation.threadId!,
         createdBy: 'current-user'
       });
 
       setMessages(prev => [...prev, userMsg]);
 
       // Send to assistant
-      await assistantService.createMessage(conversation.threadId, {
+      await assistantService.createMessage(conversation.threadId!, {
         role: 'user',
         content: userMessage
       });
 
       // Create and run assistant
-      const run = await assistantService.createRun(conversation.threadId, {
+      const run = await assistantService.createRun(conversation.threadId!, {
         assistant_id: process.env.NEXT_PUBLIC_AZURE_OPENAI_ASSISTANT_ID || 'default'
       });
 
       if (run.success && run.data) {
         // Poll for completion (simplified - in real implementation, use WebSocket)
         setTimeout(async () => {
-          const runStatus = await assistantService.getRun(conversation.threadId, run.data!.id);
+          const runStatus = await assistantService.getRun(conversation.threadId!, run.data!.id);
           if (runStatus.success && runStatus.data?.status === 'completed') {
             // Get assistant messages
-            const messagesResponse = await assistantService.listMessages(conversation.threadId);
+            const messagesResponse = await assistantService.listMessages(conversation.threadId!);
             if (messagesResponse.success && messagesResponse.data) {
               const latestMessages = messagesResponse.data.data;
               const assistantMsg = latestMessages.find(m => m.role === 'assistant' && m.run_id === run.data!.id);
@@ -155,7 +155,7 @@ const AssistantIntegrationDemo: React.FC<AssistantIntegrationDemoProps> = ({
                   content: assistantMsg.content[0]?.text?.value || '',
                   role: 'assistant',
                   messageType: 'text',
-                  threadId: conversation.threadId,
+                  threadId: conversation.threadId!,
                   runId: assistantMsg.run_id,
                   citations: JSON.stringify(assistantMsg.citations || []),
                   createdBy: 'system'
