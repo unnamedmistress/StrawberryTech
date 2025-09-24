@@ -13,6 +13,8 @@ import { PrepPanel } from './PrepPanel';
 import { TemplateActionsBar } from './TemplateActionsBar';
 import { ApprovalModal } from './ApprovalModal';
 import { ErrorService, ErrorServiceClass } from '../common/ErrorService';
+import '../../styles/AdminChat.css';
+import '../../styles/SearchPrepPanels.css';
 
 export interface ChatMessage {
   id: string;
