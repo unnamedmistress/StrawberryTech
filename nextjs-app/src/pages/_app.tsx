@@ -1,5 +1,6 @@
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
+import { useEffect } from 'react'
 import { UserProvider } from '../shared/UserProvider'
 import { NotificationProvider } from '../contexts/NotificationContext'
 import { ErrorBoundary } from '../../../shared/ErrorBoundary'
@@ -9,6 +10,7 @@ import Footer from '../components/layout/Footer'
 import AnalyticsTracker from '../components/AnalyticsTracker'
 import { Analytics } from '@vercel/analytics/next'
 import ScrollToTop from '../components/ScrollToTop'
+import { powerAppsBootstrap } from '../services/PowerAppsBootstrap'
 import '../styles/index.css'
 import '../styles/App.css'
 import '../styles/globals.css'
@@ -16,6 +18,16 @@ import '../styles/globals.css'
 export default function MyApp({ Component, pageProps }: AppProps) {
   const description =
     'Play StrawberryTech mini games to practice AI communication skills.'
+    
+  // Initialize PowerApps bootstrap on app start
+  useEffect(() => {
+    powerAppsBootstrap.initialize().then((result) => {
+      console.log('PowerApps bootstrap initialized:', result);
+    }).catch((error) => {
+      console.error('Failed to initialize PowerApps bootstrap:', error);
+    });
+  }, []);
+    
   return (
     <>
       <Head>

@@ -142,7 +142,7 @@ export class AzureOpenAIAssistantService {
       return { ...response, data: message };
     }
 
-    return response;
+    return response as ConnectorResponse<AssistantMessage>;
   }
 
   /**
@@ -167,7 +167,7 @@ export class AzureOpenAIAssistantService {
       }
     }
 
-    return response;
+    return response as ConnectorResponse<{ data: AssistantMessage[] }>;
   }
 
   /**
@@ -189,7 +189,7 @@ export class AzureOpenAIAssistantService {
       }
     }
 
-    return response;
+    return response as ConnectorResponse<AssistantMessage>;
   }
 
   /**

@@ -285,6 +285,13 @@ export class CodeAppConnectorService {
   }
 
   /**
+   * Initialize a single connector
+   */
+  async initializeConnector(connector: PowerAppConnector): Promise<void> {
+    this.connectors.set(connector.name, connector);
+  }
+
+  /**
    * Get available connectors
    */
   getAvailableConnectors(): PowerAppConnector[] {

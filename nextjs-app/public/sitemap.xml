@@ -2,6 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://example.com/age</loc></url>
   <url><loc>https://example.com/api/darts</loc></url>
+  <url><loc>https://example.com/api/data-purge</loc></url>
   <url><loc>https://example.com/api/debug</loc></url>
   <url><loc>https://example.com/api/helpers</loc></url>
   <url><loc>https://example.com/api/posts/[id]/flag</loc></url>
@@ -30,6 +31,8 @@
   <url><loc>https://example.com/help</loc></url>
   <url><loc>https://example.com/</loc></url>
   <url><loc>https://example.com/leaderboard</loc></url>
+  <url><loc>https://example.com/m365-demo</loc></url>
+  <url><loc>https://example.com/microsoft365-integration</loc></url>
   <url><loc>https://example.com/privacy</loc></url>
   <url><loc>https://example.com/profile</loc></url>
   <url><loc>https://example.com/prompt-library</loc></url>
