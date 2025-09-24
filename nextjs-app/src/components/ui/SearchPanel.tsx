@@ -74,7 +74,7 @@ const SearchPanel: React.FC<SearchPanelProps> = ({
       } else {
         const response = await connectorService.searchMicrosoft(searchQuery);
         if (response.success && response.data) {
-          searchResults = (response.data as any[]).map((item, index) => ({
+          searchResults = (response.data as unknown[]).map((item: any, index) => ({
             id: `ms-${index}`,
             text: item.name || item.title || item.subject || 'Untitled',
             type: 'microsoft_search' as const,
