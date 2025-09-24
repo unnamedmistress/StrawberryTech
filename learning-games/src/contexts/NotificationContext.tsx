@@ -1,5 +1,4 @@
-import React, { createContext, useContext, useState, useCallback, ReactNode, useEffect } from 'react'
-]
+import { createContext, useContext, useState, useCallback, useEffect, type ReactNode } from 'react'
 import NotificationToast from '../components/ui/NotificationToast'
 
 import { setNotificationHandler } from '../shared/notify'
@@ -60,11 +59,10 @@ export function NotificationProvider({ children }: NotificationProviderProps) {
       {children}
 
       <NotificationToast
-
         message={notification.message}
         isOpen={notification.isOpen}
         onClose={closeNotification}
-        duration={notification.duration}
+        autoCloseDelay={notification.duration}
       />
     </NotificationContext.Provider>
   )
