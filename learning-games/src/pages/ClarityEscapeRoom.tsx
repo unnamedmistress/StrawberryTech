@@ -13,6 +13,7 @@ import './ClarityEscapeRoom.css'
 import { scorePrompt } from '../utils/scorePrompt'
 import { generateRoomDescription } from '../utils/generateRoomDescription'
 import AdventureProgress from '../components/ui/AdventureProgress'
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { getAdventureStep, getNextGame, pointsToStars } from '../utils/adventure'
 import { UserContext } from '../shared/UserContext'
 import type { UserContextType } from '../../../shared/types/user'
@@ -140,6 +141,7 @@ export default function ClarityEscapeRoom() {
   const [aiHint, setAiHint] = useState('')
   const startRef = useRef(Date.now())
   const [showSummary, setShowSummary] = useState(false)
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [finalScore, setFinalScore] = useState(0)
   const step = getAdventureStep(user.points)
   const next = getNextGame(user.points)

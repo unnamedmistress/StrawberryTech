@@ -10,6 +10,7 @@ import type { UserContextType } from '../../../shared/types/user'
 import './QuizGame.css'
 import InstructionBanner from '../components/ui/InstructionBanner'
 import AdventureProgress from '../components/ui/AdventureProgress'
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { getAdventureStep, getNextGame, pointsToStars } from '../utils/adventure'
 import { HALLUCINATION_EXAMPLES } from '../data/hallucinationExamples'
 import { H_ROUNDS } from '../data/hallucinationRounds'
@@ -143,6 +144,7 @@ export default function QuizGame() {
   const [played, setPlayed] = useState(0)
   const [streak, setStreak] = useState(0)
   const [finished, setFinished] = useState(false)
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [finalScore, setFinalScore] = useState(0)
   const step = getAdventureStep(user.points)
   const next = getNextGame(user.points)

@@ -12,7 +12,7 @@ describe('generateRoomDescription', () => {
     const mock = vi.fn().mockResolvedValue({
       json: () => Promise.resolve({ choices: [{ message: { content: 'room' } }] }),
     })
-    global.fetch = mock as any
+    global.fetch = mock as typeof fetch
     await generateRoomDescription('teen')
     const body = JSON.parse(mock.mock.calls[0][1].body)
     expect(body.messages[0].content).toContain('teen')
