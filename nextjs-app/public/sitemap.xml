@@ -10,6 +10,7 @@
   <url><loc>https://example.com/api/scores/[game]</loc></url>
   <url><loc>https://example.com/api/scores</loc></url>
   <url><loc>https://example.com/api/sentiment</loc></url>
+  <url><loc>https://example.com/api/suggest</loc></url>
   <url><loc>https://example.com/api/user</loc></url>
   <url><loc>https://example.com/api/views/[id]/end</loc></url>
   <url><loc>https://example.com/api/views</loc></url>
@@ -18,11 +19,11 @@
   <url><loc>https://example.com/contact</loc></url>
   <url><loc>https://example.com/games/chain</loc></url>
   <url><loc>https://example.com/games/compose</loc></url>
-  <url><loc>https://example.com/games/intro</loc></url>
   <url><loc>https://example.com/games/darts</loc></url>
   <url><loc>https://example.com/games/dragdrop</loc></url>
   <url><loc>https://example.com/games/escape</loc></url>
   <url><loc>https://example.com/games/guess</loc></url>
+  <url><loc>https://example.com/games/intro</loc></url>
   <url><loc>https://example.com/games/quiz</loc></url>
   <url><loc>https://example.com/games/recipe</loc></url>
   <url><loc>https://example.com/games/tone</loc></url>

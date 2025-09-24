@@ -10,6 +10,7 @@ import RobotChat from "../components/RobotChat";
 import InstructionBanner from "../components/ui/InstructionBanner";
 import WhyCard from "../components/layout/WhyCard";
 import AdventureProgress from "../components/ui/AdventureProgress";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { getAdventureStep, getNextGame, pointsToStars } from "../utils/adventure";
 
 const quotes = [
@@ -171,6 +172,7 @@ export default function Match3Game() {
       tips[Math.floor(Math.random() * tips.length)],
   )
   const [showComplete, setShowComplete] = useState(false)
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [finalScore, setFinalScore] = useState(0)
   const step = getAdventureStep(user.points)
   const next = getNextGame(user.points)

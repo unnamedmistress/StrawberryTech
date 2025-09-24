@@ -13,6 +13,7 @@ import TimerBar from '../components/ui/TimerBar'
 import { UserContext } from '../shared/UserContext'
 import { getTimeLimit } from '../utils/time'
 import AdventureProgress from '../components/ui/AdventureProgress'
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { getAdventureStep, getNextGame, pointsToStars } from '../utils/adventure'
 import './PromptRecipeGame.css'
 import {
@@ -53,6 +54,7 @@ export default function PromptRecipeGame() {
   const [selectedCard, setSelectedCard] = useState<Card | null>(null)
   const [round, setRound] = useState(0)
   const [finished, setFinished] = useState(false)
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [finalScore, setFinalScore] = useState(0)
   const step = getAdventureStep(user.points)
   const next = getNextGame(user.points)
@@ -113,6 +115,32 @@ export default function PromptRecipeGame() {
     }
   }, [finished, next, navigate])
 
+  const generateExampleOutput = useCallback(async (prompt: string) => {
+    try {
+      const resp = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${import.meta.env.VITE_OPENAI_API_KEY}`,
+        },
+        body: JSON.stringify({
+          model: 'gpt-3.5-turbo',
+          messages: [
+            { role: 'system', content: `Reply in one short sentence for a ${ageGroup} player.` },
+            { role: 'user', content: prompt },
+          ],
+          max_tokens: 60,
+        }),
+      })
+      const data = await resp.json()
+      const text: string | undefined = data?.choices?.[0]?.message?.content
+      if (text) setExample(text.trim())
+    } catch (err) {
+      console.error(err)
+      notify('Unable to fetch example output.')
+    }
+  }, [ageGroup])
+
   useEffect(() => {
     if (showPrompt) {
       const text = `${dropped.Action ?? ''} ${dropped.Context ?? ''} ${dropped.Format ?? ''} ${dropped.Constraints ?? ''}`.trim()
@@ -124,6 +152,7 @@ export default function PromptRecipeGame() {
     dropped.Context,
     dropped.Format,
     dropped.Constraints,
+    generateExampleOutput,
   ])
 
 
@@ -259,32 +288,6 @@ export default function PromptRecipeGame() {
     notify(`+${finalScore} points`)
     setSubmitted(true)
     setShowPrompt(true)
-  }
-
-  async function generateExampleOutput(prompt: string) {
-    try {
-      const resp = await fetch('https://api.openai.com/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${import.meta.env.VITE_OPENAI_API_KEY}`,
-        },
-        body: JSON.stringify({
-          model: 'gpt-3.5-turbo',
-          messages: [
-            { role: 'system', content: `Reply in one short sentence for a ${ageGroup} player.` },
-            { role: 'user', content: prompt },
-          ],
-          max_tokens: 60,
-        }),
-      })
-      const data = await resp.json()
-      const text: string | undefined = data?.choices?.[0]?.message?.content
-      if (text) setExample(text.trim())
-    } catch (err) {
-      console.error(err)
-      notify('Unable to fetch example output.')
-    }
   }
 
   function copyPrompt() {
