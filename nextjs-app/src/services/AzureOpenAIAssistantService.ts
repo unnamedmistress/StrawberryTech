@@ -33,9 +33,77 @@ export interface UploadFileRequest {
 export class AzureOpenAIAssistantService {
   private connectorService = getConnectorService();
   private readonly assistantId: string;
+  private readonly MAX_PAYLOAD_SIZE = 25 * 1024 * 1024; // 25 MB
+  private readonly SENSITIVE_PATTERNS = [
+    /\b\d{4}[-\s]?\d{4}[-\s]?\d{4}[-\s]?\d{4}\b/g, // Credit cards
+    /\b\d{3}-\d{2}-\d{4}\b/g, // SSN
+    /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/g, // Email addresses
+    /\b(?:\+?1[-.\s]?)?\(?[0-9]{3}\)?[-.\s]?[0-9]{3}[-.\s]?[0-9]{4}\b/g, // Phone numbers
+  ];
 
   constructor(assistantId: string = process.env.NEXT_PUBLIC_AZURE_OPENAI_ASSISTANT_ID || '') {
     this.assistantId = assistantId;
+  }
+
+  /**
+   * Validate payload size and redact sensitive data
+   */
+  private validateAndRedactPayload(payload: unknown): { isValid: boolean; redactedPayload: unknown; error?: string } {
+    try {
+      const serialized = JSON.stringify(payload);
+      const sizeInBytes = new Blob([serialized]).size;
+      
+      if (sizeInBytes > this.MAX_PAYLOAD_SIZE) {
+        return {
+          isValid: false,
+          redactedPayload: payload,
+          error: `Payload size (${(sizeInBytes / 1024 / 1024).toFixed(2)} MB) exceeds maximum limit of 25 MB`
+        };
+      }
+
+      // Redact sensitive data
+      let redactedSerialized = serialized;
+      this.SENSITIVE_PATTERNS.forEach(pattern => {
+        redactedSerialized = redactedSerialized.replace(pattern, '[REDACTED]');
+      });
+
+      return {
+        isValid: true,
+        redactedPayload: JSON.parse(redactedSerialized)
+      };
+    } catch (error) {
+      return {
+        isValid: false,
+        redactedPayload: payload,
+        error: `Failed to validate payload: ${error instanceof Error ? error.message : 'Unknown error'}`
+      };
+    }
+  }
+
+  /**
+   * Enhanced connector call with payload validation and logging
+   */
+  private async makeValidatedConnectorCall<T>(
+    action: string,
+    parameters: Record<string, unknown>
+  ): Promise<ConnectorResponse<T>> {
+    const validation = this.validateAndRedactPayload(parameters);
+    
+    if (!validation.isValid) {
+      console.error(`Azure OpenAI connector call validation failed (${action}):`, validation.error);
+      return {
+        success: false,
+        error: {
+          code: 'PAYLOAD_VALIDATION_FAILED',
+          message: validation.error || 'Payload validation failed'
+        }
+      };
+    }
+
+    // Log the redacted payload for debugging
+    console.log(`Azure OpenAI connector call (${action}):`, validation.redactedPayload);
+
+    return this.makeValidatedConnectorCall( action, parameters);
   }
 
   /**
@@ -45,7 +113,7 @@ export class AzureOpenAIAssistantService {
   async createThread(request: CreateThreadRequest = {}): Promise<ConnectorResponse<AssistantThread>> {
     const threadId = this.generateThreadId();
     
-    const response = await this.connectorService.makeConnectorCall('azureOpenAI', 'createThread', {
+    const response = await this.makeValidatedConnectorCall('createThread', {
       threadId,
       metadata: {
         ...request.metadata,
@@ -72,7 +140,7 @@ export class AzureOpenAIAssistantService {
    * Retrieve a thread by ID
    */
   async getThread(threadId: string): Promise<ConnectorResponse<AssistantThread>> {
-    return this.connectorService.makeConnectorCall('azureOpenAI', 'getThread', {
+    return this.makeValidatedConnectorCall('getThread', {
       threadId
     });
   }
@@ -81,7 +149,7 @@ export class AzureOpenAIAssistantService {
    * Update a thread's metadata
    */
   async updateThread(threadId: string, metadata: Record<string, unknown>): Promise<ConnectorResponse<AssistantThread>> {
-    return this.connectorService.makeConnectorCall('azureOpenAI', 'updateThread', {
+    return this.makeValidatedConnectorCall('updateThread', {
       threadId,
       metadata: {
         ...metadata,
@@ -94,7 +162,7 @@ export class AzureOpenAIAssistantService {
    * Delete a thread
    */
   async deleteThread(threadId: string): Promise<ConnectorResponse<{ deleted: boolean }>> {
-    return this.connectorService.makeConnectorCall('azureOpenAI', 'deleteThread', {
+    return this.makeValidatedConnectorCall('deleteThread', {
       threadId
     });
   }
@@ -106,7 +174,7 @@ export class AzureOpenAIAssistantService {
   async createMessage(threadId: string, request: CreateMessageRequest): Promise<ConnectorResponse<AssistantMessage>> {
     const messageId = this.generateMessageId();
     
-    const response = await this.connectorService.makeConnectorCall('azureOpenAI', 'createMessage', {
+    const response = await this.makeValidatedConnectorCall('createMessage', {
       threadId,
       messageId,
       role: request.role,
@@ -149,7 +217,7 @@ export class AzureOpenAIAssistantService {
    * List messages in a thread
    */
   async listMessages(threadId: string, limit: number = 20): Promise<ConnectorResponse<{ data: AssistantMessage[] }>> {
-    const response = await this.connectorService.makeConnectorCall('azureOpenAI', 'listMessages', {
+    const response = await this.makeValidatedConnectorCall('listMessages', {
       threadId,
       limit
     });
@@ -174,7 +242,7 @@ export class AzureOpenAIAssistantService {
    * Get a specific message
    */
   async getMessage(threadId: string, messageId: string): Promise<ConnectorResponse<AssistantMessage>> {
-    const response = await this.connectorService.makeConnectorCall('azureOpenAI', 'getMessage', {
+    const response = await this.makeValidatedConnectorCall( 'getMessage', {
       threadId,
       messageId
     });
@@ -199,7 +267,7 @@ export class AzureOpenAIAssistantService {
   async createRun(threadId: string, request: CreateRunRequest): Promise<ConnectorResponse<AssistantRun>> {
     const runId = this.generateRunId();
     
-    return this.connectorService.makeConnectorCall('azureOpenAI', 'createRun', {
+    return this.makeValidatedConnectorCall( 'createRun', {
       threadId,
       runId,
       assistant_id: request.assistant_id || this.assistantId,
@@ -217,7 +285,7 @@ export class AzureOpenAIAssistantService {
    * Get a run's status
    */
   async getRun(threadId: string, runId: string): Promise<ConnectorResponse<AssistantRun>> {
-    return this.connectorService.makeConnectorCall('azureOpenAI', 'getRun', {
+    return this.makeValidatedConnectorCall( 'getRun', {
       threadId,
       runId
     });
@@ -227,7 +295,7 @@ export class AzureOpenAIAssistantService {
    * Cancel a run
    */
   async cancelRun(threadId: string, runId: string): Promise<ConnectorResponse<AssistantRun>> {
-    return this.connectorService.makeConnectorCall('azureOpenAI', 'cancelRun', {
+    return this.makeValidatedConnectorCall( 'cancelRun', {
       threadId,
       runId
     });
@@ -244,7 +312,7 @@ export class AzureOpenAIAssistantService {
     const arrayBuffer = await request.file.arrayBuffer();
     const base64Content = btoa(String.fromCharCode(...new Uint8Array(arrayBuffer)));
     
-    return this.connectorService.makeConnectorCall('azureOpenAI', 'uploadFile', {
+    return this.makeValidatedConnectorCall( 'uploadFile', {
       fileId,
       filename: request.filename || (request.file as File).name || 'upload',
       content: base64Content,
@@ -257,7 +325,7 @@ export class AzureOpenAIAssistantService {
    * Get file information
    */
   async getFile(fileId: string): Promise<ConnectorResponse<AssistantFile>> {
-    return this.connectorService.makeConnectorCall('azureOpenAI', 'getFile', {
+    return this.makeValidatedConnectorCall( 'getFile', {
       fileId
     });
   }
@@ -266,7 +334,7 @@ export class AzureOpenAIAssistantService {
    * Delete a file
    */
   async deleteFile(fileId: string): Promise<ConnectorResponse<{ deleted: boolean }>> {
-    return this.connectorService.makeConnectorCall('azureOpenAI', 'deleteFile', {
+    return this.makeValidatedConnectorCall( 'deleteFile', {
       fileId
     });
   }
